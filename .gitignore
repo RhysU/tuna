@@ -3,16 +3,18 @@
 *.ko
 
 # Libraries
-*.lib
 *.a
-
-# Shared objects (inc. Windows DLLs)
 *.dll
+*.lib
 *.so
-*.so.*
-*.dylib
 
 # Executables
-*.exe
-*.out
-*.app
+examples/basic
+
+# Build infrastructure
+aclocal.m4
+autom4te.cache/
+build-aux/
+configure
+m4/
+Makefile.in
