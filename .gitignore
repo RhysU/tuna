@@ -1,20 +1,26 @@
-# Object files
-*.o
-*.ko
+# Object files and Libraries
+**/*.a
+**/.deps
+**/.dirstamp
+**/*.ko
+**/*.la
+**/.libs
+**/*.lo
+**/*.o
+**/*.so
+**/*.so.*
 
-# Libraries
-*.a
-*.dll
-*.lib
-*.so
+aclocal.m4
+autom4te.cache
+build-aux
+config.cache
+config.log
+config.status
+configure
+libtool
+m4
+Makefile
+Makefile.in
 
 # Executables
 examples/basic
-
-# Build infrastructure
-aclocal.m4
-autom4te.cache/
-build-aux/
-configure
-m4/
-Makefile.in

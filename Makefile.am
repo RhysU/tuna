@@ -12,7 +12,7 @@ tuna_libtuna_la_SOURCES = tuna/tuna.c
 # Example programs
 noinst_PROGRAMS         =
 noinst_PROGRAMS        += examples/basic
-examples_basic_SOURCES  = basic/basic.c
+examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la
 
 # TODO Tests
