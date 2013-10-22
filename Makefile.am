@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS  = -I m4
 
 # Installed artifacts
