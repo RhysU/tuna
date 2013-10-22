@@ -42,5 +42,5 @@ Contents
 *tuna.c*
     TODO
 
-*example.c*
+*examples/basic.c*
     TODO
