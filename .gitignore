@@ -24,5 +24,11 @@ Makefile.in
 tuna/config.h*
 tuna/stamp-h1
 
+# Test cases
+tests/*.log
+tests/stats
+tests/*.trs
+test-suite.log
+
 # Executables
 examples/basic
