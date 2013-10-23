@@ -1,5 +1,6 @@
 AC_INIT([tuna], [0.0.1], [rhys.ulerich@gmail.com])
 AC_CONFIG_SRCDIR([tuna/tuna.h])
+AC_CONFIG_HEADERS([tuna/config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 check-news color-tests foreign parallel-tests silent-rules subdir-objects tar-ustar -Wall])

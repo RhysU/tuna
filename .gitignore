@@ -21,6 +21,8 @@ libtool
 m4
 Makefile
 Makefile.in
+tuna/config.h*
+tuna/stamp-h1
 
 # Executables
 examples/basic
