@@ -23,7 +23,7 @@ examples_basic_LDADD    = tuna/libtuna.la
 TESTS                = $(check_PROGRAMS)
 check_PROGRAMS       = tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
-tests_stats_LDADD    = tuna/libtuna.la
+tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
