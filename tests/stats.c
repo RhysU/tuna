@@ -37,10 +37,10 @@ FCT_BGN()
         // Test behavior after each observation
         for (size_t i = 0; i < N; ++i) {
             tuna_stats_obs(&s, obs[i]);
-            fct_chk_eq_int(tuna_stats_cnt(&s),         i+1 );
-            fct_chk_eq_dbl(tuna_stats_avg(&s),      avg[i] );
-            fct_chk_eq_dbl(tuna_stats_var(&s),      var[i] );
-            fct_chk_eq_dbl(tuna_stats_std(&s), sqrt(var[i]));
+            fct_chk_eq_int   (tuna_stats_cnt(&s),         i+1        );
+            fct_chk_eqtol_dbl(tuna_stats_avg(&s),      avg[i], 1e-14);
+            fct_chk_eqtol_dbl(tuna_stats_var(&s),      var[i], 1e-14);
+            fct_chk_eq_dbl   (tuna_stats_std(&s), sqrt(var[i])      );
         }
 
         // Clear the accumulator and retest
@@ -67,10 +67,10 @@ FCT_BGN()
         // Test behavior after each observation
         for (size_t i = N/2; i < N; ++i) { // NB Resuming other half!
             tuna_stats_obs(&s, obs[i]);
-            fct_chk_eq_int(tuna_stats_cnt(&s),         i+1 );
-            fct_chk_eq_dbl(tuna_stats_avg(&s),      avg[i] );
-            fct_chk_eq_dbl(tuna_stats_var(&s),      var[i] );
-            fct_chk_eq_dbl(tuna_stats_std(&s), sqrt(var[i]));
+            fct_chk_eq_int   (tuna_stats_cnt(&s),         i+1       );
+            fct_chk_eqtol_dbl(tuna_stats_avg(&s),      avg[i], 1e-14);
+            fct_chk_eqtol_dbl(tuna_stats_var(&s),      var[i], 1e-14);
+            fct_chk_eq_dbl   (tuna_stats_std(&s), sqrt(var[i])      );
         }
     }
     FCT_QTEST_END();
@@ -112,10 +112,10 @@ FCT_BGN()
             tuna_stats_merge(&r1, &r2);
 
             // Check the entire merged result matches expected
-            fct_chk_eq_int(tuna_stats_cnt(&r1),          N    );
-            fct_chk_eq_dbl(tuna_stats_avg(&r1),      avg[N-1] );
-            fct_chk_eq_dbl(tuna_stats_var(&r1),      var[N-1] );
-            fct_chk_eq_dbl(tuna_stats_std(&r1), sqrt(var[N-1]));
+            fct_chk_eq_int   (tuna_stats_cnt(&r1),          N          );
+            fct_chk_eqtol_dbl(tuna_stats_avg(&r1),      avg[N-1], 1e-14);
+            fct_chk_eqtol_dbl(tuna_stats_var(&r1),      var[N-1], 1e-14);
+            fct_chk_eq_dbl   (tuna_stats_std(&r1), sqrt(var[N-1])      );
         }
 
     }
