@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS  = -I m4
+noinst_PROGRAMS  =
 
 # Installed artifacts
 dist_doc_DATA              = README.rst
@@ -16,14 +17,13 @@ tuna_libtuna_la_SOURCES += tuna/ltqnorm.c tuna/ltqnorm.h
 tuna_libtuna_la_LIBADD   = $(LIBM)
 
 # Example programs
-noinst_PROGRAMS         =
 noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
-examples_basic_LDADD    = tuna/libtuna.la
+examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
 
 # Test programs
 TESTS                = tests/stats
-noinst_PROGRAMS      = tests/stats
+noinst_PROGRAMS     += tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
 tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
 
