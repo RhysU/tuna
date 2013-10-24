@@ -18,6 +18,7 @@
 #include "config.h"
 #endif
 
+#include "ltqnorm.h"
 #include "stats.h"
 
 // C99 extern declarations for inlined functions from stats.h
@@ -59,4 +60,16 @@ tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
         dst->n       = total;
     }
     return dst;
+}
+
+// Beware this implementation is atrociously bad for small sample sizes!  We
+// incorrectly always assume NDOF nu \to \infty and use N(0,1) distribution.
+double tuna_stats_welch1(const tuna_stats * const a,
+                         const tuna_stats * const b)
+{
+    const double t_num  = tuna_stats_avg(a) + tuna_stats_avg(b);
+    const double t_den2 = tuna_stats_var(a) / tuna_stats_cnt(a)
+                        + tuna_stats_var(b) / tuna_stats_cnt(b);
+    const double t      = t_num / sqrt(t_den2);
+    return tuna_ltqnorm(t);
 }

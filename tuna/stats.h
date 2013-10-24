@@ -71,6 +71,13 @@ tuna_stats* tuna_stats_obs(tuna_stats * const s, const double x);
 tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
                              const tuna_stats * const src);
 
+/**
+ * Compute a one-sided Welch t-test that \c a s greater than \c b.
+ * See http://en.wikipedia.org/wiki/Welch's_t_test for background.
+ */
+double tuna_stats_welch1(const tuna_stats * const a,
+                         const tuna_stats * const b);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
