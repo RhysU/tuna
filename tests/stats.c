@@ -70,7 +70,7 @@ FCT_BGN()
             fct_chk_eq_int(tuna_stats_cnt(&s),         i+1 );
             fct_chk_eq_dbl(tuna_stats_avg(&s),      avg[i] );
             fct_chk_eq_dbl(tuna_stats_var(&s),      var[i] );
-            fct_chk_eq_dbl(tuna_stats_var(&s), sqrt(var[i]));
+            fct_chk_eq_dbl(tuna_stats_std(&s), sqrt(var[i]));
         }
     }
     FCT_QTEST_END();
@@ -115,7 +115,7 @@ FCT_BGN()
             fct_chk_eq_int(tuna_stats_cnt(&r1),          N    );
             fct_chk_eq_dbl(tuna_stats_avg(&r1),      avg[N-1] );
             fct_chk_eq_dbl(tuna_stats_var(&r1),      var[N-1] );
-            fct_chk_eq_dbl(tuna_stats_var(&r1), sqrt(var[N-1]));
+            fct_chk_eq_dbl(tuna_stats_std(&r1), sqrt(var[N-1]));
         }
 
     }
