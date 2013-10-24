@@ -86,10 +86,9 @@ double tuna_ltqnorm(const double p)
    }
 
    // One iteration of Halley's rational method improves to machine precision.
-   static const double neg_1_sqrt2 = - 1 / M_SQRT2;
-   static const double sqrt_2pi    = sqrt(2 * M_PI);
+   const double sqrt_2pi = sqrt(2 * M_PI);
    double e, u;
-   e = 0.5 * erfc(x * neg_1_sqrt2) - p;
+   e = 0.5 * erfc(x * -M_SQRT1_2) - p;
    u = e * sqrt_2pi * exp(x*x/2);
    x = x - u/(1 + x*u/2);
 
