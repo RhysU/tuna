@@ -20,15 +20,16 @@ int main(int argc, char *argv[])
     srand(time(NULL));
 
     // Parse and display any incoming command line arguments in a header
-    const int    niter = argc > 1 ? atoi(argv[1]) : 10; // How many iterations?
+    const int    niter = argc > 1 ? atoi(argv[1]) : 25; // How many iterations?
     const double m0    = argc > 2 ? atof(argv[2]) : 10; // Case 1 mean elapsed?
     const double r0    = argc > 3 ? atof(argv[3]) : 1;  // Case 1 stddev elapsed?
-    const double m1    = argc > 4 ? atof(argv[4]) : 10; // Case 1 mean elapsed?
+    const double m1    = argc > 4 ? atof(argv[4]) : 20; // Case 1 mean elapsed?
     const double r1    = argc > 5 ? atof(argv[5]) : 1;  // Case 1 stddev elapsed?
-    const int    b     = argc > 6 ? atof(argv[6]) : 5;  // How much burn in?
-    printf("# niter=%d, m0=%g, r0=%g, m1=%g, r1=%g\n", niter, m0, r0, m1, r1);
+    const int    b     = argc > 6 ? atof(argv[6]) : 3;  // How much burn in?
+    printf("# niter=%d, m0=%g, r0=%g, m1=%g, r1=%g, b=%d\n",
+           niter, m0, r0, m1, r1, b);
 
-    tuna_stats s[2];
+    tuna_stats s[2] = {/*zero fill*/};
     for (int i = 0; i < niter; ++i) {
         // Which branch should be taken this iteration?
         const int ndx = tuna_stats_cnt(s+0) < b ? 0
