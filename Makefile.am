@@ -22,8 +22,8 @@ examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la
 
 # Test programs
-TESTS                = $(check_PROGRAMS)
-check_PROGRAMS       = tests/stats
+TESTS                = tests/stats
+noinst_PROGRAMS      = tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
 tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
 
