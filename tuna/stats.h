@@ -17,7 +17,6 @@
  * Provides statistical accumulators for special cases of interest.
  */
 
-#include <assert.h>
 #include <math.h>
 #include <stddef.h>
 #include <stddef.h>
@@ -60,7 +59,7 @@ double tuna_stats_avg(const tuna_stats * const s)
 /** Obtain the running sample variance. */
 static inline
 double tuna_stats_var(const tuna_stats * const s)
-{ const size_t n = s->n; assert(n > 0); return n == 1 ? 0 : s->S / (n - 1); }
+{ const size_t n = s->n; return n == 1 ? 0 : s->S / (n - 1); }
 
 /** Obtain the running sample standard deviation. */
 static inline
