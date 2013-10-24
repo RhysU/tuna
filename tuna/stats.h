@@ -54,12 +54,12 @@ size_t tuna_stats_cnt(const tuna_stats * const s)
 /** Obtain the running mean. */
 static inline
 double tuna_stats_avg(const tuna_stats * const s)
-{ return s->M; }
+{ return s->n ? s->M : NAN; }
 
 /** Obtain the running sample variance. */
 static inline
 double tuna_stats_var(const tuna_stats * const s)
-{ const size_t n = s->n; return n == 1 ? 0 : s->S / (n - 1); }
+{ return s->n ? (s->n > 1 ? s->S / (s->n - 1): 0) : NAN; }
 
 /** Obtain the running sample standard deviation. */
 static inline
