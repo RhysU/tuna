@@ -67,9 +67,10 @@ tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
 double tuna_stats_welch1(const tuna_stats * const a,
                          const tuna_stats * const b)
 {
-    const double t_num  = tuna_stats_avg(a) + tuna_stats_avg(b);
+    const double t_num  = tuna_stats_avg(a) - tuna_stats_avg(b);
     const double t_den2 = tuna_stats_var(a) / tuna_stats_cnt(a)
                         + tuna_stats_var(b) / tuna_stats_cnt(b);
     const double t      = t_num / sqrt(t_den2);
-    return tuna_ltqnorm(t);
+    const double p      = erfc(-t * M_SQRT1_2) / 2;
+    return p;
 }
