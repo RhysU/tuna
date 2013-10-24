@@ -4,13 +4,15 @@ ACLOCAL_AMFLAGS  = -I m4
 
 # Installed artifacts
 dist_doc_DATA              = README.rst
-nobase_pkginclude_HEADERS  = tuna/tuna.h
+nobase_pkginclude_HEADERS  = tuna/ltqnorm.h
 nobase_pkginclude_HEADERS += tuna/stats.h
+nobase_pkginclude_HEADERS += tuna/tuna.h
 lib_LTLIBRARIES            = tuna/libtuna.la
 
 # The sources build into the library
-tuna_libtuna_la_SOURCES  = tuna/tuna.c  tuna/tuna.h
-tuna_libtuna_la_SOURCES += tuna/stats.c tuna/stats.h
+tuna_libtuna_la_SOURCES  = tuna/stats.c   tuna/stats.h
+tuna_libtuna_la_SOURCES += tuna/tuna.c    tuna/tuna.h
+tuna_libtuna_la_SOURCES += tuna/ltqnorm.c tuna/ltqnorm.h
 tuna_libtuna_la_LIBADD   = $(LIBM)
 
 # Example programs
