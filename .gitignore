@@ -32,3 +32,4 @@ test-suite.log
 
 # Executables
 examples/basic
+examples/poc
