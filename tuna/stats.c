@@ -18,7 +18,6 @@
 #include "config.h"
 #endif
 
-#include "ltqnorm.h"
 #include "stats.h"
 
 // C99 extern declarations for inlined functions from stats.h
