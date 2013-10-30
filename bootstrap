@@ -1,5 +1,4 @@
 #!/bin/bash
 set -e
-mkdir -pv m4
 mkdir -pv build-aux
 autoreconf -v -i
