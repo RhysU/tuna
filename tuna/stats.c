@@ -50,6 +50,8 @@ tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
 
 // Beware this implementation is atrociously bad for small sample sizes!  We
 // incorrectly always assume NDOF nu \to \infty and use N(0,1) distribution.
+//
+// TODO Can variances be scaled by something like nu/(nu-2) to "fix" small nu?
 double tuna_stats_welch1(const tuna_stats * const a,
                          const tuna_stats * const b)
 {
