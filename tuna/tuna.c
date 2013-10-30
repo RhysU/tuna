@@ -12,4 +12,8 @@
 
 #include "tuna.h"
 
-// TODO
+tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, const double t)
+{
+    // TODO Implement
+    return k;
+}

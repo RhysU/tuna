@@ -25,9 +25,32 @@
  * Public API
  */
 
+#include <tuna/stats.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* Compile-time constants */
+enum {
+
+    /** Number of slow outlier samples tracked for each \ref tuna_kernel.  */
+    tuna_noutliers = 5
+
+};
+
+/**
+ * Accumulates runtime information about the performance of a compute kernel.
+ * Fill storage with zeros, e.g. from POD zero initialization, to construct or
+ * reset an instance.
+ */
+typedef struct tuna_kernel {
+    double     outliers[tuna_noutliers];
+    tuna_stats stats;
+} tuna_kernel;
+
+/** Record a new elapsed time observation \c t about kernel \c k. */
+tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, const double t);
 
 /**
  * TODO
@@ -37,25 +60,6 @@ extern "C" {
 typedef struct tuna_algorithm {
 } tuna_algorithm;
 
-/**
- * TODO
- *
- * Likely will contain state supporting operations like
- * http://agentzlerich.blogspot.com/2013/03/mergeable-accumulation-of-running-min.html
- *
- * Must be a POD type with zero-initialization providing sane behavior.
- */
-typedef struct tuna_kernel {
-} tuna_kernel;
-
-/**
- * TODO
- */
-typedef struct tuna_sample {
-    double start;
-    double end;
-    int    ndx;
-} tuna_sample;
 
 #ifdef __cplusplus
 } /* extern "C" */
