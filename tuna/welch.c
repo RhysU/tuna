@@ -7,13 +7,15 @@
  */
 
 /** @file
- * @copydoc tuna.h
+ * @copydoc welch.h
  */
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include "tuna.h"
+#include "welch.h"
 
-// NOP
+// C99 extern declarations for inlined functions from welch.h
+extern double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
+                                double xB, double sB2, size_t nB);

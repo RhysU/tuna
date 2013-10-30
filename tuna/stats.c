@@ -17,6 +17,7 @@
 #endif
 
 #include "stats.h"
+#include "welch.h"
 
 // C99 extern declarations for inlined accessors from stats.h
 extern size_t tuna_stats_cnt(const tuna_stats * const t);
@@ -46,17 +47,11 @@ tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
     return dst;
 }
 
-// Beware this implementation is atrociously bad for small sample sizes!  We
-// incorrectly always assume NDOF nu \to \infty and use N(0,1) distribution.
-//
-// TODO Can variances be scaled by something like nu/(nu-2) to "fix" small nu?
 double tuna_stats_welch1(const tuna_stats * const a,
                          const tuna_stats * const b)
 {
-    const double t_num  = tuna_stats_avg(a) - tuna_stats_avg(b);
-    const double t_den2 = tuna_stats_var(a) / tuna_stats_cnt(a)
-                        + tuna_stats_var(b) / tuna_stats_cnt(b);
-    const double t      = t_num / sqrt(t_den2);
-    const double p      = erfc(-t * M_SQRT1_2) / 2;
-    return p;
+    // TODO Address shortcomings documented at tuna_welch1_{nuinf,approx,}
+    return tuna_welch1_nuinf(
+            tuna_stats_avg(a), tuna_stats_var(a), tuna_stats_cnt(a),
+            tuna_stats_avg(b), tuna_stats_var(b), tuna_stats_cnt(b));
 }
