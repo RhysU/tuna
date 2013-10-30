@@ -65,7 +65,7 @@ double tuna_stats_std(const tuna_stats * const t)
 
 /** Accumulate a new observation \c x into statistics \c t. */
 static inline
-tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
+tuna_stats* tuna_stats_obs(tuna_stats * const t, double x)
 {
     // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
     // Knuth shows better behavior than Welford 1962 on test data.
