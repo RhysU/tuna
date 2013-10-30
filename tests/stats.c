@@ -22,7 +22,7 @@ static const size_t N      = sizeof(obs)/sizeof(obs[0]);
 
 FCT_BGN()
 {
-    FCT_QTEST_BGN(examine)
+    FCT_QTEST_BGN(examine_obs)
     {
         tuna_stats s = {};
 
@@ -70,6 +70,45 @@ FCT_BGN()
             fct_chk_eqtol_dbl(tuna_stats_var(&r),      var[i], 1e-14);
             fct_chk_eq_dbl   (tuna_stats_std(&r), sqrt(var[i])      );
         }
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(nobs_consistency)
+    {
+        tuna_stats s = {};
+
+        // Accumulating zero observations does nothing
+        tuna_stats_nobs(&s, NULL, 0);
+        fct_chk_eq_int(0U, tuna_stats_cnt(&s));
+        fct_chk(isnan(tuna_stats_avg(&s)));
+        fct_chk(isnan(tuna_stats_var(&s)));
+        fct_chk(isnan(tuna_stats_std(&s)));
+
+        // Accumulate just one observation and check against tuna_stats_obs
+        tuna_stats_nobs(&s, obs, 1);
+        tuna_stats r = {};
+        tuna_stats_obs(&r, obs[0]);
+        fct_chk_eq_int(tuna_stats_cnt(&s), tuna_stats_cnt(&r));
+        fct_chk_eq_dbl(tuna_stats_avg(&s), tuna_stats_avg(&r));
+        fct_chk_eq_dbl(tuna_stats_var(&s), tuna_stats_var(&r));
+        fct_chk_eq_dbl(tuna_stats_std(&s), tuna_stats_std(&r));
+
+        // Accumulating zero observations does nothing
+        tuna_stats_nobs(&s, NULL, 0);
+        fct_chk_eq_int(tuna_stats_cnt(&s), tuna_stats_cnt(&r));
+        fct_chk_eq_dbl(tuna_stats_avg(&s), tuna_stats_avg(&r));
+        fct_chk_eq_dbl(tuna_stats_var(&s), tuna_stats_var(&r));
+        fct_chk_eq_dbl(tuna_stats_std(&s), tuna_stats_std(&r));
+
+        // Accumulate the remainder of data and check against tuna_stats_obs
+        tuna_stats_nobs(&s, obs+1, N-1);
+        for (size_t i = 1; i < N; ++i) {
+            tuna_stats_obs(&r, obs[i]);
+        }
+        fct_chk_eq_int(tuna_stats_cnt(&s), tuna_stats_cnt(&r));
+        fct_chk_eq_dbl(tuna_stats_avg(&s), tuna_stats_avg(&r));
+        fct_chk_eq_dbl(tuna_stats_var(&s), tuna_stats_var(&r));
+        fct_chk_eq_dbl(tuna_stats_std(&s), tuna_stats_std(&r));
     }
     FCT_QTEST_END();
 
