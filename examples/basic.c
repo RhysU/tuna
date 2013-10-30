@@ -10,49 +10,53 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "tuna/stats.h"
+#include <tuna/tuna.h>
 
-const double u01(void) { return rand() / (double) RAND_MAX; }
+static const double U01(void) { return rand() / (double) RAND_MAX; }
+static const double N01(void) { return tuna_ltqnorm(U01());        }
 
-// This is currently a work-in-progress to discover the correct APIs.
+// TODO This is currently a work-in-progress to discover the correct APIs.
 int main(int argc, char *argv[])
 {
-    srand(time(NULL));
+    struct timespec tp;
+    clock_gettime(CLOCK_REALTIME, &tp);
+    srand((unsigned int) (tp.tv_sec + tp.tv_nsec));
 
     // Parse and display any incoming command line arguments in a header
-    const int    niter = argc > 1 ? atoi(argv[1]) : 25  ; // How many iterations?
-    const double m0    = argc > 2 ? atof(argv[2]) : 10.0; // Case 1 mean elapsed?
-    const double r0    = argc > 3 ? atof(argv[3]) :  1.0; // Case 1 variability?
-    const double m1    = argc > 4 ? atof(argv[4]) : 10.1; // Case 2 mean elapsed?
-    const double r1    = argc > 5 ? atof(argv[5]) :  1.0; // Case 2 variability?
-    const int    b     = argc > 6 ? atof(argv[6]) :  3  ; // How much burn in?
-    printf("# niter=%d, m0=%g, r0=%g, m1=%g, r1=%g, b=%d\n",
-           niter, m0, r0, m1, r1, b);
+    const int    niter = argc > 1 ? atoi(argv[1]) : 100  ; // Iteration count?
+    const double mA    = argc > 2 ? atof(argv[2]) :  10.0; // Case A mean?
+    const double sA    = argc > 3 ? atof(argv[3]) :   1.0; // Case A stddev?
+    const double mB    = argc > 4 ? atof(argv[4]) :  10.1; // Case B mean?
+    const double sB    = argc > 5 ? atof(argv[5]) :   1.0; // Case B stddev?
+    const int    debug = argc > 6 ? atoi(argv[6]) :   0  ; // Output debugging?
+    printf("# niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
-    tuna_stats s[2] = {/*zero fill*/};
+    tuna_kernel k[2] = {/*zero fill*/};
     for (int i = 0; i < niter; ++i) {
         // Which branch should be taken this iteration?
-        const int ndx = tuna_stats_cnt(s+0) < b ? 0
-                      : tuna_stats_cnt(s+1) < b ? 1
-                      : tuna_stats_welch1(s+0,s+1) > u01();
+        const int ndx = !tuna_stats_cnt(&k[0].stats) ? 0
+                      : !tuna_stats_cnt(&k[1].stats) ? 1
+                      : tuna_stats_welch1(&k[0].stats,&k[1].stats) > U01();
 
         // Take the branch, tracking the "elapsed" time.
         double elapsed;
         switch (ndx) {
-            case 0: elapsed = m0 + r0*(u01()-0.5); break;
-            case 1: elapsed = m1 + r1*(u01()-0.5); break;
+            case 0: elapsed = mA + N01()*sA; break;
+            case 1: elapsed = mB + N01()*sB; break;
         }
-        tuna_stats_obs(s+ndx, elapsed);
+        tuna_kernel_obs(k+ndx, elapsed);
 
         // Output the chosen branch and behavior for debugging purposes
-        printf("%6d\t%d\t%g\n", i, ndx, elapsed);
+        if (debug) printf("%6d\t%d\t%g\n", i, ndx, elapsed);
     }
 
     // Summarize results
-    printf("# m0=%g, s0=%g, c0=%zd\n",
-           tuna_stats_avg(s+0), tuna_stats_std(s+0), tuna_stats_cnt(s+0));
-    printf("# m1=%g, s1=%g, c1=%zd\n",
-           tuna_stats_avg(s+1), tuna_stats_std(s+1), tuna_stats_cnt(s+1));
+    printf("# mA=%g, sA=%g, cA=%zd\n", tuna_stats_avg(&k[0].stats),
+                                       tuna_stats_std(&k[0].stats),
+                                       tuna_stats_cnt(&k[0].stats));
+    printf("# mB=%g, sB=%g, cB=%zd\n", tuna_stats_avg(&k[1].stats),
+                                       tuna_stats_std(&k[1].stats),
+                                       tuna_stats_cnt(&k[1].stats));
 
     return EXIT_SUCCESS;
 }

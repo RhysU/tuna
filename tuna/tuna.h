@@ -22,10 +22,12 @@
  */
 
 /** @file
- * Public API
+ * TODO
  */
 
 #include <tuna/kernel.h>
+#include <tuna/ltqnorm.h>
+#include <tuna/stats.h>
 
 #ifdef __cplusplus
 extern "C" {
