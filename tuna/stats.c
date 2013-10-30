@@ -20,27 +20,14 @@
 
 #include "stats.h"
 
-// C99 extern declarations for inlined functions from stats.h
+// C99 extern declarations for inlined accessors from stats.h
 extern size_t tuna_stats_cnt(const tuna_stats * const t);
 extern double tuna_stats_avg(const tuna_stats * const t);
 extern double tuna_stats_var(const tuna_stats * const t);
 extern double tuna_stats_std(const tuna_stats * const t);
 
-tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
-{
-    // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
-    // Knuth shows better behavior than Welford 1962 on test data.
-    const size_t n = ++(t->n);
-    if (n > 1) {  // Second and subsequent invocation
-        double d  = x - t->m;
-        t->m     += d / n;
-        t->s     += d * (x - t->m);
-    } else {      // First invocation requires special treatment
-        t->m = x;
-        t->s = 0;
-    }
-    return t;
-}
+// C99 extern declarations for inlined mutators from stats.h
+extern tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x);
 
 tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
                              const tuna_stats * const src)

@@ -64,8 +64,23 @@ static inline
 double tuna_stats_std(const tuna_stats * const t)
 { return sqrt(tuna_stats_var(t)); }
 
-/** Accumulate a new observation \c x. */
-tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x);
+/** Accumulate a new observation \c x into statistics \c t. */
+static inline
+tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
+{
+    // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
+    // Knuth shows better behavior than Welford 1962 on test data.
+    const size_t n = ++(t->n);
+    if (n > 1) {  // Second and subsequent invocation
+        double d  = x - t->m;
+        t->m     += d / n;
+        t->s     += d * (x - t->m);
+    } else {      // First invocation requires special treatment
+        t->m = x;
+        t->s = 0;
+    }
+    return t;
+}
 
 /** Incorporate running information from another instance. */
 tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
