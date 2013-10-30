@@ -39,40 +39,40 @@ extern "C" {
  */
 typedef struct tuna_stats
 {
-    double M;
-    double S;
+    double m;
+    double s;
     size_t n;
 } tuna_stats;
 
 /** Obtain the running number of samples provided thus far. */
 static inline
-size_t tuna_stats_cnt(const tuna_stats * const s)
-{ return s->n; }
+size_t tuna_stats_cnt(const tuna_stats * const t)
+{ return t->n; }
 
 /** Obtain the running mean. */
 static inline
-double tuna_stats_avg(const tuna_stats * const s)
-{ return s->n ? s->M : NAN; }
+double tuna_stats_avg(const tuna_stats * const t)
+{ return t->n ? t->m : NAN; }
 
 /** Obtain the running sample variance. */
 static inline
-double tuna_stats_var(const tuna_stats * const s)
-{ return s->n ? (s->n > 1 ? s->S / (s->n - 1): 0) : NAN; }
+double tuna_stats_var(const tuna_stats * const t)
+{ return t->n ? (t->n > 1 ? t->s / (t->n - 1): 0) : NAN; }
 
 /** Obtain the running sample standard deviation. */
 static inline
-double tuna_stats_std(const tuna_stats * const s)
-{ return sqrt(tuna_stats_var(s)); }
+double tuna_stats_std(const tuna_stats * const t)
+{ return sqrt(tuna_stats_var(t)); }
 
 /** Accumulate a new observation \c x. */
-tuna_stats* tuna_stats_obs(tuna_stats * const s, const double x);
+tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x);
 
 /** Incorporate running information from another instance. */
 tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
                              const tuna_stats * const src);
 
 /**
- * Compute a one-sided Welch t-test that \c a s greater than \c b.
+ * Compute a one-sided Welch t-test that \c a is greater than \c b.
  * See http://en.wikipedia.org/wiki/Welch's_t_test for background.
  */
 double tuna_stats_welch1(const tuna_stats * const a,

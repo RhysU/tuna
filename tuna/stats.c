@@ -21,25 +21,25 @@
 #include "stats.h"
 
 // C99 extern declarations for inlined functions from stats.h
-extern size_t tuna_stats_cnt(const tuna_stats * const s);
-extern double tuna_stats_avg(const tuna_stats * const s);
-extern double tuna_stats_var(const tuna_stats * const s);
-extern double tuna_stats_std(const tuna_stats * const s);
+extern size_t tuna_stats_cnt(const tuna_stats * const t);
+extern double tuna_stats_avg(const tuna_stats * const t);
+extern double tuna_stats_var(const tuna_stats * const t);
+extern double tuna_stats_std(const tuna_stats * const t);
 
-tuna_stats* tuna_stats_obs(tuna_stats * const s, const double x)
+tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
 {
     // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
     // Knuth shows better behavior than Welford 1962 on test data.
-    const size_t n = ++(s->n);
+    const size_t n = ++(t->n);
     if (n > 1) {  // Second and subsequent invocation
-        double d  = x - s->M;
-        s->M     += d / n;
-        s->S     += d * (x - s->M);
+        double d  = x - t->m;
+        t->m     += d / n;
+        t->s     += d * (x - t->m);
     } else {      // First invocation requires special treatment
-        s->M = x;
-        s->S = 0;
+        t->m = x;
+        t->s = 0;
     }
-    return s;
+    return t;
 }
 
 tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
@@ -51,10 +51,10 @@ tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
         *dst = *src;
     } else {                   // merge src into dst
         size_t total = dst->n + src->n;
-        double dM    = dst->M - src->M;  // Cancellation issues?
-        dst->M       = (dst->n * dst->M + src->n * src->M) / total;
-        dst->S       = (dst->n == 1 ? 0 :   dst->S)
-                     + (src->n == 1 ? 0 : src->S)
+        double dM    = dst->m - src->m;  // Cancellation issues?
+        dst->m       = (dst->n * dst->m + src->n * src->m) / total;
+        dst->s       = (dst->n == 1 ? 0 : dst->s)
+                     + (src->n == 1 ? 0 : src->s)
                      + ((dM * dM) * (dst->n * src->n)) / total;
         dst->n       = total;
     }
