@@ -2,6 +2,7 @@
 ## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS  = -I m4
 noinst_PROGRAMS  =
+TESTS            =
 
 # Installed artifacts
 dist_doc_DATA              = README.rst
@@ -29,10 +30,15 @@ examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
 
 # Test programs
-TESTS                = tests/stats
+TESTS               += tests/stats
 noinst_PROGRAMS     += tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
 tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
+
+TESTS                += tests/kernel
+noinst_PROGRAMS      += tests/kernel
+tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
+tests_kernel_LDADD    = tuna/libtuna.la $(LIBM)
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)

@@ -27,6 +27,7 @@ tuna/stamp-h1
 # Test cases
 tests/*.log
 tests/stats
+tests/kernel
 tests/*.trs
 test-suite.log
 
