@@ -17,7 +17,7 @@ enum { noutliers = 5 };
 
 FCT_BGN()
 {
-    FCT_QTEST_BGN(examine)
+    FCT_QTEST_BGN(observe)
     {
         tuna_kernel k = {};
 
@@ -85,6 +85,54 @@ FCT_BGN()
         fct_chk_eq_dbl(k.outliers[2], 5);
         fct_chk_eq_dbl(k.outliers[3], 7);
         fct_chk_eq_dbl(k.outliers[4], 9);
+
+        // Record elapsed times that enter middle of outliers
+        // and ensure that the sorted invariant remains correct
+
+        tuna_kernel_obs(&k, 6); // Recorded
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 1);
+        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 1);
+        fct_chk_eq_dbl(k.outliers[0], 3);
+        fct_chk_eq_dbl(k.outliers[1], 5);
+        fct_chk_eq_dbl(k.outliers[2], 6);
+        fct_chk_eq_dbl(k.outliers[3], 7);
+        fct_chk_eq_dbl(k.outliers[4], 9);
+
+        tuna_kernel_obs(&k, 8); // Recorded
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 2);
+        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 2);
+        fct_chk_eq_dbl(k.outliers[0], 5);
+        fct_chk_eq_dbl(k.outliers[1], 6);
+        fct_chk_eq_dbl(k.outliers[2], 7);
+        fct_chk_eq_dbl(k.outliers[3], 8);
+        fct_chk_eq_dbl(k.outliers[4], 9);
+
+        tuna_kernel_obs(&k, 0); // Ignored
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 2);
+        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 2);
+        fct_chk_eq_dbl(k.outliers[0], 5);
+        fct_chk_eq_dbl(k.outliers[1], 6);
+        fct_chk_eq_dbl(k.outliers[2], 7);
+        fct_chk_eq_dbl(k.outliers[3], 8);
+        fct_chk_eq_dbl(k.outliers[4], 9);
+
+        tuna_kernel_obs(&k, 2); // Recorded
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 3);
+        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 2);
+        fct_chk_eq_dbl(k.outliers[0], 5);
+        fct_chk_eq_dbl(k.outliers[1], 6);
+        fct_chk_eq_dbl(k.outliers[2], 7);
+        fct_chk_eq_dbl(k.outliers[3], 8);
+        fct_chk_eq_dbl(k.outliers[4], 9);
+
+        tuna_kernel_obs(&k, 10); // Recorded
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 4);
+        fct_chk_eq_dbl(k.outliers[0],  6);
+        fct_chk_eq_dbl(k.outliers[1],  7);
+        fct_chk_eq_dbl(k.outliers[2],  8);
+        fct_chk_eq_dbl(k.outliers[3],  9);
+        fct_chk_eq_dbl(k.outliers[4], 10);
+
     }
     FCT_QTEST_END();
 
