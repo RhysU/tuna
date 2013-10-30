@@ -49,8 +49,11 @@ typedef struct tuna_kernel {
     tuna_stats stats;
 } tuna_kernel;
 
-/** Record a new elapsed time observation \c t about kernel \c k. */
-tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, const double t);
+/**
+ * Record a new elapsed time observation \c t about kernel \c k.
+ * If \c t is identically zero, no observation is recorded.
+ */
+tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t);
 
 /**
  * TODO
