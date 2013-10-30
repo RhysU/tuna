@@ -12,11 +12,18 @@
 
 #include "fct.h"
 
+// Many tests rely on having a known number of outliers
+enum { noutliers = 5 };
+
 FCT_BGN()
 {
     FCT_QTEST_BGN(examine)
     {
-        // TODO
+        tuna_kernel k = {};
+
+        // Testing initial behavior before any observations provided
+        fct_chk_eq_int(noutliers, sizeof(k.outliers)/sizeof(k.outliers[0]));
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
     }
     FCT_QTEST_END();
 
