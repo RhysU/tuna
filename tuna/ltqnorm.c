@@ -49,9 +49,13 @@ double tuna_ltqnorm(const double p)
    if (p < 0) {                      // ...domain error.
       errno = EDOM;
       return 0;
+#ifdef __INTEL_COMPILER
 #pragma warning(push,disable:1572)
+#endif
    } else if (p == 0) {              // ...improbable point.
+#ifdef __INTEL_COMPILER
 #pragma warning(pop)
+#endif
       errno = ERANGE;
 #ifdef HUGE_VAL
       return -HUGE_VAL;
@@ -71,9 +75,13 @@ double tuna_ltqnorm(const double p)
       q = sqrt(-2*log(1 - p));
       x = -(((((c1*q + c2)*q + c3)*q + c4)*q + c5)*q + c6) /
             ((((d1*q + d2)*q + d3)*q + d4)*q + 1);
+#ifdef __INTEL_COMPILER
 #pragma warning(push,disable:1572)
+#endif
    } else if (p == 1) {              // ...improbable point.
+#ifdef __INTEL_COMPILER
 #pragma warning(pop)
+#endif
       errno = ERANGE;
 #ifdef HUGE_VAL
       return HUGE_VAL;
