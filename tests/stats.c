@@ -64,11 +64,11 @@ FCT_BGN()
 
         // Test behavior after each observation
         for (size_t i = N/2; i < N; ++i) { // NB Resuming other half!
-            tuna_stats_obs(&s, obs[i]);
-            fct_chk_eq_int   (tuna_stats_cnt(&s),         i+1       );
-            fct_chk_eqtol_dbl(tuna_stats_avg(&s),      avg[i], 1e-14);
-            fct_chk_eqtol_dbl(tuna_stats_var(&s),      var[i], 1e-14);
-            fct_chk_eq_dbl   (tuna_stats_std(&s), sqrt(var[i])      );
+            tuna_stats_obs(&r, obs[i]);
+            fct_chk_eq_int   (tuna_stats_cnt(&r),         i+1       );
+            fct_chk_eqtol_dbl(tuna_stats_avg(&r),      avg[i], 1e-14);
+            fct_chk_eqtol_dbl(tuna_stats_var(&r),      var[i], 1e-14);
+            fct_chk_eq_dbl   (tuna_stats_std(&r), sqrt(var[i])      );
         }
     }
     FCT_QTEST_END();
