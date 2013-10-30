@@ -1,3 +1,5 @@
+// See source code attribution in ltqnorm.h
+
 /** @file
  * @copydoc ltqnorm.h
  */
