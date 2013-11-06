@@ -22,6 +22,28 @@ extern "C" {
 #endif
 
 /**
+ * Compute the Welch t-statistic comparing sames \c A and \c B.
+ *
+ * @param xA  Mean of \c A
+ * @param sA2 Variance of \c A
+ * @param nA  Number of observations of A
+ * @param xB  Mean of \c B
+ * @param sB2 Variance of \c B
+ * @param nB  Number of observations of B
+ *
+ * @return Approximate p-value.
+ */
+static inline
+double tuna_welch_t(double xA, double sA2, size_t nA,
+                    double xB, double sB2, size_t nB)
+{
+    double t_num  = xA - xB;
+    double t_den2 = sA2 / nA + sB2 / nB;
+    double t      = t_num / sqrt(t_den2);
+    return t;
+}
+
+/**
  * Compute a one-sided Welch t-test that \c A is greater than \c B using a
  * \f$\nu\to\infty\f$ approximation.  Accordingly, the t-statistic is compared
  * against the normal distribution.  This is faster than using the
@@ -40,11 +62,7 @@ static inline
 double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
                          double xB, double sB2, size_t nB)
 {
-    double t_num  = xA - xB;
-    double t_den2 = sA2 / nA + sB2 / nB;
-    double t      = t_num / sqrt(t_den2);
-    double p      = erfc(-t * M_SQRT1_2) / 2;
-    return p;
+    return erfc(-tuna_welch_t(xA, sA2, nA, xB, sB2, nB) * M_SQRT1_2) / 2;
 }
 
 //// TODO Implement a one-sided test using t-distn facts to broaden variances
