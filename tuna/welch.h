@@ -22,7 +22,7 @@ extern "C" {
 #endif
 
 /**
- * Compute the Welch t-statistic comparing sames \c A and \c B.
+ * Compute the Welch t-statistic comparing samples \c A and \c B.
  *
  * @param xA  Mean of \c A
  * @param sA2 Variance of \c A
