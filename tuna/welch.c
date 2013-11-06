@@ -17,7 +17,10 @@
 #include "welch.h"
 
 // C99 extern declarations for inlined functions from welch.h
-extern double tuna_welch_t(double xA, double sA2, size_t nA,
-                           double xB, double sB2, size_t nB);
+extern void   tuna_welch       (double xA, double sA2, size_t nA,
+                                double xB, double sB2, size_t nB,
+                                double * const t, double * const nu);
+extern double tuna_welch_t     (double xA, double sA2, size_t nA,
+                                double xB, double sB2, size_t nB);
 extern double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
                                 double xB, double sB2, size_t nB);
