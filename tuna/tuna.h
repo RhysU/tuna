@@ -25,6 +25,7 @@
  * TODO
  */
 
+#include <tuna/countof.h>
 #include <tuna/kernel.h>
 #include <tuna/ltqnorm.h>
 #include <tuna/stats.h>

@@ -6,7 +6,8 @@ TESTS            =
 
 # Installed artifacts
 dist_doc_DATA              = README.rst
-nobase_pkginclude_HEADERS  = tuna/kernel.h
+nobase_pkginclude_HEADERS  = tuna/countof.h
+nobase_pkginclude_HEADERS += tuna/kernel.h
 nobase_pkginclude_HEADERS += tuna/ltqnorm.h
 nobase_pkginclude_HEADERS += tuna/stats.h
 nobase_pkginclude_HEADERS += tuna/tuna.h
