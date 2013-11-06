@@ -91,6 +91,30 @@ double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
     return erfc(-tuna_welch_t(xA, sA2, nA, xB, sB2, nB) * M_SQRT1_2) / 2;
 }
 
+/**
+ * Compute a one-sided Welch t-test that \c A is greater than \c B using a
+ * coarse approximation to the t-distribution.  The quality of the
+ * approximation improves as \f$\nu\to\infty\f$.
+ *
+ * @param xA  Mean of \c A
+ * @param sA2 Variance of \c A
+ * @param nA  Number of observations of A
+ * @param xB  Mean of \c B
+ * @param sB2 Variance of \c B
+ * @param nB  Number of observations of B
+ *
+ * @return Approximate p-value.
+ */
+static inline
+double tuna_welch1_approx(double xA, double sA2, size_t nA,
+                          double xB, double sB2, size_t nB)
+{
+    double t, nu;
+    tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
+    if (nu > 2) t *= nu / (nu - 2);
+    return erfc(-t * M_SQRT1_2) / 2;
+}
+
 //// TODO Implement a one-sided test using t-distn facts to broaden variances
 // static inline
 // double tuna_welch1_approx(double xA, double sA2, size_t nA,
