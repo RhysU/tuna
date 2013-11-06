@@ -63,6 +63,11 @@ static inline
 double tuna_stats_std(const tuna_stats * const t)
 { return sqrt(tuna_stats_var(t)); }
 
+/** Obtain the running sum. */
+static inline
+double tuna_stats_sum(const tuna_stats * const t)
+{ return tuna_stats_cnt(t) * tuna_stats_avg(t); }
+
 /** Accumulate a new observation \c x into statistics \c t. */
 static inline
 tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
