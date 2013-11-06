@@ -31,7 +31,7 @@ extern "C" {
  * @param sB2 Variance of \c B
  * @param nB  Number of observations of B
  *
- * @return Approximate p-value.
+ * @return Welch's t-statistic.
  */
 static inline
 double tuna_welch_t(double xA, double sA2, size_t nA,
