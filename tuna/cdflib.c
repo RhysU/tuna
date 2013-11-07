@@ -232,9 +232,9 @@ cdflib_beta_asym(
     double* lambda,
     double* eps)
 {
-  static const double e0 = 1.12837916709551e0;
-  static const double e1 = .353553390593274e0;
-  static int num = 20;
+  static const double e0  = 1.12837916709551e0;
+  static const double e1  = .353553390593274e0;
+  static const int    num = 20;
 //
 //  NUM IS THE MAXIMUM VALUE THAT N CAN TAKE IN THE DO LOOP
 //            ENDING AT STATEMENT 50. IT IS REQUIRED THAT NUM BE EVEN.
