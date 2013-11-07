@@ -27,12 +27,12 @@ cdflib_algdiv(
 {
   static double algdiv;
   static double c;
-  static double c0 =  0.833333333333333e-01;
-  static double c1 = -0.277777777760991e-02;
-  static double c2 =  0.793650666825390e-03;
-  static double c3 = -0.595202931351870e-03;
-  static double c4 =  0.837308034031215e-03;
-  static double c5 = -0.165322962780713e-02;
+  static const double c0 =  0.833333333333333e-01;
+  static const double c1 = -0.277777777760991e-02;
+  static const double c2 =  0.793650666825390e-03;
+  static const double c3 = -0.595202931351870e-03;
+  static const double c4 =  0.837308034031215e-03;
+  static const double c5 = -0.165322962780713e-02;
   static double d;
   static double h;
   static double s11;
@@ -107,12 +107,12 @@ cdflib_alnrel(
     double* a)
 {
   double alnrel;
-  static double p1 = -0.129418923021993e+01;
-  static double p2 =  0.405303492862024e+00;
-  static double p3 = -0.178874546012214e-01;
-  static double q1 = -0.162752256355323e+01;
-  static double q2 =  0.747811014037616e+00;
-  static double q3 = -0.845104217945565e-01;
+  static const double p1 = -0.129418923021993e+01;
+  static const double p2 =  0.405303492862024e+00;
+  static const double p3 = -0.178874546012214e-01;
+  static const double q1 = -0.162752256355323e+01;
+  static const double q2 =  0.747811014037616e+00;
+  static const double q3 = -0.845104217945565e-01;
   double t;
   double t2;
   double w;
@@ -141,7 +141,7 @@ cdflib_apser(
     double* x,
     double* eps)
 {
-  static double g = 0.577215664901533e0;
+  static const double g = 0.577215664901533e0;
   static double apser,aj,bx,c,j,s,t,tol;
 
     bx = *b**x;
@@ -170,12 +170,12 @@ cdflib_bcorr(
     double* a0,
     double* b0)
 {
-  static double c0 =  0.833333333333333e-01;
-  static double c1 = -0.277777777760991e-02;
-  static double c2 =  0.793650666825390e-03;
-  static double c3 = -0.595202931351870e-03;
-  static double c4 =  0.837308034031215e-03;
-  static double c5 = -0.165322962780713e-02;
+  static const double c0 =  0.833333333333333e-01;
+  static const double c1 = -0.277777777760991e-02;
+  static const double c2 =  0.793650666825390e-03;
+  static const double c3 = -0.595202931351870e-03;
+  static const double c4 =  0.837308034031215e-03;
+  static const double c5 = -0.165322962780713e-02;
   static double bcorr,a,b,c,h,s11,s3,s5,s7,s9,t,w,x,x2;
 
   a = cdflib_fifdmin1 ( *a0, *b0 );
@@ -231,8 +231,8 @@ cdflib_beta_asym(
     double* lambda,
     double* eps)
 {
-  static double e0 = 1.12837916709551e0;
-  static double e1 = .353553390593274e0;
+  static const double e0 = 1.12837916709551e0;
+  static const double e1 = .353553390593274e0;
   static int num = 20;
 //
 //  NUM IS THE MAXIMUM VALUE THAT N CAN TAKE IN THE DO LOOP
@@ -702,7 +702,7 @@ cdflib_beta_inc_values(
 {
 # define N_MAX 30
 
-  double a_vec[N_MAX] = {
+  static const double a_vec[N_MAX] = {
      0.5E+00,  0.5E+00,  0.5E+00,  1.0E+00,
      1.0E+00,  1.0E+00,  1.0E+00,  1.0E+00,
      2.0E+00,  2.0E+00,  2.0E+00,  2.0E+00,
@@ -711,7 +711,7 @@ cdflib_beta_inc_values(
     10.0E+00, 10.0E+00, 20.0E+00, 20.0E+00,
     20.0E+00, 20.0E+00, 20.0E+00, 30.0E+00,
     30.0E+00, 40.0E+00 };
-  double b_vec[N_MAX] = {
+  static const double b_vec[N_MAX] = {
      0.5E+00,  0.5E+00,  0.5E+00,  0.5E+00,
      0.5E+00,  0.5E+00,  0.5E+00,  1.0E+00,
      2.0E+00,  2.0E+00,  2.0E+00,  2.0E+00,
@@ -720,7 +720,7 @@ cdflib_beta_inc_values(
      5.0E+00, 10.0E+00,  5.0E+00, 10.0E+00,
     10.0E+00, 20.0E+00, 20.0E+00, 10.0E+00,
     10.0E+00, 20.0E+00 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.0637686E+00, 0.2048328E+00, 1.0000000E+00, 0.0E+00,
     0.0050126E+00, 0.0513167E+00, 0.2928932E+00, 0.5000000E+00,
     0.028E+00,     0.104E+00,     0.216E+00,     0.352E+00,
@@ -729,7 +729,7 @@ cdflib_beta_inc_values(
     1.0000000E+00, 0.5000000E+00, 0.4598773E+00, 0.2146816E+00,
     0.9507365E+00, 0.5000000E+00, 0.8979414E+00, 0.2241297E+00,
     0.7586405E+00, 0.7001783E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.01E+00, 0.10E+00, 1.00E+00, 0.0E+00,
     0.01E+00, 0.10E+00, 0.50E+00, 0.50E+00,
     0.1E+00,  0.2E+00,  0.3E+00,  0.4E+00,
@@ -770,7 +770,7 @@ cdflib_beta_log(
     double* a0,
     double* b0)
 {
-  static double e = .918938533204673e0;
+  static const double e = .918938533204673e0;
   static double value,a,b,c,h,u,v,w,z;
   static int i,n;
   static double T1;
@@ -961,7 +961,7 @@ cdflib_beta_cdflib_rcomp(
     double* x,
     double* y)
 {
-  static double Const = .398942280401433e0;
+  static const double Const = .398942280401433e0;
   static double brcomp,a0,apb,b0,c,e,h,lambda,lnx,lny,t,u,v,x0,y0,z;
   static int i,n;
 //
@@ -1093,7 +1093,7 @@ cdflib_beta_rcomp1(
     double* x,
     double* y)
 {
-  static double Const = .398942280401433e0;
+  static const double Const = .398942280401433e0;
   static double brcmp1,a0,apb,b0,c,e,h,lambda,lnx,lny,t,u,v,x0,y0,z;
   static int i,n;
 //
@@ -1305,25 +1305,25 @@ cdflib_binomial_cdf_values(
 {
 # define N_MAX 17
 
-  int a_vec[N_MAX] = {
+  static const int a_vec[N_MAX] = {
      2,  2,  2,  2,
      2,  4,  4,  4,
      4, 10, 10, 10,
     10, 10, 10, 10,
     10 };
-  double b_vec[N_MAX] = {
+  static const double b_vec[N_MAX] = {
     0.05E+00, 0.05E+00, 0.05E+00, 0.50E+00,
     0.50E+00, 0.25E+00, 0.25E+00, 0.25E+00,
     0.25E+00, 0.05E+00, 0.10E+00, 0.15E+00,
     0.20E+00, 0.25E+00, 0.30E+00, 0.40E+00,
     0.50E+00 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.9025E+00, 0.9975E+00, 1.0000E+00, 0.2500E+00,
     0.7500E+00, 0.3164E+00, 0.7383E+00, 0.9492E+00,
     0.9961E+00, 0.9999E+00, 0.9984E+00, 0.9901E+00,
     0.9672E+00, 0.9219E+00, 0.8497E+00, 0.6331E+00,
     0.3770E+00 };
-  int x_vec[N_MAX] = {
+  static const int x_vec[N_MAX] = {
      0, 1, 2, 0,
      1, 0, 1, 2,
      3, 4, 4, 4,
@@ -3875,7 +3875,7 @@ cdflib_chi_noncentral_cdf_values(
 {
 # define N_MAX 27
 
-  double cdf_vec[N_MAX] = {
+  static const double cdf_vec[N_MAX] = {
     0.839944E+00, 0.695906E+00, 0.535088E+00,
     0.764784E+00, 0.620644E+00, 0.469167E+00,
     0.307088E+00, 0.220382E+00, 0.150025E+00,
@@ -3885,7 +3885,7 @@ cdflib_chi_noncentral_cdf_values(
     0.263684E-01, 0.185798E-01, 0.130574E-01,
     0.583804E-01, 0.424978E-01, 0.308214E-01,
     0.105788E+00, 0.794084E-01, 0.593201E-01 };
-  int df_vec[N_MAX] = {
+  static const int df_vec[N_MAX] = {
       1,   2,   3,
       1,   2,   3,
       1,   2,   3,
@@ -3895,7 +3895,7 @@ cdflib_chi_noncentral_cdf_values(
      10,  10,  10,
      10,  10,  10,
      10,  10,  10 };
-  double lambda_vec[N_MAX] = {
+  static const double lambda_vec[N_MAX] = {
      0.5E+00,  0.5E+00,  0.5E+00,
      1.0E+00,  1.0E+00,  1.0E+00,
      5.0E+00,  5.0E+00,  5.0E+00,
@@ -3905,7 +3905,7 @@ cdflib_chi_noncentral_cdf_values(
      2.0E+00,  3.0E+00,  4.0E+00,
      2.0E+00,  3.0E+00,  4.0E+00,
      2.0E+00,  3.0E+00,  4.0E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
      3.000E+00,  3.000E+00,  3.000E+00,
      3.000E+00,  3.000E+00,  3.000E+00,
      3.000E+00,  3.000E+00,  3.000E+00,
@@ -3952,21 +3952,21 @@ cdflib_chi_square_cdf_values(
 {
 # define N_MAX 21
 
-  int a_vec[N_MAX] = {
+  static const int a_vec[N_MAX] = {
      1,  2,  1,  2,
      1,  2,  3,  4,
      1,  2,  3,  4,
      5,  3,  3,  3,
      3,  3, 10, 10,
     10 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.0796557E+00, 0.00498752E+00, 0.112463E+00,    0.00995017E+00,
     0.472911E+00,  0.181269E+00,   0.0597575E+00,   0.0175231E+00,
     0.682689E+00,  0.393469E+00,   0.198748E+00,    0.090204E+00,
     0.0374342E+00, 0.427593E+00,   0.608375E+00,    0.738536E+00,
     0.828203E+00,  0.88839E+00,    0.000172116E+00, 0.00365985E+00,
     0.0185759E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.01E+00, 0.01E+00, 0.02E+00, 0.02E+00,
     0.40E+00, 0.40E+00, 0.40E+00, 0.40E+00,
     1.00E+00, 1.00E+00, 1.00E+00, 1.00E+00,
@@ -4269,7 +4269,7 @@ cdflib_cumfnc(
 # define half 0.5e0
 # define done 1.0e0
 
-  static double eps = 1.0e-4;
+  static const double eps = 1.0e-4;
   static double dsum,dummy,prod,xx,yy,adn,aup,b,betdn,betup,centwt,dnterm,sum,
     upterm,xmult,xnonc;
   static int i,icent,ierr;
@@ -4416,39 +4416,39 @@ cdflib_cumnor(
     double* result,
     double* ccum)
 {
-  static double a[5] = {
+  static const double a[5] = {
     2.2352520354606839287e00,1.6102823106855587881e02,1.0676894854603709582e03,
     1.8154981253343561249e04,6.5682337918207449113e-2
   };
-  static double b[4] = {
+  static const double b[4] = {
     4.7202581904688241870e01,9.7609855173777669322e02,1.0260932208618978205e04,
     4.5507789335026729956e04
   };
-  static double c[9] = {
+  static const double c[9] = {
     3.9894151208813466764e-1,8.8831497943883759412e00,9.3506656132177855979e01,
     5.9727027639480026226e02,2.4945375852903726711e03,6.8481904505362823326e03,
     1.1602651437647350124e04,9.8427148383839780218e03,1.0765576773720192317e-8
   };
-  static double d[8] = {
+  static const double d[8] = {
     2.2266688044328115691e01,2.3538790178262499861e02,1.5193775994075548050e03,
     6.4855582982667607550e03,1.8615571640885098091e04,3.4900952721145977266e04,
     3.8912003286093271411e04,1.9685429676859990727e04
   };
-  static double half = 0.5e0;
-  static double p[6] = {
+  static const double half = 0.5e0;
+  static const double p[6] = {
     2.1589853405795699e-1,1.274011611602473639e-1,2.2235277870649807e-2,
     1.421619193227893466e-3,2.9112874951168792e-5,2.307344176494017303e-2
   };
-  static double one = 1.0e0;
-  static double q[5] = {
+  static const double one = 1.0e0;
+  static const double q[5] = {
     1.28426009614491121e00,4.68238212480865118e-1,6.59881378689285515e-2,
     3.78239633202758244e-3,7.29751555083966205e-5
   };
-  static double sixten = 1.60e0;
-  static double sqrpi = 3.9894228040143267794e-1;
-  static double thrsh = 0.66291e0;
-  static double root32 = 5.656854248e0;
-  static double zero = 0.0e0;
+  static const double sixten = 1.60e0;
+  static const double sqrpi = 3.9894228040143267794e-1;
+  static const double thrsh = 0.66291e0;
+  static const double root32 = 5.656854248e0;
+  static const double zero = 0.0e0;
   static int K1 = 1;
   static int K2 = 2;
   static int i;
@@ -4605,12 +4605,12 @@ double
 cdflib_dexpm1(
     double* x)
 {
-  static double p1 = .914041914819518e-09;
-  static double p2 = .238082361044469e-01;
-  static double q1 = -.499999999085958e+00;
-  static double q2 = .107141568980644e+00;
-  static double q3 = -.119041179760821e-01;
-  static double q4 = .595130811860248e-03;
+  static const double p1 = .914041914819518e-09;
+  static const double p2 = .238082361044469e-01;
+  static const double q1 = -.499999999085958e+00;
+  static const double q2 = .107141568980644e+00;
+  static const double q3 = -.119041179760821e-01;
+  static const double q4 = .595130811860248e-03;
   static double dexpm1;
   double w;
 
@@ -4718,7 +4718,7 @@ cdflib_dlanor(
 {
 # define dlsqpi 0.91893853320467274177e0
 
-  static double coef[12] = {
+  static const double coef[12] = {
     -1.0e0,3.0e0,-15.0e0,105.0e0,-945.0e0,10395.0e0,-135135.0e0,2027025.0e0,
     -34459425.0e0,654729075.0e0,-13749310575.e0,316234143225.0e0
   };
@@ -4726,7 +4726,7 @@ cdflib_dlanor(
   static double dlanor,approx,correc,xx,xx2,T2;
 
   xx = fabs(*x);
-  if ( xx < 5.0e0 ) 
+  if ( xx < 5.0e0 )
   {
     cdflib_ftnstop(" Argument too small in DLANOR");
   }
@@ -4800,7 +4800,7 @@ cdflib_dstrem(
 # define hln2pi 0.91893853320467274178e0
 # define ncoef 10
 
-  static double coef[ncoef] = {
+  static const double coef[ncoef] = {
     0.0e0,0.0833333333333333333333333333333e0,
     -0.00277777777777777777777777777778e0,0.000793650793650793650793650793651e0,
     -0.000595238095238095238095238095238e0,
@@ -4825,7 +4825,7 @@ cdflib_dstrem(
 //            0.347320283765002252252252252252D12
 //            -0.123696021422692744542517103493D14
 //
-    if(*z <= 0.0e0) 
+    if(*z <= 0.0e0)
     {
       cdflib_ftnstop ( "Zero or negative argument in DSTREM" );
     }
@@ -4858,14 +4858,14 @@ cdflib_dt1(
     double* q,
     double* df)
 {
-  static double coef[4][5] = {
+  static const double coef[4][5] = {
     {1.0e0,1.0e0,0.0e0,0.0e0,0.0e0},{3.0e0,16.0e0,5.0e0,0.0e0,0.0e0},{-15.0e0,17.0e0,
     19.0e0,3.0e0,0.0e0},{-945.0e0,-1920.0e0,1482.0e0,776.0e0,79.0e0}
   };
-  static double denom[4] = {
+  static const double denom[4] = {
     4.0e0,96.0e0,384.0e0,92160.0e0
   };
-  static int ideg[4] = {
+  static const int ideg[4] = {
     2,3,4,5
   };
   static double dt1,denpow,sum,term,x,xp,xx;
@@ -4932,7 +4932,7 @@ cdflib_E0000(
 DINVR:
     if(*status > 0) goto S310;
     qcond = !qxmon(small,*x,big);
-    if(qcond) 
+    if(qcond)
     {
       cdflib_ftnstop(" SMALL, X, BIG not monotone in INVR");
     }
@@ -5299,14 +5299,14 @@ cdflib_erf_values(
 {
 # define N_MAX 21
 
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.0000000000E+00, 0.1124629160E+00, 0.2227025892E+00, 0.3286267595E+00,
     0.4283923550E+00, 0.5204998778E+00, 0.6038560908E+00, 0.6778011938E+00,
     0.7421009647E+00, 0.7969082124E+00, 0.8427007929E+00, 0.8802050696E+00,
     0.9103139782E+00, 0.9340079449E+00, 0.9522851198E+00, 0.9661051465E+00,
     0.9763483833E+00, 0.9837904586E+00, 0.9890905016E+00, 0.9927904292E+00,
     0.9953222650E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.0E+00, 0.1E+00, 0.2E+00, 0.3E+00,
     0.4E+00, 0.5E+00, 0.6E+00, 0.7E+00,
     0.8E+00, 0.9E+00, 1.0E+00, 1.1E+00,
@@ -5340,29 +5340,29 @@ double
 cdflib_error_f(
     double* x)
 {
-  static double c = .564189583547756e0;
-  static double a[5] = {
+  static const double c = .564189583547756e0;
+  static const double a[5] = {
     .771058495001320e-04,-.133733772997339e-02,.323076579225834e-01,
     .479137145607681e-01,.128379167095513e+00
   };
-  static double b[3] = {
+  static const double b[3] = {
     .301048631703895e-02,.538971687740286e-01,.375795757275549e+00
   };
-  static double p[8] = {
+  static const double p[8] = {
     -1.36864857382717e-07,5.64195517478974e-01,7.21175825088309e+00,
     4.31622272220567e+01,1.52989285046940e+02,3.39320816734344e+02,
     4.51918953711873e+02,3.00459261020162e+02
   };
-  static double q[8] = {
+  static const double q[8] = {
     1.00000000000000e+00,1.27827273196294e+01,7.70001529352295e+01,
     2.77585444743988e+02,6.38980264465631e+02,9.31354094850610e+02,
     7.90950925327898e+02,3.00459260956983e+02
   };
-  static double r[5] = {
+  static const double r[5] = {
     2.10144126479064e+00,2.62370141675169e+01,2.13688200555087e+01,
     4.65807828718470e+00,2.82094791773523e-01
   };
-  static double s[4] = {
+  static const double s[4] = {
     9.41537750555460e+01,1.87114811799590e+02,9.90191814623914e+01,
     1.80124575948747e+01
   };
@@ -5404,29 +5404,29 @@ cdflib_error_fc(
     int* ind,
     double* x)
 {
-  static double c = .564189583547756e0;
-  static double a[5] = {
+  static const double c = .564189583547756e0;
+  static const double a[5] = {
     .771058495001320e-04,-.133733772997339e-02,.323076579225834e-01,
     .479137145607681e-01,.128379167095513e+00
   };
-  static double b[3] = {
+  static const double b[3] = {
     .301048631703895e-02,.538971687740286e-01,.375795757275549e+00
   };
-  static double p[8] = {
+  static const double p[8] = {
     -1.36864857382717e-07,5.64195517478974e-01,7.21175825088309e+00,
     4.31622272220567e+01,1.52989285046940e+02,3.39320816734344e+02,
     4.51918953711873e+02,3.00459261020162e+02
   };
-  static double q[8] = {
+  static const double q[8] = {
     1.00000000000000e+00,1.27827273196294e+01,7.70001529352295e+01,
     2.77585444743988e+02,6.38980264465631e+02,9.31354094850610e+02,
     7.90950925327898e+02,3.00459260956983e+02
   };
-  static double r[5] = {
+  static const double r[5] = {
     2.10144126479064e+00,2.62370141675169e+01,2.13688200555087e+01,
     4.65807828718470e+00,2.82094791773523e-01
   };
-  static double s[4] = {
+  static const double s[4] = {
     9.41537750555460e+01,1.87114811799590e+02,9.90191814623914e+01,
     1.80124575948747e+01
   };
@@ -5525,8 +5525,8 @@ S20:
 
 double
 cdflib_eval_pol(
-    double a[],
-    int* n,
+    const double a[],
+    const int* n,
     double* x)
 {
   static double devlpl,term;
@@ -5587,25 +5587,25 @@ cdflib_f_cdf_values(
 {
 # define N_MAX 20
 
-  int a_vec[N_MAX] = {
+  static const int a_vec[N_MAX] = {
     1, 1, 5, 1,
     2, 4, 1, 6,
     8, 1, 3, 6,
     1, 1, 1, 1,
     2, 3, 4, 5 };
-  int b_vec[N_MAX] = {
+  static const int b_vec[N_MAX] = {
      1,  5,  1,  5,
     10, 20,  5,  6,
     16,  5, 10, 12,
      5,  5,  5,  5,
      5,  5,  5,  5 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.500000E+00, 0.499971E+00, 0.499603E+00, 0.749699E+00,
     0.750466E+00, 0.751416E+00, 0.899987E+00, 0.899713E+00,
     0.900285E+00, 0.950025E+00, 0.950057E+00, 0.950193E+00,
     0.975013E+00, 0.990002E+00, 0.994998E+00, 0.999000E+00,
     0.568799E+00, 0.535145E+00, 0.514343E+00, 0.500000E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     1.00E+00,  0.528E+00, 1.89E+00,  1.69E+00,
     1.60E+00,  1.47E+00,  4.06E+00,  3.05E+00,
     2.09E+00,  6.61E+00,  3.71E+00,  3.00E+00,
@@ -5649,35 +5649,35 @@ cdflib_f_noncentral_cdf_values(
 {
 # define N_MAX 22
 
-  int a_vec[N_MAX] = {
+  static const int a_vec[N_MAX] = {
      1,  1,  1,  1,
      1,  1,  1,  1,
      1,  1,  2,  2,
      3,  3,  4,  4,
      5,  5,  6,  6,
      8, 16 };
-  int b_vec[N_MAX] = {
+  static const int b_vec[N_MAX] = {
      1,  5,  5,  5,
      5,  5,  5,  5,
      5,  5,  5, 10,
      5,  5,  5,  5,
      1,  5,  6, 12,
     16,  8 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.500000E+00, 0.636783E+00, 0.584092E+00, 0.323443E+00,
     0.450119E+00, 0.607888E+00, 0.705928E+00, 0.772178E+00,
     0.819105E+00, 0.317035E+00, 0.432722E+00, 0.450270E+00,
     0.426188E+00, 0.337744E+00, 0.422911E+00, 0.692767E+00,
     0.363217E+00, 0.421005E+00, 0.426667E+00, 0.446402E+00,
     0.844589E+00, 0.816368E+00 };
-  double lambda_vec[N_MAX] = {
+  static const double lambda_vec[N_MAX] = {
     0.00E+00,  0.000E+00, 0.25E+00,  1.00E+00,
     1.00E+00,  1.00E+00,  1.00E+00,  1.00E+00,
     1.00E+00,  2.00E+00,  1.00E+00,  1.00E+00,
     1.00E+00,  2.00E+00,  1.00E+00,  1.00E+00,
     0.00E+00,  1.00E+00,  1.00E+00,  1.00E+00,
     1.00E+00,  1.00E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     1.00E+00,  1.00E+00, 1.00E+00,  0.50E+00,
     1.00E+00,  2.00E+00, 3.00E+00,  4.00E+00,
     5.00E+00,  1.00E+00, 1.00E+00,  1.00E+00,
@@ -5720,6 +5720,7 @@ cdflib_fifdint(
 {
   return (double) ((int) a);
 }
+
 double
 cdflib_fifdmax1(
     double a,
@@ -5825,18 +5826,18 @@ double
 cdflib_gam1(
     double* a)
 {
-  static double s1 = .273076135303957e+00;
-  static double s2 = .559398236957378e-01;
-  static double p[7] = {
+  static const double s1 = .273076135303957e+00;
+  static const double s2 = .559398236957378e-01;
+  static const double p[7] = {
     .577215664901533e+00,-.409078193005776e+00,-.230975380857675e+00,
     .597275330452234e-01,.766968181649490e-02,-.514889771323592e-02,
     .589597428611429e-03
   };
-  static double q[5] = {
+  static const double q[5] = {
     .100000000000000e+01,.427569613095214e+00,.158451672430138e+00,
     .261132021441447e-01,.423244297896961e-02
   };
-  static double r[9] = {
+  static const double r[9] = {
     -.422784335098468e+00,-.771330383816272e+00,-.244757765222226e+00,
     .118378989872749e+00,.930357293360349e-03,-.118290993445146e-01,
     .223047661158249e-02,.266505979058923e-03,-.132674909766242e-03
@@ -5884,62 +5885,62 @@ cdflib_gamma_inc(
     double* qans,
     int* ind)
 {
-  static double alog10 = 2.30258509299405e0;
-  static double d10 = -.185185185185185e-02;
-  static double d20 = .413359788359788e-02;
-  static double d30 = .649434156378601e-03;
-  static double d40 = -.861888290916712e-03;
-  static double d50 = -.336798553366358e-03;
-  static double d60 = .531307936463992e-03;
-  static double d70 = .344367606892378e-03;
-  static double rt2pin = .398942280401433e0;
-  static double rtpi = 1.77245385090552e0;
-  static double third = .333333333333333e0;
-  static double acc0[3] = {
+  static const double alog10 = 2.30258509299405e0;
+  static const double d10 = -.185185185185185e-02;
+  static const double d20 = .413359788359788e-02;
+  static const double d30 = .649434156378601e-03;
+  static const double d40 = -.861888290916712e-03;
+  static const double d50 = -.336798553366358e-03;
+  static const double d60 = .531307936463992e-03;
+  static const double d70 = .344367606892378e-03;
+  static const double rt2pin = .398942280401433e0;
+  static const double rtpi = 1.77245385090552e0;
+  static const double third = .333333333333333e0;
+  static const double acc0[3] = {
     5.e-15,5.e-7,5.e-4
   };
-  static double big[3] = {
+  static const double big[3] = {
     20.0e0,14.0e0,10.0e0
   };
-  static double d0[13] = {
+  static const double d0[13] = {
     .833333333333333e-01,-.148148148148148e-01,.115740740740741e-02,
     .352733686067019e-03,-.178755144032922e-03,.391926317852244e-04,
     -.218544851067999e-05,-.185406221071516e-05,.829671134095309e-06,
     -.176659527368261e-06,.670785354340150e-08,.102618097842403e-07,
     -.438203601845335e-08
   };
-  static double d1[12] = {
+  static const double d1[12] = {
     -.347222222222222e-02,.264550264550265e-02,-.990226337448560e-03,
     .205761316872428e-03,-.401877572016461e-06,-.180985503344900e-04,
     .764916091608111e-05,-.161209008945634e-05,.464712780280743e-08,
     .137863344691572e-06,-.575254560351770e-07,.119516285997781e-07
   };
-  static double d2[10] = {
+  static const double d2[10] = {
     -.268132716049383e-02,.771604938271605e-03,.200938786008230e-05,
     -.107366532263652e-03,.529234488291201e-04,-.127606351886187e-04,
     .342357873409614e-07,.137219573090629e-05,-.629899213838006e-06,
     .142806142060642e-06
   };
-  static double d3[8] = {
+  static const double d3[8] = {
     .229472093621399e-03,-.469189494395256e-03,.267720632062839e-03,
     -.756180167188398e-04,-.239650511386730e-06,.110826541153473e-04,
     -.567495282699160e-05,.142309007324359e-05
   };
-  static double d4[6] = {
+  static const double d4[6] = {
     .784039221720067e-03,-.299072480303190e-03,-.146384525788434e-05,
     .664149821546512e-04,-.396836504717943e-04,.113757269706784e-04
   };
-  static double d5[4] = {
+  static const double d5[4] = {
     -.697281375836586e-04,.277275324495939e-03,-.199325705161888e-03,
     .679778047793721e-04
   };
-  static double d6[2] = {
+  static const double d6[2] = {
     -.592166437353694e-03,.270878209671804e-03
   };
-  static double e00[3] = {
+  static const double e00[3] = {
     .25e-3,.25e-1,.14e0
   };
-  static double x00[3] = {
+  static const double x00[3] = {
     31.0e0,17.0e0,9.7e0
   };
   static int K1 = 1;
@@ -6279,30 +6280,30 @@ cdflib_gamma_inc_inv(
     double* q,
     int* ierr)
 {
-  static double a0 = 3.31125922108741e0;
-  static double a1 = 11.6616720288968e0;
-  static double a2 = 4.28342155967104e0;
-  static double a3 = .213623493715853e0;
-  static double b1 = 6.61053765625462e0;
-  static double b2 = 6.40691597760039e0;
-  static double b3 = 1.27364489782223e0;
-  static double b4 = .036117081018842e0;
-  static double c = .577215664901533e0;
-  static double ln10 = 2.302585e0;
-  static double tol = 1.e-5;
-  static double amin[2] = {
+  static const double a0 = 3.31125922108741e0;
+  static const double a1 = 11.6616720288968e0;
+  static const double a2 = 4.28342155967104e0;
+  static const double a3 = .213623493715853e0;
+  static const double b1 = 6.61053765625462e0;
+  static const double b2 = 6.40691597760039e0;
+  static const double b3 = 1.27364489782223e0;
+  static const double b4 = .036117081018842e0;
+  static const double c = .577215664901533e0;
+  static const double ln10 = 2.302585e0;
+  static const double tol = 1.e-5;
+  static const double amin[2] = {
     500.0e0,100.0e0
   };
-  static double bmin[2] = {
+  static const double bmin[2] = {
     1.e-28,1.e-13
   };
-  static double dmin[2] = {
+  static const double dmin[2] = {
     1.e-06,1.e-04
   };
-  static double emin[2] = {
+  static const double emin[2] = {
     2.e-03,6.e-03
   };
-  static double eps0[2] = {
+  static const double eps0[2] = {
     1.e-10,1.e-08
   };
   static int K1 = 1;
@@ -6592,19 +6593,19 @@ cdflib_gamma_inc_values(
 {
 # define N_MAX 20
 
-  double a_vec[N_MAX] = {
+  static const double a_vec[N_MAX] = {
     0.1E+00,  0.1E+00,  0.1E+00,  0.5E+00,
     0.5E+00,  0.5E+00,  1.0E+00,  1.0E+00,
     1.0E+00,  1.1E+00,  1.1E+00,  1.1E+00,
     2.0E+00,  2.0E+00,  2.0E+00,  6.0E+00,
     6.0E+00, 11.0E+00, 26.0E+00, 41.0E+00 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.7420263E+00, 0.9119753E+00, 0.9898955E+00, 0.2931279E+00,
     0.7656418E+00, 0.9921661E+00, 0.0951626E+00, 0.6321206E+00,
     0.9932621E+00, 0.0757471E+00, 0.6076457E+00, 0.9933425E+00,
     0.0091054E+00, 0.4130643E+00, 0.9931450E+00, 0.0387318E+00,
     0.9825937E+00, 0.9404267E+00, 0.4863866E+00, 0.7359709E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     3.1622777E-02, 3.1622777E-01, 1.5811388E+00, 7.0710678E-02,
     7.0710678E-01, 3.5355339E+00, 0.1000000E+00, 1.0000000E+00,
     5.0000000E+00, 1.0488088E-01, 1.0488088E+00, 5.2440442E+00,
@@ -6639,30 +6640,30 @@ double
 cdflib_gamma_ln1(
     double* a)
 {
-  static double p0 = .577215664901533e+00;
-  static double p1 = .844203922187225e+00;
-  static double p2 = -.168860593646662e+00;
-  static double p3 = -.780427615533591e+00;
-  static double p4 = -.402055799310489e+00;
-  static double p5 = -.673562214325671e-01;
-  static double p6 = -.271935708322958e-02;
-  static double q1 = .288743195473681e+01;
-  static double q2 = .312755088914843e+01;
-  static double q3 = .156875193295039e+01;
-  static double q4 = .361951990101499e+00;
-  static double q5 = .325038868253937e-01;
-  static double q6 = .667465618796164e-03;
-  static double r0 = .422784335098467e+00;
-  static double r1 = .848044614534529e+00;
-  static double r2 = .565221050691933e+00;
-  static double r3 = .156513060486551e+00;
-  static double r4 = .170502484022650e-01;
-  static double r5 = .497958207639485e-03;
-  static double s1 = .124313399877507e+01;
-  static double s2 = .548042109832463e+00;
-  static double s3 = .101552187439830e+00;
-  static double s4 = .713309612391000e-02;
-  static double s5 = .116165475989616e-03;
+  static const double p0 = .577215664901533e+00;
+  static const double p1 = .844203922187225e+00;
+  static const double p2 = -.168860593646662e+00;
+  static const double p3 = -.780427615533591e+00;
+  static const double p4 = -.402055799310489e+00;
+  static const double p5 = -.673562214325671e-01;
+  static const double p6 = -.271935708322958e-02;
+  static const double q1 = .288743195473681e+01;
+  static const double q2 = .312755088914843e+01;
+  static const double q3 = .156875193295039e+01;
+  static const double q4 = .361951990101499e+00;
+  static const double q5 = .325038868253937e-01;
+  static const double q6 = .667465618796164e-03;
+  static const double r0 = .422784335098467e+00;
+  static const double r1 = .848044614534529e+00;
+  static const double r2 = .565221050691933e+00;
+  static const double r3 = .156513060486551e+00;
+  static const double r4 = .170502484022650e-01;
+  static const double r5 = .497958207639485e-03;
+  static const double s1 = .124313399877507e+01;
+  static const double s2 = .548042109832463e+00;
+  static const double s3 = .101552187439830e+00;
+  static const double s4 = .713309612391000e-02;
+  static const double s5 = .116165475989616e-03;
   static double gamln1,w,x;
 
     if(*a >= 0.6e0) goto S10;
@@ -6682,13 +6683,13 @@ double
 cdflib_gamma_log(
     double* a)
 {
-  static double c0 = .833333333333333e-01;
-  static double c1 = -.277777777760991e-02;
-  static double c2 = .793650666825390e-03;
-  static double c3 = -.595202931351870e-03;
-  static double c4 = .837308034031215e-03;
-  static double c5 = -.165322962780713e-02;
-  static double d = .418938533204673e0;
+  static const double c0 = .833333333333333e-01;
+  static const double c1 = -.277777777760991e-02;
+  static const double c2 = .793650666825390e-03;
+  static const double c3 = -.595202931351870e-03;
+  static const double c4 = .837308034031215e-03;
+  static const double c5 = -.165322962780713e-02;
+  static const double d = .418938533204673e0;
   static double gamln,t,w;
   static int i,n;
   static double T1;
@@ -6828,13 +6829,13 @@ cdflib_gamma_values(
 {
 # define N_MAX 18
 
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     4.590845E+00,     2.218160E+00,     1.489192E+00,     1.164230E+00,
     1.0000000000E+00, 0.9513507699E+00, 0.9181687424E+00, 0.8974706963E+00,
     0.8872638175E+00, 0.8862269255E+00, 0.8935153493E+00, 0.9086387329E+00,
     0.9313837710E+00, 0.9617658319E+00, 1.0000000000E+00, 3.6288000E+05,
     1.2164510E+17,    8.8417620E+30 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.2E+00,  0.4E+00,  0.6E+00,  0.8E+00,
     1.0E+00,  1.1E+00,  1.2E+00,  1.3E+00,
     1.4E+00,  1.5E+00,  1.6E+00,  1.7E+00,
@@ -6867,18 +6868,18 @@ double
 cdflib_gamma_x(
     double* a)
 {
-  static double d = .41893853320467274178e0;
-  static double pi = 3.1415926535898e0;
-  static double r1 = .820756370353826e-03;
-  static double r2 = -.595156336428591e-03;
-  static double r3 = .793650663183693e-03;
-  static double r4 = -.277777777770481e-02;
-  static double r5 = .833333333333333e-01;
-  static double p[7] = {
+  static const double d = .41893853320467274178e0;
+  static const double pi = 3.1415926535898e0;
+  static const double r1 = .820756370353826e-03;
+  static const double r2 = -.595156336428591e-03;
+  static const double r3 = .793650663183693e-03;
+  static const double r4 = -.277777777770481e-02;
+  static const double r5 = .833333333333333e-01;
+  static const double p[7] = {
     .539637273585445e-03,.261939260042690e-02,.204493667594920e-01,
     .730981088720487e-01,.279648642639792e+00,.553413866010467e+00,1.0e0
   };
-  static double q[7] = {
+  static const double q[7] = {
     -.832979206704073e-03,.470059485860584e-02,.225211131035340e-01,
     -.170458969313360e+00,-.567902761974940e-01,.113062953091122e+01,1.0e0
   };
@@ -7021,25 +7022,24 @@ int
 cdflib_ipmpar(
     int* i)
 {
-  static int imach[11];
-  static int ipmpar;
+   // MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
+   //   3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
+   //   PC 7300), AND 8087 BASED MICROS (E.G. IBM PC AND AT&T 6300).
+   static const int imach[11] = {
+       /* imach[ 0] = */ 0,
+       /* imach[ 1] = */ 2,
+       /* imach[ 2] = */ 31,
+       /* imach[ 3] = */ 2147483647,
+       /* imach[ 4] = */ 2,
+       /* imach[ 5] = */ 24,
+       /* imach[ 6] = */-125,
+       /* imach[ 7] = */ 128,
+       /* imach[ 8] = */ 53,
+       /* imach[ 9] = */-1021,
+       /* imach[10] = */ 1024,
+   };
 
-//     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
-//       3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
-//       PC 7300), AND 8087 BASED MICROS (E.G. IBM PC AND AT&T 6300).
-   imach[1] = 2;
-   imach[2] = 31;
-   imach[3] = 2147483647;
-   imach[4] = 2;
-   imach[5] = 24;
-   imach[6] = -125;
-   imach[7] = 128;
-   imach[8] = 53;
-   imach[9] = -1021;
-   imach[10] = 1024;
-
-   ipmpar = imach[*i];
-   return ipmpar;
+   return imach[*i];
 }
 
 void
@@ -7052,7 +7052,7 @@ cdflib_negative_binomial_cdf_values(
 {
 # define N_MAX 27
 
-  double cdf_vec[N_MAX] = {
+  static const double cdf_vec[N_MAX] = {
     0.6367, 0.3633, 0.1445,
     0.5000, 0.2266, 0.0625,
     0.3438, 0.1094, 0.0156,
@@ -7062,7 +7062,7 @@ cdflib_negative_binomial_cdf_values(
     0.8499, 0.5497, 0.2662,
     0.6513, 0.2639, 0.0702,
     1.0000, 0.0199, 0.0001 };
-  int f_vec[N_MAX] = {
+  static const int f_vec[N_MAX] = {
      4,  3,  2,
      3,  2,  1,
      2,  1,  0,
@@ -7072,7 +7072,7 @@ cdflib_negative_binomial_cdf_values(
     17, 16, 15,
      9,  8,  7,
      2,  1,  0 };
-  double p_vec[N_MAX] = {
+  static const double p_vec[N_MAX] = {
     0.50, 0.50, 0.50,
     0.50, 0.50, 0.50,
     0.50, 0.50, 0.50,
@@ -7082,7 +7082,7 @@ cdflib_negative_binomial_cdf_values(
     0.10, 0.10, 0.10,
     0.10, 0.10, 0.10,
     0.01, 0.01, 0.01 };
-  int s_vec[N_MAX] = {
+  static const int s_vec[N_MAX] = {
     4, 5, 6,
     4, 5, 6,
     4, 5, 6,
@@ -7128,13 +7128,13 @@ cdflib_normal_cdf_values(
 {
 # define N_MAX 13
 
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.500000000000000E+00, 0.539827837277029E+00, 0.579259709439103E+00,
     0.617911422188953E+00, 0.655421741610324E+00, 0.691462461274013E+00,
     0.725746882249927E+00, 0.758036347776927E+00, 0.788144601416604E+00,
     0.815939874653241E+00, 0.841344746068543E+00, 0.933192798731142E+00,
     0.977249868051821E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.00E+00, 0.10E+00, 0.20E+00,
     0.30E+00, 0.40E+00, 0.50E+00,
     0.60E+00, 0.70E+00, 0.80E+00,
@@ -7173,21 +7173,21 @@ cdflib_poisson_cdf_values(
 {
 # define N_MAX 21
 
-  double a_vec[N_MAX] = {
+  static const double a_vec[N_MAX] = {
     0.02E+00, 0.10E+00, 0.10E+00, 0.50E+00,
     0.50E+00, 0.50E+00, 1.00E+00, 1.00E+00,
     1.00E+00, 1.00E+00, 2.00E+00, 2.00E+00,
     2.00E+00, 2.00E+00, 5.00E+00, 5.00E+00,
     5.00E+00, 5.00E+00, 5.00E+00, 5.00E+00,
     5.00E+00 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.980E+00, 0.905E+00, 0.995E+00, 0.607E+00,
     0.910E+00, 0.986E+00, 0.368E+00, 0.736E+00,
     0.920E+00, 0.981E+00, 0.135E+00, 0.406E+00,
     0.677E+00, 0.857E+00, 0.007E+00, 0.040E+00,
     0.125E+00, 0.265E+00, 0.441E+00, 0.616E+00,
     0.762E+00 };
-  int x_vec[N_MAX] = {
+  static const int x_vec[N_MAX] = {
      0, 0, 1, 0,
      1, 2, 0, 1,
      2, 3, 0, 1,
@@ -7223,22 +7223,22 @@ double
 cdflib_psi(
     double* xx)
 {
-  static double dx0 = 1.461632144968362341262659542325721325e0;
-  static double piov4 = .785398163397448e0;
-  static double p1[7] = {
+  static const double dx0 = 1.461632144968362341262659542325721325e0;
+  static const double piov4 = .785398163397448e0;
+  static const double p1[7] = {
     .895385022981970e-02,.477762828042627e+01,.142441585084029e+03,
     .118645200713425e+04,.363351846806499e+04,.413810161269013e+04,
     .130560269827897e+04
   };
-  static double p2[4] = {
+  static const double p2[4] = {
     -.212940445131011e+01,-.701677227766759e+01,-.448616543918019e+01,
     -.648157123766197e+00
   };
-  static double q1[6] = {
+  static const double q1[6] = {
     .448452573429826e+02,.520752771467162e+03,.221000799247830e+04,
     .364127349079381e+04,.190831076596300e+04,.691091682714533e-05
   };
-  static double q2[4] = {
+  static const double q2[4] = {
     .322703493791143e+02,.892920700481861e+02,.546117738103215e+02,
     .777788548522962e+01
   };
@@ -7375,12 +7375,12 @@ cdflib_psi_values(
 {
 # define N_MAX 11
 
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     -0.5772156649E+00, -0.4237549404E+00, -0.2890398966E+00,
     -0.1691908889E+00, -0.0613845446E+00, -0.0364899740E+00,
      0.1260474528E+00,  0.2085478749E+00,  0.2849914333E+00,
      0.3561841612E+00,  0.4227843351E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     1.0E+00,  1.1E+00,  1.2E+00,
     1.3E+00,  1.4E+00,  1.5E+00,
     1.6E+00,  1.7E+00,  1.8E+00,
@@ -7413,7 +7413,7 @@ cdflib_rcomp(
     double* a,
     double* x)
 {
-  static double rt2pin = .398942280401433e0;
+  static const double rt2pin = .398942280401433e0;
   static double rcomp,t,t1,u;
     rcomp = 0.0e0;
     if(*a >= 20.0e0) goto S20;
@@ -7438,12 +7438,12 @@ double
 cdflib_rexp(
     double* x)
 {
-  static double p1 = .914041914819518e-09;
-  static double p2 = .238082361044469e-01;
-  static double q1 = -.499999999085958e+00;
-  static double q2 = .107141568980644e+00;
-  static double q3 = -.119041179760821e-01;
-  static double q4 = .595130811860248e-03;
+  static const double p1 = .914041914819518e-09;
+  static const double p2 = .238082361044469e-01;
+  static const double q1 = -.499999999085958e+00;
+  static const double q2 = .107141568980644e+00;
+  static const double q3 = -.119041179760821e-01;
+  static const double q4 = .595130811860248e-03;
   static double rexp,w;
 
     if(fabs(*x) > 0.15e0) goto S10;
@@ -7463,13 +7463,13 @@ double
 cdflib_rlog(
     double* x)
 {
-  static double a = .566749439387324e-01;
-  static double b = .456512608815524e-01;
-  static double p0 = .333333333333333e+00;
-  static double p1 = -.224696413112536e+00;
-  static double p2 = .620886815375787e-02;
-  static double q1 = -.127408923933623e+01;
-  static double q2 = .354508718369557e+00;
+  static const double a = .566749439387324e-01;
+  static const double b = .456512608815524e-01;
+  static const double p0 = .333333333333333e+00;
+  static const double p1 = -.224696413112536e+00;
+  static const double p2 = .620886815375787e-02;
+  static const double q1 = -.127408923933623e+01;
+  static const double q2 = .354508718369557e+00;
   static double rlog,r,t,u,w,w1;
 
     if(*x < 0.61e0 || *x > 1.57e0) goto S40;
@@ -7508,13 +7508,13 @@ double
 cdflib_rlog1(
     double* x)
 {
-  static double a = .566749439387324e-01;
-  static double b = .456512608815524e-01;
-  static double p0 = .333333333333333e+00;
-  static double p1 = -.224696413112536e+00;
-  static double p2 = .620886815375787e-02;
-  static double q1 = -.127408923933623e+01;
-  static double q2 = .354508718369557e+00;
+  static const double a = .566749439387324e-01;
+  static const double b = .456512608815524e-01;
+  static const double p0 = .333333333333333e+00;
+  static const double p1 = -.224696413112536e+00;
+  static const double p2 = .620886815375787e-02;
+  static const double q1 = -.127408923933623e+01;
+  static const double q2 = .354508718369557e+00;
   static double rlog1,h,r,t,w,w1;
 
     if(*x < -0.39e0 || *x > 0.57e0) goto S40;
@@ -7558,17 +7558,17 @@ cdflib_student_cdf_values(
 {
 # define N_MAX 13
 
-  int a_vec[N_MAX] = {
+  static const int a_vec[N_MAX] = {
     1, 2, 3, 4,
     5, 2, 5, 2,
     5, 2, 3, 4,
     5 };
-  double fx_vec[N_MAX] = {
+  static const double fx_vec[N_MAX] = {
     0.60E+00, 0.60E+00, 0.60E+00, 0.60E+00,
     0.60E+00, 0.75E+00, 0.75E+00, 0.95E+00,
     0.95E+00, 0.99E+00, 0.99E+00, 0.99E+00,
     0.99E+00 };
-  double x_vec[N_MAX] = {
+  static const double x_vec[N_MAX] = {
     0.325E+00, 0.289E+00, 0.277E+00, 0.271E+00,
     0.267E+00, 0.816E+00, 0.727E+00, 2.920E+00,
     2.015E+00, 6.965E+00, 4.541E+00, 3.747E+00,
@@ -7603,11 +7603,11 @@ double
 cdflib_stvaln(
     double* p)
 {
-  static double xden[5] = {
+  static const double xden[5] = {
     0.993484626060e-1,0.588581570495e0,0.531103462366e0,0.103537752850e0,
     0.38560700634e-2
   };
-  static double xnum[5] = {
+  static const double xnum[5] = {
     -0.322232431088e0,-1.000000000000e0,-0.342242088547e0,-0.204231210245e-1,
     -0.453642210148e-4
   };

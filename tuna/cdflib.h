@@ -2704,8 +2704,8 @@ cdflib_esum(
  */
 double
 cdflib_eval_pol(
-    double a[],
-    int* n,
+    const double a[],
+    const int* n,
     double* x);
 
 /**
