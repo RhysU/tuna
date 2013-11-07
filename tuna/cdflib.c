@@ -1366,11 +1366,11 @@ cdflib_cdfbet(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define inf 1.0e300
-# define one 1.0e0
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double zero = 1.0e-300;
+  static const double inf  = 1.0e300;
+  static const double one  = 1.0e0;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -1638,11 +1638,6 @@ S530:
     }
 S540:
     return;
-# undef tol
-# undef atol
-# undef zero
-# undef inf
-# undef one
 }
 
 void
@@ -1657,11 +1652,11 @@ cdflib_cdfbin(
     int* status,
     double* bound)
 {
-# define atol (1.0e-50)
-# define tol (1.0e-8)
-# define zero (1.0e-300)
-# define inf 1.0e300
-# define one 1.0e0
+  static const double atol = 1.0e-50;
+  static const double tol = 1.0e-8;
+  static const double zero = 1.0e-300;
+  static const double inf = 1.0e300;
+  static const double one = 1.0e0;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -1932,11 +1927,6 @@ S550:
     }
 S560:
     return;
-# undef atol
-# undef tol
-# undef zero
-# undef inf
-# undef one
 }
 
 void
@@ -1949,10 +1939,10 @@ cdflib_cdfchi(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define inf 1.0e300
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double zero = 1.0e-300;
+  static const double inf  = 1.0e300;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -2149,10 +2139,6 @@ S370:
     }
 S380:
     return;
-# undef tol
-# undef atol
-# undef zero
-# undef inf
 }
 
 void
@@ -2166,12 +2152,12 @@ cdflib_cdfchn(
     int* status,
     double* bound)
 {
-# define tent4 1.0e4
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define one (1.0e0-1.0e-16)
-# define inf 1.0e300
+  static const double tent4 = 1.0e4;
+  static const double tol   = 1.0e-8;
+  static const double atol  = 1.0e-50;
+  static const double zero  = 1.0e-300;
+  static const double one   = 1.0e0-1.0e-16;
+  static const double inf   = 1.0e300;
 
   static double K1 = 0.0e0;
   static double K3 = 0.5e0;
@@ -2342,12 +2328,6 @@ S270:
     }
 S280:
     return;
-# undef tent4
-# undef tol
-# undef atol
-# undef zero
-# undef one
-# undef inf
 }
 
 void
@@ -2361,10 +2341,9 @@ cdflib_cdff(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define inf 1.0e300
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double inf  = 1.0e300;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -2618,10 +2597,6 @@ S270:
   }
 
   return;
-# undef tol
-# undef atol
-# undef zero
-# undef inf
 }
 
 void
@@ -2636,12 +2611,12 @@ cdflib_cdffnc(
     int* status,
     double* bound)
 {
-# define tent4 1.0e4
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define one (1.0e0-1.0e-16)
-# define inf 1.0e300
+  static const double tent4 = 1.0e4;
+  static const double tol   = 1.0e-8;
+  static const double atol  = 1.0e-50;
+  static const double zero  = 1.0e-300;
+  static const double one   = 1.0e0-1.0e-16;
+  static const double inf   = 1.0e300;
 
   static double K1 = 0.0e0;
   static double K3 = 0.5e0;
@@ -2853,12 +2828,6 @@ S340:
     }
 S350:
     return;
-# undef tent4
-# undef tol
-# undef atol
-# undef zero
-# undef one
-# undef inf
 }
 
 void
@@ -2872,10 +2841,10 @@ cdflib_cdfgam(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define inf 1.0e300
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double zero = 1.0e-300;
+  static const double inf  = 1.0e300;
 
   static int K1 = 1;
   static double K5 = 0.5e0;
@@ -3072,10 +3041,6 @@ S310:
         }
     }
     return;
-# undef tol
-# undef atol
-# undef zero
-# undef inf
 }
 
 void
@@ -3090,10 +3055,10 @@ cdflib_cdfnbn(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define inf 1.0e300
-# define one 1.0e0
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double inf  = 1.0e300;
+  static const double one  = 1.0e0;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -3359,10 +3324,6 @@ S530:
     }
 S540:
     return;
-# undef tol
-# undef atol
-# undef inf
-# undef one
 }
 
 void
@@ -3495,9 +3456,9 @@ cdflib_cdfpoi(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define inf 1.0e300
+  static const double tol  = 1.0e-8;
+  static const double atol = 1.0e-50;
+  static const double inf  = 1.0e300;
 
   static int K1 = 1;
   static double K2 = 0.0e0;
@@ -3671,9 +3632,6 @@ S320:
     }
 S330:
     return;
-# undef tol
-# undef atol
-# undef inf
 }
 
 void
@@ -3686,11 +3644,11 @@ cdflib_cdft(
     int* status,
     double* bound)
 {
-# define tol (1.0e-8)
-# define atol (1.0e-50)
-# define zero (1.0e-300)
-# define inf 1.0e30
-# define maxdf 1.0e10
+  static const double tol   = 1.0e-8;
+  static const double atol  = 1.0e-50;
+  static const double zero  = 1.0e-300;
+  static const double inf   = 1.0e30;
+  static const double maxdf = 1.0e10;
 
   static int K1 = 1;
   static double K4 = 0.5e0;
@@ -3856,11 +3814,6 @@ S300:
     }
 S310:
     return;
-# undef tol
-# undef atol
-# undef zero
-# undef inf
-# undef maxdf
 }
 
 void
@@ -4212,8 +4165,8 @@ cdflib_cumf(
     double* cum,
     double* ccum)
 {
-# define half 0.5e0
-# define done 1.0e0
+  static const double half = 0.5e0;
+  static const double done = 1.0e0;
 
   static double dsum,prod,xx,yy;
   static int ierr;
@@ -4248,8 +4201,6 @@ S10:
   T2 = *dfn*half;
   cdflib_beta_inc ( &T1, &T2, &xx, &yy, ccum, cum, &ierr );
   return;
-# undef half
-# undef done
 }
 
 void
@@ -4262,8 +4213,8 @@ cdflib_cumfnc(
     double* ccum)
 {
 # define qsmall(x) (int)(sum < 1.0e-20 || (x) < eps*sum)
-# define half 0.5e0
-# define done 1.0e0
+  static const double half = 0.5e0;
+  static const double done = 1.0e0;
 
   static const double eps = 1.0e-4;
   static double dsum,dummy,prod,xx,yy,adn,aup,b,betdn,betup,centwt,dnterm,sum,
@@ -4365,8 +4316,6 @@ S70:
     *ccum = 0.5e0+(0.5e0-*cum);
     return;
 # undef qsmall
-# undef half
-# undef done
 }
 
 void
@@ -4642,11 +4591,11 @@ cdflib_dinvnr(
     double* p,
     double* q)
 {
-# define maxit 100
-# define eps (1.0e-13)
-# define r2pi 0.3989422804014326e0
-# define nhalf (-0.5e0)
 # define dennor(x) (r2pi*exp(nhalf*(x)*(x)))
+  enum { maxit = 100 };
+  static const double eps   = 1.0e-13;
+  static const double r2pi  = 0.3989422804014326e0;
+  static const double nhalf = -0.5e0;
 
   static double dinvnr,strtx,xcur,cum,ccum,pp,dx;
   static int i;
@@ -4690,11 +4639,6 @@ S40:
     dinvnr = xcur;
     if(!qporq) dinvnr = -dinvnr;
     return dinvnr;
-# undef maxit
-# undef eps
-# undef r2pi
-# undef nhalf
-# undef dennor
 }
 
 void
@@ -4712,7 +4656,7 @@ double
 cdflib_dlanor(
     double* x)
 {
-# define dlsqpi 0.91893853320467274177e0
+  static const double dlsqpi = 0.91893853320467274177e0;
 
   static const double coef[12] = {
     -1.0e0,3.0e0,-15.0e0,105.0e0,-945.0e0,10395.0e0,-135135.0e0,2027025.0e0,
@@ -4733,7 +4677,6 @@ cdflib_dlanor(
   correc = cdflib_alnrel ( &correc );
   dlanor = approx+correc;
   return dlanor;
-# undef dlsqpi
 }
 
 double
@@ -4793,8 +4736,9 @@ double
 cdflib_dstrem(
     double* z)
 {
-# define hln2pi 0.91893853320467274178e0
-# define ncoef 10
+  static const double hln2pi = 0.91893853320467274178e0;
+
+  enum { ncoef = 10 };
 
   static const double coef[ncoef] = {
     0.0e0,0.0833333333333333333333333333333e0,
@@ -4834,8 +4778,6 @@ S10:
     dstrem = cdflib_gamma_log ( z ) - sterl;
 S20:
     return dstrem;
-# undef hln2pi
-# undef ncoef
 }
 
 void
