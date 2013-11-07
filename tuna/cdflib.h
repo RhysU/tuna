@@ -2273,7 +2273,7 @@ cdflib_dlanor(
  */
 double
 cdflib_dpmpar(
-    const int* i);
+    const int i);
 
 /**
  * \brief
@@ -3403,7 +3403,7 @@ cdflib_gsumln(
  */
 int
 cdflib_ipmpar(
-    const int* i);
+    const int i);
 
 /**
  * \brief

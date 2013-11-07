@@ -504,7 +504,7 @@ cdflib_beta_inc(
 //  EPS IS A MACHINE DEPENDENT CONSTANT. EPS IS THE SMALLEST
 //  NUMBER FOR WHICH 1.0 + EPS .GT. 1.0
 //
-    eps = cdflib_dpmpar ( &K1 );
+    eps = cdflib_dpmpar ( K1 );
     *w = *w1 = 0.0e0;
     if(*a < 0.0e0 || *b < 0.0e0) goto S270;
     if(*a == 0.0e0 && *b == 0.0e0) goto S280;
@@ -1482,7 +1482,7 @@ S220:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S260;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S260;
     if(!(pq < 0.0e0)) goto S240;
     *bound = 0.0e0;
     goto S250;
@@ -1498,7 +1498,7 @@ S260:
 //     X + Y
 //
     xy = *x+*y;
-    if(!(fabs(xy-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S300;
+    if(!(fabs(xy-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S300;
     if(!(xy < 0.0e0)) goto S280;
     *bound = 0.0e0;
     goto S290;
@@ -1773,7 +1773,7 @@ S240:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S280;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S280;
     if(!(pq < 0.0e0)) goto S260;
     *bound = 0.0e0;
     goto S270;
@@ -1789,7 +1789,7 @@ S280:
 //     PR + OMPR
 //
     prompr = *pr+*ompr;
-    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S320;
+    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S320;
     if(!(prompr < 0.0e0)) goto S300;
     *bound = 0.0e0;
     goto S310;
@@ -2023,7 +2023,7 @@ S140:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S180;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S180;
     if(!(pq < 0.0e0)) goto S160;
     *bound = 0.0e0;
     goto S170;
@@ -2434,7 +2434,7 @@ S160:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S200;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( K1 ) ) ) goto S200;
     if(!(pq < 0.0e0)) goto S180;
     *bound = 0.0e0;
     goto S190;
@@ -2935,7 +2935,7 @@ S160:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S200;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S200;
     if(!(pq < 0.0e0)) goto S180;
     *bound = 0.0e0;
     goto S190;
@@ -3170,7 +3170,7 @@ S220:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S260;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S260;
     if(!(pq < 0.0e0)) goto S240;
     *bound = 0.0e0;
     goto S250;
@@ -3186,7 +3186,7 @@ S260:
 //     PR + OMPR
 //
     prompr = *pr+*ompr;
-    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S300;
+    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S300;
     if(!(prompr < 0.0e0)) goto S280;
     *bound = 0.0e0;
     goto S290;
@@ -3392,7 +3392,7 @@ S100:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S140;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S140;
     if(!(pq < 0.0e0)) goto S120;
     *bound = 0.0e0;
     goto S130;
@@ -3539,7 +3539,7 @@ S140:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S180;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S180;
     if(!(pq < 0.0e0)) goto S160;
     *bound = 0.0e0;
     goto S170;
@@ -3718,7 +3718,7 @@ S120:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S160;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(K1))) goto S160;
     if(!(pq < 0.0e0)) goto S140;
     *bound = 0.0e0;
     goto S150;
@@ -4402,8 +4402,8 @@ cdflib_cumnor(
 //
 //  Machine dependent constants
 //
-    eps = cdflib_dpmpar(&K1)*0.5e0;
-    min = cdflib_dpmpar(&K2);
+    eps = cdflib_dpmpar(K1)*0.5e0;
+    min = cdflib_dpmpar(K2);
     x = *arg;
     y = fabs(x);
     if(y <= thrsh) {
@@ -4682,7 +4682,7 @@ cdflib_dlanor(
 
 double
 cdflib_dpmpar(
-    const int* i)
+    const int i)
 {
   static const int K1 = 4;
   static const int K2 = 8;
@@ -4691,24 +4691,24 @@ cdflib_dpmpar(
   static double value,b,binv,bm1,one,w,z;
   static int emax,emin,ibeta,m;
 
-    if(*i > 1) goto S10;
-    b = cdflib_ipmpar(&K1);
-    m = cdflib_ipmpar(&K2);
+    if(i > 1) goto S10;
+    b = cdflib_ipmpar(K1);
+    m = cdflib_ipmpar(K2);
     value = pow(b,(double)(1-m));
     return value;
 S10:
-    if(*i > 2) goto S20;
-    b = cdflib_ipmpar(&K1);
-    emin = cdflib_ipmpar(&K3);
+    if(i > 2) goto S20;
+    b = cdflib_ipmpar(K1);
+    emin = cdflib_ipmpar(K3);
     one = 1.0;
     binv = one/b;
     w = pow(b,(double)(emin+2));
     value = w*binv*binv*binv;
     return value;
 S20:
-    ibeta = cdflib_ipmpar(&K1);
-    m = cdflib_ipmpar(&K2);
-    emax = cdflib_ipmpar(&K4);
+    ibeta = cdflib_ipmpar(K1);
+    m = cdflib_ipmpar(K2);
+    emax = cdflib_ipmpar(K4);
     b = ibeta;
     bm1 = ibeta-1;
     one = 1.0;
@@ -5490,7 +5490,7 @@ cdflib_exparg(
   static double exparg,lnb;
   static int b,m;
 
-    b = cdflib_ipmpar(&K1);
+    b = cdflib_ipmpar(K1);
     if(b != 2) goto S10;
     lnb = .69314718055995e0;
     goto S40;
@@ -5506,11 +5506,11 @@ S30:
     lnb = log((double)b);
 S40:
     if(*l == 0) goto S50;
-    m = cdflib_ipmpar(&K2)-1;
+    m = cdflib_ipmpar(K2)-1;
     exparg = 0.99999e0*((double)m*lnb);
     return exparg;
 S50:
-    m = cdflib_ipmpar(&K3);
+    m = cdflib_ipmpar(K3);
     exparg = 0.99999e0*((double)m*lnb);
     return exparg;
 }
@@ -5892,7 +5892,7 @@ cdflib_gamma_inc(
 //  E IS A MACHINE DEPENDENT CONSTANT. E IS THE SMALLEST
 //  NUMBER FOR WHICH 1.0 + E .GT. 1.0 .
 //
-    e = cdflib_dpmpar(&K1);
+    e = cdflib_dpmpar(K1);
     if(*a < 0.0e0 || *x < 0.0e0) goto S430;
     if(*a == 0.0e0 && *x == 0.0e0) goto S430;
     if(*a**x == 0.0e0) goto S420;
@@ -6257,9 +6257,9 @@ cdflib_gamma_inc_inv(
 //            XMIN IS THE SMALLEST POSITIVE NUMBER AND XMAX IS THE
 //            LARGEST POSITIVE NUMBER.
 //
-    e = cdflib_dpmpar(&K1);
-    xmin = cdflib_dpmpar(&K2);
-    xmax = cdflib_dpmpar(&K3);
+    e = cdflib_dpmpar(K1);
+    xmin = cdflib_dpmpar(K2);
+    xmax = cdflib_dpmpar(K3);
     *x = 0.0e0;
     if(*a <= 0.0e0) goto S300;
     t = *p+*q-1.e0;
@@ -6869,7 +6869,7 @@ S70:
 //     CODE MAY BE OMITTED IF DESIRED.
 //
     if(fabs(t) >= 1.e-30) goto S80;
-    if(fabs(t)*cdflib_dpmpar(&K2) <= 1.0001e0) return Xgamm;
+    if(fabs(t)*cdflib_dpmpar(K2) <= 1.0001e0) return Xgamm;
     Xgamm = 1.0e0/t;
     return Xgamm;
 S80:
@@ -6954,7 +6954,7 @@ S20:
 
 int
 cdflib_ipmpar(
-    const int* i)
+    const int i)
 {
    // MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
    //   3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
@@ -6973,7 +6973,7 @@ cdflib_ipmpar(
        /* imach[10] = */ 1024,
    };
 
-   return imach[*i];
+   return imach[i];
 }
 
 void
@@ -7187,8 +7187,8 @@ cdflib_psi(
 //        XSMALL = ABSOLUTE ARGUMENT BELOW WHICH PI*COTAN(PI*X)
 //                 MAY BE REPRESENTED BY 1/X.
 //
-    xmax1 = cdflib_ipmpar(&K1);
-    xmax1 = cdflib_fifdmin1(xmax1,1.0e0/cdflib_dpmpar(&K2));
+    xmax1 = cdflib_ipmpar(K1);
+    xmax1 = cdflib_fifdmin1(xmax1,1.0e0/cdflib_dpmpar(K2));
     xsmall = 1.e-9;
     x = *xx;
     aug = 0.0e0;
