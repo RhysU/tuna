@@ -1,11 +1,12 @@
 /*
- * Modified from CDFLIB: http://www.netlib.org/random/dcdflib.c.tar.gz
+ * Originally from CDFLIB: http://www.netlib.org/random/dcdflib.c.tar.gz
  * Obtained from http://people.sc.fsu.edu/~jburkardt/f_src/cdflib/cdflib.html
  *
- * Barry Brown, James Lovato, Kathy Russell,
- * Department of Biomathematics,
- * University of Texas,
- * Houston, Texas.
+ * CDFLIB was produced by
+ *    Barry Brown, James Lovato, Kathy Russell,
+ *    Department of Biomathematics,
+ *    University of Texas,
+ *    Houston, Texas.
  */
 
 /** \file
