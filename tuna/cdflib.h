@@ -21,9 +21,7 @@ extern "C" {
 #endif
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ALGDIV computes ln ( Gamma ( B ) / Gamma ( A + B ) ) when 8 <= B.
  *
  *  Discussion:
@@ -45,9 +43,7 @@ cdflib_algdiv(
     double* b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ALNREL evaluates the function ln ( 1 + A ).
  *
  *  Modified:
@@ -73,9 +69,7 @@ cdflib_alnrel(
     double* a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    APSER computes the incomplete beta ratio I(SUB(1-X))(B,A).
  *
  *  Discussion:
@@ -105,9 +99,7 @@ cdflib_apser(
 
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BCORR evaluates DEL(A0) + DEL(B0) - DEL(A0 + B0).
  *
  *  Discussion:
@@ -135,9 +127,7 @@ cdflib_bcorr(
     double* b0);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA evaluates the beta function.
  *
  *  Modified:
@@ -160,9 +150,7 @@ cdflib_beta(
     double b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_ASYM computes an asymptotic expansion for IX(A,B), for large A and B.
  *
  *  Parameters:
@@ -184,9 +172,7 @@ cdflib_beta_asym(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_FRAC evaluates a continued fraction expansion for IX(A,B).
  *
  *  Parameters:
@@ -215,9 +201,7 @@ cdflib_beta_frac(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_GRAT evaluates an asymptotic expansion for IX(A,B).
  *
  *  Parameters:
@@ -248,9 +232,7 @@ cdflib_beta_grat(
     int* ierr);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_INC evaluates the incomplete beta function IX(A,B).
  *
  *  Author:
@@ -291,9 +273,7 @@ cdflib_beta_inc(
     int* ierr);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_INC_VALUES returns some values of the incomplete Beta function.
  *
  *  Discussion:
@@ -357,9 +337,7 @@ cdflib_beta_inc_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_LOG evaluates the logarithm of the beta function.
  *
  *  Reference:
@@ -384,9 +362,7 @@ cdflib_beta_log(
     double* b0);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_PSER uses a power series expansion to evaluate IX(A,B)(X).
  *
  *  Discussion:
@@ -412,9 +388,7 @@ cdflib_beta_pser(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_RCOMP evaluates X**A * Y**B / Beta(A,B).
  *
  *  Parameters:
@@ -434,9 +408,7 @@ cdflib_beta_cdflib_rcomp(
     double* y);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_RCOMP1 evaluates exp(MU) * X**A * Y**B / Beta(A,B).
  *
  *  Parameters:
@@ -460,9 +432,7 @@ cdflib_beta_rcomp1(
     double* y);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BETA_UP evaluates IX(A,B) - IX(A+N,B) where N is a positive integer.
  *
  *  Parameters:
@@ -488,9 +458,7 @@ cdflib_beta_up(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    BINOMIAL_CDF_VALUES returns some values of the binomial CDF.
  *
  *  Discussion:
@@ -538,9 +506,7 @@ cdflib_binomial_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFBET evaluates the CDF of the Beta Distribution.
  *
  *  Discussion:
@@ -627,9 +593,7 @@ cdflib_cdfbet(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFBIN evaluates the CDF of the Binomial distribution.
  *
  *  Discussion:
@@ -716,9 +680,7 @@ cdflib_cdfbin(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFCHI evaluates the CDF of the chi square distribution.
  *
  *  Discussion:
@@ -799,9 +761,7 @@ cdflib_cdfchi(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFCHN evaluates the CDF of the Noncentral Chi-Square.
  *
  *  Discussion:
@@ -893,9 +853,7 @@ cdflib_cdfchn(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFF evaluates the CDF of the F distribution.
  *
  *  Discussion:
@@ -980,9 +938,7 @@ cdflib_cdff(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFFNC evaluates the CDF of the Noncentral F distribution.
  *
  *  Discussion:
@@ -1099,9 +1055,7 @@ cdflib_cdffnc(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFGAM evaluates the CDF of the Gamma Distribution.
  *
  *  Discussion:
@@ -1181,9 +1135,7 @@ cdflib_cdfgam(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFNBN evaluates the CDF of the Negative Binomial distribution
  *
  *  Discussion:
@@ -1270,9 +1222,7 @@ cdflib_cdfnbn(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFNOR evaluates the CDF of the Normal distribution.
  *
  *  Discussion:
@@ -1357,9 +1307,7 @@ cdflib_cdfnor(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFPOI evaluates the CDF of the Poisson distribution.
  *
  *  Discussion:
@@ -1428,9 +1376,7 @@ cdflib_cdfpoi(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CDFT evaluates the CDF of the T distribution.
  *
  *  Discussion:
@@ -1503,9 +1449,7 @@ cdflib_cdft(
     double* bound);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CHI_NONCENTRAL_CDF_VALUES returns values of the noncentral chi CDF.
  *
  *  Discussion:
@@ -1555,9 +1499,7 @@ cdflib_chi_noncentral_cdf_values(
     double* cdf);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CHI_SQUARE_CDF_VALUES returns some values of the Chi-Square CDF.
  *
  *  Discussion:
@@ -1608,9 +1550,7 @@ cdflib_chi_square_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMBET evaluates the cumulative incomplete beta distribution.
  *
  *  Discussion:
@@ -1652,9 +1592,7 @@ cdflib_cumbet(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMBIN evaluates the cumulative binomial distribution.
  *
  *  Discussion:
@@ -1697,9 +1635,7 @@ cdflib_cumbin(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMCHI evaluates the cumulative chi-square distribution.
  *
  *  Parameters:
@@ -1722,9 +1658,7 @@ cdflib_cumchi(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMCHN evaluates the cumulative noncentral chi-square distribution.
  *
  *  Discussion:
@@ -1773,9 +1707,7 @@ cdflib_cumchn(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMF evaluates the cumulative F distribution.
  *
  *  Discussion:
@@ -1808,9 +1740,7 @@ cdflib_cumf(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMFNC evaluates the cumulative noncentral F distribution.
  *
  *  Discussion:
@@ -1866,9 +1796,7 @@ cdflib_cumfnc(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMGAM evaluates the cumulative incomplete gamma distribution.
  *
  *  Discussion:
@@ -1900,9 +1828,7 @@ cdflib_cumgam(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMNBN evaluates the cumulative negative binomial distribution.
  *
  *  Discussion:
@@ -1944,9 +1870,7 @@ cdflib_cumnbn(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMNOR computes the cumulative normal distribution.
  *
  *  Discussion:
@@ -2008,9 +1932,7 @@ cdflib_cumnor(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMPOI evaluates the cumulative Poisson distribution.
  *
  *  Discussion:
@@ -2042,9 +1964,7 @@ cdflib_cumpoi(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    CUMT evaluates the cumulative T distribution.
  *
  *  Reference:
@@ -2071,9 +1991,7 @@ cdflib_cumt(
     double* ccum);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DBETRM computes the Sterling remainder for the complete beta function.
  *
  *  Discussion:
@@ -2099,9 +2017,7 @@ cdflib_dbetrm(
     double* b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DEXPM1 evaluates the function EXP(X) - 1.
  *
  *  Reference:
@@ -2123,9 +2039,7 @@ cdflib_dexpm1(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DINVNR computes the inverse of the normal distribution.
  *
  *  Discussion:
@@ -2157,9 +2071,7 @@ cdflib_dinvnr(
     double* q);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DINVR bounds the zero of the function and invokes DZROR.
  *
  *  Discussion:
@@ -2211,9 +2123,7 @@ cdflib_dinvr(
     unsigned long* qhi);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DLANOR evaluates the logarithm of the asymptotic Normal CDF.
  *
  *  Discussion:
@@ -2242,9 +2152,7 @@ cdflib_dlanor(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DPMPAR provides machine constants for double precision arithmetic.
  *
  *  Discussion:
@@ -2275,9 +2183,7 @@ cdflib_dpmpar(
     int* i);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DSTINV seeks a value X such that F(X) = Y.
  *
  *  Discussion:
@@ -2350,9 +2256,7 @@ cdflib_dstinv(
     double* zrelto);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DSTREM computes the Sterling remainder ln ( Gamma ( Z ) ) - Sterling ( Z ).
  *
  *  Discussion:
@@ -2386,9 +2290,7 @@ cdflib_dstrem(
     double* z);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DSTXR sets quantities needed by the zero finder.
  *
  *  Discussion:
@@ -2440,9 +2342,7 @@ cdflib_dstzr(
     double* zreltl);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DT1 computes an approximate inverse of the cumulative T distribution.
  *
  *  Discussion:
@@ -2469,9 +2369,7 @@ cdflib_dt1(
     double* df);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    DZROR seeks the zero of a function using reverse communication.
  *
  *  Discussion:
@@ -2537,9 +2435,7 @@ cdflib_dzror(
     unsigned long* qhi);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    E0000 is a reverse-communication zero bounder.
  */
 void
@@ -2559,9 +2455,7 @@ cdflib_E0000(
     double* zstpmu);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    E00001 is a reverse-communication zero finder.
  */
 void
@@ -2580,9 +2474,7 @@ cdflib_E0001(
     double* zxlo);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ERF_VALUES returns some values of the ERF or "error" function.
  *
  *  Definition:
@@ -2621,9 +2513,7 @@ cdflib_erf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ERROR_F evaluates the error function ERF.
  *
  *  Parameters:
@@ -2637,9 +2527,7 @@ cdflib_error_f(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ERROR_FC evaluates the complementary error function ERFC.
  *
  *  Modified:
@@ -2663,9 +2551,7 @@ cdflib_error_fc(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    ESUM evaluates exp ( MU + X ).
  *
  *  Parameters:
@@ -2682,9 +2568,7 @@ cdflib_esum(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    EVAL_POL evaluates a polynomial at X.
  *
  *  Discussion:
@@ -2713,9 +2597,7 @@ cdflib_eval_pol(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    EXPARG returns the largest or smallest legal argument for EXP.
  *
  *  Discussion:
@@ -2740,9 +2622,7 @@ cdflib_exparg(
     int* l);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    F_CDF_VALUES returns some values of the F CDF test function.
  *
  *  Discussion:
@@ -2794,9 +2674,7 @@ cdflib_f_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    F_NONCENTRAL_CDF_VALUES returns some values of the F CDF test function.
  *
  *  Discussion:
@@ -2850,9 +2728,7 @@ cdflib_f_noncentral_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFDINT truncates a double number to an integer.
  *
  *  Parameters:
@@ -2864,9 +2740,7 @@ cdflib_fifdint(
     double a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFDMAX1 returns the maximum of two numbers a and b
  *
  *  Parameters:
@@ -2880,9 +2754,7 @@ cdflib_fifdmax1(
     double b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFDMIN1 returns the minimum of two numbers.
  *
  *  Parameters:
@@ -2896,9 +2768,7 @@ cdflib_fifdmin1(
     double b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFDSIGN transfers the sign of the variable "sign" to the variable "mag"
  *
  *  Parameters:
@@ -2912,9 +2782,7 @@ cdflib_fifdsign(
     double sign);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFIDINT truncates a double number to a long integer
  *
  *  Parameters:
@@ -2926,9 +2794,7 @@ cdflib_fifidint(
     double a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FIFMOD returns the modulo of a and b
  *
  *  Parameters:
@@ -2942,9 +2808,7 @@ cdflib_fifmod(
     long b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FPSER evaluates IX(A,B)(X) for very small B.
  *
  *  Discussion:
@@ -2976,9 +2840,7 @@ cdflib_fpser(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    FTNSTOP prints a message to standard error and then exits.
  *
  *  Parameters:
@@ -2990,9 +2852,7 @@ cdflib_ftnstop(
     char* msg);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAM1 computes 1 / GAMMA(A+1) - 1 for -0.5D+00 <= A <= 1.5
  *
  *  Parameters:
@@ -3006,9 +2866,7 @@ cdflib_gam1(
     double* a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_INC evaluates the incomplete gamma ratio functions P(A,X) and Q(A,X).
  *
  *  Discussion:
@@ -3047,9 +2905,7 @@ cdflib_gamma_inc(
     int* ind);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_INC_INV computes the inverse incomplete gamma ratio function.
  *
  *  Discussion:
@@ -3108,9 +2964,7 @@ cdflib_gamma_inc_inv(
     int* ierr);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_INC_VALUES returns some values of the incomplete Gamma function.
  *
  *  Discussion:
@@ -3166,9 +3020,7 @@ cdflib_gamma_inc_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_LN1 evaluates ln ( Gamma ( 1 + A ) ), for -0.2 <= A <= 1.25.
  *
  *  Parameters:
@@ -3182,9 +3034,7 @@ cdflib_gamma_ln1(
     double* a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_LOG evaluates ln ( Gamma ( A ) ) for positive A.
  *
  *  Author:
@@ -3213,9 +3063,7 @@ cdflib_gamma_log(
     double* a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_RAT1 evaluates the incomplete gamma ratio functions P(A,X) and Q(A,X).
  *
  *  Parameters:
@@ -3239,9 +3087,7 @@ cdflib_gamma_rat1(
     double* eps);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_VALUES returns some values of the Gamma function.
  *
  *  Definition:
@@ -3294,9 +3140,7 @@ cdflib_gamma_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GAMMA_X evaluates the gamma function.
  *
  *  Discussion:
@@ -3321,9 +3165,7 @@ cdflib_gamma_x(
     double* a);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    GSUMLN evaluates the function ln(Gamma(A + B)).
  *
  *  Discussion:
@@ -3343,9 +3185,7 @@ cdflib_gsumln(
     double* b);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    IPMPAR returns integer machine constants.
  *
  *  Discussion:
@@ -3409,9 +3249,7 @@ cdflib_ipmpar(
     int* i);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    NEGATIVE_BINOMIAL_CDF_VALUES returns values of the negative binomial CDF.
  *
  *  Discussion:
@@ -3468,9 +3306,7 @@ cdflib_negative_binomial_cdf_values(
     double* cdf);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    NORMAL_CDF_VALUES returns some values of the Normal CDF.
  *
  *  Modified:
@@ -3505,9 +3341,7 @@ cdflib_normal_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    POISSON_CDF_VALUES returns some values of the Poisson CDF.
  *
  *  Discussion:
@@ -3554,9 +3388,7 @@ cdflib_poisson_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    PSI evaluates the psi or digamma function, d/dx ln(gamma(x)).
  *
  *  Discussion:
@@ -3584,9 +3416,7 @@ cdflib_psi(
     double* xx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    PSI_VALUES returns some values of the Psi or Digamma function.
  *
  *  Discussion:
@@ -3629,9 +3459,7 @@ cdflib_psi_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    RCOMP evaluates exp(-X) * X**A / Gamma(A).
  *
  *  Parameters:
@@ -3650,9 +3478,7 @@ cdflib_rcomp(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    REXP evaluates the function EXP(X) - 1.
  *
  *  Modified:
@@ -3670,9 +3496,7 @@ cdflib_rexp(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    RLOG computes  X - 1 - LN(X).
  *
  *  Modified:
@@ -3690,9 +3514,7 @@ cdflib_rlog(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    RLOG1 evaluates the function X - ln ( 1 + X ).
  *
  *  Parameters:
@@ -3706,9 +3528,7 @@ cdflib_rlog1(
     double* x);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    STUDENT_CDF_VALUES returns some values of the Student CDF.
  *
  *  Modified:
@@ -3746,9 +3566,7 @@ cdflib_student_cdf_values(
     double* fx);
 
 /**
- *
- *  Purpose:
- *
+ *  \brief
  *    STVALN provides starting values for the inverse of the normal distribution.
  *
  *  Discussion:
