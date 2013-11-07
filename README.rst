@@ -44,3 +44,8 @@ Contents
 
 *examples/basic.c*
     TODO
+
+References
+----------
+
+Shout out to CDFLIB
