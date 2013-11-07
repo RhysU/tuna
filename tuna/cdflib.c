@@ -700,7 +700,7 @@ cdflib_beta_inc_values(
     double* x,
     double* fx)
 {
-# define N_MAX 30
+  enum { N_MAX = 30 };
 
   static const double a_vec[N_MAX] = {
      0.5E+00,  0.5E+00,  0.5E+00,  1.0E+00,
@@ -762,7 +762,6 @@ cdflib_beta_inc_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -1303,7 +1302,7 @@ cdflib_binomial_cdf_values(
     int* x,
     double* fx)
 {
-# define N_MAX 17
+  enum { N_MAX = 17 };
 
   static const int a_vec[N_MAX] = {
      2,  2,  2,  2,
@@ -1353,7 +1352,6 @@ cdflib_binomial_cdf_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 void
@@ -3873,7 +3871,7 @@ cdflib_chi_noncentral_cdf_values(
     int* df,
     double* cdf)
 {
-# define N_MAX 27
+  enum { N_MAX = 27 };
 
   static const double cdf_vec[N_MAX] = {
     0.839944E+00, 0.695906E+00, 0.535088E+00,
@@ -3940,7 +3938,6 @@ cdflib_chi_noncentral_cdf_values(
   }
 
   return;
-# undef N_MAX
 }
 
 void
@@ -3950,7 +3947,7 @@ cdflib_chi_square_cdf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 21
+  enum { N_MAX = 21 };
 
   static const int a_vec[N_MAX] = {
      1,  2,  1,  2,
@@ -3995,7 +3992,6 @@ cdflib_chi_square_cdf_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 void
@@ -5297,7 +5293,7 @@ cdflib_erf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 21
+  enum { N_MAX = 21 };
 
   static const double fx_vec[N_MAX] = {
     0.0000000000E+00, 0.1124629160E+00, 0.2227025892E+00, 0.3286267595E+00,
@@ -5333,7 +5329,6 @@ cdflib_erf_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -5585,7 +5580,7 @@ cdflib_f_cdf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 20
+  enum { N_MAX = 20 };
 
   static const int a_vec[N_MAX] = {
     1, 1, 5, 1,
@@ -5635,7 +5630,6 @@ cdflib_f_cdf_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 void
@@ -5647,7 +5641,7 @@ cdflib_f_noncentral_cdf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 22
+  enum { N_MAX = 22 };
 
   static const int a_vec[N_MAX] = {
      1,  1,  1,  1,
@@ -5711,7 +5705,6 @@ cdflib_f_noncentral_cdf_values(
   }
 
   return;
-# undef N_MAX
 }
 
 double
@@ -6591,7 +6584,7 @@ cdflib_gamma_inc_values(
     double* x,
     double* fx)
 {
-# define N_MAX 20
+  enum { N_MAX = 20 };
 
   static const double a_vec[N_MAX] = {
     0.1E+00,  0.1E+00,  0.1E+00,  0.5E+00,
@@ -6633,7 +6626,6 @@ cdflib_gamma_inc_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -6827,7 +6819,7 @@ cdflib_gamma_values(
     double* x,
     double* fx)
 {
-# define N_MAX 18
+  enum { N_MAX = 18 };
 
   static const double fx_vec[N_MAX] = {
     4.590845E+00,     2.218160E+00,     1.489192E+00,     1.164230E+00,
@@ -6861,7 +6853,6 @@ cdflib_gamma_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -7050,7 +7041,7 @@ cdflib_negative_binomial_cdf_values(
     double* p,
     double* cdf)
 {
-# define N_MAX 27
+  enum { N_MAX = 27 };
 
   static const double cdf_vec[N_MAX] = {
     0.6367, 0.3633, 0.1445,
@@ -7117,7 +7108,6 @@ cdflib_negative_binomial_cdf_values(
   }
 
   return;
-# undef N_MAX
 }
 
 void
@@ -7126,7 +7116,7 @@ cdflib_normal_cdf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 13
+  enum { N_MAX = 13 };
 
   static const double fx_vec[N_MAX] = {
     0.500000000000000E+00, 0.539827837277029E+00, 0.579259709439103E+00,
@@ -7161,7 +7151,6 @@ cdflib_normal_cdf_values(
   }
 
   return;
-# undef N_MAX
 }
 
 void
@@ -7171,7 +7160,7 @@ cdflib_poisson_cdf_values(
     int* x,
     double* fx)
 {
-# define N_MAX 21
+  enum { N_MAX = 21 };
 
   static const double a_vec[N_MAX] = {
     0.02E+00, 0.10E+00, 0.10E+00, 0.50E+00,
@@ -7216,7 +7205,6 @@ cdflib_poisson_cdf_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -7373,7 +7361,7 @@ cdflib_psi_values(
     double* x,
     double* fx)
 {
-# define N_MAX 11
+  enum { N_MAX = 11 };
 
   static const double fx_vec[N_MAX] = {
     -0.5772156649E+00, -0.4237549404E+00, -0.2890398966E+00,
@@ -7405,7 +7393,6 @@ cdflib_psi_values(
     *fx = fx_vec[*n_data-1];
   }
   return;
-# undef N_MAX
 }
 
 double
@@ -7556,7 +7543,7 @@ cdflib_student_cdf_values(
     double* x,
     double* fx)
 {
-# define N_MAX 13
+  enum { N_MAX = 13 };
 
   static const int a_vec[N_MAX] = {
     1, 2, 3, 4,
@@ -7596,7 +7583,6 @@ cdflib_student_cdf_values(
   }
 
   return;
-# undef N_MAX
 }
 
 double
