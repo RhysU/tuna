@@ -517,7 +517,7 @@ cdflib_binomial_cdf_values(
  *    The value P of the cumulative distribution function is calculated
  *    directly by code associated with the reference.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -604,11 +604,11 @@ cdflib_cdfbet(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
- *    P is the probablility of S or fewer successes in XN binomial trials,
+ *    P is the probability of S or fewer successes in XN binomial trials,
  *    each trial having an individual probability of success of PR.
  *
  *  Modified:
@@ -691,7 +691,7 @@ cdflib_cdfbin(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -772,7 +772,7 @@ cdflib_cdfchi(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -864,7 +864,7 @@ cdflib_cdfchn(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -957,7 +957,7 @@ cdflib_cdff(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -1065,7 +1065,7 @@ cdflib_cdffnc(
  *
  *    The cumulative distribution function P is calculated directly.
  *
- *    Computation of the other parameters involves a seach for a value that
+ *    Computation of the other parameters involves a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -1152,7 +1152,7 @@ cdflib_cdfgam(
  *    F failures before S successes and is
  *    Choose( F, S+F-1 ) * PR^(S) * (1-PR)^F
  *
- *    Computation of other parameters involve a seach for a value that
+ *    Computation of other parameters involve a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -1318,7 +1318,7 @@ cdflib_cdfnor(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of other parameters involve a seach for a value that
+ *    Computation of other parameters involve a search for a value that
  *    produces the desired value of P.  The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
@@ -1387,7 +1387,7 @@ cdflib_cdfpoi(
  *    The value P of the cumulative distribution function is calculated
  *    directly.
  *
- *    Computation of other parameters involve a seach for a value that
+ *    Computation of other parameters involve a search for a value that
  *    produces the desired value of P.   The search relies on the
  *    monotonicity of P with respect to the other parameters.
  *
