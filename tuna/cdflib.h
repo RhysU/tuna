@@ -128,7 +128,7 @@ void cdflib_gamma_values ( int *n_data, double *x, double *fx );
 double cdflib_gamma_x ( double *a );
 double cdflib_gsumln ( double *a, double *b );
 int cdflib_ipmpar ( int *i );
-void negative_cdflib_binomial_cdf_values ( int *n_data, int *f, int *s, double *p, 
+void cdflib_negative_binomial_cdf_values ( int *n_data, int *f, int *s, double *p, 
   double *cdf );
 void cdflib_normal_cdf_values ( int *n_data, double *x, double *fx );
 void cdflib_poisson_cdf_values ( int *n_data, double *a, int *x, double *fx );

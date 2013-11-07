@@ -9952,7 +9952,7 @@ int cdflib_ipmpar ( int *i )
 }
 /******************************************************************************/
 
-void negative_cdflib_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
+void cdflib_negative_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
   double *cdf )
 
 /******************************************************************************/
