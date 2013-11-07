@@ -40,6 +40,11 @@ noinst_PROGRAMS     += tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
 tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
 
+TESTS               += tests/welch
+noinst_PROGRAMS     += tests/welch
+tests_welch_SOURCES  = tests/welch.c tests/fct.h
+tests_welch_LDADD    = tuna/libtuna.la $(LIBM)
+
 TESTS                += tests/kernel
 noinst_PROGRAMS      += tests/kernel
 tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
