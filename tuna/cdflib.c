@@ -1379,7 +1379,7 @@ cdflib_cdfbet(
   double K8 = 0.5e0;
   double K9 = 5.0e0;
   double fx,xhi,xlo,cum,ccum,xy,pq;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T4,T5,T6,T7,T10,T11,T12,T13,T14,T15;
 
   *status = 0;
@@ -1665,7 +1665,7 @@ cdflib_cdfbin(
   double K4 = 5.0e0;
   double K11 = 1.0e0;
   double fx,xhi,xlo,cum,ccum,pq,prompr;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T5,T6,T7,T8,T9,T10,T12,T13;
 
   *status = 0;
@@ -1950,7 +1950,7 @@ cdflib_cdfchi(
   double K4 = 0.5e0;
   double K5 = 5.0e0;
   double fx,cum,ccum,pq,porq=0;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T3,T6,T7,T8,T9,T10,T11;
 
   *status = 0;
@@ -2164,7 +2164,7 @@ cdflib_cdfchn(
   double K3 = 0.5e0;
   double K4 = 5.0e0;
   double fx,cum,ccum;
-  static unsigned long qhi,qleft;
+  unsigned long qhi,qleft;
   double T2,T5,T6,T7,T8,T9,T10,T11,T12,T13;
 
   *status = 0;
@@ -2351,7 +2351,7 @@ cdflib_cdff(
   double K4 = 0.5e0;
   double K5 = 5.0e0;
   double pq,fx,cum,ccum;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T3,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15;
 
   *status = 0;
@@ -2623,7 +2623,7 @@ cdflib_cdffnc(
   double K3 = 0.5e0;
   double K4 = 5.0e0;
   double fx,cum,ccum;
-  static unsigned long qhi,qleft;
+  unsigned long qhi,qleft;
   double T2,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17;
 
   *status = 0;
@@ -2852,7 +2852,7 @@ cdflib_cdfgam(
   double K6 = 5.0e0;
   double xx,fx,xscale,cum,ccum,pq,porq=0;
   int ierr;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T2,T3,T4,T7,T8,T9;
 
   *status = 0;
@@ -3067,7 +3067,7 @@ cdflib_cdfnbn(
   double K5 = 5.0e0;
   double K11 = 1.0e0;
   double fx,xhi,xlo,pq,prompr,cum,ccum;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T3,T6,T7,T8,T9,T10,T12,T13;
 
   *status = 0;
@@ -3466,7 +3466,7 @@ cdflib_cdfpoi(
   double K4 = 0.5e0;
   double K5 = 5.0e0;
   double fx,cum,ccum,pq;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T3,T6,T7,T8,T9,T10;
 
   *status = 0;
@@ -3655,7 +3655,7 @@ cdflib_cdft(
   double K4 = 0.5e0;
   double K5 = 5.0e0;
   double fx,cum,ccum,pq;
-  static unsigned long qhi,qleft,qporq;
+  unsigned long qhi,qleft,qporq;
   double T2,T3,T6,T7,T8,T9,T10,T11;
 
   *status = 0;
@@ -4600,7 +4600,7 @@ cdflib_dinvnr(
 
   double dinvnr,strtx,xcur,cum,ccum,pp,dx;
   int i;
-  static unsigned long qporq;
+  unsigned long qporq;
 
 //
 //     FIND MINIMUM OF P AND Q
@@ -4866,7 +4866,7 @@ cdflib_E0000(
   double big=0,fbig,fsmall,relstp,reltol,small=0,step,stpmul,xhi,
     xlb,xlo,xsave,xub,yy;
   int i99999 = 0;
-  static unsigned long qbdd,qcond,qdum1,qdum2,qincr,qlim,qup;
+  unsigned long qbdd,qcond,qdum1,qdum2,qincr,qlim,qup;
     switch(IENTRY){case 0: goto DINVR; case 1: goto DSTINV;}
 DINVR:
     if(*status > 0) goto S310;
@@ -5079,7 +5079,7 @@ cdflib_E0001(
   double a,abstol,b,c,d,fa,fb,fc,fd,fda;
   double fdb,m,mb,p,q,reltol,tol,w,xxhi=0,xxlo=0;
   int ext,i99999 = 0;
-  static unsigned long first,qrzero;
+  unsigned long first,qrzero;
     switch(IENTRY){case 0: goto DZROR; case 1: goto DSTZR;}
 DZROR:
     if(*status > 0) goto S280;
