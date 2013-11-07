@@ -246,7 +246,7 @@ cdflib_beta_asym(
   static double value;
   static double bsum,dsum,f,h,h2,hn,j0,j1,r,r0,r1,s,sum,t,t0,t1,u,w,w0,z,z0,
     z2,zn,znm1;
-  static int i,im1,imj,j,m,mm1,mmj,n,np1;
+  int i,im1,imj,j,m,mm1,mmj,n,np1;
   static double a0[21],b0[21],c[21],d[21],T1,T2;
 
     value = 0.0e0;
@@ -416,7 +416,7 @@ cdflib_beta_grat(
     int* ierr)
 {
   static double bm1,bp2n,cn,coef,dj,j,l,lnx,n2,nu,p,q,r,s,sum,t,t2,u,v,z;
-  static int i,n,nm1;
+  int i,n,nm1;
   static double c[30],d[30],T1;
 
     bm1 = *b-0.5e0-0.5e0;
@@ -498,7 +498,7 @@ cdflib_beta_inc(
 {
   static const int K1 = 1;
   static double a0,b0,eps,lambda,t,x0,y0,z;
-  static int ierr1,ind,n;
+  int ierr1,ind,n;
   static double T2,T3,T4,T5;
 //
 //  EPS IS A MACHINE DEPENDENT CONSTANT. EPS IS THE SMALLEST
@@ -772,7 +772,7 @@ cdflib_beta_log(
 {
   static const double e = .918938533204673e0;
   static double value,a,b,c,h,u,v,w,z;
-  static int i,n;
+  int i,n;
   static double T1;
 
     a = cdflib_fifdmin1(*a0,*b0);
@@ -870,7 +870,7 @@ cdflib_beta_pser(
     double* eps)
 {
   static double bpser,a0,apb,b0,c,n,sum,t,tol,u,w,z;
-  static int i,m;
+  int i,m;
 
     bpser = 0.0e0;
     if(*x == 0.0e0) return bpser;
@@ -963,7 +963,7 @@ cdflib_beta_cdflib_rcomp(
 {
   static const double Const = .398942280401433e0;
   static double brcomp,a0,apb,b0,c,e,h,lambda,lnx,lny,t,u,v,x0,y0,z;
-  static int i,n;
+  int i,n;
 //
 //  CONST = 1/SQRT(2*PI)
 //
@@ -1095,7 +1095,7 @@ cdflib_beta_rcomp1(
 {
   static const double Const = .398942280401433e0;
   static double brcmp1,a0,apb,b0,c,e,h,lambda,lnx,lny,t,u,v,x0,y0,z;
-  static int i,n;
+  int i,n;
 //
 //     CONST = 1/SQRT(2*PI)
 //
@@ -1229,7 +1229,7 @@ cdflib_beta_up(
   static const int K1 = 1;
   static const int K2 = 0;
   static double bup,ap1,apb,d,l,r,t,w;
-  static int i,k,kp1,mu,nm1;
+  int i,k,kp1,mu,nm1;
 //
 //  OBTAIN THE SCALING FACTOR EXP(-MU) AND
 //  EXP(MU)*(X**A*Y**B/BETA(A,B))/A
@@ -2851,7 +2851,7 @@ cdflib_cdfgam(
   static double K5 = 0.5e0;
   static double K6 = 5.0e0;
   static double xx,fx,xscale,cum,ccum,pq,porq;
-  static int ierr;
+  int ierr;
   static unsigned long qhi,qleft,qporq;
   static double T2,T3,T4,T7,T8,T9;
 
@@ -3957,7 +3957,7 @@ cdflib_cumbet(
     double* cum,
     double* ccum)
 {
-  static int ierr;
+  int ierr;
 
   if ( *x <= 0.0 )
   {
@@ -4029,11 +4029,11 @@ cdflib_cumchn(
 # define qsmall(xx) (int)(sum < 1.0e-20 || (xx) < eps*sum)
 # define qtired(i) (int)((i) > ntired)
 
-  static double eps = 1.0e-5;
-  static int ntired = 1000;
+  static const double eps = 1.0e-5;
+  static const int ntired = 1000;
   static double adj,centaj,centwt,chid2,dfd2,lcntaj,lcntwt,lfact,pcent,pterm,sum,
     sumadj,term,wt,xnonc;
-  static int i,icent,iterb,iterf;
+  int i,icent,iterb,iterf;
   static double T1,T2,T3;
 
     if(!(*x <= 0.0e0)) goto S10;
@@ -4170,7 +4170,7 @@ cdflib_cumf(
   static const double done = 1.0e0;
 
   static double dsum,prod,xx,yy;
-  static int ierr;
+  int ierr;
   static double T1,T2;
 
   if(!(*f <= 0.0e0)) goto S10;
@@ -4220,7 +4220,7 @@ cdflib_cumfnc(
   static const double eps = 1.0e-4;
   static double dsum,dummy,prod,xx,yy,adn,aup,b,betdn,betup,centwt,dnterm,sum,
     upterm,xmult,xnonc;
-  static int i,icent,ierr;
+  int i,icent,ierr;
   static double T1,T2,T3,T4,T5,T6;
 
     if(!(*f <= 0.0e0)) goto S10;
@@ -4397,7 +4397,7 @@ cdflib_cumnor(
   static const double zero = 0.0e0;
   static const int K1 = 1;
   static const int K2 = 2;
-  static int i;
+  int i;
   static double del,eps,temp,x,xden,xnum,y,xsq,min;
 //
 //  Machine dependent constants
@@ -4599,7 +4599,7 @@ cdflib_dinvnr(
   static const double nhalf = -0.5e0;
 
   static double dinvnr,strtx,xcur,cum,ccum,pp,dx;
-  static int i;
+  int i;
   static unsigned long qporq;
 
 //
@@ -4689,7 +4689,7 @@ cdflib_dpmpar(
   static const int K3 = 9;
   static const int K4 = 10;
   static double value,b,binv,bm1,one,w,z;
-  static int emax,emin,ibeta,m;
+  int emax,emin,ibeta,m;
 
     if(i > 1) goto S10;
     b = cdflib_ipmpar(K1);
@@ -4808,7 +4808,7 @@ cdflib_dt1(
     2,3,4,5
   };
   static double dt1,denpow,sum,term,x,xp,xx;
-  static int i;
+  int i;
 
     x = fabs(cdflib_dinvnr(p,q));
     xx = x*x;
@@ -4865,7 +4865,7 @@ cdflib_E0000(
   static double abstol;
   static double big,fbig,fsmall,relstp,reltol,small,step,stpmul,xhi,
     xlb,xlo,xsave,xub,yy;
-  static int i99999;
+  int i99999 = 0;
   static unsigned long qbdd,qcond,qdum1,qdum2,qincr,qlim,qup;
     switch(IENTRY){case 0: goto DINVR; case 1: goto DSTINV;}
 DINVR:
@@ -5078,7 +5078,7 @@ cdflib_E0001(
 
   static double a,abstol,b,c,d,fa,fb,fc,fd,fda;
   static double fdb,m,mb,p,q,reltol,tol,w,xxhi,xxlo;
-  static int ext,i99999;
+  int ext,i99999 = 0;
   static unsigned long first,qrzero;
     switch(IENTRY){case 0: goto DZROR; case 1: goto DSTZR;}
 DZROR:
@@ -5468,7 +5468,7 @@ cdflib_eval_pol(
     double* x)
 {
   static double devlpl,term;
-  static int i;
+  int i;
 
   term = a[*n-1];
   for ( i = *n-1-1; i >= 0; i-- )
@@ -5488,7 +5488,7 @@ cdflib_exparg(
   static const int K2 = 9;
   static const int K3 = 10;
   static double exparg,lnb;
-  static int b,m;
+  int b,m;
 
     b = cdflib_ipmpar(K1);
     if(b != 2) goto S10;
@@ -5883,9 +5883,9 @@ cdflib_gamma_inc(
   static const int K2 = 0;
   static double a2n,a2nm1,acc,am0,amn,an,an0,apn,b2n,b2nm1,c,c0,c1,c2,c3,c4,c5,c6,
     cma,e,e0,g,h,j,l,r,rta,rtx,s,sum,t,t1,tol,twoa,u,w,x0,y,z;
-  static int i,iop,m,max,n;
+  int i,iop,m,max,n;
   static double wk[20],T3;
-  static int T4,T5;
+  int T4,T5;
   static double T6,T7;
 
 //
@@ -6248,7 +6248,7 @@ cdflib_gamma_inc_inv(
   static const int K8 = 0;
   static double am1,amax,ap1,ap2,ap3,apn,b,c1,c2,c3,c4,c5,d,e,e2,eps,g,h,pn,qg,qn,
     r,rta,s,s2,sum,t,u,w,xmax,xmin,xn,y,z;
-  static int iop;
+  int iop;
   static double T4,T5,T6,T7,T9;
 
 //
@@ -6626,7 +6626,7 @@ cdflib_gamma_log(
   static const double c5 = -.165322962780713e-02;
   static const double d = .418938533204673e0;
   static double gamln,t,w;
-  static int i,n;
+  int i,n;
   static double T1;
 
     if(*a > 0.8e0) goto S10;
@@ -6820,7 +6820,7 @@ cdflib_gamma_x(
   static const int K2 = 3;
   static const int K3 = 0;
   static double Xgamm,bot,g,lnx,s,t,top,w,x,z;
-  static int i,j,m,n,T1;
+  int i,j,m,n,T1;
 
     Xgamm = 0.0e0;
     x = *a;
@@ -7176,7 +7176,7 @@ cdflib_psi(
   static const int K1 = 3;
   static const int K2 = 1;
   static double psi,aug,den,sgn,upper,w,x,xmax1,xmx0,xsmall,z;
-  static int i,m,n,nq;
+  int i,m,n,nq;
 //
 //     MACHINE DEPENDENT CONSTANTS ...
 //        XMAX1  = THE SMALLEST POSITIVE FLOATING POINT CONSTANT
