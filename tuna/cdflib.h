@@ -3777,36 +3777,6 @@ double
 cdflib_stvaln(
     double* p);
 
-/******************************************************************************/
-/*
-  Purpose:
-
-    TIMESTAMP prints the current YMDHMS date as a time stamp.
-
-  Example:
-
-    31 May 2001 09:45:54 AM
-
-  Licensing:
-
-    This code is distributed under the GNU LGPL license. 
-
-  Modified:
-
-    24 September 2003
-
-  Author:
-
-    John Burkardt
-
-  Parameters:
-
-    None
-*/
-void
-cdflib_timestamp(
-    void);
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
