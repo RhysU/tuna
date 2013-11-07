@@ -88,7 +88,7 @@ static inline
 double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
                          double xB, double sB2, size_t nB)
 {
-    return erfc(-tuna_welch_t(xA, sA2, nA, xB, sB2, nB) * M_SQRT1_2) / 2;
+    return 1 - erfc(-tuna_welch_t(xA, sA2, nA, xB, sB2, nB) * M_SQRT1_2) / 2;
 }
 
 /**
@@ -112,7 +112,7 @@ double tuna_welch1_approx(double xA, double sA2, size_t nA,
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
     if (nu > 2) t *= nu / (nu - 2);
-    return erfc(-t * M_SQRT1_2) / 2;
+    return 1 - erfc(-t * M_SQRT1_2) / 2;
 }
 
 //// TODO Implement a one-sided test using t-distn facts to broaden variances

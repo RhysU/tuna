@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         // Which branch should be taken this iteration?
         const int ndx = tuna_stats_cnt(s+0) < b ? 0
                       : tuna_stats_cnt(s+1) < b ? 1
-                      : tuna_stats_welch1(s+0,s+1) > U01();
+                      : tuna_stats_welch1(s+0,s+1) < U01();
 
         // Take the branch, tracking the "elapsed" time.
         double elapsed;
