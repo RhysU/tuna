@@ -24,6 +24,7 @@ extern "C" {
  * \brief
  *   ALGDIV computes ln ( Gamma ( B ) / Gamma ( A + B ) ) when 8 <= B.
  *
+ * <pre>
  * Discussion:
  *
  *   In this algorithm, DEL(X) is the function defined by
@@ -36,6 +37,7 @@ extern "C" {
  *   Input, double *A, *B, define the arguments.
  *
  *   Output, double ALGDIV, the value of ln(Gamma(B)/Gamma(A+B)).
+ * </pre>
  */
 double
 cdflib_algdiv(
@@ -46,6 +48,7 @@ cdflib_algdiv(
  * \brief
  *   ALNREL evaluates the function ln ( 1 + A ).
  *
+ * <pre>
  * Modified:
  *
  *   17 November 2006
@@ -63,6 +66,7 @@ cdflib_algdiv(
  *   Input, double *A, the argument.
  *
  *   Output, double ALNREL, the value of ln ( 1 + A ).
+ * </pre>
  */
 double
 cdflib_alnrel(
@@ -72,6 +76,7 @@ cdflib_alnrel(
  * \brief
  *   APSER computes the incomplete beta ratio I(SUB(1-X))(B,A).
  *
+ * <pre>
  * Discussion:
  *
  *   APSER is used only for cases where
@@ -89,6 +94,7 @@ cdflib_alnrel(
  *
  *   Output, double APSER, the computed value of the
  *   incomplete beta ratio.
+ * </pre>
  */
 double
 cdflib_apser(
@@ -102,6 +108,7 @@ cdflib_apser(
  * \brief
  *   BCORR evaluates DEL(A0) + DEL(B0) - DEL(A0 + B0).
  *
+ * <pre>
  * Discussion:
  *
  *   The function DEL(A) is a remainder term that is used in the expression:
@@ -120,6 +127,7 @@ cdflib_apser(
  *   It is assumed that 8 <= A0 and 8 <= B0.
  *
  *   Output, double *BCORR, the value of the function.
+ * </pre>
  */
 double
 cdflib_bcorr(
@@ -130,6 +138,7 @@ cdflib_bcorr(
  * \brief
  *   BETA evaluates the beta function.
  *
+ * <pre>
  * Modified:
  *
  *   03 December 1999
@@ -143,6 +152,7 @@ cdflib_bcorr(
  *   Input, double A, B, the arguments of the beta function.
  *
  *   Output, double BETA, the value of the beta function.
+ * </pre>
  */
 double
 cdflib_beta(
@@ -153,6 +163,7 @@ cdflib_beta(
  * \brief
  *   BETA_ASYM computes an asymptotic expansion for IX(A,B), for large A and B.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *B, the parameters of the function.
@@ -163,6 +174,7 @@ cdflib_beta(
  *   It is assumed that 0 <= LAMBDA.
  *
  *   Input, double *EPS, the tolerance.
+ * </pre>
  */
 double
 cdflib_beta_asym(
@@ -175,6 +187,7 @@ cdflib_beta_asym(
  * \brief
  *   BETA_FRAC evaluates a continued fraction expansion for IX(A,B).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *B, the parameters of the function.
@@ -190,6 +203,7 @@ cdflib_beta_asym(
  *
  *   Output, double BETA_FRAC, the value of the continued
  *   fraction approximation for IX(A,B).
+ * </pre>
  */
 double
 cdflib_beta_frac(
@@ -204,6 +218,7 @@ cdflib_beta_frac(
  * \brief
  *   BETA_GRAT evaluates an asymptotic expansion for IX(A,B).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *B, the parameters of the function.
@@ -220,6 +235,7 @@ cdflib_beta_frac(
  *
  *   Output, int *IERR, an error flag, which is 0 if no error
  *   was detected.
+ * </pre>
  */
 void
 cdflib_beta_grat(
@@ -235,6 +251,7 @@ cdflib_beta_grat(
  * \brief
  *   BETA_INC evaluates the incomplete beta function IX(A,B).
  *
+ * <pre>
  * Author:
  *
  *   Alfred H Morris, Jr,
@@ -261,6 +278,7 @@ cdflib_beta_grat(
  *   5, X + Y /= 1;
  *   6, X = A = 0;
  *   7, Y = B = 0.
+ * </pre>
  */
 void
 cdflib_beta_inc(
@@ -276,6 +294,7 @@ cdflib_beta_inc(
  * \brief
  *   BETA_INC_VALUES returns some values of the incomplete Beta function.
  *
+ * <pre>
  * Discussion:
  *
  *   The incomplete Beta function may be written
@@ -327,6 +346,7 @@ cdflib_beta_inc(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_beta_inc_values(
@@ -340,6 +360,7 @@ cdflib_beta_inc_values(
  * \brief
  *   BETA_LOG evaluates the logarithm of the beta function.
  *
+ * <pre>
  * Reference:
  *
  *   Armido DiDinato and Alfred Morris,
@@ -355,6 +376,7 @@ cdflib_beta_inc_values(
  *
  *   Output, double *BETA_LOG, the value of the logarithm
  *   of the Beta function.
+ * </pre>
  */
 double
 cdflib_beta_log(
@@ -365,6 +387,7 @@ cdflib_beta_log(
  * \brief
  *   BETA_PSER uses a power series expansion to evaluate IX(A,B)(X).
  *
+ * <pre>
  * Discussion:
  *
  *   BETA_PSER is used when B <= 1 or B*X <= 0.7.
@@ -379,6 +402,7 @@ cdflib_beta_log(
  *   Input, double *EPS, the tolerance.
  *
  *   Output, double BETA_PSER, the approximate value of IX(A,B)(X).
+ * </pre>
  */
 double
 cdflib_beta_pser(
@@ -391,6 +415,7 @@ cdflib_beta_pser(
  * \brief
  *   BETA_RCOMP evaluates X**A * Y**B / Beta(A,B).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *B, the parameters of the Beta function.
@@ -399,6 +424,7 @@ cdflib_beta_pser(
  *   Input, double *X, *Y, define the numerator of the fraction.
  *
  *   Output, double BETA_RCOMP, the value of X**A * Y**B / Beta(A,B).
+ * </pre>
  */
 double
 cdflib_beta_cdflib_rcomp(
@@ -411,6 +437,7 @@ cdflib_beta_cdflib_rcomp(
  * \brief
  *   BETA_RCOMP1 evaluates exp(MU) * X**A * Y**B / Beta(A,B).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, int MU, ?
@@ -422,6 +449,7 @@ cdflib_beta_cdflib_rcomp(
  *
  *   Output, double BETA_RCOMP1, the value of
  *   exp(MU) * X**A * Y**B / Beta(A,B).
+ * </pre>
  */
 double
 cdflib_beta_rcomp1(
@@ -435,6 +463,7 @@ cdflib_beta_rcomp1(
  * \brief
  *   BETA_UP evaluates IX(A,B) - IX(A+N,B) where N is a positive integer.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *B, the parameters of the function.
@@ -447,6 +476,7 @@ cdflib_beta_rcomp1(
  *   Input, double *EPS, the tolerance.
  *
  *   Output, double BETA_UP, the value of IX(A,B) - IX(A+N,B).
+ * </pre>
  */
 double
 cdflib_beta_up(
@@ -461,6 +491,7 @@ cdflib_beta_up(
  * \brief
  *   BINOMIAL_CDF_VALUES returns some values of the binomial CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   CDF(X)(A,B) is the probability of at most X successes in A trials,
@@ -496,6 +527,7 @@ cdflib_beta_up(
  *   Output, int *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_binomial_cdf_values(
@@ -509,6 +541,7 @@ cdflib_binomial_cdf_values(
  * \brief
  *   CDFBET evaluates the CDF of the Beta Distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the beta distribution
@@ -579,6 +612,7 @@ cdflib_binomial_cdf_values(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfbet(
@@ -596,6 +630,7 @@ cdflib_cdfbet(
  * \brief
  *   CDFBIN evaluates the CDF of the Binomial distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the binomial distribution
@@ -666,6 +701,7 @@ cdflib_cdfbet(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfbin(
@@ -683,6 +719,7 @@ cdflib_cdfbin(
  * \brief
  *   CDFCHI evaluates the CDF of the chi square distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the chi square distribution
@@ -749,6 +786,7 @@ cdflib_cdfbin(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfchi(
@@ -764,6 +802,7 @@ cdflib_cdfchi(
  * \brief
  *   CDFCHN evaluates the CDF of the Noncentral Chi-Square.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the noncentral chi-square
@@ -840,6 +879,7 @@ cdflib_cdfchi(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfchn(
@@ -856,6 +896,7 @@ cdflib_cdfchn(
  * \brief
  *   CDFF evaluates the CDF of the F distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the F distribution
@@ -925,6 +966,7 @@ cdflib_cdfchn(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdff(
@@ -941,6 +983,7 @@ cdflib_cdff(
  * \brief
  *   CDFFNC evaluates the CDF of the Noncentral F distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine originally used 1.0E+300 as the upper bound for the
@@ -1041,6 +1084,7 @@ cdflib_cdff(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdffnc(
@@ -1058,6 +1102,7 @@ cdflib_cdffnc(
  * \brief
  *   CDFGAM evaluates the CDF of the Gamma Distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the Gamma distribution
@@ -1122,6 +1167,7 @@ cdflib_cdffnc(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfgam(
@@ -1138,6 +1184,7 @@ cdflib_cdfgam(
  * \brief
  *   CDFNBN evaluates the CDF of the Negative Binomial distribution
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the negative binomial
@@ -1208,6 +1255,7 @@ cdflib_cdfgam(
  *   Output, double BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfnbn(
@@ -1225,6 +1273,7 @@ cdflib_cdfnbn(
  * \brief
  *   CDFNOR evaluates the CDF of the Normal distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   A slightly modified version of ANORM from SPECFUN
@@ -1294,6 +1343,7 @@ cdflib_cdfnbn(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfnor(
@@ -1310,6 +1360,7 @@ cdflib_cdfnor(
  * \brief
  *   CDFPOI evaluates the CDF of the Poisson distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the Poisson distribution
@@ -1364,6 +1415,7 @@ cdflib_cdfnor(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdfpoi(
@@ -1379,6 +1431,7 @@ cdflib_cdfpoi(
  * \brief
  *   CDFT evaluates the CDF of the T distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates any one parameter of the T distribution
@@ -1437,6 +1490,7 @@ cdflib_cdfpoi(
  *   Output, double *BOUND, is only defined if STATUS is nonzero.
  *   If STATUS is negative, then this is the value exceeded by parameter I.
  *   if STATUS is 1 or 2, this is the search bound that was exceeded.
+ * </pre>
  */
 void
 cdflib_cdft(
@@ -1452,6 +1506,7 @@ cdflib_cdft(
  * \brief
  *   CHI_NONCENTRAL_CDF_VALUES returns values of the noncentral chi CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   The CDF of the noncentral chi square distribution can be evaluated
@@ -1489,6 +1544,7 @@ cdflib_cdft(
  *   Output, int *DF, the number of degrees of freedom.
  *
  *   Output, double *CDF, the noncentral chi CDF.
+ * </pre>
  */
 void
 cdflib_chi_noncentral_cdf_values(
@@ -1502,6 +1558,7 @@ cdflib_chi_noncentral_cdf_values(
  * \brief
  *   CHI_SQUARE_CDF_VALUES returns some values of the Chi-Square CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   The value of CHI_CDF ( DF, X ) can be evaluated in Mathematica by
@@ -1541,6 +1598,7 @@ cdflib_chi_noncentral_cdf_values(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_chi_square_cdf_values(
@@ -1553,6 +1611,7 @@ cdflib_chi_square_cdf_values(
  * \brief
  *   CUMBET evaluates the cumulative incomplete beta distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine calculates the CDF to X of the incomplete beta distribution
@@ -1581,6 +1640,7 @@ cdflib_chi_square_cdf_values(
  *
  *   Output, double *CUM, *CCUM, the values of the cumulative
  *   density function and complementary cumulative density function.
+ * </pre>
  */
 void
 cdflib_cumbet(
@@ -1595,6 +1655,7 @@ cdflib_cumbet(
  * \brief
  *   CUMBIN evaluates the cumulative binomial distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine returns the probability of 0 to S successes in XN binomial
@@ -1624,6 +1685,7 @@ cdflib_cumbet(
  *
  *   Output, double *CCUM, the complement of the cumulative
  *   binomial distribution.
+ * </pre>
  */
 void
 cdflib_cumbin(
@@ -1638,6 +1700,7 @@ cdflib_cumbin(
  * \brief
  *   CUMCHI evaluates the cumulative chi-square distribution.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *X, the upper limit of integration.
@@ -1649,6 +1712,7 @@ cdflib_cumbin(
  *
  *   Output, double *CCUM, the complement of the cumulative
  *   chi-square distribution.
+ * </pre>
  */
 void
 cdflib_cumchi(
@@ -1661,6 +1725,7 @@ cdflib_cumchi(
  * \brief
  *   CUMCHN evaluates the cumulative noncentral chi-square distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   Calculates the cumulative noncentral chi-square
@@ -1697,6 +1762,7 @@ cdflib_cumchi(
  *
  *   Local, bool QCONV, is TRUE if convergence was achieved, that is,
  *   the program did not stop on NTIRED criterion.
+ * </pre>
  */
 void
 cdflib_cumchn(
@@ -1710,6 +1776,7 @@ cdflib_cumchn(
  * \brief
  *   CUMF evaluates the cumulative F distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   CUMF computes the integral from 0 to F of the F density with DFN
@@ -1730,6 +1797,7 @@ cdflib_cumchn(
  *
  *   Output, double *CUM, *CCUM, the value of the F CDF and
  *   the complementary F CDF.
+ * </pre>
  */
 void
 cdflib_cumf(
@@ -1743,6 +1811,7 @@ cdflib_cumf(
  * \brief
  *   CUMFNC evaluates the cumulative noncentral F distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine computes the noncentral F distribution with DFN and DFD
@@ -1785,6 +1854,7 @@ cdflib_cumf(
  *
  *   Output, double *CUM, *CCUM, the noncentral F CDF and
  *   complementary CDF.
+ * </pre>
  */
 void
 cdflib_cumfnc(
@@ -1799,6 +1869,7 @@ cdflib_cumfnc(
  * \brief
  *   CUMGAM evaluates the cumulative incomplete gamma distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine computes the cumulative distribution function of the
@@ -1819,6 +1890,7 @@ cdflib_cumfnc(
  *
  *   Output, double *CUM, *CCUM, the incomplete Gamma CDF and
  *   complementary CDF.
+ * </pre>
  */
 void
 cdflib_cumgam(
@@ -1831,6 +1903,7 @@ cdflib_cumgam(
  * \brief
  *   CUMNBN evaluates the cumulative negative binomial distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine returns the probability that there will be F or
@@ -1859,6 +1932,7 @@ cdflib_cumgam(
  *
  *   Output, double *CUM, *CCUM, the negative binomial CDF,
  *   and the complementary CDF.
+ * </pre>
  */
 void
 cdflib_cumnbn(
@@ -1873,6 +1947,7 @@ cdflib_cumnbn(
  * \brief
  *   CUMNOR computes the cumulative normal distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   This function evaluates the normal distribution function:
@@ -1924,6 +1999,7 @@ cdflib_cumnbn(
  *   may be represented by 0.5D+00 and above which  x*x  will not underflow.
  *   A conservative value is the largest machine number X
  *   such that   1.0D+00 + X = 1.0D+00   to machine precision.
+ * </pre>
  */
 void
 cdflib_cumnor(
@@ -1935,6 +2011,7 @@ cdflib_cumnor(
  * \brief
  *   CUMPOI evaluates the cumulative Poisson distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   CUMPOI returns the probability of S or fewer events in a Poisson
@@ -1955,6 +2032,7 @@ cdflib_cumnor(
  *
  *   Output, double *CUM, *CCUM, the Poisson density CDF and
  *   complementary CDF.
+ * </pre>
  */
 void
 cdflib_cumpoi(
@@ -1967,6 +2045,7 @@ cdflib_cumpoi(
  * \brief
  *   CUMT evaluates the cumulative T distribution.
  *
+ * <pre>
  * Reference:
  *
  *   Milton Abramowitz and Irene Stegun,
@@ -1982,6 +2061,7 @@ cdflib_cumpoi(
  *
  *   Output, double *CUM, *CCUM, the T distribution CDF and
  *   complementary CDF.
+ * </pre>
  */
 void
 cdflib_cumt(
@@ -1994,6 +2074,7 @@ cdflib_cumt(
  * \brief
  *   DBETRM computes the Sterling remainder for the complete beta function.
  *
+ * <pre>
  * Discussion:
  *
  *   Log(Beta(A,B)) = Lgamma(A) + Lgamma(B) - Lgamma(A+B)
@@ -2010,6 +2091,7 @@ cdflib_cumt(
  *   Input, double *A, *B, the parameters of the Beta function.
  *
  *   Output, double DBETRM, the Sterling remainder.
+ * </pre>
  */
 double
 cdflib_dbetrm(
@@ -2020,6 +2102,7 @@ cdflib_dbetrm(
  * \brief
  *   DEXPM1 evaluates the function EXP(X) - 1.
  *
+ * <pre>
  * Reference:
  *
  *   Armido DiDinato and Alfred Morris,
@@ -2033,6 +2116,7 @@ cdflib_dbetrm(
  *   Input, double *X, the value at which exp(X)-1 is desired.
  *
  *   Output, double DEXPM1, the value of exp(X)-1.
+ * </pre>
  */
 double
 cdflib_dexpm1(
@@ -2042,6 +2126,7 @@ cdflib_dexpm1(
  * \brief
  *   DINVNR computes the inverse of the normal distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   Returns X such that CUMNOR(X)  =   P,  i.e., the  integral from -
@@ -2064,6 +2149,7 @@ cdflib_dexpm1(
  *
  *   Output, double DINVNR, the argument X for which the
  *   Normal CDF has the value P.
+ * </pre>
  */
 double
 cdflib_dinvnr(
@@ -2074,6 +2160,7 @@ cdflib_dinvnr(
  * \brief
  *   DINVR bounds the zero of the function and invokes DZROR.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine seeks to find bounds on a root of the function and
@@ -2113,6 +2200,7 @@ cdflib_dinvnr(
  *   Output, logical QHI, is defined only if QMFINV returns FALSE.  In that
  *   case, it is TRUE if Y < F(X) at the termination of the search and FALSE
  *   if F(X) < Y.
+ * </pre>
  */
 void
 cdflib_dinvr(
@@ -2126,6 +2214,7 @@ cdflib_dinvr(
  * \brief
  *   DLANOR evaluates the logarithm of the asymptotic Normal CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine computes the logarithm of the cumulative normal distribution
@@ -2146,6 +2235,7 @@ cdflib_dinvr(
  *
  *   Output, double DLANOR, the logarithm of the asymptotic
  *   Normal CDF.
+ * </pre>
  */
 double
 cdflib_dlanor(
@@ -2155,6 +2245,7 @@ cdflib_dlanor(
  * \brief
  *   DPMPAR provides machine constants for double precision arithmetic.
  *
+ * <pre>
  * Discussion:
  *
  *    DPMPAR PROVIDES THE double PRECISION MACHINE CONSTANTS FOR
@@ -2177,6 +2268,7 @@ cdflib_dlanor(
  *    MODIFIED BY BARRY W. BROWN TO RETURN DOUBLE PRECISION MACHINE
  *    CONSTANTS FOR THE COMPUTER BEING USED.  THIS MODIFICATION WAS
  *    MADE AS PART OF CONVERTING BRATIO TO DOUBLE PRECISION
+ * </pre>
  */
 double
 cdflib_dpmpar(
@@ -2186,6 +2278,7 @@ cdflib_dpmpar(
  * \brief
  *   DSTINV seeks a value X such that F(X) = Y.
  *
+ * <pre>
  * Discussion:
  *
  *     Double Precision - SeT INverse finder - Reverse Communication
@@ -2244,6 +2337,7 @@ cdflib_dpmpar(
  *    Software, Volume 1, No. 4 page 330 (DEC. '75) is employed
  *    to find the zero of the function F(X)-Y. This is routine
  *    QRZERO.
+ * </pre>
  */
 void
 cdflib_dstinv(
@@ -2259,6 +2353,7 @@ cdflib_dstinv(
  * \brief
  *   DSTREM computes the Sterling remainder ln ( Gamma ( Z ) ) - Sterling ( Z ).
  *
+ * <pre>
  * Discussion:
  *
  *   This routine returns
@@ -2284,6 +2379,7 @@ cdflib_dstinv(
  *   remainder is to be calculated.  Z must be positive.
  *
  *   Output, double DSTREM, the Sterling remainder.
+ * </pre>
  */
 double
 cdflib_dstrem(
@@ -2293,6 +2389,7 @@ cdflib_dstrem(
  * \brief
  *   DSTXR sets quantities needed by the zero finder.
  *
+ * <pre>
  * Discussion:
  *
  *    Double precision SeT ZeRo finder - Reverse communication version
@@ -2333,6 +2430,7 @@ cdflib_dstrem(
  *    by J. C. P. Bus and T. J. Dekker in ACM Transactions on
  *    Mathematical Software, Volume 1, no. 4 page 330
  *    (Dec. '75) is employed to find the zero of F(X)-Y.
+ * </pre>
  */
 void
 cdflib_dstzr(
@@ -2345,6 +2443,7 @@ cdflib_dstzr(
  * \brief
  *   DT1 computes an approximate inverse of the cumulative T distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   Returns the inverse of the T distribution function, i.e.,
@@ -2361,6 +2460,7 @@ cdflib_dstzr(
  *
  *   Output, double DT1, the approximate value of X for which
  *   the T density CDF with DF degrees of freedom has value P.
+ * </pre>
  */
 double
 cdflib_dt1(
@@ -2372,6 +2472,7 @@ cdflib_dt1(
  * \brief
  *   DZROR seeks the zero of a function using reverse communication.
  *
+ * <pre>
  * Discussion:
  *
  *    Performs the zero finding.  STZROR must have been called before
@@ -2423,6 +2524,7 @@ cdflib_dt1(
  *             termination of the search.
  *                   QHI is LOGICAL
  *
+ * </pre>
  */
 void
 cdflib_dzror(
@@ -2477,6 +2579,7 @@ cdflib_E0001(
  * \brief
  *   ERF_VALUES returns some values of the ERF or "error" function.
  *
+ * <pre>
  * Definition:
  *
  *   ERF(X) = ( 2 / sqrt ( PI ) * integral ( 0 <= T <= X ) exp ( - T^2 ) dT
@@ -2505,6 +2608,7 @@ cdflib_E0001(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_erf_values(
@@ -2516,11 +2620,13 @@ cdflib_erf_values(
  * \brief
  *   ERROR_F evaluates the error function ERF.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *X, the argument.
  *
  *   Output, double ERROR_F, the value of the error function at X.
+ * </pre>
  */
 double
 cdflib_error_f(
@@ -2530,6 +2636,7 @@ cdflib_error_f(
  * \brief
  *   ERROR_FC evaluates the complementary error function ERFC.
  *
+ * <pre>
  * Modified:
  *
  *   09 December 1999
@@ -2544,6 +2651,7 @@ cdflib_error_f(
  *
  *   Output, double ERROR_FC, the value of the complementary
  *   error function.
+ * </pre>
  */
 double
 cdflib_error_fc(
@@ -2554,6 +2662,7 @@ cdflib_error_fc(
  * \brief
  *   ESUM evaluates exp ( MU + X ).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, int *MU, part of the argument.
@@ -2561,6 +2670,7 @@ cdflib_error_fc(
  *   Input, double *X, part of the argument.
  *
  *   Output, double ESUM, the value of exp ( MU + X ).
+ * </pre>
  */
 double
 cdflib_esum(
@@ -2571,6 +2681,7 @@ cdflib_esum(
  * \brief
  *   EVAL_POL evaluates a polynomial at X.
  *
+ * <pre>
  * Discussion:
  *
  *   EVAL_POL = A(0) + A(1)*X + ... + A(N)*X**N
@@ -2589,6 +2700,7 @@ cdflib_esum(
  *   is to be evaluated.
  *
  *   Output, double EVAL_POL, the value of the polynomial at X.
+ * </pre>
  */
 double
 cdflib_eval_pol(
@@ -2600,6 +2712,7 @@ cdflib_eval_pol(
  * \brief
  *   EXPARG returns the largest or smallest legal argument for EXP.
  *
+ * <pre>
  * Discussion:
  *
  *   Only an approximate limit for the argument of EXP is desired.
@@ -2616,6 +2729,7 @@ cdflib_eval_pol(
  *   result is nonzero is desired.
  *
  *   Output, double EXPARG, the desired value.
+ * </pre>
  */
 double
 cdflib_exparg(
@@ -2625,6 +2739,7 @@ cdflib_exparg(
  * \brief
  *   F_CDF_VALUES returns some values of the F CDF test function.
  *
+ * <pre>
  * Discussion:
  *
  *   The value of F_CDF ( DFN, DFD, X ) can be evaluated in Mathematica by
@@ -2664,6 +2779,7 @@ cdflib_exparg(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_f_cdf_values(
@@ -2677,6 +2793,7 @@ cdflib_f_cdf_values(
  * \brief
  *   F_NONCENTRAL_CDF_VALUES returns some values of the F CDF test function.
  *
+ * <pre>
  * Discussion:
  *
  *   The value of NONCENTRAL_F_CDF ( DFN, DFD, LAMDA, X ) can be evaluated
@@ -2717,6 +2834,7 @@ cdflib_f_cdf_values(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_f_noncentral_cdf_values(
@@ -2731,9 +2849,11 @@ cdflib_f_noncentral_cdf_values(
  * \brief
  *   FIFDINT truncates a double number to an integer.
  *
+ * <pre>
  * Parameters:
  *
- * a     -     number to be truncated
+ *   a     -     number to be truncated
+ * </pre>
  */
 double
 cdflib_fifdint(
@@ -2743,10 +2863,12 @@ cdflib_fifdint(
  * \brief
  *   FIFDMAX1 returns the maximum of two numbers a and b
  *
+ * <pre>
  * Parameters:
  *
- * a     -      first number
- * b     -      second number
+ *   a     -      first number
+ *   b     -      second number
+ * </pre>
  */
 double
 cdflib_fifdmax1(
@@ -2757,10 +2879,12 @@ cdflib_fifdmax1(
  * \brief
  *   FIFDMIN1 returns the minimum of two numbers.
  *
+ * <pre>
  * Parameters:
  *
- * a     -     first number
- * b     -     second number
+ *   a     -     first number
+ *   b     -     second number
+ * </pre>
  */
 double
 cdflib_fifdmin1(
@@ -2771,10 +2895,12 @@ cdflib_fifdmin1(
  * \brief
  *   FIFDSIGN transfers the sign of the variable "sign" to the variable "mag"
  *
+ * <pre>
  * Parameters:
  *
- * mag     -     magnitude
- * sign    -     sign to be transfered
+ *   mag     -     magnitude
+ *   sign    -     sign to be transfered
+ * </pre>
  */
 double
 cdflib_fifdsign(
@@ -2785,9 +2911,11 @@ cdflib_fifdsign(
  * \brief
  *   FIFIDINT truncates a double number to a long integer
  *
+ * <pre>
  * Parameters:
  *
- * a - number to be truncated
+ *   a - number to be truncated
+ * </pre>
  */
 long
 cdflib_fifidint(
@@ -2797,10 +2925,12 @@ cdflib_fifidint(
  * \brief
  *   FIFMOD returns the modulo of a and b
  *
+ * <pre>
  * Parameters:
  *
- * a - numerator
- * b - denominator
+ *   a - numerator
+ *   b - denominator
+ * </pre>
  */
 long
 cdflib_fifmod(
@@ -2811,6 +2941,7 @@ cdflib_fifmod(
  * \brief
  *   FPSER evaluates IX(A,B)(X) for very small B.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine is appropriate for use when
@@ -2831,6 +2962,7 @@ cdflib_fifmod(
  *   Input, double *EPS, a tolerance.
  *
  *   Output, double FPSER, the value of IX(A,B)(X).
+ * </pre>
  */
 double
 cdflib_fpser(
@@ -2843,9 +2975,11 @@ cdflib_fpser(
  * \brief
  *   FTNSTOP prints a message to standard error and then exits.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, char *MSG, the message to be printed.
+ * </pre>
  */
 void
 cdflib_ftnstop(
@@ -2855,11 +2989,13 @@ cdflib_ftnstop(
  * \brief
  *   GAM1 computes 1 / GAMMA(A+1) - 1 for -0.5D+00 <= A <= 1.5
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, forms the argument of the Gamma function.
  *
  *   Output, double GAM1, the value of 1 / GAMMA ( A + 1 ) - 1.
+ * </pre>
  */
 double
 cdflib_gam1(
@@ -2869,6 +3005,7 @@ cdflib_gam1(
  * \brief
  *   GAMMA_INC evaluates the incomplete gamma ratio functions P(A,X) and Q(A,X).
  *
+ * <pre>
  * Discussion:
  *
  *   This is certified spaghetti code.
@@ -2895,6 +3032,7 @@ cdflib_gam1(
  *   0, as much accuracy as possible.
  *   1, to within 1 unit of the 6-th significant digit,
  *   otherwise, to within 1 unit of the 3rd significant digit.
+ * </pre>
  */
 void
 cdflib_gamma_inc(
@@ -2908,6 +3046,7 @@ cdflib_gamma_inc(
  * \brief
  *   GAMMA_INC_INV computes the inverse incomplete gamma ratio function.
  *
+ * <pre>
  * Discussion:
  *
  *   The routine is given positive A, and nonnegative P and Q where P + Q = 1.
@@ -2953,6 +3092,7 @@ cdflib_gamma_inc(
  *       case. If X0 <= 0, this can occur only when P or Q is
  *       approximately 0. If X0 is positive then this can occur when A is
  *       exceedingly close to X and A is extremely large (say A .GE. 1.E20).
+ * </pre>
  */
 void
 cdflib_gamma_inc_inv(
@@ -2967,6 +3107,7 @@ cdflib_gamma_inc_inv(
  * \brief
  *   GAMMA_INC_VALUES returns some values of the incomplete Gamma function.
  *
+ * <pre>
  * Discussion:
  *
  *   The (normalized) incomplete Gamma function P(A,X) is defined as:
@@ -3011,6 +3152,7 @@ cdflib_gamma_inc_inv(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_gamma_inc_values(
@@ -3023,11 +3165,13 @@ cdflib_gamma_inc_values(
  * \brief
  *   GAMMA_LN1 evaluates ln ( Gamma ( 1 + A ) ), for -0.2 <= A <= 1.25.
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, defines the argument of the function.
  *
  *   Output, double GAMMA_LN1, the value of ln ( Gamma ( 1 + A ) ).
+ * </pre>
  */
 double
 cdflib_gamma_ln1(
@@ -3037,6 +3181,7 @@ cdflib_gamma_ln1(
  * \brief
  *   GAMMA_LOG evaluates ln ( Gamma ( A ) ) for positive A.
  *
+ * <pre>
  * Author:
  *
  *   Alfred H Morris, Jr,
@@ -3057,6 +3202,7 @@ cdflib_gamma_ln1(
  *   A should be positive.
  *
  *   Output, double GAMMA_LOG, the value of ln ( Gamma ( A ) ).
+ * </pre>
  */
 double
 cdflib_gamma_log(
@@ -3066,6 +3212,7 @@ cdflib_gamma_log(
  * \brief
  *   GAMMA_RAT1 evaluates the incomplete gamma ratio functions P(A,X) and Q(A,X).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *X, the parameters of the functions.
@@ -3076,6 +3223,7 @@ cdflib_gamma_log(
  *   Output, double *P, *Q, the values of P(A,X) and Q(A,X).
  *
  *   Input, double *EPS, the tolerance.
+ * </pre>
  */
 void
 cdflib_gamma_rat1(
@@ -3090,6 +3238,7 @@ cdflib_gamma_rat1(
  * \brief
  *   GAMMA_VALUES returns some values of the Gamma function.
  *
+ * <pre>
  * Definition:
  *
  *   GAMMA(Z) = Integral ( 0 <= T < Infinity) T**(Z-1) EXP(-T) dT
@@ -3132,6 +3281,7 @@ cdflib_gamma_rat1(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_gamma_values(
@@ -3143,6 +3293,7 @@ cdflib_gamma_values(
  * \brief
  *   GAMMA_X evaluates the gamma function.
  *
+ * <pre>
  * Discussion:
  *
  *   This routine was renamed from "GAMMA" to avoid a conflict with the
@@ -3159,6 +3310,7 @@ cdflib_gamma_values(
  *   Input, double *A, the argument of the Gamma function.
  *
  *   Output, double GAMMA_X, the value of the Gamma function.
+ * </pre>
  */
 double
 cdflib_gamma_x(
@@ -3168,6 +3320,7 @@ cdflib_gamma_x(
  * \brief
  *   GSUMLN evaluates the function ln(Gamma(A + B)).
  *
+ * <pre>
  * Discussion:
  *
  *   GSUMLN is used for 1 <= A <= 2 and 1 <= B <= 2
@@ -3178,6 +3331,7 @@ cdflib_gamma_x(
  *   the Gamma function.
  *
  *   Output, double GSUMLN, the value of ln(Gamma(A+B)).
+ * </pre>
  */
 double
 cdflib_gsumln(
@@ -3188,6 +3342,7 @@ cdflib_gsumln(
  * \brief
  *   IPMPAR returns integer machine constants.
  *
+ * <pre>
  * Discussion:
  *
  *   Input arguments 1 through 3 are queries about integer arithmetic.
@@ -3243,6 +3398,7 @@ cdflib_gsumln(
  *   Input, int *I, the index of the desired constant.
  *
  *   Output, int IPMPAR, the value of the desired constant.
+ * </pre>
  */
 int
 cdflib_ipmpar(
@@ -3252,6 +3408,7 @@ cdflib_ipmpar(
  * \brief
  *   NEGATIVE_BINOMIAL_CDF_VALUES returns values of the negative binomial CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   Assume that a coin has a probability P of coming up heads on
@@ -3296,6 +3453,7 @@ cdflib_ipmpar(
  *
  *   Output, double *CDF, the probability of at most F failures before the
  *   S-th success.
+ * </pre>
  */
 void
 cdflib_negative_binomial_cdf_values(
@@ -3309,6 +3467,7 @@ cdflib_negative_binomial_cdf_values(
  * \brief
  *   NORMAL_CDF_VALUES returns some values of the Normal CDF.
  *
+ * <pre>
  * Modified:
  *
  *   31 May 2004
@@ -3333,6 +3492,7 @@ cdflib_negative_binomial_cdf_values(
  *   Output, double *X, the argument of the function.
  *
  *   Output double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_normal_cdf_values(
@@ -3344,6 +3504,7 @@ cdflib_normal_cdf_values(
  * \brief
  *   POISSON_CDF_VALUES returns some values of the Poisson CDF.
  *
+ * <pre>
  * Discussion:
  *
  *   CDF(X)(A) is the probability of at most X successes in unit time,
@@ -3379,6 +3540,7 @@ cdflib_normal_cdf_values(
  *   Output, int *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_poisson_cdf_values(
@@ -3391,6 +3553,7 @@ cdflib_poisson_cdf_values(
  * \brief
  *   PSI evaluates the psi or digamma function, d/dx ln(gamma(x)).
  *
+ * <pre>
  * Discussion:
  *
  *   The main computation involves evaluation of rational Chebyshev
@@ -3410,6 +3573,7 @@ cdflib_poisson_cdf_values(
  *
  *   Output, double PSI, the value of the psi function.  PSI
  *   is assigned the value 0 when the psi function is undefined.
+ * </pre>
  */
 double
 cdflib_psi(
@@ -3419,6 +3583,7 @@ cdflib_psi(
  * \brief
  *   PSI_VALUES returns some values of the Psi or Digamma function.
  *
+ * <pre>
  * Discussion:
  *
  *   PSI(X) = d LN ( Gamma ( X ) ) / d X = Gamma'(X) / Gamma(X)
@@ -3451,6 +3616,7 @@ cdflib_psi(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_psi_values(
@@ -3462,6 +3628,7 @@ cdflib_psi_values(
  * \brief
  *   RCOMP evaluates exp(-X) * X**A / Gamma(A).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *A, *X, arguments of the quantity to be computed.
@@ -3471,6 +3638,7 @@ cdflib_psi_values(
  * Local parameters:
  *
  *   RT2PIN = 1/SQRT(2*PI)
+ * </pre>
  */
 double
 cdflib_rcomp(
@@ -3481,6 +3649,7 @@ cdflib_rcomp(
  * \brief
  *   REXP evaluates the function EXP(X) - 1.
  *
+ * <pre>
  * Modified:
  *
  *   09 December 1999
@@ -3490,6 +3659,7 @@ cdflib_rcomp(
  *   Input, double *X, the argument of the function.
  *
  *   Output, double REXP, the value of EXP(X)-1.
+ * </pre>
  */
 double
 cdflib_rexp(
@@ -3499,6 +3669,7 @@ cdflib_rexp(
  * \brief
  *   RLOG computes  X - 1 - LN(X).
  *
+ * <pre>
  * Modified:
  *
  *   09 December 1999
@@ -3508,6 +3679,7 @@ cdflib_rexp(
  *   Input, double *X, the argument of the function.
  *
  *   Output, double RLOG, the value of the function.
+ * </pre>
  */
 double
 cdflib_rlog(
@@ -3517,11 +3689,13 @@ cdflib_rlog(
  * \brief
  *   RLOG1 evaluates the function X - ln ( 1 + X ).
  *
+ * <pre>
  * Parameters:
  *
  *   Input, double *X, the argument.
  *
  *   Output, double RLOG1, the value of X - ln ( 1 + X ).
+ * </pre>
  */
 double
 cdflib_rlog1(
@@ -3531,6 +3705,7 @@ cdflib_rlog1(
  * \brief
  *   STUDENT_CDF_VALUES returns some values of the Student CDF.
  *
+ * <pre>
  * Modified:
  *
  *   31 May 2004
@@ -3557,6 +3732,7 @@ cdflib_rlog1(
  *   Output, double *X, the argument of the function.
  *
  *   Output, double *FX, the value of the function.
+ * </pre>
  */
 void
 cdflib_student_cdf_values(
@@ -3569,6 +3745,7 @@ cdflib_student_cdf_values(
  * \brief
  *   STVALN provides starting values for the inverse of the normal distribution.
  *
+ * <pre>
  * Discussion:
  *
  *   The routine returns X such that
@@ -3590,6 +3767,7 @@ cdflib_student_cdf_values(
  *
  *   Output, double STVALN, the normal deviate whose probability
  *   is P.
+ * </pre>
  */
 double
 cdflib_stvaln(
