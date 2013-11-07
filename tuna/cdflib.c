@@ -7709,44 +7709,6 @@ cdflib_psi_values(
     int* n_data,
     double* x,
     double* fx)
-
-//  Purpose:
-//
-//    PSI_VALUES returns some values of the Psi or Digamma function.
-//
-//  Discussion:
-//
-//    PSI(X) = d LN ( Gamma ( X ) ) / d X = Gamma'(X) / Gamma(X)
-//
-//    PSI(1) = - Euler's constant.
-//
-//    PSI(X+1) = PSI(X) + 1 / X.
-//
-//  Modified:
-//
-//    31 May 2004
-//
-//  Author:
-//
-//    John Burkardt
-//
-//  Reference:
-//
-//    Milton Abramowitz and Irene Stegun,
-//    Handbook of Mathematical Functions,
-//    US Department of Commerce, 1964.
-//
-//  Parameters:
-//
-//    Input/output, int *N_DATA.  The user sets N_DATA to 0 before the
-//    first call.  On each call, the routine increments N_DATA by 1, and
-//    returns the corresponding data; when there is no more data, the
-//    output value of N_DATA will be 0 again.
-//
-//    Output, double *X, the argument of the function.
-//
-//    Output, double *FX, the value of the function.
-//
 {
 # define N_MAX 11
 
