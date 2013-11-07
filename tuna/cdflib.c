@@ -6842,7 +6842,7 @@ void cdflib_dzror ( int *status, double *x, double *fx, double *xlo,
 }
 /******************************************************************************/
 
-static void cdflib_E0000 ( int IENTRY, int *status, double *x, double *fx,
+void cdflib_E0000 ( int IENTRY, int *status, double *x, double *fx,
   unsigned long *qleft, unsigned long *qhi, double *zabsst,
   double *zabsto, double *zbig, double *zrelst,
   double *zrelto, double *zsmall, double *zstpmu )
@@ -7055,7 +7055,7 @@ S310:
 }
 /******************************************************************************/
 
-static void cdflib_E0001 ( int IENTRY, int *status, double *x, double *fx,
+void cdflib_E0001 ( int IENTRY, int *status, double *x, double *fx,
   double *xlo, double *xhi, unsigned long *qleft,
   unsigned long *qhi, double *zabstl, double *zreltl,
   double *zxhi, double *zxlo )
