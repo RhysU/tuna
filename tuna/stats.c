@@ -8,8 +8,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/** @file
- * @copydoc stats.h
+/** \file
+ * \copydoc stats.h
  */
 
 #ifdef HAVE_CONFIG_H

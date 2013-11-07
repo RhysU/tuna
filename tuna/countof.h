@@ -9,7 +9,7 @@
 #ifndef TUNA_COUNTOF_H
 #define TUNA_COUNTOF_H
 
-/** @file
+/** \file
  * Macros to count the number of array elements at compile time.  Provides both
  * a type-unsafe C version and a type-safe C++ version.  The C++ version is
  * from Ivan J. Johnson's article "Counting Array Elements at Compile Time"

@@ -9,7 +9,7 @@
 #ifndef TUNA_KERNEL_H
 #define TUNA_KERNEL_H
 
-/** @file
+/** \file
  * Tracks elapsed time information for compute kernels.
  */
 

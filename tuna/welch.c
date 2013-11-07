@@ -6,8 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/** @file
- * @copydoc welch.h
+/** \file
+ * \copydoc welch.h
  */
 
 #ifdef HAVE_CONFIG_H

@@ -6,8 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/** @file
- * @copydoc tuna.h
+/** \file
+ * \copydoc tuna.h
  */
 
 #ifdef HAVE_CONFIG_H

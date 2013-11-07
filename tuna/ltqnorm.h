@@ -1,4 +1,4 @@
-/** @file
+/** \file
  * Provides \ref tuna_ltqnorm.
  *
  * Approximate the inverse of the standard normal per Peter John Acklam

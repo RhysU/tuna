@@ -11,7 +11,7 @@
 #ifndef TUNA_STATS_H
 #define TUNA_STATS_H
 
-/** @file
+/** \file
  * Provides statistical accumulators for special cases of interest.
  */
 

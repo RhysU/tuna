@@ -8,8 +8,8 @@
  * Houston, Texas.
  */
 
-/** @file
- * @copydoc cdflib.h
+/** \file
+ * \copydoc cdflib.h
  */
 
 #include <stdlib.h>

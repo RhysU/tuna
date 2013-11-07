@@ -11,7 +11,7 @@
 #ifndef TUNA_CDFLIB_H
 #define TUNA_CDFLIB_H
 
-/** @file
+/** \file
  * A modified version of CDFLIB by
  * Barry Brown, James Lovato, and Kathy Russell.
  */

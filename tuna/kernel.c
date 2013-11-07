@@ -6,8 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/** @file
- * @copydoc kernel.h
+/** \file
+ * \copydoc kernel.h
  */
 
 #ifdef HAVE_CONFIG_H

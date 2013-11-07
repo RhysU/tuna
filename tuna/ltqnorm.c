@@ -1,7 +1,7 @@
 // See source code attribution in ltqnorm.h
 
-/** @file
- * @copydoc ltqnorm.h
+/** \file
+ * \copydoc ltqnorm.h
  */
 
 #ifdef HAVE_CONFIG_H

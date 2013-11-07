@@ -9,7 +9,7 @@
 #ifndef TUNA_WELCH_H
 #define TUNA_WELCH_H
 
-/** @file
+/** \file
  * Provides variants of <a
  * href="http://en.wikipedia.org/wiki/Welch's_t_test">Welch's t test</a>.
  */
@@ -26,14 +26,14 @@ extern "C" {
  * samples \c A and \c B.  When only the t-statistic is required, prefer method
  * \ref tuna_welch_t to this one.
  *
- * @param[in ] xA  Mean of \c A
- * @param[in ] sA2 Variance of \c A
- * @param[in ] nA  Number of observations of A
- * @param[in ] xB  Mean of \c B
- * @param[in ] sB2 Variance of \c B
- * @param[in ] nB  Number of observations of B
- * @param[out] t   Welch's t-statistic
- * @param[out] nu  Number of degrees of freedom per
+ * \param[in ] xA  Mean of \c A
+ * \param[in ] sA2 Variance of \c A
+ * \param[in ] nA  Number of observations of A
+ * \param[in ] xB  Mean of \c B
+ * \param[in ] sB2 Variance of \c B
+ * \param[in ] nB  Number of observations of B
+ * \param[out] t   Welch's t-statistic
+ * \param[out] nu  Number of degrees of freedom per
  *                 Welch--Satterthwaite equation
  */
 static inline
@@ -53,14 +53,14 @@ void tuna_welch(double xA, double sA2, size_t nA,
 /**
  * Compute the Welch t-statistic given samples \c A and \c B.
  *
- * @param xA  Mean of \c A
- * @param sA2 Variance of \c A
- * @param nA  Number of observations of A
- * @param xB  Mean of \c B
- * @param sB2 Variance of \c B
- * @param nB  Number of observations of B
+ * \param xA  Mean of \c A
+ * \param sA2 Variance of \c A
+ * \param nA  Number of observations of A
+ * \param xB  Mean of \c B
+ * \param sB2 Variance of \c B
+ * \param nB  Number of observations of B
  *
- * @return Welch's t-statistic.
+ * \return Welch's t-statistic.
  */
 static inline
 double tuna_welch_t(double xA, double sA2, size_t nA,
@@ -75,14 +75,14 @@ double tuna_welch_t(double xA, double sA2, size_t nA,
  * against the normal distribution.  This is faster than using the
  * t-distribution, but it produces poor results for small sample sizes.
  *
- * @param xA  Mean of \c A
- * @param sA2 Variance of \c A
- * @param nA  Number of observations of A
- * @param xB  Mean of \c B
- * @param sB2 Variance of \c B
- * @param nB  Number of observations of B
+ * \param xA  Mean of \c A
+ * \param sA2 Variance of \c A
+ * \param nA  Number of observations of A
+ * \param xB  Mean of \c B
+ * \param sB2 Variance of \c B
+ * \param nB  Number of observations of B
  *
- * @return Approximate p-value.
+ * \return Approximate p-value.
  */
 static inline
 double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
@@ -96,14 +96,14 @@ double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
  * coarse approximation to the t-distribution.  The quality of the
  * approximation improves as \f$\nu\to\infty\f$.
  *
- * @param xA  Mean of \c A
- * @param sA2 Variance of \c A
- * @param nA  Number of observations of A
- * @param xB  Mean of \c B
- * @param sB2 Variance of \c B
- * @param nB  Number of observations of B
+ * \param xA  Mean of \c A
+ * \param sA2 Variance of \c A
+ * \param nA  Number of observations of A
+ * \param xB  Mean of \c B
+ * \param sB2 Variance of \c B
+ * \param nB  Number of observations of B
  *
- * @return Approximate p-value.
+ * \return Approximate p-value.
  */
 static inline
 double tuna_welch1_approx(double xA, double sA2, size_t nA,

@@ -10,7 +10,7 @@
 #define TUNA_TUNA_H
 
 /**
- * @mainpage
+ * \mainpage
  *
  * Tuna provides lightweight autotuning over semantically indistinguishable
  * kernels.
@@ -21,7 +21,7 @@
  * information.
  */
 
-/** @file
+/** \file
  * TODO
  */
 
