@@ -22,7 +22,7 @@
 
 /******************************************************************************/
 
-double algdiv ( double *a, double *b )
+double cdflib_algdiv ( double *a, double *b )
 
 /******************************************************************************/
 //
@@ -107,7 +107,7 @@ double algdiv ( double *a, double *b )
 //  Combine the results.
 //
   T1 = *a / *b;
-  u = d * alnrel ( &T1 );
+  u = d * cdflib_alnrel ( &T1 );
   v = *a * ( log ( *b ) - 1.0e0 );
 
   if ( v < u )
@@ -122,7 +122,7 @@ double algdiv ( double *a, double *b )
 }
 /******************************************************************************/
 
-double alnrel ( double *a )
+double cdflib_alnrel ( double *a )
 
 /******************************************************************************/
 //
@@ -178,7 +178,7 @@ double alnrel ( double *a )
 }
 /******************************************************************************/
 
-double apser ( double *a, double *b, double *x, double *eps )
+double cdflib_apser ( double *a, double *b, double *x, double *eps )
 
 /******************************************************************************/
 //
@@ -211,7 +211,7 @@ double apser ( double *a, double *b, double *x, double *eps )
     bx = *b**x;
     t = *x-bx;
     if(*b**eps > 2.e-2) goto S10;
-    c = log(*x)+psi(b)+g+t;
+    c = log(*x)+cdflib_psi(b)+g+t;
     goto S20;
 S10:
     c = log(bx)+g+t;
@@ -230,7 +230,7 @@ S30:
 }
 /******************************************************************************/
 
-double bcorr ( double *a0, double *b0 )
+double cdflib_bcorr ( double *a0, double *b0 )
 
 /******************************************************************************/
 //
@@ -266,8 +266,8 @@ double bcorr ( double *a0, double *b0 )
   static double c5 = -0.165322962780713e-02;
   static double bcorr,a,b,c,h,s11,s3,s5,s7,s9,t,w,x,x2;
 
-  a = fifdmin1 ( *a0, *b0 );
-  b = fifdmax1 ( *a0, *b0 );
+  a = cdflib_fifdmin1 ( *a0, *b0 );
+  b = cdflib_fifdmax1 ( *a0, *b0 );
   h = a / b;
   c = h / ( 1.0e0 + h );
   x = 1.0e0 / ( 1.0e0 + h );
@@ -305,7 +305,7 @@ double bcorr ( double *a0, double *b0 )
 }
 /******************************************************************************/
 
-double beta ( double a, double b )
+double cdflib_beta ( double a, double b )
 
 /******************************************************************************/
 //
@@ -328,11 +328,11 @@ double beta ( double a, double b )
 //    Output, double BETA, the value of the beta function.
 //
 {
-  return ( exp ( beta_log ( &a, &b ) ) );
+  return ( exp ( cdflib_beta_log ( &a, &b ) ) );
 }
 /******************************************************************************/
 
-double beta_asym ( double *a, double *b, double *lambda, double *eps )
+double cdflib_beta_asym ( double *a, double *b, double *lambda, double *eps )
 
 /******************************************************************************/
 //
@@ -384,7 +384,7 @@ S10:
 S20:
     T1 = -(*lambda/ *a);
     T2 = *lambda/ *b;
-    f = *a*rlog1(&T1)+*b*rlog1(&T2);
+    f = *a*cdflib_rlog1(&T1)+*b*cdflib_rlog1(&T2);
     t = exp(-f);
     if(t == 0.0e0) return value;
     z0 = sqrt(f);
@@ -393,7 +393,7 @@ S20:
     a0[0] = 2.0e0/3.0e0*r1;
     c[0] = -(0.5e0*a0[0]);
     d[0] = -c[0];
-    j0 = 0.5e0/e0 * error_fc ( &K3, &z0 );
+    j0 = 0.5e0/e0 * cdflib_error_fc ( &K3, &z0 );
     j1 = e1;
     sum = j0+d[0]*w0*j1;
     s = 1.0e0;
@@ -446,13 +446,13 @@ S20:
         if(fabs(t0)+fabs(t1) <= *eps*sum) goto S80;
     }
 S80:
-    u = exp(-bcorr(a,b));
+    u = exp(-cdflib_bcorr(a,b));
     value = e0*t*u*sum;
     return value;
 }
 /******************************************************************************/
 
-double beta_frac ( double *a, double *b, double *x, double *y, double *lambda,
+double cdflib_beta_frac ( double *a, double *b, double *x, double *y, double *lambda,
   double *eps )
 
 /******************************************************************************/
@@ -480,7 +480,7 @@ double beta_frac ( double *a, double *b, double *x, double *y, double *lambda,
 {
   static double bfrac,alpha,an,anp1,beta,bn,bnp1,c,c0,c1,e,n,p,r,r0,s,t,w,yp1;
 
-  bfrac = beta_rcomp ( a, b, x, y );
+  bfrac = cdflib_beta_cdflib_rcomp ( a, b, x, y );
 
   if ( bfrac == 0.0e0 )
   {
@@ -544,7 +544,7 @@ S20:
 }
 /******************************************************************************/
 
-void beta_grat ( double *a, double *b, double *x, double *y, double *w,
+void cdflib_beta_grat ( double *a, double *b, double *x, double *y, double *w,
   double *eps,int *ierr )
 
 /******************************************************************************/
@@ -579,7 +579,7 @@ void beta_grat ( double *a, double *b, double *x, double *y, double *w,
     nu = *a+0.5e0*bm1;
     if(*y > 0.375e0) goto S10;
     T1 = -*y;
-    lnx = alnrel(&T1);
+    lnx = cdflib_alnrel(&T1);
     goto S20;
 S10:
     lnx = log(*x);
@@ -590,12 +590,12 @@ S20:
 //  COMPUTATION OF THE EXPANSION
 //  SET R = EXP(-Z)*Z**B/GAMMA(B)
 //
-    r = *b*(1.0e0+gam1(b))*exp(*b*log(z));
+    r = *b*(1.0e0+cdflib_gam1(b))*exp(*b*log(z));
     r *= (exp(*a*lnx)*exp(0.5e0*bm1*lnx));
-    u = algdiv(b,a)+*b*log(nu);
+    u = cdflib_algdiv(b,a)+*b*log(nu);
     u = r*exp(-u);
     if(u == 0.0e0) goto S70;
-    gamma_rat1 ( b, &z, &r, &p, &q, eps );
+    cdflib_gamma_rat1 ( b, &z, &r, &p, &q, eps );
     v = 0.25e0*pow(1.0e0/nu,2.0);
     t2 = 0.25e0*lnx*lnx;
     l = *w/u;
@@ -643,7 +643,7 @@ S70:
 }
 /******************************************************************************/
 
-void beta_inc ( double *a, double *b, double *x, double *y, double *w,
+void cdflib_beta_inc ( double *a, double *b, double *x, double *y, double *w,
   double *w1, int *ierr )
 
 /******************************************************************************/
@@ -688,7 +688,7 @@ void beta_inc ( double *a, double *b, double *x, double *y, double *w,
 //  EPS IS A MACHINE DEPENDENT CONSTANT. EPS IS THE SMALLEST
 //  NUMBER FOR WHICH 1.0 + EPS .GT. 1.0
 //
-    eps = dpmpar ( &K1 );
+    eps = cdflib_dpmpar ( &K1 );
     *w = *w1 = 0.0e0;
     if(*a < 0.0e0 || *b < 0.0e0) goto S270;
     if(*a == 0.0e0 && *b == 0.0e0) goto S280;
@@ -701,14 +701,14 @@ void beta_inc ( double *a, double *b, double *x, double *y, double *w,
     if(*y == 0.0e0) goto S230;
     if(*a == 0.0e0) goto S240;
     if(*b == 0.0e0) goto S220;
-    eps = fifdmax1(eps,1.e-15);
-    if(fifdmax1(*a,*b) < 1.e-3*eps) goto S260;
+    eps = cdflib_fifdmax1(eps,1.e-15);
+    if(cdflib_fifdmax1(*a,*b) < 1.e-3*eps) goto S260;
     ind = 0;
     a0 = *a;
     b0 = *b;
     x0 = *x;
     y0 = *y;
-    if(fifdmin1(a0,b0) > 1.0e0) goto S40;
+    if(cdflib_fifdmin1(a0,b0) > 1.0e0) goto S40;
 //
 //  PROCEDURE FOR A0 .LE. 1 OR B0 .LE. 1
 //
@@ -719,10 +719,10 @@ void beta_inc ( double *a, double *b, double *x, double *y, double *w,
     x0 = *y;
     y0 = *x;
 S10:
-    if(b0 < fifdmin1(eps,eps*a0)) goto S90;
-    if(a0 < fifdmin1(eps,eps*b0) && b0*x0 <= 1.0e0) goto S100;
-    if(fifdmax1(a0,b0) > 1.0e0) goto S20;
-    if(a0 >= fifdmin1(0.2e0,b0)) goto S110;
+    if(b0 < cdflib_fifdmin1(eps,eps*a0)) goto S90;
+    if(a0 < cdflib_fifdmin1(eps,eps*b0) && b0*x0 <= 1.0e0) goto S100;
+    if(cdflib_fifdmax1(a0,b0) > 1.0e0) goto S20;
+    if(a0 >= cdflib_fifdmin1(0.2e0,b0)) goto S110;
     if(pow(x0,a0) <= 0.9e0) goto S110;
     if(x0 >= 0.3e0) goto S120;
     n = 20;
@@ -768,32 +768,32 @@ S90:
 //
 //  EVALUATION OF THE APPROPRIATE ALGORITHM
 //
-    *w = fpser(&a0,&b0,&x0,&eps);
+    *w = cdflib_fpser(&a0,&b0,&x0,&eps);
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S100:
-    *w1 = apser(&a0,&b0,&x0,&eps);
+    *w1 = cdflib_apser(&a0,&b0,&x0,&eps);
     *w = 0.5e0+(0.5e0-*w1);
     goto S250;
 S110:
-    *w = beta_pser(&a0,&b0,&x0,&eps);
+    *w = cdflib_beta_pser(&a0,&b0,&x0,&eps);
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S120:
-    *w1 = beta_pser(&b0,&a0,&y0,&eps);
+    *w1 = cdflib_beta_pser(&b0,&a0,&y0,&eps);
     *w = 0.5e0+(0.5e0-*w1);
     goto S250;
 S130:
     T2 = 15.0e0*eps;
-    *w = beta_frac ( &a0,&b0,&x0,&y0,&lambda,&T2 );
+    *w = cdflib_beta_frac ( &a0,&b0,&x0,&y0,&lambda,&T2 );
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S140:
-    *w1 = beta_up ( &b0, &a0, &y0, &x0, &n, &eps );
+    *w1 = cdflib_beta_up ( &b0, &a0, &y0, &x0, &n, &eps );
     b0 = b0 + (double)n;
 S150:
     T3 = 15.0e0*eps;
-    beta_grat (&b0,&a0,&y0,&x0,w1,&T3,&ierr1);
+    cdflib_beta_grat (&b0,&a0,&y0,&x0,w1,&T3,&ierr1);
     *w = 0.5e0+(0.5e0-*w1);
     goto S250;
 S160:
@@ -803,24 +803,24 @@ S160:
     n -= 1;
     b0 = 1.0e0;
 S170:
-    *w = beta_up ( &b0, &a0, &y0, &x0, &n, &eps );
+    *w = cdflib_beta_up ( &b0, &a0, &y0, &x0, &n, &eps );
     if(x0 > 0.7e0) goto S180;
-    *w = *w + beta_pser(&a0,&b0,&x0,&eps);
+    *w = *w + cdflib_beta_pser(&a0,&b0,&x0,&eps);
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S180:
     if(a0 > 15.0e0) goto S190;
     n = 20;
-    *w = *w + beta_up ( &a0, &b0, &x0, &y0, &n, &eps );
+    *w = *w + cdflib_beta_up ( &a0, &b0, &x0, &y0, &n, &eps );
     a0 = a0 + (double)n;
 S190:
     T4 = 15.0e0*eps;
-    beta_grat ( &a0, &b0, &x0, &y0, w, &T4, &ierr1 );
+    cdflib_beta_grat ( &a0, &b0, &x0, &y0, w, &T4, &ierr1 );
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S200:
     T5 = 100.0e0*eps;
-    *w = beta_asym ( &a0, &b0, &lambda, &T5 );
+    *w = cdflib_beta_asym ( &a0, &b0, &lambda, &T5 );
     *w1 = 0.5e0+(0.5e0-*w);
     goto S250;
 S210:
@@ -878,7 +878,7 @@ S330:
 }
 /******************************************************************************/
 
-void beta_inc_values ( int *n_data, double *a, double *b, double *x,
+void cdflib_beta_inc_values ( int *n_data, double *a, double *b, double *x,
   double *fx )
 
 /******************************************************************************/
@@ -1006,7 +1006,7 @@ void beta_inc_values ( int *n_data, double *a, double *b, double *x,
 }
 /******************************************************************************/
 
-double beta_log ( double *a0, double *b0 )
+double cdflib_beta_log ( double *a0, double *b0 )
 
 /******************************************************************************/
 //
@@ -1036,8 +1036,8 @@ double beta_log ( double *a0, double *b0 )
   static int i,n;
   static double T1;
 
-    a = fifdmin1(*a0,*b0);
-    b = fifdmax1(*a0,*b0);
+    a = cdflib_fifdmin1(*a0,*b0);
+    b = cdflib_fifdmax1(*a0,*b0);
     if(a >= 8.0e0) goto S100;
     if(a >= 1.0e0) goto S20;
 //
@@ -1045,10 +1045,10 @@ double beta_log ( double *a0, double *b0 )
 //
     if(b >= 8.0e0) goto S10;
     T1 = a+b;
-    value = gamma_log ( &a )+( gamma_log ( &b )- gamma_log ( &T1 ));
+    value = cdflib_gamma_log ( &a )+( cdflib_gamma_log ( &b )- cdflib_gamma_log ( &T1 ));
     return value;
 S10:
-    value = gamma_log ( &a )+algdiv(&a,&b);
+    value = cdflib_gamma_log ( &a )+cdflib_algdiv(&a,&b);
     return value;
 S20:
 //
@@ -1056,12 +1056,12 @@ S20:
 //
     if(a > 2.0e0) goto S40;
     if(b > 2.0e0) goto S30;
-    value = gamma_log ( &a )+ gamma_log ( &b )-gsumln(&a,&b);
+    value = cdflib_gamma_log ( &a )+ cdflib_gamma_log ( &b )-cdflib_gsumln(&a,&b);
     return value;
 S30:
     w = 0.0e0;
     if(b < 8.0e0) goto S60;
-    value = gamma_log ( &a )+algdiv(&a,&b);
+    value = cdflib_gamma_log ( &a )+cdflib_algdiv(&a,&b);
     return value;
 S40:
 //
@@ -1078,7 +1078,7 @@ S40:
     }
     w = log(w);
     if(b < 8.0e0) goto S60;
-    value = w+ gamma_log ( &a )+algdiv(&a,&b);
+    value = w+ cdflib_gamma_log ( &a )+cdflib_algdiv(&a,&b);
     return value;
 S60:
 //
@@ -1091,7 +1091,7 @@ S60:
         b -= 1.0e0;
         z *= (b/(a+b));
     }
-    value = w+log(z)+( gamma_log ( &a )+( gamma_log ( &b )-gsumln(&a,&b)));
+    value = w+log(z)+( cdflib_gamma_log ( &a )+( cdflib_gamma_log ( &b )-cdflib_gsumln(&a,&b)));
     return value;
 S80:
 //
@@ -1104,17 +1104,17 @@ S80:
         a -= 1.0e0;
         w *= (a/(1.0e0+a/b));
     }
-    value = log(w)-(double)n*log(b)+( gamma_log ( &a )+algdiv(&a,&b));
+    value = log(w)-(double)n*log(b)+( cdflib_gamma_log ( &a )+cdflib_algdiv(&a,&b));
     return value;
 S100:
 //
 //  PROCEDURE WHEN A .GE. 8
 //
-    w = bcorr(&a,&b);
+    w = cdflib_bcorr(&a,&b);
     h = a/b;
     c = h/(1.0e0+h);
     u = -((a-0.5e0)*log(c));
-    v = b*alnrel(&h);
+    v = b*cdflib_alnrel(&h);
     if(u <= v) goto S110;
     value = -(0.5e0*log(b))+e+w-v-u;
     return value;
@@ -1124,7 +1124,7 @@ S110:
 }
 /******************************************************************************/
 
-double beta_pser ( double *a, double *b, double *x, double *eps )
+double cdflib_beta_pser ( double *a, double *b, double *x, double *eps )
 
 /******************************************************************************/
 //
@@ -1156,13 +1156,13 @@ double beta_pser ( double *a, double *b, double *x, double *eps )
 //
 //  COMPUTE THE FACTOR X**A/(A*BETA(A,B))
 //
-    a0 = fifdmin1(*a,*b);
+    a0 = cdflib_fifdmin1(*a,*b);
     if(a0 < 1.0e0) goto S10;
-    z = *a*log(*x)-beta_log(a,b);
+    z = *a*log(*x)-cdflib_beta_log(a,b);
     bpser = exp(z)/ *a;
     goto S100;
 S10:
-    b0 = fifdmax1(*a,*b);
+    b0 = cdflib_fifdmax1(*a,*b);
     if(b0 >= 8.0e0) goto S90;
     if(b0 > 1.0e0) goto S40;
 //
@@ -1172,20 +1172,20 @@ S10:
     if(bpser == 0.0e0) return bpser;
     apb = *a+*b;
     if(apb > 1.0e0) goto S20;
-    z = 1.0e0+gam1(&apb);
+    z = 1.0e0+cdflib_gam1(&apb);
     goto S30;
 S20:
     u = *a+*b-1.e0;
-    z = (1.0e0+gam1(&u))/apb;
+    z = (1.0e0+cdflib_gam1(&u))/apb;
 S30:
-    c = (1.0e0+gam1(a))*(1.0e0+gam1(b))/z;
+    c = (1.0e0+cdflib_gam1(a))*(1.0e0+cdflib_gam1(b))/z;
     bpser *= (c*(*b/apb));
     goto S100;
 S40:
 //
 //  PROCEDURE FOR A0 .LT. 1 AND 1 .LT. B0 .LT. 8
 //
-    u = gamma_ln1 ( &a0 );
+    u = cdflib_gamma_ln1 ( &a0 );
     m = ( int ) ( b0 - 1.0e0 );
     if(m < 1) goto S60;
     c = 1.0e0;
@@ -1200,19 +1200,19 @@ S60:
     b0 -= 1.0e0;
     apb = a0+b0;
     if(apb > 1.0e0) goto S70;
-    t = 1.0e0+gam1(&apb);
+    t = 1.0e0+cdflib_gam1(&apb);
     goto S80;
 S70:
     u = a0+b0-1.e0;
-    t = (1.0e0+gam1(&u))/apb;
+    t = (1.0e0+cdflib_gam1(&u))/apb;
 S80:
-    bpser = exp(z)*(a0/ *a)*(1.0e0+gam1(&b0))/t;
+    bpser = exp(z)*(a0/ *a)*(1.0e0+cdflib_gam1(&b0))/t;
     goto S100;
 S90:
 //
 //  PROCEDURE FOR A0 .LT. 1 AND B0 .GE. 8
 //
-    u = gamma_ln1 ( &a0 ) + algdiv ( &a0, &b0 );
+    u = cdflib_gamma_ln1 ( &a0 ) + cdflib_algdiv ( &a0, &b0 );
     z = *a*log(*x)-u;
     bpser = a0/ *a*exp(z);
 S100:
@@ -1234,7 +1234,7 @@ S110:
 }
 /******************************************************************************/
 
-double beta_rcomp ( double *a, double *b, double *x, double *y )
+double cdflib_beta_cdflib_rcomp ( double *a, double *b, double *x, double *y )
 
 /******************************************************************************/
 //
@@ -1262,17 +1262,17 @@ double beta_rcomp ( double *a, double *b, double *x, double *y )
 
     brcomp = 0.0e0;
     if(*x == 0.0e0 || *y == 0.0e0) return brcomp;
-    a0 = fifdmin1(*a,*b);
+    a0 = cdflib_fifdmin1(*a,*b);
     if(a0 >= 8.0e0) goto S130;
     if(*x > 0.375e0) goto S10;
     lnx = log(*x);
     T1 = -*x;
-    lny = alnrel(&T1);
+    lny = cdflib_alnrel(&T1);
     goto S30;
 S10:
     if(*y > 0.375e0) goto S20;
     T2 = -*y;
-    lnx = alnrel(&T2);
+    lnx = cdflib_alnrel(&T2);
     lny = log(*y);
     goto S30;
 S20:
@@ -1281,14 +1281,14 @@ S20:
 S30:
     z = *a*lnx+*b*lny;
     if(a0 < 1.0e0) goto S40;
-    z -= beta_log(a,b);
+    z -= cdflib_beta_log(a,b);
     brcomp = exp(z);
     return brcomp;
 S40:
 //
 //  PROCEDURE FOR A .LT. 1 OR B .LT. 1
 //
-    b0 = fifdmax1(*a,*b);
+    b0 = cdflib_fifdmax1(*a,*b);
     if(b0 >= 8.0e0) goto S120;
     if(b0 > 1.0e0) goto S70;
 //
@@ -1298,20 +1298,20 @@ S40:
     if(brcomp == 0.0e0) return brcomp;
     apb = *a+*b;
     if(apb > 1.0e0) goto S50;
-    z = 1.0e0+gam1(&apb);
+    z = 1.0e0+cdflib_gam1(&apb);
     goto S60;
 S50:
     u = *a+*b-1.e0;
-    z = (1.0e0+gam1(&u))/apb;
+    z = (1.0e0+cdflib_gam1(&u))/apb;
 S60:
-    c = (1.0e0+gam1(a))*(1.0e0+gam1(b))/z;
+    c = (1.0e0+cdflib_gam1(a))*(1.0e0+cdflib_gam1(b))/z;
     brcomp = brcomp*(a0*c)/(1.0e0+a0/b0);
     return brcomp;
 S70:
 //
 //  ALGORITHM FOR 1 .LT. B0 .LT. 8
 //
-    u = gamma_ln1 ( &a0 );
+    u = cdflib_gamma_ln1 ( &a0 );
     n = ( int ) ( b0 - 1.0e0 );
     if(n < 1) goto S90;
     c = 1.0e0;
@@ -1326,19 +1326,19 @@ S90:
     b0 -= 1.0e0;
     apb = a0+b0;
     if(apb > 1.0e0) goto S100;
-    t = 1.0e0+gam1(&apb);
+    t = 1.0e0+cdflib_gam1(&apb);
     goto S110;
 S100:
     u = a0+b0-1.e0;
-    t = (1.0e0+gam1(&u))/apb;
+    t = (1.0e0+cdflib_gam1(&u))/apb;
 S110:
-    brcomp = a0*exp(z)*(1.0e0+gam1(&b0))/t;
+    brcomp = a0*exp(z)*(1.0e0+cdflib_gam1(&b0))/t;
     return brcomp;
 S120:
 //
 //  ALGORITHM FOR B0 .GE. 8
 //
-    u = gamma_ln1 ( &a0 ) + algdiv ( &a0, &b0 );
+    u = cdflib_gamma_ln1 ( &a0 ) + cdflib_algdiv ( &a0, &b0 );
     brcomp = a0*exp(z-u);
     return brcomp;
 S130:
@@ -1359,25 +1359,25 @@ S140:
 S150:
     e = -(lambda/ *a);
     if(fabs(e) > 0.6e0) goto S160;
-    u = rlog1(&e);
+    u = cdflib_rlog1(&e);
     goto S170;
 S160:
     u = e-log(*x/x0);
 S170:
     e = lambda/ *b;
     if(fabs(e) > 0.6e0) goto S180;
-    v = rlog1(&e);
+    v = cdflib_rlog1(&e);
     goto S190;
 S180:
     v = e-log(*y/y0);
 S190:
     z = exp(-(*a*u+*b*v));
-    brcomp = Const*sqrt(*b*x0)*z*exp(-bcorr(a,b));
+    brcomp = Const*sqrt(*b*x0)*z*exp(-cdflib_bcorr(a,b));
     return brcomp;
 }
 /******************************************************************************/
 
-double beta_rcomp1 ( int *mu, double *a, double *b, double *x, double *y )
+double cdflib_beta_rcomp1 ( int *mu, double *a, double *b, double *x, double *y )
 
 /******************************************************************************/
 //
@@ -1406,17 +1406,17 @@ double beta_rcomp1 ( int *mu, double *a, double *b, double *x, double *y )
 //
   static double T1,T2,T3,T4;
 
-    a0 = fifdmin1(*a,*b);
+    a0 = cdflib_fifdmin1(*a,*b);
     if(a0 >= 8.0e0) goto S130;
     if(*x > 0.375e0) goto S10;
     lnx = log(*x);
     T1 = -*x;
-    lny = alnrel(&T1);
+    lny = cdflib_alnrel(&T1);
     goto S30;
 S10:
     if(*y > 0.375e0) goto S20;
     T2 = -*y;
-    lnx = alnrel(&T2);
+    lnx = cdflib_alnrel(&T2);
     lny = log(*y);
     goto S30;
 S20:
@@ -1425,37 +1425,37 @@ S20:
 S30:
     z = *a*lnx+*b*lny;
     if(a0 < 1.0e0) goto S40;
-    z -= beta_log(a,b);
-    brcmp1 = esum(mu,&z);
+    z -= cdflib_beta_log(a,b);
+    brcmp1 = cdflib_esum(mu,&z);
     return brcmp1;
 S40:
 //
 //   PROCEDURE FOR A .LT. 1 OR B .LT. 1
 //
-    b0 = fifdmax1(*a,*b);
+    b0 = cdflib_fifdmax1(*a,*b);
     if(b0 >= 8.0e0) goto S120;
     if(b0 > 1.0e0) goto S70;
 //
 //  ALGORITHM FOR B0 .LE. 1
 //
-    brcmp1 = esum(mu,&z);
+    brcmp1 = cdflib_esum(mu,&z);
     if(brcmp1 == 0.0e0) return brcmp1;
     apb = *a+*b;
     if(apb > 1.0e0) goto S50;
-    z = 1.0e0+gam1(&apb);
+    z = 1.0e0+cdflib_gam1(&apb);
     goto S60;
 S50:
     u = *a+*b-1.e0;
-    z = (1.0e0+gam1(&u))/apb;
+    z = (1.0e0+cdflib_gam1(&u))/apb;
 S60:
-    c = (1.0e0+gam1(a))*(1.0e0+gam1(b))/z;
+    c = (1.0e0+cdflib_gam1(a))*(1.0e0+cdflib_gam1(b))/z;
     brcmp1 = brcmp1*(a0*c)/(1.0e0+a0/b0);
     return brcmp1;
 S70:
 //
 //  ALGORITHM FOR 1 .LT. B0 .LT. 8
 //
-    u = gamma_ln1 ( &a0 );
+    u = cdflib_gamma_ln1 ( &a0 );
     n = ( int ) ( b0 - 1.0e0 );
     if(n < 1) goto S90;
     c = 1.0e0;
@@ -1470,21 +1470,21 @@ S90:
     b0 -= 1.0e0;
     apb = a0+b0;
     if(apb > 1.0e0) goto S100;
-    t = 1.0e0+gam1(&apb);
+    t = 1.0e0+cdflib_gam1(&apb);
     goto S110;
 S100:
     u = a0+b0-1.e0;
-    t = (1.0e0+gam1(&u))/apb;
+    t = (1.0e0+cdflib_gam1(&u))/apb;
 S110:
-    brcmp1 = a0*esum(mu,&z)*(1.0e0+gam1(&b0))/t;
+    brcmp1 = a0*cdflib_esum(mu,&z)*(1.0e0+cdflib_gam1(&b0))/t;
     return brcmp1;
 S120:
 //
 //  ALGORITHM FOR B0 .GE. 8
 //
-    u = gamma_ln1 ( &a0 ) + algdiv ( &a0, &b0 );
+    u = cdflib_gamma_ln1 ( &a0 ) + cdflib_algdiv ( &a0, &b0 );
     T3 = z-u;
-    brcmp1 = a0*esum(mu,&T3);
+    brcmp1 = a0*cdflib_esum(mu,&T3);
     return brcmp1;
 S130:
 //
@@ -1504,26 +1504,26 @@ S140:
 S150:
     e = -(lambda/ *a);
     if(fabs(e) > 0.6e0) goto S160;
-    u = rlog1(&e);
+    u = cdflib_rlog1(&e);
     goto S170;
 S160:
     u = e-log(*x/x0);
 S170:
     e = lambda/ *b;
     if(fabs(e) > 0.6e0) goto S180;
-    v = rlog1(&e);
+    v = cdflib_rlog1(&e);
     goto S190;
 S180:
     v = e-log(*y/y0);
 S190:
     T4 = -(*a*u+*b*v);
-    z = esum(mu,&T4);
-    brcmp1 = Const*sqrt(*b*x0)*z*exp(-bcorr(a,b));
+    z = cdflib_esum(mu,&T4);
+    brcmp1 = Const*sqrt(*b*x0)*z*exp(-cdflib_bcorr(a,b));
     return brcmp1;
 }
 /******************************************************************************/
 
-double beta_up ( double *a, double *b, double *x, double *y, int *n,
+double cdflib_beta_up ( double *a, double *b, double *x, double *y, int *n,
   double *eps )
 
 /******************************************************************************/
@@ -1560,13 +1560,13 @@ double beta_up ( double *a, double *b, double *x, double *y, int *n,
     d = 1.0e0;
     if(*n == 1 || *a < 1.0e0) goto S10;
     if(apb < 1.1e0*ap1) goto S10;
-    mu = ( int ) fabs ( exparg(&K1) );
-    k = ( int ) exparg ( &K2 );
+    mu = ( int ) fabs ( cdflib_exparg(&K1) );
+    k = ( int ) cdflib_exparg ( &K2 );
     if(k < mu) mu = k;
     t = mu;
     d = exp(-t);
 S10:
-    bup = beta_rcomp1 ( &mu, a, b, x, y ) / *a;
+    bup = cdflib_beta_rcomp1 ( &mu, a, b, x, y ) / *a;
     if(*n == 1 || bup == 0.0e0) return bup;
     nm1 = *n-1;
     w = d;
@@ -1616,7 +1616,7 @@ S70:
 }
 /******************************************************************************/
 
-void binomial_cdf_values ( int *n_data, int *a, double *b, int *x, double *fx )
+void cdflib_binomial_cdf_values ( int *n_data, int *a, double *b, int *x, double *fx )
 
 /******************************************************************************/
 //
@@ -1715,7 +1715,7 @@ void binomial_cdf_values ( int *n_data, int *a, double *b, int *x, double *fx )
 }
 /******************************************************************************/
 
-void cdfbet ( int *which, double *p, double *q, double *x, double *y,
+void cdflib_cdfbet ( int *which, double *p, double *q, double *x, double *y,
   double *a, double *b, int *status, double *bound )
 
 /******************************************************************************/
@@ -1911,7 +1911,7 @@ S220:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S260;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S260;
     if(!(pq < 0.0e0)) goto S240;
     *bound = 0.0e0;
     goto S250;
@@ -1927,7 +1927,7 @@ S260:
 //     X + Y
 //
     xy = *x+*y;
-    if(!(fabs(xy-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S300;
+    if(!(fabs(xy-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S300;
     if(!(xy < 0.0e0)) goto S280;
     *bound = 0.0e0;
     goto S290;
@@ -1947,7 +1947,7 @@ S300:
 //
 //     Calculating P and Q
 //
-        cumbet(x,y,a,b,p,q);
+        cdflib_cumbet(x,y,a,b,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -1956,29 +1956,29 @@ S300:
 //
         T4 = atol;
         T5 = tol;
-        dstzr(&K2,&K3,&T4,&T5);
+        cdflib_dstzr(&K2,&K3,&T4,&T5);
         if(!qporq) goto S340;
         *status = 0;
-        dzror(status,x,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,x,&fx,&xlo,&xhi,&qleft,&qhi);
         *y = one-*x;
 S320:
         if(!(*status == 1)) goto S330;
-        cumbet(x,y,a,b,&cum,&ccum);
+        cdflib_cumbet(x,y,a,b,&cum,&ccum);
         fx = cum-*p;
-        dzror(status,x,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,x,&fx,&xlo,&xhi,&qleft,&qhi);
         *y = one-*x;
         goto S320;
 S330:
         goto S370;
 S340:
         *status = 0;
-        dzror(status,y,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,y,&fx,&xlo,&xhi,&qleft,&qhi);
         *x = one-*y;
 S350:
         if(!(*status == 1)) goto S360;
-        cumbet(x,y,a,b,&cum,&ccum);
+        cdflib_cumbet(x,y,a,b,&cum,&ccum);
         fx = ccum-*q;
-        dzror(status,y,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,y,&fx,&xlo,&xhi,&qleft,&qhi);
         *x = one-*y;
         goto S350;
 S370:
@@ -2004,19 +2004,19 @@ S390:
         T7 = inf;
         T10 = atol;
         T11 = tol;
-        dstinv(&T6,&T7,&K8,&K8,&K9,&T10,&T11);
+        cdflib_dstinv(&T6,&T7,&K8,&K8,&K9,&T10,&T11);
         *status = 0;
-        dinvr(status,a,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,a,&fx,&qleft,&qhi);
 S410:
         if(!(*status == 1)) goto S440;
-        cumbet(x,y,a,b,&cum,&ccum);
+        cdflib_cumbet(x,y,a,b,&cum,&ccum);
         if(!qporq) goto S420;
         fx = cum-*p;
         goto S430;
 S420:
         fx = ccum-*q;
 S430:
-        dinvr(status,a,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,a,&fx,&qleft,&qhi);
         goto S410;
 S440:
         if(!(*status == -1)) goto S470;
@@ -2040,19 +2040,19 @@ S460:
         T13 = inf;
         T14 = atol;
         T15 = tol;
-        dstinv(&T12,&T13,&K8,&K8,&K9,&T14,&T15);
+        cdflib_dstinv(&T12,&T13,&K8,&K8,&K9,&T14,&T15);
         *status = 0;
-        dinvr(status,b,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,b,&fx,&qleft,&qhi);
 S480:
         if(!(*status == 1)) goto S510;
-        cumbet(x,y,a,b,&cum,&ccum);
+        cdflib_cumbet(x,y,a,b,&cum,&ccum);
         if(!qporq) goto S490;
         fx = cum-*p;
         goto S500;
 S490:
         fx = ccum-*q;
 S500:
-        dinvr(status,b,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,b,&fx,&qleft,&qhi);
         goto S480;
 S510:
         if(!(*status == -1)) goto S540;
@@ -2076,7 +2076,7 @@ S540:
 }
 /******************************************************************************/
 
-void cdfbin ( int *which, double *p, double *q, double *s, double *xn,
+void cdflib_cdfbin ( int *which, double *p, double *q, double *s, double *xn,
   double *pr, double *ompr, int *status, double *bound )
 
 /******************************************************************************/
@@ -2277,7 +2277,7 @@ S240:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S280;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S280;
     if(!(pq < 0.0e0)) goto S260;
     *bound = 0.0e0;
     goto S270;
@@ -2293,7 +2293,7 @@ S280:
 //     PR + OMPR
 //
     prompr = *pr+*ompr;
-    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S320;
+    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S320;
     if(!(prompr < 0.0e0)) goto S300;
     *bound = 0.0e0;
     goto S310;
@@ -2313,7 +2313,7 @@ S320:
 //
 //     Calculating P
 //
-        cumbin(s,xn,pr,ompr,p,q);
+        cdflib_cumbin(s,xn,pr,ompr,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -2323,19 +2323,19 @@ S320:
         *s = 5.0e0;
         T5 = atol;
         T6 = tol;
-        dstinv(&K2,xn,&K3,&K3,&K4,&T5,&T6);
+        cdflib_dstinv(&K2,xn,&K3,&K3,&K4,&T5,&T6);
         *status = 0;
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
 S340:
         if(!(*status == 1)) goto S370;
-        cumbin(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumbin(s,xn,pr,ompr,&cum,&ccum);
         if(!qporq) goto S350;
         fx = cum-*p;
         goto S360;
 S350:
         fx = ccum-*q;
 S360:
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
         goto S340;
 S370:
         if(!(*status == -1)) goto S400;
@@ -2359,19 +2359,19 @@ S390:
         T8 = inf;
         T9 = atol;
         T10 = tol;
-        dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
+        cdflib_dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
         *status = 0;
-        dinvr(status,xn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xn,&fx,&qleft,&qhi);
 S410:
         if(!(*status == 1)) goto S440;
-        cumbin(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumbin(s,xn,pr,ompr,&cum,&ccum);
         if(!qporq) goto S420;
         fx = cum-*p;
         goto S430;
 S420:
         fx = ccum-*q;
 S430:
-        dinvr(status,xn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xn,&fx,&qleft,&qhi);
         goto S410;
 S440:
         if(!(*status == -1)) goto S470;
@@ -2392,29 +2392,29 @@ S460:
 //
         T12 = atol;
         T13 = tol;
-        dstzr(&K2,&K11,&T12,&T13);
+        cdflib_dstzr(&K2,&K11,&T12,&T13);
         if(!qporq) goto S500;
         *status = 0;
-        dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
         *ompr = one-*pr;
 S480:
         if(!(*status == 1)) goto S490;
-        cumbin(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumbin(s,xn,pr,ompr,&cum,&ccum);
         fx = cum-*p;
-        dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
         *ompr = one-*pr;
         goto S480;
 S490:
         goto S530;
 S500:
         *status = 0;
-        dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
         *pr = one-*ompr;
 S510:
         if(!(*status == 1)) goto S520;
-        cumbin(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumbin(s,xn,pr,ompr,&cum,&ccum);
         fx = ccum-*q;
-        dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
         *pr = one-*ompr;
         goto S510;
 S530:
@@ -2440,7 +2440,7 @@ S560:
 }
 /******************************************************************************/
 
-void cdfchi ( int *which, double *p, double *q, double *x, double *df,
+void cdflib_cdfchi ( int *which, double *p, double *q, double *x, double *df,
   int *status, double *bound )
 
 /******************************************************************************/
@@ -2600,7 +2600,7 @@ S140:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S180;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S180;
     if(!(pq < 0.0e0)) goto S160;
     *bound = 0.0e0;
     goto S170;
@@ -2631,7 +2631,7 @@ S210:
 //     Calculating P and Q
 //
         *status = 0;
-        cumchi(x,df,p,q);
+        cdflib_cumchi(x,df,p,q);
         if(porq > 1.5e0) {
             *status = 10;
             return;
@@ -2645,12 +2645,12 @@ S210:
         T3 = inf;
         T6 = atol;
         T7 = tol;
-        dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
+        cdflib_dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
         *status = 0;
-        dinvr(status,x,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,x,&fx,&qleft,&qhi);
 S230:
         if(!(*status == 1)) goto S270;
-        cumchi(x,df,&cum,&ccum);
+        cdflib_cumchi(x,df,&cum,&ccum);
         if(!qporq) goto S240;
         fx = cum-*p;
         goto S250;
@@ -2661,7 +2661,7 @@ S250:
         *status = 10;
         return;
 S260:
-        dinvr(status,x,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,x,&fx,&qleft,&qhi);
         goto S230;
 S270:
         if(!(*status == -1)) goto S300;
@@ -2685,12 +2685,12 @@ S290:
         T9 = inf;
         T10 = atol;
         T11 = tol;
-        dstinv(&T8,&T9,&K4,&K4,&K5,&T10,&T11);
+        cdflib_dstinv(&T8,&T9,&K4,&K4,&K5,&T10,&T11);
         *status = 0;
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
 S310:
         if(!(*status == 1)) goto S350;
-        cumchi(x,df,&cum,&ccum);
+        cdflib_cumchi(x,df,&cum,&ccum);
         if(!qporq) goto S320;
         fx = cum-*p;
         goto S330;
@@ -2701,7 +2701,7 @@ S330:
         *status = 10;
         return;
 S340:
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
         goto S310;
 S350:
         if(!(*status == -1)) goto S380;
@@ -2724,7 +2724,7 @@ S380:
 }
 /******************************************************************************/
 
-void cdfchn ( int *which, double *p, double *q, double *x, double *df,
+void cdflib_cdfchn ( int *which, double *p, double *q, double *x, double *df,
   double *pnonc, int *status, double *bound )
 
 /******************************************************************************/
@@ -2892,7 +2892,7 @@ S120:
 //
 //     Calculating P and Q
 //
-        cumchn(x,df,pnonc,p,q);
+        cdflib_cumchn(x,df,pnonc,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -2903,14 +2903,14 @@ S120:
         T2 = inf;
         T5 = atol;
         T6 = tol;
-        dstinv(&K1,&T2,&K3,&K3,&K4,&T5,&T6);
+        cdflib_dstinv(&K1,&T2,&K3,&K3,&K4,&T5,&T6);
         *status = 0;
-        dinvr(status,x,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,x,&fx,&qleft,&qhi);
 S140:
         if(!(*status == 1)) goto S150;
-        cumchn(x,df,pnonc,&cum,&ccum);
+        cdflib_cumchn(x,df,pnonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,x,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,x,&fx,&qleft,&qhi);
         goto S140;
 S150:
         if(!(*status == -1)) goto S180;
@@ -2934,14 +2934,14 @@ S170:
         T8 = inf;
         T9 = atol;
         T10 = tol;
-        dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
+        cdflib_dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
         *status = 0;
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
 S190:
         if(!(*status == 1)) goto S200;
-        cumchn(x,df,pnonc,&cum,&ccum);
+        cdflib_cumchn(x,df,pnonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
         goto S190;
 S200:
         if(!(*status == -1)) goto S230;
@@ -2964,14 +2964,14 @@ S220:
         T11 = tent4;
         T12 = atol;
         T13 = tol;
-        dstinv(&K1,&T11,&K3,&K3,&K4,&T12,&T13);
+        cdflib_dstinv(&K1,&T11,&K3,&K3,&K4,&T12,&T13);
         *status = 0;
-        dinvr(status,pnonc,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,pnonc,&fx,&qleft,&qhi);
 S240:
         if(!(*status == 1)) goto S250;
-        cumchn(x,df,pnonc,&cum,&ccum);
+        cdflib_cumchn(x,df,pnonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,pnonc,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,pnonc,&fx,&qleft,&qhi);
         goto S240;
 S250:
         if(!(*status == -1)) goto S280;
@@ -2996,7 +2996,7 @@ S280:
 }
 /******************************************************************************/
 
-void cdff ( int *which, double *p, double *q, double *f, double *dfn,
+void cdflib_cdff ( int *which, double *p, double *q, double *f, double *dfn,
   double *dfd, int *status, double *bound )
 
 /******************************************************************************/
@@ -3169,7 +3169,7 @@ S160:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * dpmpar ( &K1 ) ) ) goto S200;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0 * cdflib_dpmpar ( &K1 ) ) ) goto S200;
     if(!(pq < 0.0e0)) goto S180;
     *bound = 0.0e0;
     goto S190;
@@ -3189,7 +3189,7 @@ S200:
 //
 //     Calculating P
 //
-        cumf(f,dfn,dfd,p,q);
+        cdflib_cumf(f,dfn,dfd,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -3200,19 +3200,19 @@ S200:
         T3 = inf;
         T6 = atol;
         T7 = tol;
-        dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
+        cdflib_dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
         *status = 0;
-        dinvr(status,f,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,f,&fx,&qleft,&qhi);
 S220:
         if(!(*status == 1)) goto S250;
-        cumf(f,dfn,dfd,&cum,&ccum);
+        cdflib_cumf(f,dfn,dfd,&cum,&ccum);
         if(!qporq) goto S230;
         fx = cum-*p;
         goto S240;
 S230:
         fx = ccum-*q;
 S240:
-        dinvr(status,f,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,f,&fx,&qleft,&qhi);
         goto S220;
 S250:
         if(!(*status == -1)) goto S280;
@@ -3242,17 +3242,17 @@ S270:
     T9 = inf;
     T10 = atol;
     T11 = tol;
-    dstinv ( &T8, &T9, &K4, &K4, &K5, &T10, &T11 );
+    cdflib_dstinv ( &T8, &T9, &K4, &K4, &K5, &T10, &T11 );
 
     *status = 0;
     *dfn = 5.0;
     fx = 0.0;
 
-    dinvr ( status, dfn, &fx, &qleft, &qhi );
+    cdflib_dinvr ( status, dfn, &fx, &qleft, &qhi );
 
     while ( *status == 1 )
     {
-      cumf ( f, dfn, dfd, &cum, &ccum );
+      cdflib_cumf ( f, dfn, dfd, &cum, &ccum );
 
       if ( *p <= *q )
       {
@@ -3262,7 +3262,7 @@ S270:
       {
         fx = ccum - *q;
       }
-      dinvr ( status, dfn, &fx, &qleft, &qhi );
+      cdflib_dinvr ( status, dfn, &fx, &qleft, &qhi );
     }
 
     if ( *status == -1 )
@@ -3295,16 +3295,16 @@ S270:
     T13 = inf;
     T14 = atol;
     T15 = tol;
-    dstinv ( &T12, &T13, &K4, &K4, &K5, &T14, &T15 );
+    cdflib_dstinv ( &T12, &T13, &K4, &K4, &K5, &T14, &T15 );
 
     *status = 0;
     *dfd = 5.0;
     fx = 0.0;
-    dinvr ( status, dfd, &fx, &qleft, &qhi );
+    cdflib_dinvr ( status, dfd, &fx, &qleft, &qhi );
 
     while ( *status == 1 )
     {
-      cumf ( f, dfn, dfd, &cum, &ccum );
+      cdflib_cumf ( f, dfn, dfd, &cum, &ccum );
 
       if ( *p <= *q )
       {
@@ -3314,7 +3314,7 @@ S270:
       {
         fx = ccum - *q;
       }
-      dinvr ( status, dfd, &fx, &qleft, &qhi );
+      cdflib_dinvr ( status, dfd, &fx, &qleft, &qhi );
     }
 
     if ( *status == -1 )
@@ -3340,7 +3340,7 @@ S270:
 }
 /******************************************************************************/
 
-void cdffnc ( int *which, double *p, double *q, double *f, double *dfn,
+void cdflib_cdffnc ( int *which, double *p, double *q, double *f, double *dfn,
   double *dfd, double *phonc, int *status, double *bound )
 
 /******************************************************************************/
@@ -3542,7 +3542,7 @@ S140:
 //
 //     Calculating P
 //
-        cumfnc(f,dfn,dfd,phonc,p,q);
+        cdflib_cumfnc(f,dfn,dfd,phonc,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -3553,14 +3553,14 @@ S140:
         T2 = inf;
         T5 = atol;
         T6 = tol;
-        dstinv(&K1,&T2,&K3,&K3,&K4,&T5,&T6);
+        cdflib_dstinv(&K1,&T2,&K3,&K3,&K4,&T5,&T6);
         *status = 0;
-        dinvr(status,f,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,f,&fx,&qleft,&qhi);
 S160:
         if(!(*status == 1)) goto S170;
-        cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
+        cdflib_cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,f,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,f,&fx,&qleft,&qhi);
         goto S160;
 S170:
         if(!(*status == -1)) goto S200;
@@ -3584,14 +3584,14 @@ S190:
         T8 = inf;
         T9 = atol;
         T10 = tol;
-        dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
+        cdflib_dstinv(&T7,&T8,&K3,&K3,&K4,&T9,&T10);
         *status = 0;
-        dinvr(status,dfn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,dfn,&fx,&qleft,&qhi);
 S210:
         if(!(*status == 1)) goto S220;
-        cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
+        cdflib_cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,dfn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,dfn,&fx,&qleft,&qhi);
         goto S210;
 S220:
         if(!(*status == -1)) goto S250;
@@ -3615,14 +3615,14 @@ S240:
         T12 = inf;
         T13 = atol;
         T14 = tol;
-        dstinv(&T11,&T12,&K3,&K3,&K4,&T13,&T14);
+        cdflib_dstinv(&T11,&T12,&K3,&K3,&K4,&T13,&T14);
         *status = 0;
-        dinvr(status,dfd,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,dfd,&fx,&qleft,&qhi);
 S260:
         if(!(*status == 1)) goto S270;
-        cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
+        cdflib_cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,dfd,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,dfd,&fx,&qleft,&qhi);
         goto S260;
 S270:
         if(!(*status == -1)) goto S300;
@@ -3645,14 +3645,14 @@ S290:
         T15 = tent4;
         T16 = atol;
         T17 = tol;
-        dstinv(&K1,&T15,&K3,&K3,&K4,&T16,&T17);
+        cdflib_dstinv(&K1,&T15,&K3,&K3,&K4,&T16,&T17);
         *status = 0;
-        dinvr(status,phonc,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,phonc,&fx,&qleft,&qhi);
 S310:
         if(!(*status == 1)) goto S320;
-        cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
+        cdflib_cumfnc(f,dfn,dfd,phonc,&cum,&ccum);
         fx = cum-*p;
-        dinvr(status,phonc,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,phonc,&fx,&qleft,&qhi);
         goto S310;
 S320:
         if(!(*status == -1)) goto S350;
@@ -3677,7 +3677,7 @@ S350:
 }
 /******************************************************************************/
 
-void cdfgam ( int *which, double *p, double *q, double *x, double *shape,
+void cdflib_cdfgam ( int *which, double *p, double *q, double *x, double *shape,
   double *scale, int *status, double *bound )
 
 /******************************************************************************/
@@ -3845,7 +3845,7 @@ S160:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S200;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S200;
     if(!(pq < 0.0e0)) goto S180;
     *bound = 0.0e0;
     goto S190;
@@ -3877,7 +3877,7 @@ S230:
 //
         *status = 0;
         xscale = *x**scale;
-        cumgam(&xscale,shape,p,q);
+        cdflib_cumgam(&xscale,shape,p,q);
         if(porq > 1.5e0) *status = 10;
     }
     else if(2 == *which) {
@@ -3885,7 +3885,7 @@ S230:
 //     Computing X
 //
         T2 = -1.0e0;
-        gamma_inc_inv ( shape, &xx, &T2, p, q, &ierr );
+        cdflib_gamma_inc_inv ( shape, &xx, &T2, p, q, &ierr );
         if(ierr < 0.0e0) {
             *status = 10;
             return;
@@ -3905,12 +3905,12 @@ S230:
         T4 = inf;
         T7 = atol;
         T8 = tol;
-        dstinv(&T3,&T4,&K5,&K5,&K6,&T7,&T8);
+        cdflib_dstinv(&T3,&T4,&K5,&K5,&K6,&T7,&T8);
         *status = 0;
-        dinvr(status,shape,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,shape,&fx,&qleft,&qhi);
 S250:
         if(!(*status == 1)) goto S290;
-        cumgam(&xscale,shape,&cum,&ccum);
+        cdflib_cumgam(&xscale,shape,&cum,&ccum);
         if(!qporq) goto S260;
         fx = cum-*p;
         goto S270;
@@ -3921,7 +3921,7 @@ S270:
         *status = 10;
         return;
 S280:
-        dinvr(status,shape,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,shape,&fx,&qleft,&qhi);
         goto S250;
 S290:
         if(!(*status == -1)) goto S320;
@@ -3941,7 +3941,7 @@ S310:
 //     Computing SCALE
 //
         T9 = -1.0e0;
-        gamma_inc_inv ( shape, &xx, &T9, p, q, &ierr );
+        cdflib_gamma_inc_inv ( shape, &xx, &T9, p, q, &ierr );
         if(ierr < 0.0e0) {
             *status = 10;
             return;
@@ -3959,7 +3959,7 @@ S310:
 }
 /******************************************************************************/
 
-void cdfnbn ( int *which, double *p, double *q, double *s, double *xn,
+void cdflib_cdfnbn ( int *which, double *p, double *q, double *s, double *xn,
   double *pr, double *ompr, int *status, double *bound )
 
 /******************************************************************************/
@@ -4154,7 +4154,7 @@ S220:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S260;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S260;
     if(!(pq < 0.0e0)) goto S240;
     *bound = 0.0e0;
     goto S250;
@@ -4170,7 +4170,7 @@ S260:
 //     PR + OMPR
 //
     prompr = *pr+*ompr;
-    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S300;
+    if(!(fabs(prompr-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S300;
     if(!(prompr < 0.0e0)) goto S280;
     *bound = 0.0e0;
     goto S290;
@@ -4190,7 +4190,7 @@ S300:
 //
 //     Calculating P
 //
-        cumnbn(s,xn,pr,ompr,p,q);
+        cdflib_cumnbn(s,xn,pr,ompr,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -4201,19 +4201,19 @@ S300:
         T3 = inf;
         T6 = atol;
         T7 = tol;
-        dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
+        cdflib_dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
         *status = 0;
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
 S320:
         if(!(*status == 1)) goto S350;
-        cumnbn(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumnbn(s,xn,pr,ompr,&cum,&ccum);
         if(!qporq) goto S330;
         fx = cum-*p;
         goto S340;
 S330:
         fx = ccum-*q;
 S340:
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
         goto S320;
 S350:
         if(!(*status == -1)) goto S380;
@@ -4236,19 +4236,19 @@ S370:
         T8 = inf;
         T9 = atol;
         T10 = tol;
-        dstinv(&K2,&T8,&K4,&K4,&K5,&T9,&T10);
+        cdflib_dstinv(&K2,&T8,&K4,&K4,&K5,&T9,&T10);
         *status = 0;
-        dinvr(status,xn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xn,&fx,&qleft,&qhi);
 S390:
         if(!(*status == 1)) goto S420;
-        cumnbn(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumnbn(s,xn,pr,ompr,&cum,&ccum);
         if(!qporq) goto S400;
         fx = cum-*p;
         goto S410;
 S400:
         fx = ccum-*q;
 S410:
-        dinvr(status,xn,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xn,&fx,&qleft,&qhi);
         goto S390;
 S420:
         if(!(*status == -1)) goto S450;
@@ -4269,29 +4269,29 @@ S440:
 //
         T12 = atol;
         T13 = tol;
-        dstzr(&K2,&K11,&T12,&T13);
+        cdflib_dstzr(&K2,&K11,&T12,&T13);
         if(!qporq) goto S480;
         *status = 0;
-        dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
         *ompr = one-*pr;
 S460:
         if(!(*status == 1)) goto S470;
-        cumnbn(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumnbn(s,xn,pr,ompr,&cum,&ccum);
         fx = cum-*p;
-        dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,pr,&fx,&xlo,&xhi,&qleft,&qhi);
         *ompr = one-*pr;
         goto S460;
 S470:
         goto S510;
 S480:
         *status = 0;
-        dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
         *pr = one-*ompr;
 S490:
         if(!(*status == 1)) goto S500;
-        cumnbn(s,xn,pr,ompr,&cum,&ccum);
+        cdflib_cumnbn(s,xn,pr,ompr,&cum,&ccum);
         fx = ccum-*q;
-        dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
+        cdflib_dzror(status,ompr,&fx,&xlo,&xhi,&qleft,&qhi);
         *pr = one-*ompr;
         goto S490;
 S510:
@@ -4316,7 +4316,7 @@ S540:
 }
 /******************************************************************************/
 
-void cdfnor ( int *which, double *p, double *q, double *x, double *mean,
+void cdflib_cdfnor ( int *which, double *p, double *q, double *x, double *mean,
   double *sd, int *status, double *bound )
 
 /******************************************************************************/
@@ -4450,7 +4450,7 @@ S100:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S140;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S140;
     if(!(pq < 0.0e0)) goto S120;
     *bound = 0.0e0;
     goto S130;
@@ -4479,34 +4479,34 @@ S160:
 //     Computing P
 //
         z = (*x-*mean)/ *sd;
-        cumnor(&z,p,q);
+        cdflib_cumnor(&z,p,q);
     }
     else if(2 == *which) {
 //
 //     Computing X
 //
-        z = dinvnr(p,q);
+        z = cdflib_dinvnr(p,q);
         *x = *sd*z+*mean;
     }
     else if(3 == *which) {
 //
 //     Computing the MEAN
 //
-        z = dinvnr(p,q);
+        z = cdflib_dinvnr(p,q);
         *mean = *x-*sd*z;
     }
     else if(4 == *which) {
 //
 //     Computing SD
 //
-        z = dinvnr(p,q);
+        z = cdflib_dinvnr(p,q);
         *sd = (*x-*mean)/z;
     }
     return;
 }
 /******************************************************************************/
 
-void cdfpoi ( int *which, double *p, double *q, double *s, double *xlam,
+void cdflib_cdfpoi ( int *which, double *p, double *q, double *s, double *xlam,
   int *status, double *bound )
 
 /******************************************************************************/
@@ -4653,7 +4653,7 @@ S140:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S180;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S180;
     if(!(pq < 0.0e0)) goto S160;
     *bound = 0.0e0;
     goto S170;
@@ -4673,7 +4673,7 @@ S180:
 //
 //     Calculating P
 //
-        cumpoi(s,xlam,p,q);
+        cdflib_cumpoi(s,xlam,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -4684,19 +4684,19 @@ S180:
         T3 = inf;
         T6 = atol;
         T7 = tol;
-        dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
+        cdflib_dstinv(&K2,&T3,&K4,&K4,&K5,&T6,&T7);
         *status = 0;
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
 S200:
         if(!(*status == 1)) goto S230;
-        cumpoi(s,xlam,&cum,&ccum);
+        cdflib_cumpoi(s,xlam,&cum,&ccum);
         if(!qporq) goto S210;
         fx = cum-*p;
         goto S220;
 S210:
         fx = ccum-*q;
 S220:
-        dinvr(status,s,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,s,&fx,&qleft,&qhi);
         goto S200;
 S230:
         if(!(*status == -1)) goto S260;
@@ -4719,19 +4719,19 @@ S250:
         T8 = inf;
         T9 = atol;
         T10 = tol;
-        dstinv(&K2,&T8,&K4,&K4,&K5,&T9,&T10);
+        cdflib_dstinv(&K2,&T8,&K4,&K4,&K5,&T9,&T10);
         *status = 0;
-        dinvr(status,xlam,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xlam,&fx,&qleft,&qhi);
 S270:
         if(!(*status == 1)) goto S300;
-        cumpoi(s,xlam,&cum,&ccum);
+        cdflib_cumpoi(s,xlam,&cum,&ccum);
         if(!qporq) goto S280;
         fx = cum-*p;
         goto S290;
 S280:
         fx = ccum-*q;
 S290:
-        dinvr(status,xlam,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,xlam,&fx,&qleft,&qhi);
         goto S270;
 S300:
         if(!(*status == -1)) goto S330;
@@ -4753,7 +4753,7 @@ S330:
 }
 /******************************************************************************/
 
-void cdft ( int *which, double *p, double *q, double *t, double *df,
+void cdflib_cdft ( int *which, double *p, double *q, double *t, double *df,
   int *status, double *bound )
 
 /******************************************************************************/
@@ -4895,7 +4895,7 @@ S120:
 //     P + Q
 //
     pq = *p+*q;
-    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*dpmpar(&K1))) goto S160;
+    if(!(fabs(pq-0.5e0-0.5e0) > 3.0e0*cdflib_dpmpar(&K1))) goto S160;
     if(!(pq < 0.0e0)) goto S140;
     *bound = 0.0e0;
     goto S150;
@@ -4915,7 +4915,7 @@ S160:
 //
 //     Computing P and Q
 //
-        cumt(t,df,p,q);
+        cdflib_cumt(t,df,p,q);
         *status = 0;
     }
     else if(2 == *which) {
@@ -4923,24 +4923,24 @@ S160:
 //     Computing T
 //     .. Get initial approximation for T
 //
-        *t = dt1(p,q,df);
+        *t = cdflib_dt1(p,q,df);
         T2 = -inf;
         T3 = inf;
         T6 = atol;
         T7 = tol;
-        dstinv(&T2,&T3,&K4,&K4,&K5,&T6,&T7);
+        cdflib_dstinv(&T2,&T3,&K4,&K4,&K5,&T6,&T7);
         *status = 0;
-        dinvr(status,t,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,t,&fx,&qleft,&qhi);
 S180:
         if(!(*status == 1)) goto S210;
-        cumt(t,df,&cum,&ccum);
+        cdflib_cumt(t,df,&cum,&ccum);
         if(!qporq) goto S190;
         fx = cum-*p;
         goto S200;
 S190:
         fx = ccum-*q;
 S200:
-        dinvr(status,t,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,t,&fx,&qleft,&qhi);
         goto S180;
 S210:
         if(!(*status == -1)) goto S240;
@@ -4964,19 +4964,19 @@ S230:
         T9 = maxdf;
         T10 = atol;
         T11 = tol;
-        dstinv(&T8,&T9,&K4,&K4,&K5,&T10,&T11);
+        cdflib_dstinv(&T8,&T9,&K4,&K4,&K5,&T10,&T11);
         *status = 0;
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
 S250:
         if(!(*status == 1)) goto S280;
-        cumt(t,df,&cum,&ccum);
+        cdflib_cumt(t,df,&cum,&ccum);
         if(!qporq) goto S260;
         fx = cum-*p;
         goto S270;
 S260:
         fx = ccum-*q;
 S270:
-        dinvr(status,df,&fx,&qleft,&qhi);
+        cdflib_dinvr(status,df,&fx,&qleft,&qhi);
         goto S250;
 S280:
         if(!(*status == -1)) goto S310;
@@ -5000,7 +5000,7 @@ S310:
 }
 /******************************************************************************/
 
-void chi_noncentral_cdf_values ( int *n_data, double *x, double *lambda,
+void cdflib_chi_noncentral_cdf_values ( int *n_data, double *x, double *lambda,
   int *df, double *cdf )
 
 /******************************************************************************/
@@ -5119,7 +5119,7 @@ void chi_noncentral_cdf_values ( int *n_data, double *x, double *lambda,
 }
 /******************************************************************************/
 
-void chi_square_cdf_values ( int *n_data, int *a, double *x, double *fx )
+void cdflib_chi_square_cdf_values ( int *n_data, int *a, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -5217,7 +5217,7 @@ void chi_square_cdf_values ( int *n_data, int *a, double *x, double *fx )
 }
 /******************************************************************************/
 
-void cumbet ( double *x, double *y, double *a, double *b, double *cum,
+void cdflib_cumbet ( double *x, double *y, double *a, double *b, double *cum,
   double *ccum )
 
 /******************************************************************************/
@@ -5270,13 +5270,13 @@ void cumbet ( double *x, double *y, double *a, double *b, double *cum,
   }
   else
   {
-    beta_inc ( a, b, x, y, cum, ccum, &ierr );
+    cdflib_beta_inc ( a, b, x, y, cum, ccum, &ierr );
   }
   return;
 }
 /******************************************************************************/
 
-void cumbin ( double *s, double *xn, double *pr, double *ompr,
+void cdflib_cumbin ( double *s, double *xn, double *pr, double *ompr,
   double *cum, double *ccum )
 
 /******************************************************************************/
@@ -5322,7 +5322,7 @@ void cumbin ( double *s, double *xn, double *pr, double *ompr,
   {
     T1 = *s + 1.0;
     T2 = *xn - *s;
-    cumbet ( pr, ompr, &T1, &T2, ccum, cum );
+    cdflib_cumbet ( pr, ompr, &T1, &T2, ccum, cum );
   }
   else
   {
@@ -5333,7 +5333,7 @@ void cumbin ( double *s, double *xn, double *pr, double *ompr,
 }
 /******************************************************************************/
 
-void cumchi ( double *x, double *df, double *cum, double *ccum )
+void cdflib_cumchi ( double *x, double *df, double *cum, double *ccum )
 
 /******************************************************************************/
 //
@@ -5359,12 +5359,12 @@ void cumchi ( double *x, double *df, double *cum, double *ccum )
 
   a = *df * 0.5;
   xx = *x * 0.5;
-  cumgam ( &xx, &a, cum, ccum );
+  cdflib_cumgam ( &xx, &a, cum, ccum );
   return;
 }
 /******************************************************************************/
 
-void cumchn ( double *x, double *df, double *pnonc, double *cum,
+void cdflib_cumchn ( double *x, double *df, double *pnonc, double *cum,
   double *ccum )
 
 /******************************************************************************/
@@ -5432,7 +5432,7 @@ S10:
 //     When non-centrality parameter is (essentially) zero,
 //     use cumulative chi-square distribution
 //
-    cumchi(x,df,cum,ccum);
+    cdflib_cumchi(x,df,cum,ccum);
     return;
 S20:
     xnonc = *pnonc/2.0e0;
@@ -5444,27 +5444,27 @@ S20:
 //     be subtracted from the chi-square to move up two degrees
 //     of freedom.
 //
-    icent = fifidint(xnonc);
+    icent = cdflib_fifidint(xnonc);
     if(icent == 0) icent = 1;
     chid2 = *x/2.0e0;
 //
 //     Calculate central weight term
 //
     T1 = (double)(icent+1);
-    lfact = gamma_log ( &T1 );
+    lfact = cdflib_gamma_log ( &T1 );
     lcntwt = -xnonc+(double)icent*log(xnonc)-lfact;
     centwt = exp(lcntwt);
 //
 //     Calculate central chi-square
 //
     T2 = dg(icent);
-    cumchi(x,&T2,&pcent,ccum);
+    cdflib_cumchi(x,&T2,&pcent,ccum);
 //
 //     Calculate central adjustment term
 //
     dfd2 = dg(icent)/2.0e0;
     T3 = 1.0e0+dfd2;
-    lfact = gamma_log ( &T3 );
+    lfact = cdflib_gamma_log ( &T3 );
     lcntaj = dfd2*log(chid2)-chid2-lfact;
     centaj = exp(lcntaj);
     sum = centwt*pcent;
@@ -5545,7 +5545,7 @@ S80:
 }
 /******************************************************************************/
 
-void cumf ( double *f, double *dfn, double *dfd, double *cum, double *ccum )
+void cdflib_cumf ( double *f, double *dfn, double *dfd, double *cum, double *ccum )
 
 /******************************************************************************/
 //
@@ -5609,14 +5609,14 @@ S10:
 
   T1 = *dfd*half;
   T2 = *dfn*half;
-  beta_inc ( &T1, &T2, &xx, &yy, ccum, cum, &ierr );
+  cdflib_beta_inc ( &T1, &T2, &xx, &yy, ccum, cum, &ierr );
   return;
 # undef half
 # undef done
 }
 /******************************************************************************/
 
-void cumfnc ( double *f, double *dfn, double *dfd, double *pnonc,
+void cdflib_cumfnc ( double *f, double *dfn, double *dfd, double *pnonc,
   double *cum, double *ccum )
 
 /******************************************************************************/
@@ -5689,7 +5689,7 @@ S10:
 //  Handle case in which the non-centrality parameter is
 //  (essentially) zero.
 //
-    cumf(f,dfn,dfd,cum,ccum);
+    cdflib_cumf(f,dfn,dfd,cum,ccum);
     return;
 S20:
     xnonc = *pnonc/2.0e0;
@@ -5702,7 +5702,7 @@ S20:
 //  Compute central weight term
 //
     T1 = (double)(icent+1);
-    centwt = exp(-xnonc+(double)icent*log(xnonc)- gamma_log ( &T1 ) );
+    centwt = exp(-xnonc+(double)icent*log(xnonc)- cdflib_gamma_log ( &T1 ) );
 //
 //  Compute central incomplete beta term
 //  Assure that minimum of arg to beta and 1 - arg is computed
@@ -5718,7 +5718,7 @@ S20:
     else  xx = done-yy;
     T2 = *dfn*half+(double)icent;
     T3 = *dfd*half;
-    beta_inc ( &T2, &T3, &xx, &yy, &betdn, &dummy, &ierr );
+    cdflib_beta_inc ( &T2, &T3, &xx, &yy, &betdn, &dummy, &ierr );
     adn = *dfn/2.0e0+(double)icent;
     aup = adn;
     b = *dfd/2.0e0;
@@ -5731,8 +5731,8 @@ S20:
     i = icent;
     T4 = adn+b;
     T5 = adn+1.0e0;
-    dnterm = exp( gamma_log ( &T4 ) - gamma_log ( &T5 )
-      - gamma_log ( &b ) + adn * log ( xx ) + b * log(yy));
+    dnterm = exp( cdflib_gamma_log ( &T4 ) - cdflib_gamma_log ( &T5 )
+      - cdflib_gamma_log ( &b ) + adn * log ( xx ) + b * log(yy));
 S30:
     if(qsmall(xmult*betdn) || i <= 0) goto S40;
     xmult *= ((double)i/xnonc);
@@ -5748,13 +5748,13 @@ S40:
 //  Now sum forwards until convergence
 //
     xmult = centwt;
-    if(aup-1.0+b == 0) upterm = exp(-gamma_log ( &aup )
-      - gamma_log ( &b ) + (aup-1.0)*log(xx)+
+    if(aup-1.0+b == 0) upterm = exp(-cdflib_gamma_log ( &aup )
+      - cdflib_gamma_log ( &b ) + (aup-1.0)*log(xx)+
       b*log(yy));
     else  {
         T6 = aup-1.0+b;
-        upterm = exp( gamma_log ( &T6 ) - gamma_log ( &aup )
-          - gamma_log ( &b ) + (aup-1.0)*log(xx)+b*
+        upterm = exp( cdflib_gamma_log ( &T6 ) - cdflib_gamma_log ( &aup )
+          - cdflib_gamma_log ( &b ) + (aup-1.0)*log(xx)+b*
           log(yy));
     }
     goto S60;
@@ -5778,7 +5778,7 @@ S70:
 }
 /******************************************************************************/
 
-void cumgam ( double *x, double *a, double *cum, double *ccum )
+void cdflib_cumgam ( double *x, double *a, double *cum, double *ccum )
 
 /******************************************************************************/
 //
@@ -5815,7 +5815,7 @@ void cumgam ( double *x, double *a, double *cum, double *ccum )
   *ccum = 1.0e0;
   return;
 S10:
-  gamma_inc ( a, x, cum, ccum, &K1 );
+  cdflib_gamma_inc ( a, x, cum, ccum, &K1 );
 //
 //     Call gratio routine
 //
@@ -5823,7 +5823,7 @@ S10:
 }
 /******************************************************************************/
 
-void cumnbn ( double *s, double *xn, double *pr, double *ompr,
+void cdflib_cumnbn ( double *s, double *xn, double *pr, double *ompr,
   double *cum, double *ccum )
 
 /******************************************************************************/
@@ -5865,12 +5865,12 @@ void cumnbn ( double *s, double *xn, double *pr, double *ompr,
   static double T1;
 
   T1 = *s+1.e0;
-  cumbet(pr,ompr,xn,&T1,cum,ccum);
+  cdflib_cumbet(pr,ompr,xn,&T1,cum,ccum);
   return;
 }
 /******************************************************************************/
 
-void cumnor ( double *arg, double *result, double *ccum )
+void cdflib_cumnor ( double *arg, double *result, double *ccum )
 
 /******************************************************************************/
 //
@@ -5971,8 +5971,8 @@ void cumnor ( double *arg, double *result, double *ccum )
 //
 //  Machine dependent constants
 //
-    eps = dpmpar(&K1)*0.5e0;
-    min = dpmpar(&K2);
+    eps = cdflib_dpmpar(&K1)*0.5e0;
+    min = cdflib_dpmpar(&K2);
     x = *arg;
     y = fabs(x);
     if(y <= thrsh) {
@@ -6005,7 +6005,7 @@ void cumnor ( double *arg, double *result, double *ccum )
             xden = (xden+d[i])*y;
         }
         *result = (xnum+c[7])/(xden+d[7]);
-        xsq = fifdint(y*sixten)/sixten;
+        xsq = cdflib_fifdint(y*sixten)/sixten;
         del = (y-xsq)*(y+xsq);
         *result = exp(-(xsq*xsq*half))*exp(-(del*half))**result;
         *ccum = one-*result;
@@ -6030,7 +6030,7 @@ void cumnor ( double *arg, double *result, double *ccum )
         }
         *result = xsq*(xnum+p[4])/(xden+q[4]);
         *result = (sqrpi-*result)/y;
-        xsq = fifdint(x*sixten)/sixten;
+        xsq = cdflib_fifdint(x*sixten)/sixten;
         del = (x-xsq)*(x+xsq);
         *result = exp(-(xsq*xsq*half))*exp(-(del*half))**result;
         *ccum = one-*result;
@@ -6048,7 +6048,7 @@ void cumnor ( double *arg, double *result, double *ccum )
 }
 /******************************************************************************/
 
-void cumpoi ( double *s, double *xlam, double *cum, double *ccum )
+void cdflib_cumpoi ( double *s, double *xlam, double *cum, double *ccum )
 
 /******************************************************************************/
 //
@@ -6082,12 +6082,12 @@ void cumpoi ( double *s, double *xlam, double *cum, double *ccum )
 
   df = 2.0e0*(*s+1.0e0);
   chi = 2.0e0**xlam;
-  cumchi(&chi,&df,ccum,cum);
+  cdflib_cumchi(&chi,&df,ccum,cum);
   return;
 }
 /******************************************************************************/
 
-void cumt ( double *t, double *df, double *cum, double *ccum )
+void cdflib_cumt ( double *t, double *df, double *cum, double *ccum )
 
 /******************************************************************************/
 //
@@ -6126,7 +6126,7 @@ void cumt ( double *t, double *df, double *cum, double *ccum )
   xx = *df / dfptt;
   yy = tt / dfptt;
   T1 = 0.5e0 * ( *df );
-  cumbet ( &xx, &yy, &T1, &K2, &a, &oma );
+  cdflib_cumbet ( &xx, &yy, &T1, &K2, &a, &oma );
 
   if ( *t <= 0.0e0 )
   {
@@ -6142,7 +6142,7 @@ void cumt ( double *t, double *df, double *cum, double *ccum )
 }
 /******************************************************************************/
 
-double dbetrm ( double *a, double *b )
+double cdflib_dbetrm ( double *a, double *b )
 
 /******************************************************************************/
 //
@@ -6173,16 +6173,16 @@ double dbetrm ( double *a, double *b )
 //     Try to sum from smallest to largest
 //
     T1 = *a+*b;
-    dbetrm = -dstrem(&T1);
-    T2 = fifdmax1(*a,*b);
-    dbetrm += dstrem(&T2);
-    T3 = fifdmin1(*a,*b);
-    dbetrm += dstrem(&T3);
+    dbetrm = -cdflib_dstrem(&T1);
+    T2 = cdflib_fifdmax1(*a,*b);
+    dbetrm += cdflib_dstrem(&T2);
+    T3 = cdflib_fifdmin1(*a,*b);
+    dbetrm += cdflib_dstrem(&T3);
     return dbetrm;
 }
 /******************************************************************************/
 
-double dexpm1 ( double *x )
+double cdflib_dexpm1 ( double *x )
 
 /******************************************************************************/
 //
@@ -6242,7 +6242,7 @@ double dexpm1 ( double *x )
 }
 /******************************************************************************/
 
-double dinvnr ( double *p, double *q )
+double cdflib_dinvnr ( double *p, double *q )
 
 /******************************************************************************/
 //
@@ -6297,14 +6297,14 @@ S20:
 //
 //     INITIALIZATION STEP
 //
-    strtx = stvaln(&pp);
+    strtx = cdflib_stvaln(&pp);
     xcur = strtx;
 //
 //     NEWTON INTERATIONS
 //
     for ( i = 1; i <= maxit; i++ )
     {
-        cumnor(&xcur,&cum,&ccum);
+        cdflib_cumnor(&xcur,&cum,&ccum);
         dx = (cum-pp)/dennor(xcur);
         xcur -= dx;
         if(fabs(dx/xcur) < eps) goto S40;
@@ -6330,7 +6330,7 @@ S40:
 }
 /******************************************************************************/
 
-void dinvr ( int *status, double *x, double *fx,
+void cdflib_dinvr ( int *status, double *x, double *fx,
   unsigned long *qleft, unsigned long *qhi )
 
 /******************************************************************************/
@@ -6380,11 +6380,11 @@ void dinvr ( int *status, double *x, double *fx,
 //    if F(X) < Y.
 //
 {
-  E0000(0,status,x,fx,qleft,qhi,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+  cdflib_E0000(0,status,x,fx,qleft,qhi,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 }
 /******************************************************************************/
 
-double dlanor ( double *x )
+double cdflib_dlanor ( double *x )
 
 /******************************************************************************/
 //
@@ -6426,20 +6426,20 @@ double dlanor ( double *x )
   xx = fabs(*x);
   if ( xx < 5.0e0 ) 
   {
-    ftnstop(" Argument too small in DLANOR");
+    cdflib_ftnstop(" Argument too small in DLANOR");
   }
   approx = -dlsqpi-0.5e0*xx*xx-log(xx);
   xx2 = xx*xx;
   T2 = 1.0e0/xx2;
-  correc = eval_pol ( coef, &K1, &T2 ) / xx2;
-  correc = alnrel ( &correc );
+  correc = cdflib_eval_pol ( coef, &K1, &T2 ) / xx2;
+  correc = cdflib_alnrel ( &correc );
   dlanor = approx+correc;
   return dlanor;
 # undef dlsqpi
 }
 /******************************************************************************/
 
-double dpmpar ( int *i )
+double cdflib_dpmpar ( int *i )
 
 /******************************************************************************/
 //
@@ -6479,23 +6479,23 @@ double dpmpar ( int *i )
   static int emax,emin,ibeta,m;
 
     if(*i > 1) goto S10;
-    b = ipmpar(&K1);
-    m = ipmpar(&K2);
+    b = cdflib_ipmpar(&K1);
+    m = cdflib_ipmpar(&K2);
     value = pow(b,(double)(1-m));
     return value;
 S10:
     if(*i > 2) goto S20;
-    b = ipmpar(&K1);
-    emin = ipmpar(&K3);
+    b = cdflib_ipmpar(&K1);
+    emin = cdflib_ipmpar(&K3);
     one = 1.0;
     binv = one/b;
     w = pow(b,(double)(emin+2));
     value = w*binv*binv*binv;
     return value;
 S20:
-    ibeta = ipmpar(&K1);
-    m = ipmpar(&K2);
-    emax = ipmpar(&K4);
+    ibeta = cdflib_ipmpar(&K1);
+    m = cdflib_ipmpar(&K2);
+    emax = cdflib_ipmpar(&K4);
     b = ibeta;
     bm1 = ibeta-1;
     one = 1.0;
@@ -6507,7 +6507,7 @@ S20:
 }
 /******************************************************************************/
 
-void dstinv ( double *zsmall, double *zbig, double *zabsst,
+void cdflib_dstinv ( double *zsmall, double *zbig, double *zabsst,
   double *zrelst, double *zstpmu, double *zabsto, double *zrelto )
 
 /******************************************************************************/
@@ -6576,12 +6576,12 @@ void dstinv ( double *zsmall, double *zbig, double *zabsst,
 //     QRZERO.
 //
 {
-  E0000(1,NULL,NULL,NULL,NULL,NULL,zabsst,zabsto,zbig,zrelst,zrelto,zsmall,
+  cdflib_E0000(1,NULL,NULL,NULL,NULL,NULL,zabsst,zabsto,zbig,zrelst,zrelto,zsmall,
     zstpmu);
 }
 /******************************************************************************/
 
-double dstrem ( double *z )
+double cdflib_dstrem ( double *z )
 
 /******************************************************************************/
 //
@@ -6646,15 +6646,15 @@ double dstrem ( double *z )
 //
     if(*z <= 0.0e0) 
     {
-      ftnstop ( "Zero or negative argument in DSTREM" );
+      cdflib_ftnstop ( "Zero or negative argument in DSTREM" );
     }
     if(!(*z > 6.0e0)) goto S10;
     T2 = 1.0e0/pow(*z,2.0);
-    dstrem = eval_pol ( coef, &K1, &T2 )**z;
+    dstrem = cdflib_eval_pol ( coef, &K1, &T2 )**z;
     goto S20;
 S10:
     sterl = hln2pi+(*z-0.5e0)*log(*z)-*z;
-    dstrem = gamma_log ( z ) - sterl;
+    dstrem = cdflib_gamma_log ( z ) - sterl;
 S20:
     return dstrem;
 # undef hln2pi
@@ -6662,7 +6662,7 @@ S20:
 }
 /******************************************************************************/
 
-void dstzr ( double *zxlo, double *zxhi, double *zabstl, double *zreltl )
+void cdflib_dstzr ( double *zxlo, double *zxhi, double *zabstl, double *zreltl )
 
 /******************************************************************************/
 //
@@ -6712,11 +6712,11 @@ void dstzr ( double *zxlo, double *zxhi, double *zabstl, double *zreltl )
 //     (Dec. '75) is employed to find the zero of F(X)-Y.
 //
 {
-  E0001(1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,zabstl,zreltl,zxhi,zxlo);
+  cdflib_E0001(1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,zabstl,zreltl,zxhi,zxlo);
 }
 /******************************************************************************/
 
-double dt1 ( double *p, double *q, double *df )
+double cdflib_dt1 ( double *p, double *q, double *df )
 
 /******************************************************************************/
 //
@@ -6755,13 +6755,13 @@ double dt1 ( double *p, double *q, double *df )
   static double dt1,denpow,sum,term,x,xp,xx;
   static int i;
 
-    x = fabs(dinvnr(p,q));
+    x = fabs(cdflib_dinvnr(p,q));
     xx = x*x;
     sum = x;
     denpow = 1.0e0;
     for ( i = 0; i < 4; i++ )
     {
-        term = eval_pol ( &coef[i][0], &ideg[i], &xx ) * x;
+        term = cdflib_eval_pol ( &coef[i][0], &ideg[i], &xx ) * x;
         denpow *= *df;
         sum += (term/(denpow*denom[i]));
     }
@@ -6776,7 +6776,7 @@ S30:
 }
 /******************************************************************************/
 
-void dzror ( int *status, double *x, double *fx, double *xlo,
+void cdflib_dzror ( int *status, double *x, double *fx, double *xlo,
   double *xhi, unsigned long *qleft, unsigned long *qhi )
 
 /******************************************************************************/
@@ -6838,11 +6838,11 @@ void dzror ( int *status, double *x, double *fx, double *xlo,
 //
 //
 {
-  E0001(0,status,x,fx,xlo,xhi,qleft,qhi,NULL,NULL,NULL,NULL);
+  cdflib_E0001(0,status,x,fx,xlo,xhi,qleft,qhi,NULL,NULL,NULL,NULL);
 }
 /******************************************************************************/
 
-static void E0000 ( int IENTRY, int *status, double *x, double *fx,
+static void cdflib_E0000 ( int IENTRY, int *status, double *x, double *fx,
   unsigned long *qleft, unsigned long *qhi, double *zabsst,
   double *zabsto, double *zbig, double *zrelst,
   double *zrelto, double *zsmall, double *zstpmu )
@@ -6868,7 +6868,7 @@ DINVR:
     qcond = !qxmon(small,*x,big);
     if(qcond) 
     {
-      ftnstop(" SMALL, X, BIG not monotone in INVR");
+      cdflib_ftnstop(" SMALL, X, BIG not monotone in INVR");
     }
     xsave = *x;
 //
@@ -6918,7 +6918,7 @@ S60:
 S80:
 S70:
     *x = xsave;
-    step = fifdmax1(absstp,relstp*fabs(*x));
+    step = cdflib_fifdmax1(absstp,relstp*fabs(*x));
 //
 //      YY = F(X) - Y
 //     GET-FUNCTION-VALUE
@@ -6938,7 +6938,7 @@ S100:
 //
     if(!qup) goto S170;
     xlb = xsave;
-    xub = fifdmin1(xlb+step,big);
+    xub = cdflib_fifdmin1(xlb+step,big);
     goto S120;
 S110:
     if(qcond) goto S150;
@@ -6960,7 +6960,7 @@ S130:
     if(qcond) goto S140;
     step = stpmul*step;
     xlb = xub;
-    xub = fifdmin1(xlb+step,big);
+    xub = cdflib_fifdmin1(xlb+step,big);
 S140:
     goto S110;
 S150:
@@ -6977,7 +6977,7 @@ S170:
 //     HANDLE CASE IN WHICH WE MUST STEP LOWER
 //
     xub = xsave;
-    xlb = fifdmax1(xub-step,small);
+    xlb = cdflib_fifdmax1(xub-step,small);
     goto S190;
 S180:
     if(qcond) goto S220;
@@ -6999,7 +6999,7 @@ S200:
     if(qcond) goto S210;
     step = stpmul*step;
     xub = xlb;
-    xlb = fifdmax1(xub-step,small);
+    xlb = cdflib_fifdmax1(xub-step,small);
 S210:
     goto S180;
 S220:
@@ -7011,7 +7011,7 @@ S220:
     return;
 S240:
 S230:
-    dstzr(&xlb,&xub,&abstol,&reltol);
+    cdflib_dstzr(&xlb,&xub,&abstol,&reltol);
 //
 //  IF WE REACH HERE, XLB AND XUB BOUND THE ZERO OF F.
 //
@@ -7020,7 +7020,7 @@ S230:
 S250:
     if(!(*status == 1)) goto S290;
 S260:
-    dzror ( status, x, fx, &xlo, &xhi, &qdum1, &qdum2 );
+    cdflib_dzror ( status, x, fx, &xlo, &xhi, &qdum1, &qdum2 );
     if(!(*status == 1)) goto S280;
 //
 //     GET-FUNCTION-VALUE
@@ -7056,7 +7056,7 @@ S310:
 }
 /******************************************************************************/
 
-static void E0001 ( int IENTRY, int *status, double *x, double *fx,
+static void cdflib_E0001 ( int IENTRY, int *status, double *x, double *fx,
   double *xlo, double *xhi, unsigned long *qleft,
   unsigned long *qhi, double *zabstl, double *zreltl,
   double *zxhi, double *zxlo )
@@ -7068,7 +7068,7 @@ static void E0001 ( int IENTRY, int *status, double *x, double *fx,
 //    E00001 is a reverse-communication zero finder.
 //
 {
-# define ftol(zx) (0.5e0*fifdmax1(abstol,reltol*fabs((zx))))
+# define ftol(zx) (0.5e0*cdflib_fifdmax1(abstol,reltol*fabs((zx))))
 
   static double a,abstol,b,c,d,fa,fb,fc,fd,fda;
   static double fdb,m,mb,p,q,reltol,tol,w,xxhi,xxlo;
@@ -7143,7 +7143,7 @@ S100:
     w = mb;
     goto S190;
 S110:
-    tol = fifdsign(tol,mb);
+    tol = cdflib_fifdsign(tol,mb);
     p = (b-a)*fb;
     if(!first) goto S120;
     q = fa-fb;
@@ -7225,7 +7225,7 @@ S280:
 }
 /******************************************************************************/
 
-void erf_values ( int *n_data, double *x, double *fx )
+void cdflib_erf_values ( int *n_data, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -7303,7 +7303,7 @@ void erf_values ( int *n_data, double *x, double *fx )
 }
 /******************************************************************************/
 
-double error_f ( double *x )
+double cdflib_error_f ( double *x )
 
 /******************************************************************************/
 //
@@ -7373,12 +7373,12 @@ S20:
     if(*x < 0.0e0) erf1 = -erf1;
     return erf1;
 S30:
-    erf1 = fifdsign(1.0e0,*x);
+    erf1 = cdflib_fifdsign(1.0e0,*x);
     return erf1;
 }
 /******************************************************************************/
 
-double error_fc ( int *ind, double *x )
+double cdflib_error_fc ( int *ind, double *x )
 
 /******************************************************************************/
 //
@@ -7460,7 +7460,7 @@ S20:
     if(*x <= -5.6e0) goto S60;
     if(*ind != 0) goto S30;
     if(*x > 100.0e0) goto S70;
-    if(*x**x > -exparg(&K1)) goto S70;
+    if(*x**x > -cdflib_exparg(&K1)) goto S70;
 S30:
     t = pow(1.0e0/ *x,2.0);
     top = (((r[0]*t+r[1])*t+r[2])*t+r[3])*t+r[4];
@@ -7497,7 +7497,7 @@ S70:
 }
 /******************************************************************************/
 
-double esum ( int *mu, double *x )
+double cdflib_esum ( int *mu, double *x )
 
 /******************************************************************************/
 //
@@ -7535,7 +7535,7 @@ S20:
 }
 /******************************************************************************/
 
-double eval_pol ( double a[], int *n, double *x )
+double cdflib_eval_pol ( double a[], int *n, double *x )
 
 /******************************************************************************/
 //
@@ -7577,7 +7577,7 @@ double eval_pol ( double a[], int *n, double *x )
 }
 /******************************************************************************/
 
-double exparg ( int *l )
+double cdflib_exparg ( int *l )
 
 /******************************************************************************/
 //
@@ -7609,7 +7609,7 @@ double exparg ( int *l )
   static double exparg,lnb;
   static int b,m;
 
-    b = ipmpar(&K1);
+    b = cdflib_ipmpar(&K1);
     if(b != 2) goto S10;
     lnb = .69314718055995e0;
     goto S40;
@@ -7625,17 +7625,17 @@ S30:
     lnb = log((double)b);
 S40:
     if(*l == 0) goto S50;
-    m = ipmpar(&K2)-1;
+    m = cdflib_ipmpar(&K2)-1;
     exparg = 0.99999e0*((double)m*lnb);
     return exparg;
 S50:
-    m = ipmpar(&K3);
+    m = cdflib_ipmpar(&K3);
     exparg = 0.99999e0*((double)m*lnb);
     return exparg;
 }
 /******************************************************************************/
 
-void f_cdf_values ( int *n_data, int *a, int *b, double *x, double *fx )
+void cdflib_f_cdf_values ( int *n_data, int *a, int *b, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -7738,7 +7738,7 @@ void f_cdf_values ( int *n_data, int *a, int *b, double *x, double *fx )
 }
 /******************************************************************************/
 
-void f_noncentral_cdf_values ( int *n_data, int *a, int *b, double *lambda,
+void cdflib_f_noncentral_cdf_values ( int *n_data, int *a, int *b, double *lambda,
   double *x, double *fx )
 
 /******************************************************************************/
@@ -7857,7 +7857,7 @@ void f_noncentral_cdf_values ( int *n_data, int *a, int *b, double *lambda,
 }
 /******************************************************************************/
 
-double fifdint ( double a )
+double cdflib_fifdint ( double a )
 
 /******************************************************************************/
 //
@@ -7873,7 +7873,7 @@ double fifdint ( double a )
 }
 /******************************************************************************/
 
-double fifdmax1 ( double a, double b )
+double cdflib_fifdmax1 ( double a, double b )
 
 /******************************************************************************/
 //
@@ -7898,7 +7898,7 @@ double fifdmax1 ( double a, double b )
 }
 /******************************************************************************/
 
-double fifdmin1 ( double a, double b )
+double cdflib_fifdmin1 ( double a, double b )
 
 /******************************************************************************/
 //
@@ -7917,7 +7917,7 @@ double fifdmin1 ( double a, double b )
 }
 /******************************************************************************/
 
-double fifdsign ( double mag, double sign )
+double cdflib_fifdsign ( double mag, double sign )
 
 /******************************************************************************/
 //
@@ -7938,7 +7938,7 @@ double fifdsign ( double mag, double sign )
 }
 /******************************************************************************/
 
-long fifidint ( double a )
+long cdflib_fifidint ( double a )
 
 /******************************************************************************/
 //
@@ -7962,7 +7962,7 @@ long fifidint ( double a )
 }
 /******************************************************************************/
 
-long fifmod ( long a, long b )
+long cdflib_fifmod ( long a, long b )
 
 /******************************************************************************/
 //
@@ -7980,7 +7980,7 @@ long fifmod ( long a, long b )
 }
 /******************************************************************************/
 
-double fpser ( double *a, double *b, double *x, double *eps )
+double cdflib_fpser ( double *a, double *b, double *x, double *eps )
 
 /******************************************************************************/
 //
@@ -8017,7 +8017,7 @@ double fpser ( double *a, double *b, double *x, double *eps )
     if(*a <= 1.e-3**eps) goto S10;
     fpser = 0.0e0;
     t = *a*log(*x);
-    if(t < exparg(&K1)) return fpser;
+    if(t < cdflib_exparg(&K1)) return fpser;
     fpser = exp(t);
 S10:
 //
@@ -8039,7 +8039,7 @@ S20:
 }
 /******************************************************************************/
 
-void ftnstop ( char *msg )
+void cdflib_ftnstop ( char *msg )
 
 /******************************************************************************/
 //
@@ -8058,7 +8058,7 @@ void ftnstop ( char *msg )
 }
 /******************************************************************************/
 
-double gam1 ( double *a )
+double cdflib_gam1 ( double *a )
 
 /******************************************************************************/
 //
@@ -8125,7 +8125,7 @@ S50:
 }
 /******************************************************************************/
 
-void gamma_inc ( double *a, double *x, double *ans, double *qans, int *ind )
+void cdflib_gamma_inc ( double *a, double *x, double *ans, double *qans, int *ind )
 
 /******************************************************************************/
 //
@@ -8232,13 +8232,13 @@ void gamma_inc ( double *a, double *x, double *ans, double *qans, int *ind )
 //  E IS A MACHINE DEPENDENT CONSTANT. E IS THE SMALLEST
 //  NUMBER FOR WHICH 1.0 + E .GT. 1.0 .
 //
-    e = dpmpar(&K1);
+    e = cdflib_dpmpar(&K1);
     if(*a < 0.0e0 || *x < 0.0e0) goto S430;
     if(*a == 0.0e0 && *x == 0.0e0) goto S430;
     if(*a**x == 0.0e0) goto S420;
     iop = *ind+1;
     if(iop != 1 && iop != 2) iop = 3;
-    acc = fifdmax1(acc0[iop-1],e);
+    acc = cdflib_fifdmax1(acc0[iop-1],e);
     e0 = e00[iop-1];
     x0 = x00[iop-1];
 //
@@ -8250,26 +8250,26 @@ void gamma_inc ( double *a, double *x, double *ans, double *qans, int *ind )
     t1 = *a*log(*x)-*x;
     u = *a*exp(t1);
     if(u == 0.0e0) goto S380;
-    r = u*(1.0e0+gam1(a));
+    r = u*(1.0e0+cdflib_gam1(a));
     goto S250;
 S10:
     if(*a >= big[iop-1]) goto S30;
     if(*a > *x || *x >= x0) goto S20;
     twoa = *a+*a;
-    m = fifidint(twoa);
+    m = cdflib_fifidint(twoa);
     if(twoa != (double)m) goto S20;
     i = m/2;
     if(*a == (double)i) goto S210;
     goto S220;
 S20:
     t1 = *a*log(*x)-*x;
-    r = exp(t1)/ gamma_x(a);
+    r = exp(t1)/ cdflib_gamma_x(a);
     goto S40;
 S30:
     l = *x/ *a;
     if(l == 0.0e0) goto S370;
     s = 0.5e0+(0.5e0-l);
-    z = rlog(&l);
+    z = cdflib_rlog(&l);
     if(z >= 700.0e0/ *a) goto S410;
     y = *a*z;
     rta = sqrt(*a);
@@ -8281,7 +8281,7 @@ S30:
     r = rt2pin*rta*exp(t1);
 S40:
     if(r == 0.0e0) goto S420;
-    if(*x <= fifdmax1(*a,alog10)) goto S50;
+    if(*x <= cdflib_fifdmax1(*a,alog10)) goto S50;
     if(*x < x0) goto S250;
     goto S100;
 S50:
@@ -8365,7 +8365,7 @@ S170:
     if(fabs(t) > tol) goto S170;
     j = *a**x*((sum/6.0e0-0.5e0/(*a+2.0e0))**x+1.0e0/(*a+1.0e0));
     z = *a*log(*x);
-    h = gam1(a);
+    h = cdflib_gam1(a);
     g = 1.0e0+h;
     if(*x < 0.25e0) goto S180;
     if(*a < *x/2.59e0) goto S200;
@@ -8378,7 +8378,7 @@ S190:
     *qans = 0.5e0+(0.5e0-*ans);
     return;
 S200:
-    l = rexp(&z);
+    l = cdflib_rexp(&z);
     w = 0.5e0+(0.5e0+l);
     *qans = (w*j-l)*g-h;
     if(*qans < 0.0e0) goto S380;
@@ -8395,7 +8395,7 @@ S210:
     goto S230;
 S220:
     rtx = sqrt(*x);
-    sum = error_fc ( &K2, &rtx );
+    sum = cdflib_error_fc ( &K2, &rtx );
     t = exp(-*x)/(rtpi*rtx);
     n = 0;
     c = -0.5e0;
@@ -8414,7 +8414,7 @@ S250:
 //
 //  CONTINUED FRACTION EXPANSION
 //
-    tol = fifdmax1(5.0e0*e,acc);
+    tol = cdflib_fifdmax1(5.0e0*e,acc);
     a2nm1 = a2n = 1.0e0;
     b2nm1 = *x;
     b2n = *x+(1.0e0-*a);
@@ -8439,7 +8439,7 @@ S270:
     if(fabs(s) <= 2.0e0*e && *a*e*e > 3.28e-3) goto S430;
     c = exp(-y);
     T3 = sqrt(y);
-    w = 0.5e0 * error_fc ( &K1, &T3 );
+    w = 0.5e0 * cdflib_error_fc ( &K1, &T3 );
     u = 1.0e0/ *a;
     z = sqrt(z+z);
     if(l < 1.0e0) z = -z;
@@ -8526,12 +8526,12 @@ S380:
 S390:
     if(*x >= 0.25e0) goto S400;
     T6 = sqrt(*x);
-    *ans = error_f ( &T6 );
+    *ans = cdflib_error_f ( &T6 );
     *qans = 0.5e0+(0.5e0-*ans);
     return;
 S400:
     T7 = sqrt(*x);
-    *qans = error_fc ( &K2, &T7 );
+    *qans = cdflib_error_fc ( &K2, &T7 );
     *ans = 0.5e0+(0.5e0-*qans);
     return;
 S410:
@@ -8548,7 +8548,7 @@ S430:
 }
 /******************************************************************************/
 
-void gamma_inc_inv ( double *a, double *x, double *x0, double *p, double *q,
+void cdflib_gamma_inc_inv ( double *a, double *x, double *x0, double *p, double *q,
   int *ierr )
 
 /******************************************************************************/
@@ -8645,9 +8645,9 @@ void gamma_inc_inv ( double *a, double *x, double *x0, double *p, double *q,
 //            XMIN IS THE SMALLEST POSITIVE NUMBER AND XMAX IS THE
 //            LARGEST POSITIVE NUMBER.
 //
-    e = dpmpar(&K1);
-    xmin = dpmpar(&K2);
-    xmax = dpmpar(&K3);
+    e = cdflib_dpmpar(&K1);
+    xmin = cdflib_dpmpar(&K2);
+    xmax = cdflib_dpmpar(&K3);
     *x = 0.0e0;
     if(*a <= 0.0e0) goto S300;
     t = *p+*q-1.e0;
@@ -8669,7 +8669,7 @@ void gamma_inc_inv ( double *a, double *x, double *x0, double *p, double *q,
 //
     if(*a > 1.0e0) goto S80;
     T4 = *a+1.0e0;
-    g = gamma_x(&T4);
+    g = cdflib_gamma_x(&T4);
     qg = *q*g;
     if(qg == 0.0e0) goto S360;
     b = qg/ *a;
@@ -8715,7 +8715,7 @@ S40:
 S50:
     if(*p <= 0.9e0) goto S60;
     T5 = -*q;
-    xn = exp((alnrel(&T5)+ gamma_ln1 ( a ) ) / *a );
+    xn = exp((cdflib_alnrel(&T5)+ cdflib_gamma_ln1 ( a ) ) / *a );
     goto S70;
 S60:
     xn = exp(log(*p*g)/ *a);
@@ -8743,7 +8743,7 @@ S100:
     xn = *a+s*rta+(s2-1.0e0)/3.0e0+s*(s2-7.0e0)/(36.0e0*rta)-((3.0e0*s2+7.0e0)*
       s2-16.0e0)/(810.0e0**a)+s*((9.0e0*s2+256.0e0)*s2-433.0e0)/(38880.0e0**a*
       rta);
-    xn = fifdmax1(xn,0.0e0);
+    xn = cdflib_fifdmax1(xn,0.0e0);
     if(*a < amin[iop-1]) goto S110;
     *x = xn;
     d = 0.5e0+(0.5e0-*x/ *a);
@@ -8751,8 +8751,8 @@ S100:
 S110:
     if(*p <= 0.5e0) goto S130;
     if(xn < 3.0e0**a) goto S220;
-    y = -(w+ gamma_log ( a ) );
-    d = fifdmax1(2.0e0,*a*(*a-1.0e0));
+    y = -(w+ cdflib_gamma_log ( a ) );
+    d = cdflib_fifdmax1(2.0e0,*a*(*a-1.0e0));
     if(y < ln10*d) goto S120;
     s = 1.0e0-*a;
     z = log(y);
@@ -8760,14 +8760,14 @@ S110:
 S120:
     t = *a-1.0e0;
     T6 = -(t/(xn+1.0e0));
-    xn = y+t*log(xn)-alnrel(&T6);
+    xn = y+t*log(xn)-cdflib_alnrel(&T6);
     T7 = -(t/(xn+1.0e0));
-    xn = y+t*log(xn)-alnrel(&T7);
+    xn = y+t*log(xn)-cdflib_alnrel(&T7);
     goto S220;
 S130:
     ap1 = *a+1.0e0;
     if(xn > 0.70e0*ap1) goto S170;
-    w += gamma_log ( &ap1 );
+    w += cdflib_gamma_log ( &ap1 );
     if(xn > 0.15e0*ap1) goto S140;
     ap2 = *a+2.0e0;
     ap3 = *a+3.0e0;
@@ -8807,9 +8807,9 @@ S180:
 S190:
     if(*ierr >= 20) goto S330;
     *ierr += 1;
-    gamma_inc ( a, &xn, &pn, &qn, &K8 );
+    cdflib_gamma_inc ( a, &xn, &pn, &qn, &K8 );
     if(pn == 0.0e0 || qn == 0.0e0) goto S350;
-    r = rcomp(a,&xn);
+    r = cdflib_rcomp(a,&xn);
     if(r == 0.0e0) goto S350;
     t = (pn-*p)/r;
     w = 0.5e0*(am1-xn);
@@ -8843,9 +8843,9 @@ S230:
 S240:
     if(*ierr >= 20) goto S330;
     *ierr += 1;
-    gamma_inc ( a, &xn, &pn, &qn, &K8 );
+    cdflib_gamma_inc ( a, &xn, &pn, &qn, &K8 );
     if(pn == 0.0e0 || qn == 0.0e0) goto S350;
-    r = rcomp(a,&xn);
+    r = cdflib_rcomp(a,&xn);
     if(r == 0.0e0) goto S350;
     t = (*q-qn)/r;
     w = 0.5e0*(am1-xn);
@@ -8875,7 +8875,7 @@ S270:
 S280:
     if(*q < 0.9e0) goto S290;
     T9 = -*p;
-    *x = -alnrel(&T9);
+    *x = -cdflib_alnrel(&T9);
     return;
 S290:
     *x = -log(*q);
@@ -8909,7 +8909,7 @@ S360:
 }
 /******************************************************************************/
 
-void gamma_inc_values ( int *n_data, double *a, double *x, double *fx )
+void cdflib_gamma_inc_values ( int *n_data, double *a, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -9009,7 +9009,7 @@ void gamma_inc_values ( int *n_data, double *a, double *x, double *fx )
 }
 /******************************************************************************/
 
-double gamma_ln1 ( double *a )
+double cdflib_gamma_ln1 ( double *a )
 
 /******************************************************************************/
 //
@@ -9064,7 +9064,7 @@ S10:
 }
 /******************************************************************************/
 
-double gamma_log ( double *a )
+double cdflib_gamma_log ( double *a )
 
 /******************************************************************************/
 //
@@ -9106,12 +9106,12 @@ double gamma_log ( double *a )
   static double T1;
 
     if(*a > 0.8e0) goto S10;
-    gamln = gamma_ln1 ( a ) - log ( *a );
+    gamln = cdflib_gamma_ln1 ( a ) - log ( *a );
     return gamln;
 S10:
     if(*a > 2.25e0) goto S20;
     t = *a-0.5e0-0.5e0;
-    gamln = gamma_ln1 ( &t );
+    gamln = cdflib_gamma_ln1 ( &t );
     return gamln;
 S20:
     if(*a >= 10.0e0) goto S40;
@@ -9124,7 +9124,7 @@ S20:
         w = t*w;
     }
     T1 = t-1.0e0;
-    gamln = gamma_ln1 ( &T1 ) + log ( w );
+    gamln = cdflib_gamma_ln1 ( &T1 ) + log ( w );
     return gamln;
 S40:
     t = pow(1.0e0/ *a,2.0);
@@ -9134,7 +9134,7 @@ S40:
 }
 /******************************************************************************/
 
-void gamma_rat1 ( double *a, double *x, double *r, double *p, double *q,
+void cdflib_gamma_rat1 ( double *a, double *x, double *r, double *p, double *q,
   double *eps )
 
 /******************************************************************************/
@@ -9178,7 +9178,7 @@ S20:
     if(fabs(t) > tol) goto S20;
     j = *a**x*((sum/6.0e0-0.5e0/(*a+2.0e0))**x+1.0e0/(*a+1.0e0));
     z = *a*log(*x);
-    h = gam1(a);
+    h = cdflib_gam1(a);
     g = 1.0e0+h;
     if(*x < 0.25e0) goto S30;
     if(*a < *x/2.59e0) goto S50;
@@ -9191,7 +9191,7 @@ S40:
     *q = 0.5e0+(0.5e0-*p);
     return;
 S50:
-    l = rexp(&z);
+    l = cdflib_rexp(&z);
     w = 0.5e0+(0.5e0+l);
     *q = (w*j-l)*g-h;
     if(*q < 0.0e0) goto S90;
@@ -9232,12 +9232,12 @@ S90:
 S100:
     if(*x >= 0.25e0) goto S110;
     T1 = sqrt(*x);
-    *p = error_f ( &T1 );
+    *p = cdflib_error_f ( &T1 );
     *q = 0.5e0+(0.5e0-*p);
     return;
 S110:
     T3 = sqrt(*x);
-    *q = error_fc ( &K2, &T3 );
+    *q = cdflib_error_fc ( &K2, &T3 );
     *p = 0.5e0+(0.5e0-*q);
     return;
 S120:
@@ -9246,7 +9246,7 @@ S120:
 }
 /******************************************************************************/
 
-void gamma_values ( int *n_data, double *x, double *fx )
+void cdflib_gamma_values ( int *n_data, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -9336,7 +9336,7 @@ void gamma_values ( int *n_data, double *x, double *fx )
 }
 /******************************************************************************/
 
-double gamma_x ( double *a )
+double cdflib_gamma_x ( double *a )
 
 /******************************************************************************/
 //
@@ -9389,7 +9389,7 @@ double gamma_x ( double *a )
 //            EVALUATION OF GAMMA(A) FOR ABS(A) .LT. 15
 //
     t = 1.0e0;
-    m = fifidint(*a)-1;
+    m = cdflib_fifidint(*a)-1;
 //
 //     LET T BE THE PRODUCT OF A-J WHEN A .GE. 2
 //
@@ -9429,7 +9429,7 @@ S70:
 //     CODE MAY BE OMITTED IF DESIRED.
 //
     if(fabs(t) >= 1.e-30) goto S80;
-    if(fabs(t)*dpmpar(&K2) <= 1.0001e0) return Xgamm;
+    if(fabs(t)*cdflib_dpmpar(&K2) <= 1.0001e0) return Xgamm;
     Xgamm = 1.0e0/t;
     return Xgamm;
 S80:
@@ -9464,7 +9464,7 @@ S110:
     t = x-(double)n;
     if(t > 0.9e0) t = 1.0e0-t;
     s = sin(pi*t)/pi;
-    if(fifmod(n,2) == 0) s = -s;
+    if(cdflib_fifmod(n,2) == 0) s = -s;
     if(s == 0.0e0) return Xgamm;
 S120:
 //
@@ -9484,14 +9484,14 @@ S120:
     g = d+g+(z-0.5e0)*(lnx-1.e0);
     w = g;
     t = g-w;
-    if(w > 0.99999e0*exparg(&K3)) return Xgamm;
+    if(w > 0.99999e0*cdflib_exparg(&K3)) return Xgamm;
     Xgamm = exp(w)*(1.0e0+t);
     if(*a < 0.0e0) Xgamm = 1.0e0/(Xgamm*s)/x;
     return Xgamm;
 }
 /******************************************************************************/
 
-double gsumln ( double *a, double *b )
+double cdflib_gsumln ( double *a, double *b )
 
 /******************************************************************************/
 //
@@ -9516,20 +9516,20 @@ double gsumln ( double *a, double *b )
     x = *a+*b-2.e0;
     if(x > 0.25e0) goto S10;
     T1 = 1.0e0+x;
-    gsumln = gamma_ln1 ( &T1 );
+    gsumln = cdflib_gamma_ln1 ( &T1 );
     return gsumln;
 S10:
     if(x > 1.25e0) goto S20;
-    gsumln = gamma_ln1 ( &x ) + alnrel ( &x );
+    gsumln = cdflib_gamma_ln1 ( &x ) + cdflib_alnrel ( &x );
     return gsumln;
 S20:
     T2 = x-1.0e0;
-    gsumln = gamma_ln1 ( &T2 ) + log ( x * ( 1.0e0 + x ) );
+    gsumln = cdflib_gamma_ln1 ( &T2 ) + log ( x * ( 1.0e0 + x ) );
     return gsumln;
 }
 /******************************************************************************/
 
-int ipmpar ( int *i )
+int cdflib_ipmpar ( int *i )
 
 /******************************************************************************/
 //
@@ -9953,7 +9953,7 @@ int ipmpar ( int *i )
 }
 /******************************************************************************/
 
-void negative_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
+void negative_cdflib_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
   double *cdf )
 
 /******************************************************************************/
@@ -10079,7 +10079,7 @@ void negative_binomial_cdf_values ( int *n_data, int *f, int *s, double *p,
 }
 /******************************************************************************/
 
-void normal_cdf_values ( int *n_data, double *x, double *fx )
+void cdflib_normal_cdf_values ( int *n_data, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -10152,7 +10152,7 @@ void normal_cdf_values ( int *n_data, double *x, double *fx )
 }
 /******************************************************************************/
 
-void poisson_cdf_values ( int *n_data, double *a, int *x, double *fx )
+void cdflib_poisson_cdf_values ( int *n_data, double *a, int *x, double *fx )
 
 /******************************************************************************/
 //
@@ -10246,7 +10246,7 @@ void poisson_cdf_values ( int *n_data, double *a, int *x, double *fx )
 }
 /******************************************************************************/
 
-double psi ( double *xx )
+double cdflib_psi ( double *xx )
 
 /******************************************************************************/
 //
@@ -10308,8 +10308,8 @@ double psi ( double *xx )
 //        XSMALL = ABSOLUTE ARGUMENT BELOW WHICH PI*COTAN(PI*X)
 //                 MAY BE REPRESENTED BY 1/X.
 //
-    xmax1 = ipmpar(&K1);
-    xmax1 = fifdmin1(xmax1,1.0e0/dpmpar(&K2));
+    xmax1 = cdflib_ipmpar(&K1);
+    xmax1 = cdflib_fifdmin1(xmax1,1.0e0/cdflib_dpmpar(&K2));
     xsmall = 1.e-9;
     x = *xx;
     aug = 0.0e0;
@@ -10340,9 +10340,9 @@ S20:
 //     MAKE AN ERROR EXIT IF X .LE. -XMAX1
 //
     if(w >= xmax1) goto S100;
-    nq = fifidint(w);
+    nq = cdflib_fifidint(w);
     w -= (double)nq;
-    nq = fifidint(w*4.0e0);
+    nq = cdflib_fifidint(w*4.0e0);
     w = 4.0e0*(w-(double)nq*.25e0);
 //
 //     W IS NOW RELATED TO THE FRACTIONAL PART OF  4.0 * X.
@@ -10420,7 +10420,7 @@ S100:
 }
 /******************************************************************************/
 
-void psi_values ( int *n_data, double *x, double *fx )
+void cdflib_psi_values ( int *n_data, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -10498,7 +10498,7 @@ void psi_values ( int *n_data, double *x, double *fx )
 }
 /******************************************************************************/
 
-double rcomp ( double *a, double *x )
+double cdflib_rcomp ( double *a, double *x )
 
 /******************************************************************************/
 //
@@ -10523,23 +10523,23 @@ double rcomp ( double *a, double *x )
     if(*a >= 20.0e0) goto S20;
     t = *a*log(*x)-*x;
     if(*a >= 1.0e0) goto S10;
-    rcomp = *a*exp(t)*(1.0e0+gam1(a));
+    rcomp = *a*exp(t)*(1.0e0+cdflib_gam1(a));
     return rcomp;
 S10:
-    rcomp = exp(t)/ gamma_x(a);
+    rcomp = exp(t)/ cdflib_gamma_x(a);
     return rcomp;
 S20:
     u = *x/ *a;
     if(u == 0.0e0) return rcomp;
     t = pow(1.0e0/ *a,2.0);
     t1 = (((0.75e0*t-1.0e0)*t+3.5e0)*t-105.0e0)/(*a*1260.0e0);
-    t1 -= (*a*rlog(&u));
+    t1 -= (*a*cdflib_rlog(&u));
     rcomp = rt2pin*sqrt(*a)*exp(t1);
     return rcomp;
 }
 /******************************************************************************/
 
-double rexp ( double *x )
+double cdflib_rexp ( double *x )
 
 /******************************************************************************/
 //
@@ -10580,7 +10580,7 @@ S20:
 }
 /******************************************************************************/
 
-double rlog ( double *x )
+double cdflib_rlog ( double *x )
 
 /******************************************************************************/
 //
@@ -10641,7 +10641,7 @@ S40:
 }
 /******************************************************************************/
 
-double rlog1 ( double *x )
+double cdflib_rlog1 ( double *x )
 
 /******************************************************************************/
 //
@@ -10698,7 +10698,7 @@ S40:
 }
 /******************************************************************************/
 
-void student_cdf_values ( int *n_data, int *a, double *x, double *fx )
+void cdflib_student_cdf_values ( int *n_data, int *a, double *x, double *fx )
 
 /******************************************************************************/
 //
@@ -10778,7 +10778,7 @@ void student_cdf_values ( int *n_data, int *a, double *x, double *fx )
 }
 /******************************************************************************/
 
-double stvaln ( double *p )
+double cdflib_stvaln ( double *p )
 
 /******************************************************************************/
 //
@@ -10829,13 +10829,13 @@ S10:
     z = 1.0e0-*p;
 S20:
     y = sqrt(-(2.0e0*log(z)));
-    stvaln = y+ eval_pol ( xnum, &K1, &y ) / eval_pol ( xden, &K1, &y );
+    stvaln = y+ cdflib_eval_pol ( xnum, &K1, &y ) / cdflib_eval_pol ( xden, &K1, &y );
     stvaln = sign*stvaln;
     return stvaln;
 }
 /******************************************************************************/
 
-void timestamp ( void )
+void cdflib_timestamp ( void )
 
 /******************************************************************************/
 /*
