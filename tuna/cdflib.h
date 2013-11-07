@@ -2273,7 +2273,7 @@ cdflib_dlanor(
  */
 double
 cdflib_dpmpar(
-    int* i);
+    const int* i);
 
 /**
  * \brief
@@ -2656,7 +2656,7 @@ cdflib_error_f(
  */
 double
 cdflib_error_fc(
-    int* ind,
+    const int* ind,
     double* x);
 
 /**
@@ -2734,7 +2734,7 @@ cdflib_eval_pol(
  */
 double
 cdflib_exparg(
-    int* l);
+    const int* l);
 
 /**
  * \brief
@@ -3041,7 +3041,7 @@ cdflib_gamma_inc(
     double* x,
     double* ans,
     double* qans,
-    int* ind);
+    const int* ind);
 
 /**
  * \brief
@@ -3403,7 +3403,7 @@ cdflib_gsumln(
  */
 int
 cdflib_ipmpar(
-    int* i);
+    const int* i);
 
 /**
  * \brief

@@ -242,7 +242,7 @@ cdflib_beta_asym(
 //     E0 = 2/SQRT(PI)
 //     E1 = 2**(-3/2)
 //
-  static int K3 = 1;
+  static const int K3 = 1;
   static double value;
   static double bsum,dsum,f,h,h2,hn,j0,j1,r,r0,r1,s,sum,t,t0,t1,u,w,w0,z,z0,
     z2,zn,znm1;
@@ -496,7 +496,7 @@ cdflib_beta_inc(
     double* w1,
     int* ierr)
 {
-  static int K1 = 1;
+  static const int K1 = 1;
   static double a0,b0,eps,lambda,t,x0,y0,z;
   static int ierr1,ind,n;
   static double T2,T3,T4,T5;
@@ -1226,8 +1226,8 @@ cdflib_beta_up(
     int* n,
     double* eps)
 {
-  static int K1 = 1;
-  static int K2 = 0;
+  static const int K1 = 1;
+  static const int K2 = 0;
   static double bup,ap1,apb,d,l,r,t,w;
   static int i,k,kp1,mu,nm1;
 //
@@ -1373,7 +1373,7 @@ cdflib_cdfbet(
   static const double inf  = 1.0e300;
   static const double one  = 1.0e0;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K3 = 1.0e0;
   static double K8 = 0.5e0;
@@ -1659,7 +1659,7 @@ cdflib_cdfbin(
   static const double inf = 1.0e300;
   static const double one = 1.0e0;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K3 = 0.5e0;
   static double K4 = 5.0e0;
@@ -1945,7 +1945,7 @@ cdflib_cdfchi(
   static const double zero = 1.0e-300;
   static const double inf  = 1.0e300;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K4 = 0.5e0;
   static double K5 = 5.0e0;
@@ -2346,7 +2346,7 @@ cdflib_cdff(
   static const double atol = 1.0e-50;
   static const double inf  = 1.0e300;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K4 = 0.5e0;
   static double K5 = 5.0e0;
@@ -2847,7 +2847,7 @@ cdflib_cdfgam(
   static const double zero = 1.0e-300;
   static const double inf  = 1.0e300;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K5 = 0.5e0;
   static double K6 = 5.0e0;
   static double xx,fx,xscale,cum,ccum,pq,porq;
@@ -3061,7 +3061,7 @@ cdflib_cdfnbn(
   static const double inf  = 1.0e300;
   static const double one  = 1.0e0;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K4 = 0.5e0;
   static double K5 = 5.0e0;
@@ -3338,7 +3338,7 @@ cdflib_cdfnor(
     int* status,
     double* bound)
 {
-  static int K1 = 1;
+  static const int K1 = 1;
   static double z,pq;
 
   *status = 0;
@@ -3461,7 +3461,7 @@ cdflib_cdfpoi(
   static const double atol = 1.0e-50;
   static const double inf  = 1.0e300;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K2 = 0.0e0;
   static double K4 = 0.5e0;
   static double K5 = 5.0e0;
@@ -3651,7 +3651,7 @@ cdflib_cdft(
   static const double inf   = 1.0e30;
   static const double maxdf = 1.0e10;
 
-  static int K1 = 1;
+  static const int K1 = 1;
   static double K4 = 0.5e0;
   static double K5 = 5.0e0;
   static double fx,cum,ccum,pq;
@@ -4326,7 +4326,7 @@ cdflib_cumgam(
     double* cum,
     double* ccum)
 {
-  static int K1 = 0;
+  static const int K1 = 0;
 
   if(!(*x <= 0.0e0)) goto S10;
   *cum = 0.0e0;
@@ -4395,8 +4395,8 @@ cdflib_cumnor(
   static const double thrsh = 0.66291e0;
   static const double root32 = 5.656854248e0;
   static const double zero = 0.0e0;
-  static int K1 = 1;
-  static int K2 = 2;
+  static const int K1 = 1;
+  static const int K2 = 2;
   static int i;
   static double del,eps,temp,x,xden,xnum,y,xsq,min;
 //
@@ -4663,7 +4663,7 @@ cdflib_dlanor(
     -1.0e0,3.0e0,-15.0e0,105.0e0,-945.0e0,10395.0e0,-135135.0e0,2027025.0e0,
     -34459425.0e0,654729075.0e0,-13749310575.e0,316234143225.0e0
   };
-  static int K1 = 12;
+  static const int K1 = 12;
   static double dlanor,approx,correc,xx,xx2,T2;
 
   xx = fabs(*x);
@@ -4682,12 +4682,12 @@ cdflib_dlanor(
 
 double
 cdflib_dpmpar(
-    int* i)
+    const int* i)
 {
-  static int K1 = 4;
-  static int K2 = 8;
-  static int K3 = 9;
-  static int K4 = 10;
+  static const int K1 = 4;
+  static const int K2 = 8;
+  static const int K3 = 9;
+  static const int K4 = 10;
   static double value,b,binv,bm1,one,w,z;
   static int emax,emin,ibeta,m;
 
@@ -4749,7 +4749,7 @@ cdflib_dstrem(
     0.00641025641025641025641025641026e0,-0.0295506535947712418300653594771e0,
     0.179644372368830573164938490016e0
   };
-  static int K1 = 10;
+  static const int K1 = 10;
   static double dstrem,sterl,T2;
 //
 //    For information, here are the next 11 coefficients of the
@@ -5339,7 +5339,7 @@ S30:
 
 double
 cdflib_error_fc(
-    int* ind,
+    const int* ind,
     double* x)
 {
   static const double c = .564189583547756e0;
@@ -5368,7 +5368,7 @@ cdflib_error_fc(
     9.41537750555460e+01,1.87114811799590e+02,9.90191814623914e+01,
     1.80124575948747e+01
   };
-  static int K1 = 1;
+  static const int K1 = 1;
   static double erfc1,ax,bot,e,t,top,w;
 
 //
@@ -5482,11 +5482,11 @@ cdflib_eval_pol(
 
 double
 cdflib_exparg(
-    int* l)
+    const int* l)
 {
-  static int K1 = 4;
-  static int K2 = 9;
-  static int K3 = 10;
+  static const int K1 = 4;
+  static const int K2 = 9;
+  static const int K3 = 10;
   static double exparg,lnb;
   static int b,m;
 
@@ -5721,7 +5721,7 @@ cdflib_fpser(
     double* x,
     double* eps)
 {
-  static int K1 = 1;
+  static const int K1 = 1;
   static double fpser,an,c,s,t,tol;
 
     fpser = 1.0e0;
@@ -5819,7 +5819,7 @@ cdflib_gamma_inc(
     double* x,
     double* ans,
     double* qans,
-    int* ind)
+    const int* ind)
 {
   static const double alog10 = 2.30258509299405e0;
   static const double d10 = -.185185185185185e-02;
@@ -5879,8 +5879,8 @@ cdflib_gamma_inc(
   static const double x00[3] = {
     31.0e0,17.0e0,9.7e0
   };
-  static int K1 = 1;
-  static int K2 = 0;
+  static const int K1 = 1;
+  static const int K2 = 0;
   static double a2n,a2nm1,acc,am0,amn,an,an0,apn,b2n,b2nm1,c,c0,c1,c2,c3,c4,c5,c6,
     cma,e,e0,g,h,j,l,r,rta,rtx,s,sum,t,t1,tol,twoa,u,w,x0,y,z;
   static int i,iop,m,max,n;
@@ -6242,10 +6242,10 @@ cdflib_gamma_inc_inv(
   static const double eps0[2] = {
     1.e-10,1.e-08
   };
-  static int K1 = 1;
-  static int K2 = 2;
-  static int K3 = 3;
-  static int K8 = 0;
+  static const int K1 = 1;
+  static const int K2 = 2;
+  static const int K3 = 3;
+  static const int K8 = 0;
   static double am1,amax,ap1,ap2,ap3,apn,b,c1,c2,c3,c4,c5,d,e,e2,eps,g,h,pn,qg,qn,
     r,rta,s,s2,sum,t,u,w,xmax,xmin,xn,y,z;
   static int iop;
@@ -6666,7 +6666,7 @@ cdflib_gamma_rat1(
     double* q,
     double* eps)
 {
-  static int K2 = 0;
+  static const int K2 = 0;
   static double a2n,a2nm1,am0,an,an0,b2n,b2nm1,c,cma,g,h,j,l,sum,t,tol,w,z,T1,T3;
 
     if(*a**x == 0.0e0) goto S120;
@@ -6817,8 +6817,8 @@ cdflib_gamma_x(
     -.832979206704073e-03,.470059485860584e-02,.225211131035340e-01,
     -.170458969313360e+00,-.567902761974940e-01,.113062953091122e+01,1.0e0
   };
-  static int K2 = 3;
-  static int K3 = 0;
+  static const int K2 = 3;
+  static const int K3 = 0;
   static double Xgamm,bot,g,lnx,s,t,top,w,x,z;
   static int i,j,m,n,T1;
 
@@ -6954,7 +6954,7 @@ S20:
 
 int
 cdflib_ipmpar(
-    int* i)
+    const int* i)
 {
    // MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
    //   3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
@@ -7173,8 +7173,8 @@ cdflib_psi(
     .322703493791143e+02,.892920700481861e+02,.546117738103215e+02,
     .777788548522962e+01
   };
-  static int K1 = 3;
-  static int K2 = 1;
+  static const int K1 = 3;
+  static const int K2 = 1;
   static double psi,aug,den,sgn,upper,w,x,xmax1,xmx0,xsmall,z;
   static int i,m,n,nq;
 //
@@ -7540,7 +7540,7 @@ cdflib_stvaln(
     -0.322232431088e0,-1.000000000000e0,-0.342242088547e0,-0.204231210245e-1,
     -0.453642210148e-4
   };
-  static int K1 = 5;
+  static const int K1 = 5;
   static double stvaln,sign,y,z;
 
     if(!(*p <= 0.5e0)) goto S10;
