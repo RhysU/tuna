@@ -23,8 +23,10 @@ FCT_BGN()
         static const double c_mu =  0.094957, c_std = 0.98075, c_N =  5000;
         static const double p_expected = 1.00000;
 
+        // For sufficiently large t-distribution DOF,
+        // this normal approximation should become sufficiently close.
         double p = tuna_welch1_nuinf(t_mu, t_std, t_N, c_mu, c_std, c_N);
-        fct_chk_eqtol_dbl(p, p_expected, 1e-14); // FIXME Tolerance
+        fct_chk_eqtol_dbl(p, p_expected, sqrt(DBL_EPSILON));
     }
     FCT_QTEST_END();
 
@@ -35,8 +37,10 @@ FCT_BGN()
         static const double c_mu =  0.0096706, c_std = 1.0033, c_N =  5000;
         static const double p_expected = 0.93840;
 
+        // For sufficiently large t-distribution DOF,
+        // this normal approximation should become sufficiently close.
         double p = tuna_welch1_nuinf(t_mu, t_std, t_N, c_mu, c_std, c_N);
-        fct_chk_eqtol_dbl(p, p_expected, 1e-14); // FIXME Tolerance
+        fct_chk_eqtol_dbl(p, p_expected, 5*sqrt(sqrt(DBL_EPSILON)));
     }
     FCT_QTEST_END();
 
