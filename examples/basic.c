@@ -50,13 +50,15 @@ int main(int argc, char *argv[])
         if (debug) printf("%6d\t%d\t%g\n", i, ndx, elapsed);
     }
 
-    // Summarize results
-    printf("# mA=%g, sA=%g, cA=%zd\n", tuna_stats_avg(&k[0].stats),
-                                       tuna_stats_std(&k[0].stats),
-                                       tuna_stats_cnt(&k[0].stats));
-    printf("# mB=%g, sB=%g, cB=%zd\n", tuna_stats_avg(&k[1].stats),
-                                       tuna_stats_std(&k[1].stats),
-                                       tuna_stats_cnt(&k[1].stats));
+    // Summarize results, including any discarded outliers
+    for (int i = 0; i < tuna_countof(k); ++i) {
+        tuna_stats s = {};
+        tuna_kernel_merge(&s, k + i);
+        printf("# m%c=%g, s%c=%g, c%c=%zd\n",
+               'A' + i, tuna_stats_avg(&s),
+               'A' + i, tuna_stats_std(&s),
+               'A' + i, tuna_stats_cnt(&s));
+    }
 
     return EXIT_SUCCESS;
 }
