@@ -55,18 +55,17 @@ FCT_BGN()
     FCT_QTEST_BGN(welch1_small)
     {
         // Expected found using GNU Octave: welch_test (t, c, '>')
-        static const double t_mu = 101.67, t_std = 5.6451, t_N = 6;
-        static const double c_mu = 88.833, c_std = 7.1671, c_N = 6;
-        static const double p_expected = 0.00339123;
+        static const double t_mu = -0.35523,  t_std = 0.93662, t_N = 10;
+        static const double c_mu =  0.042389, c_std = 0.87344, c_N = 10;
+        static const double p_expected = 0.817989;
 
-        // The infinite DOF provides errs on the side of small p-values.
-        // This can be seen from how the CDF changes as \nu \to \infty.
+        // The infinite DOF estimate should be in the right ballpark.
         double p = tuna_welch1_nuinf(t_mu, t_std, t_N, c_mu, c_std, c_N);
-        fct_chk(p < p_expected);
+        fct_chk_eqtol_dbl(p, p_expected, 0.01);
 
-        // The real thing should, more or less, nail it.
+        // The real thing (as CDFLIB interprets it) should do better.
         p = tuna_welch1(t_mu, t_std, t_N, c_mu, c_std, c_N);
-        fct_chk_eqtol_dbl(p, p_expected, DBL_EPSILON); // FIXME
+        fct_chk_eqtol_dbl(p, p_expected, 0.001);
     }
     FCT_QTEST_END();
 }
