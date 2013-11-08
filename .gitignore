@@ -39,3 +39,6 @@ tests/welch
 # Executables
 examples/basic
 examples/poc
+
+# Study results
+result.*.*
