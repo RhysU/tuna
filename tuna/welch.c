@@ -26,3 +26,5 @@ extern double tuna_welch1_nuinf (double xA, double sA2, size_t nA,
                                  double xB, double sB2, size_t nB);
 extern double tuna_welch1_approx(double xA, double sA2, size_t nA,
                                  double xB, double sB2, size_t nB);
+extern double tuna_welch1       (double xA, double sA2, size_t nA,
+                                 double xB, double sB2, size_t nB);

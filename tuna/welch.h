@@ -17,6 +17,8 @@
 #include <math.h>
 #include <stddef.h>
 
+#include <tuna/cdflib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -115,15 +117,29 @@ double tuna_welch1_approx(double xA, double sA2, size_t nA,
     return 1 - erfc(-t * M_SQRT1_2) / 2;
 }
 
-//// TODO Implement a one-sided test using t-distn facts to broaden variances
-// static inline
-// double tuna_welch1_approx(double xA, double sA2, size_t nA,
-//                           double xB, double sB2, size_t nB)
-
-//// TODO Implement a one-sided test using proper degrees of freedom
-// static inline
-// double tuna_welch1(double xA, double sA2, size_t nA,
-//                    double xB, double sB2, size_t nB)
+/**
+ * Compute a one-sided Welch t-test that \c A is greater than \c B.
+ *
+ * \param xA  Mean of \c A
+ * \param sA2 Variance of \c A
+ * \param nA  Number of observations of A
+ * \param xB  Mean of \c B
+ * \param sB2 Variance of \c B
+ * \param nB  Number of observations of B
+ *
+ * \return Exact p-value.
+ */
+static inline
+double tuna_welch1(double xA, double sA2, size_t nA,
+                   double xB, double sB2, size_t nB)
+{
+    double t, nu;
+    tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
+    int which = 1, status;
+    double p, q, bound;
+    cdflib_cdft(&which, &p, &q, &t, &nu, &status, &bound);
+    return q;
+}
 
 #ifdef __cplusplus
 } /* extern "C" */
