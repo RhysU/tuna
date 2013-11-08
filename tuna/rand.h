@@ -28,12 +28,12 @@ extern "C" {
 typedef unsigned int tuna_seed;
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
-static inline double tuna_rand_u01(tuna_seed * seed)
-{ return rand_r(seed) / (double) RAND_MAX; }
+static inline double tuna_rand_u01(tuna_seed * sd)
+{ return rand_r(sd) / (double) RAND_MAX; }
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
-static inline double tuna_rand_n01(tuna_seed * seed)
-{ return tuna_ltqnorm(tuna_rand_u01(seed)); }
+static inline double tuna_rand_n01(tuna_seed * sd)
+{ return tuna_ltqnorm(tuna_rand_u01(sd)); }
 
 #ifdef __cplusplus
 } /* extern "C" */

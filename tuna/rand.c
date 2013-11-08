@@ -17,5 +17,5 @@
 #include "rand.h"
 
 // C99 extern declarations for inlined functions from rand.h
-extern double tuna_rand_u01(tuna_seed * seed);
-extern double tuna_rand_n01(tuna_seed * seed);
+extern double tuna_rand_u01(tuna_seed * sd);
+extern double tuna_rand_n01(tuna_seed * sd);
