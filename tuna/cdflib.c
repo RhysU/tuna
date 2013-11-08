@@ -13,13 +13,35 @@
  * \copydoc cdflib.h
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <limits.h>
 #include <math.h>
-#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "cdflib.h"
+
+/**
+ * MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
+ * 3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
+ * PC 7300), AND 8087 BASED MICROS (E.G. IBM PC AND AT&T 6300).
+ *
+ * @see cdflib_ipmpar() for descriptions of one-indexed values.
+ */
+static const int ipmpar[11] = {
+    /* one-index */ -1,
+    /* imach[ 1] */ 2,
+    /* imach[ 2] */ 31,
+    /* imach[ 3] */ INT_MAX,
+    /* imach[ 4] */ 2,
+    /* imach[ 5] */ 24,
+    /* imach[ 6] */ -125,
+    /* imach[ 7] */ 128,
+    /* imach[ 8] */ 53,
+    /* imach[ 9] */ -1021,
+    /* imach[10] */ 1024,
+};
 
 double
 cdflib_algdiv(
@@ -8099,24 +8121,7 @@ int
 cdflib_ipmpar(
     const int i)
 {
-    // MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
-    //   3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
-    //   PC 7300), AND 8087 BASED MICROS (E.G. IBM PC AND AT&T 6300).
-    static const int imach[11] = {
-        /* imach[ 0] = */ 0,
-        /* imach[ 1] = */ 2,
-        /* imach[ 2] = */ 31,
-        /* imach[ 3] = */ 2147483647,
-        /* imach[ 4] = */ 2,
-        /* imach[ 5] = */ 24,
-        /* imach[ 6] = */ -125,
-        /* imach[ 7] = */ 128,
-        /* imach[ 8] = */ 53,
-        /* imach[ 9] = */ -1021,
-        /* imach[10] = */ 1024,
-    };
-
-    return imach[i];
+    return ipmpar[i];
 }
 
 void
