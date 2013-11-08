@@ -5158,8 +5158,8 @@ cdflib_cumnbn(
 
 void
 cdflib_cumnor(
-    double* arg,
-    double* result,
+    const double* arg,
+    double* cum,
     double* ccum)
 {
     static const double a[5] = {
@@ -5220,9 +5220,9 @@ cdflib_cumnor(
             xnum = (xnum + a[i]) * xsq;
             xden = (xden + b[i]) * xsq;
         }
-        *result = x * (xnum + a[3]) / (xden + b[3]);
-        temp = *result;
-        *result = half + temp;
+        *cum = x * (xnum + a[3]) / (xden + b[3]);
+        temp = *cum;
+        *cum = half + temp;
         *ccum = half - temp;
     }
     //
@@ -5235,14 +5235,14 @@ cdflib_cumnor(
             xnum = (xnum + c[i]) * y;
             xden = (xden + d[i]) * y;
         }
-        *result = (xnum + c[7]) / (xden + d[7]);
+        *cum = (xnum + c[7]) / (xden + d[7]);
         xsq = cdflib_fifdint(y * sixten) / sixten;
         del = (y - xsq) * (y + xsq);
-        *result = exp(-(xsq * xsq * half)) * exp(-(del * half))** result;
-        *ccum = one - *result;
+        *cum = exp(-(xsq * xsq * half)) * exp(-(del * half))** cum;
+        *ccum = one - *cum;
         if (x > zero) {
-            temp = *result;
-            *result = *ccum;
+            temp = *cum;
+            *cum = *ccum;
             *ccum = temp;
         }
     }
@@ -5250,7 +5250,7 @@ cdflib_cumnor(
     //  Evaluate  anorm  for |X| > sqrt(32)
     //
     else  {
-        *result = zero;
+        *cum = zero;
         xsq = one / (x * x);
         xnum = p[5] * xsq;
         xden = xsq;
@@ -5258,20 +5258,20 @@ cdflib_cumnor(
             xnum = (xnum + p[i]) * xsq;
             xden = (xden + q[i]) * xsq;
         }
-        *result = xsq * (xnum + p[4]) / (xden + q[4]);
-        *result = (sqrpi - *result) / y;
+        *cum = xsq * (xnum + p[4]) / (xden + q[4]);
+        *cum = (sqrpi - *cum) / y;
         xsq = cdflib_fifdint(x * sixten) / sixten;
         del = (x - xsq) * (x + xsq);
-        *result = exp(-(xsq * xsq * half)) * exp(-(del * half))** result;
-        *ccum = one - *result;
+        *cum = exp(-(xsq * xsq * half)) * exp(-(del * half))** cum;
+        *ccum = one - *cum;
         if (x > zero) {
-            temp = *result;
-            *result = *ccum;
+            temp = *cum;
+            *cum = *ccum;
             *ccum = temp;
         }
     }
-    if (*result < min) {
-        *result = 0.0e0;
+    if (*cum < min) {
+        *cum = 0.0e0;
     }
     //
     //  Fix up for negative argument, erf, etc.

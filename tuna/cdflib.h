@@ -2004,8 +2004,8 @@ cdflib_cumnbn(
  */
 void
 cdflib_cumnor(
-    double* arg,
-    double* result,
+    const double* arg,
+    double* cum,
     double* ccum);
 
 /**
