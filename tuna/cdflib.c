@@ -395,12 +395,12 @@ S80:
 
 double
 cdflib_beta_frac(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
-    double* lambda,
-    double* eps)
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
+    const double* lambda,
+    const double* eps)
 {
     double bfrac, alpha, an, anp1, beta, bn, bnp1, c, c0, c1, e, n, p, r, r0, s, t, w, yp1;
 
@@ -467,12 +467,12 @@ S20:
 
 void
 cdflib_beta_grat(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
     double* w,
-    double* eps,
+    const double* eps,
     int* ierr)
 {
     double bm1, bp2n, cn, coef, dj, j, l, lnx, n2, nu, p, q, r, s, sum, t, t2, u, v, z;
@@ -913,8 +913,8 @@ cdflib_beta_inc_values(
 
 double
 cdflib_beta_log(
-    double* a0,
-    double* b0)
+    const double* a0,
+    const double* b0)
 {
     static const double e = .918938533204673e0;
     double value, a, b, c, h, u, v, w, z;
@@ -1136,10 +1136,10 @@ S110:
 
 double
 cdflib_beta_cdflib_rcomp(
-    double* a,
-    double* b,
-    double* x,
-    double* y)
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y)
 {
     static const double Const = .398942280401433e0;
     double brcomp, a0, apb, b0, c, e, h, lambda, lnx, lny, t, u, v, x0, y0, z;
@@ -6662,7 +6662,7 @@ cdflib_ftnstop(
 
 double
 cdflib_gam1(
-    double* a)
+    const double* a)
 {
     static const double s1 = .273076135303957e+00;
     static const double s2 = .559398236957378e-01;
@@ -7779,12 +7779,12 @@ S40:
 
 void
 cdflib_gamma_rat1(
-    double* a,
-    double* x,
-    double* r,
+    const double* a,
+    const double* x,
+    const double* r,
     double* p,
     double* q,
-    double* eps)
+    const double* eps)
 {
     static const int K2 = 0;
     double a2n, a2nm1, am0, an, an0, b2n, b2nm1, c, cma, g, h, j, l, sum, t, tol, w, z, T1, T3;

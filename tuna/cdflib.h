@@ -208,12 +208,12 @@ cdflib_beta_asym(
  */
 double
 cdflib_beta_frac(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
-    double* lambda,
-    double* eps);
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
+    const double* lambda,
+    const double* eps);
 
 /**
  * \brief
@@ -240,12 +240,12 @@ cdflib_beta_frac(
  */
 void
 cdflib_beta_grat(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
     double* w,
-    double* eps,
+    const double* eps,
     int* ierr);
 
 /**
@@ -381,8 +381,8 @@ cdflib_beta_inc_values(
  */
 double
 cdflib_beta_log(
-    double* a0,
-    double* b0);
+    const double* a0,
+    const double* b0);
 
 /**
  * \brief
@@ -429,10 +429,10 @@ cdflib_beta_pser(
  */
 double
 cdflib_beta_cdflib_rcomp(
-    double* a,
-    double* b,
-    double* x,
-    double* y);
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y);
 
 /**
  * \brief
@@ -3000,7 +3000,7 @@ cdflib_ftnstop(
  */
 double
 cdflib_gam1(
-    double* a);
+    const double* a);
 
 /**
  * \brief
@@ -3228,12 +3228,12 @@ cdflib_gamma_log(
  */
 void
 cdflib_gamma_rat1(
-    double* a,
-    double* x,
-    double* r,
+    const double* a,
+    const double* x,
+    const double* r,
     double* p,
     double* q,
-    double* eps);
+    const double* eps);
 
 /**
  * \brief
