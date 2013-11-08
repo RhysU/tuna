@@ -5283,8 +5283,8 @@ cdflib_cumnor(
 
 void
 cdflib_cumpoi(
-    double* s,
-    double* xlam,
+    const double* s,
+    const double* xlam,
     double* cum,
     double* ccum)
 {
@@ -5298,8 +5298,8 @@ cdflib_cumpoi(
 
 void
 cdflib_cumt(
-    double* t,
-    double* df,
+    const double* t,
+    const double* df,
     double* cum,
     double* ccum)
 {
@@ -5331,8 +5331,8 @@ cdflib_cumt(
 
 double
 cdflib_dbetrm(
-    double* a,
-    double* b)
+    const double* a,
+    const double* b)
 {
     double dbetrm, T1, T2, T3;
     //
@@ -5349,7 +5349,7 @@ cdflib_dbetrm(
 
 double
 cdflib_dexpm1(
-    double* x)
+    const double* x)
 {
     static const double p1 = .914041914819518e-09;
     static const double p2 = .238082361044469e-01;

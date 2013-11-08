@@ -2037,8 +2037,8 @@ cdflib_cumnor(
  */
 void
 cdflib_cumpoi(
-    double* s,
-    double* xlam,
+    const double* s,
+    const double* xlam,
     double* cum,
     double* ccum);
 
@@ -2066,8 +2066,8 @@ cdflib_cumpoi(
  */
 void
 cdflib_cumt(
-    double* t,
-    double* df,
+    const double* t,
+    const double* df,
     double* cum,
     double* ccum);
 
@@ -2096,8 +2096,8 @@ cdflib_cumt(
  */
 double
 cdflib_dbetrm(
-    double* a,
-    double* b);
+    const double* a,
+    const double* b);
 
 /**
  * \brief
@@ -2121,7 +2121,7 @@ cdflib_dbetrm(
  */
 double
 cdflib_dexpm1(
-    double* x);
+    const double* x);
 
 /**
  * \brief
