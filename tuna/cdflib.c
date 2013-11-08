@@ -89,8 +89,8 @@ S20:
 
 double
 cdflib_algdiv(
-    double* a,
-    double* b)
+    const double* a,
+    const double* b)
 {
     double algdiv;
     double c;
@@ -165,7 +165,7 @@ cdflib_algdiv(
 
 double
 cdflib_alnrel(
-    double* a)
+    const double* a)
 {
     double alnrel;
     static const double p1 = -0.129418923021993e+01;
@@ -194,10 +194,10 @@ cdflib_alnrel(
 
 double
 cdflib_apser(
-    double* a,
-    double* b,
-    double* x,
-    double* eps)
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* eps)
 {
     static const double g = 0.577215664901533e0;
     double apser, aj, bx, c, j, s, t, tol;
@@ -229,8 +229,8 @@ S30:
 
 double
 cdflib_bcorr(
-    double* a0,
-    double* b0)
+    const double* a0,
+    const double* b0)
 {
     static const double c0 =  0.833333333333333e-01;
     static const double c1 = -0.277777777760991e-02;
@@ -288,10 +288,10 @@ cdflib_beta(
 
 double
 cdflib_beta_asym(
-    double* a,
-    double* b,
-    double* lambda,
-    double* eps)
+    const double* a,
+    const double* b,
+    const double* lambda,
+    const double* eps)
 {
     static const double e0  = 1.12837916709551e0;
     static const double e1  = .353553390593274e0;
@@ -8305,7 +8305,7 @@ cdflib_poisson_cdf_values(
 
 double
 cdflib_psi(
-    double* xx)
+    const double* xx)
 {
     static const double dx0 = 1.461632144968362341262659542325721325e0;
     static const double piov4 = .785398163397448e0;

@@ -42,8 +42,8 @@ extern "C" {
  */
 double
 cdflib_algdiv(
-    double* a,
-    double* b);
+    const double* a,
+    const double* b);
 
 /**
  * \brief
@@ -71,7 +71,7 @@ cdflib_algdiv(
  */
 double
 cdflib_alnrel(
-    double* a);
+    const double* a);
 
 /**
  * \brief
@@ -99,10 +99,10 @@ cdflib_alnrel(
  */
 double
 cdflib_apser(
-    double* a,
-    double* b,
-    double* x,
-    double* eps);
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* eps);
 
 
 /**
@@ -132,8 +132,8 @@ cdflib_apser(
  */
 double
 cdflib_bcorr(
-    double* a0,
-    double* b0);
+    const double* a0,
+    const double* b0);
 
 /**
  * \brief
@@ -179,10 +179,10 @@ cdflib_beta(
  */
 double
 cdflib_beta_asym(
-    double* a,
-    double* b,
-    double* lambda,
-    double* eps);
+    const double* a,
+    const double* b,
+    const double* lambda,
+    const double* eps);
 
 /**
  * \brief
@@ -3578,7 +3578,7 @@ cdflib_poisson_cdf_values(
  */
 double
 cdflib_psi(
-    double* xx);
+    const double* xx);
 
 /**
  * \brief
