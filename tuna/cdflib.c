@@ -5483,9 +5483,9 @@ cdflib_dlanor(
 
 double
 cdflib_dpmpar(
-    const int i)
+    const int* i)
 {
-    return dpmpar(i);
+    return dpmpar(*i);
 }
 
 void
@@ -8127,9 +8127,9 @@ S20:
 
 int
 cdflib_ipmpar(
-    const int i)
+    const int* i)
 {
-    return ipmpar[i];
+    return ipmpar[*i];
 }
 
 void
