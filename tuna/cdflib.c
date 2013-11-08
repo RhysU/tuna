@@ -43,6 +43,50 @@ static const int ipmpar[11] = {
     /* imach[10] */ 1024,
 };
 
+static inline
+double
+dpmpar(
+    const int i)
+{
+    static const int K1 = 4;
+    static const int K2 = 8;
+    static const int K3 = 9;
+    static const int K4 = 10;
+    double value, b, binv, bm1, one, w, z;
+    int emax, emin, ibeta, m;
+
+    if (i > 1) {
+        goto S10;
+    }
+    b = cdflib_ipmpar(K1);
+    m = cdflib_ipmpar(K2);
+    value = pow(b, (double)(1 - m));
+    return value;
+S10:
+    if (i > 2) {
+        goto S20;
+    }
+    b = cdflib_ipmpar(K1);
+    emin = cdflib_ipmpar(K3);
+    one = 1.0;
+    binv = one / b;
+    w = pow(b, (double)(emin + 2));
+    value = w * binv * binv * binv;
+    return value;
+S20:
+    ibeta = cdflib_ipmpar(K1);
+    m = cdflib_ipmpar(K2);
+    emax = cdflib_ipmpar(K4);
+    b = ibeta;
+    bm1 = ibeta - 1;
+    one = 1.0;
+    z = pow(b, (double)(m - 1));
+    w = ((z - one) * b + bm1) / (b * z);
+    z = pow(b, (double)(emax - 2));
+    value = w * z * b * b;
+    return value;
+}
+
 double
 cdflib_algdiv(
     double* a,
@@ -5441,43 +5485,7 @@ double
 cdflib_dpmpar(
     const int i)
 {
-    static const int K1 = 4;
-    static const int K2 = 8;
-    static const int K3 = 9;
-    static const int K4 = 10;
-    double value, b, binv, bm1, one, w, z;
-    int emax, emin, ibeta, m;
-
-    if (i > 1) {
-        goto S10;
-    }
-    b = cdflib_ipmpar(K1);
-    m = cdflib_ipmpar(K2);
-    value = pow(b, (double)(1 - m));
-    return value;
-S10:
-    if (i > 2) {
-        goto S20;
-    }
-    b = cdflib_ipmpar(K1);
-    emin = cdflib_ipmpar(K3);
-    one = 1.0;
-    binv = one / b;
-    w = pow(b, (double)(emin + 2));
-    value = w * binv * binv * binv;
-    return value;
-S20:
-    ibeta = cdflib_ipmpar(K1);
-    m = cdflib_ipmpar(K2);
-    emax = cdflib_ipmpar(K4);
-    b = ibeta;
-    bm1 = ibeta - 1;
-    one = 1.0;
-    z = pow(b, (double)(m - 1));
-    w = ((z - one) * b + bm1) / (b * z);
-    z = pow(b, (double)(emax - 2));
-    value = w * z * b * b;
-    return value;
+    return dpmpar(i);
 }
 
 void
