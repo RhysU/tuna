@@ -35,10 +35,6 @@
 extern "C" {
 #endif
 
-/* Forward declarations */
-struct tuna_state;
-typedef struct tuna_state tuna_state;
-
 /**
  * Type signature for all autotuning algorithms.
  *
