@@ -58,25 +58,25 @@ dpmpar(
     if (i > 1) {
         goto S10;
     }
-    b = cdflib_ipmpar(K1);
-    m = cdflib_ipmpar(K2);
+    b = ipmpar[K1];
+    m = ipmpar[K2];
     value = pow(b, (double)(1 - m));
     return value;
 S10:
     if (i > 2) {
         goto S20;
     }
-    b = cdflib_ipmpar(K1);
-    emin = cdflib_ipmpar(K3);
+    b = ipmpar[K1];
+    emin = ipmpar[K3];
     one = 1.0;
     binv = one / b;
     w = pow(b, (double)(emin + 2));
     value = w * binv * binv * binv;
     return value;
 S20:
-    ibeta = cdflib_ipmpar(K1);
-    m = cdflib_ipmpar(K2);
-    emax = cdflib_ipmpar(K4);
+    ibeta = ipmpar[K1];
+    m = ipmpar[K2];
+    emax = ipmpar[K4];
     b = ibeta;
     bm1 = ibeta - 1;
     one = 1.0;
@@ -6376,7 +6376,7 @@ cdflib_exparg(
     double exparg, lnb;
     int b, m;
 
-    b = cdflib_ipmpar(K1);
+    b = ipmpar[K1];
     if (b != 2) {
         goto S10;
     }
@@ -6400,11 +6400,11 @@ S40:
     if (*l == 0) {
         goto S50;
     }
-    m = cdflib_ipmpar(K2) - 1;
+    m = ipmpar[K2] - 1;
     exparg = 0.99999e0 * ((double)m * lnb);
     return exparg;
 S50:
-    m = cdflib_ipmpar(K3);
+    m = ipmpar[K3];
     exparg = 0.99999e0 * ((double)m * lnb);
     return exparg;
 }
@@ -8340,7 +8340,7 @@ cdflib_psi(
     //        XSMALL = ABSOLUTE ARGUMENT BELOW WHICH PI*COTAN(PI*X)
     //                 MAY BE REPRESENTED BY 1/X.
     //
-    xmax1 = cdflib_ipmpar(K1);
+    xmax1 = ipmpar[K1];
     xmax1 = cdflib_fifdmin1(xmax1, 1.0e0 / cdflib_dpmpar(K2));
     xsmall = 1.e-9;
     x = *xx;
