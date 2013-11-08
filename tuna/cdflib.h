@@ -283,10 +283,10 @@ cdflib_beta_grat(
  */
 void
 cdflib_beta_inc(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
     double* w,
     double* w1,
     int* ierr);
@@ -407,10 +407,10 @@ cdflib_beta_log(
  */
 double
 cdflib_beta_pser(
-    double* a,
-    double* b,
-    double* x,
-    double* eps);
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* eps);
 
 /**
  * \brief
@@ -454,11 +454,11 @@ cdflib_beta_cdflib_rcomp(
  */
 double
 cdflib_beta_rcomp1(
-    int* mu,
-    double* a,
-    double* b,
-    double* x,
-    double* y);
+    const int* mu,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y);
 
 /**
  * \brief
@@ -2675,8 +2675,8 @@ cdflib_error_fc(
  */
 double
 cdflib_esum(
-    int* mu,
-    double* x);
+    const int* mu,
+    const double* x);
 
 /**
  * \brief

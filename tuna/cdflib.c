@@ -558,10 +558,10 @@ S70:
 
 void
 cdflib_beta_inc(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
     double* w,
     double* w1,
     int* ierr)
@@ -1025,10 +1025,10 @@ S110:
 
 double
 cdflib_beta_pser(
-    double* a,
-    double* b,
-    double* x,
-    double* eps)
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* eps)
 {
     double bpser, a0, apb, b0, c, n, sum, t, tol, u, w, z;
     int i, m;
@@ -1294,11 +1294,11 @@ S190:
 
 double
 cdflib_beta_rcomp1(
-    int* mu,
-    double* a,
-    double* b,
-    double* x,
-    double* y)
+    const int* mu,
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y)
 {
     static const double Const = .398942280401433e0;
     double brcmp1, a0, apb, b0, c, e, h, lambda, lnx, lny, t, u, v, x0, y0, z;
@@ -6315,8 +6315,8 @@ S70:
 
 double
 cdflib_esum(
-    int* mu,
-    double* x)
+    const int* mu,
+    const double* x)
 {
     double esum, w;
 
