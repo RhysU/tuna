@@ -14,6 +14,7 @@
 #include "config.h"
 #endif
 
+#include "countof.h"
 #include "kernel.h"
 
 /**
@@ -56,4 +57,18 @@ tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t)
     // observations from unduly inflating the discovered variability.
 
     return k;
+}
+
+tuna_stats tuna_kernel_stats(tuna_kernel * const k)
+{
+    tuna_stats s = k->stats;
+    return s;
+}
+
+tuna_stats* tuna_kernel_merge(      tuna_stats  * const s,
+                              const tuna_kernel * const k)
+{
+    tuna_stats_merge(s, &k->stats);
+    tuna_stats_nobs(s, k->outliers, tuna_countof(k->outliers));
+    return s;
 }

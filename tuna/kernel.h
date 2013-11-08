@@ -35,6 +35,13 @@ typedef struct tuna_kernel {
  */
 tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t);
 
+/**
+ * Incorporate all information recorded about kernel \c k into \c s,
+ * including any outliers otherwise discarded from consideration.
+ */
+tuna_stats* tuna_kernel_merge(      tuna_stats  * const s,
+                              const tuna_kernel * const k);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
