@@ -16,4 +16,5 @@
 
 #include "tuna.h"
 
-// NOP
+// C99 extern declarations for inlined functions from rand.h
+extern int tuna(tuna_state * state, const int nkernels, tuna_kernel * kernels);
