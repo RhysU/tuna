@@ -1451,12 +1451,12 @@ S190:
 
 double
 cdflib_beta_up(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
-    int* n,
-    double* eps)
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
+    const int* n,
+    const double* eps)
 {
     static const int K1 = 1;
     static const int K2 = 0;
@@ -1607,7 +1607,7 @@ cdflib_binomial_cdf_values(
 
 void
 cdflib_cdfbet(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -1966,7 +1966,7 @@ S540:
 
 void
 cdflib_cdfbin(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -2330,7 +2330,7 @@ S560:
 
 void
 cdflib_cdfchi(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -2594,7 +2594,7 @@ S380:
 
 void
 cdflib_cdfchn(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -2820,7 +2820,7 @@ S280:
 
 void
 cdflib_cdff(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* f,
@@ -3114,7 +3114,7 @@ S270:
 
 void
 cdflib_cdffnc(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* f,
@@ -3391,7 +3391,7 @@ S350:
 
 void
 cdflib_cdfgam(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -3649,7 +3649,7 @@ S310:
 
 void
 cdflib_cdfnbn(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -4005,7 +4005,7 @@ S540:
 
 void
 cdflib_cdfnor(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -4148,7 +4148,7 @@ S160:
 
 void
 cdflib_cdfpoi(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -4382,7 +4382,7 @@ S330:
 
 void
 cdflib_cdft(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* t,
@@ -4736,10 +4736,10 @@ cdflib_chi_square_cdf_values(
 
 void
 cdflib_cumbet(
-    double* x,
-    double* y,
-    double* a,
-    double* b,
+    const double* x,
+    const double* y,
+    const double* a,
+    const double* b,
     double* cum,
     double* ccum)
 {
@@ -4759,10 +4759,10 @@ cdflib_cumbet(
 
 void
 cdflib_cumbin(
-    double* s,
-    double* xn,
-    double* pr,
-    double* ompr,
+    const double* s,
+    const double* xn,
+    const double* pr,
+    const double* ompr,
     double* cum,
     double* ccum)
 {
@@ -4781,8 +4781,8 @@ cdflib_cumbin(
 
 void
 cdflib_cumchi(
-    double* x,
-    double* df,
+    const double* x,
+    const double* df,
     double* cum,
     double* ccum)
 {
@@ -4797,9 +4797,9 @@ cdflib_cumchi(
 
 void
 cdflib_cumchn(
-    double* x,
-    double* df,
-    double* pnonc,
+    const double* x,
+    const double* df,
+    const double* pnonc,
     double* cum,
     double* ccum)
 {
@@ -4948,9 +4948,9 @@ S80:
 
 void
 cdflib_cumf(
-    double* f,
-    double* dfn,
-    double* dfd,
+    const double* f,
+    const double* dfn,
+    const double* dfd,
     double* cum,
     double* ccum)
 {
@@ -4993,10 +4993,10 @@ S10:
 
 void
 cdflib_cumfnc(
-    double* f,
-    double* dfn,
-    double* dfd,
-    double* pnonc,
+    const double* f,
+    const double* dfn,
+    const double* dfd,
+    const double* pnonc,
     double* cum,
     double* ccum)
 {
@@ -5119,8 +5119,8 @@ S70:
 
 void
 cdflib_cumgam(
-    double* x,
-    double* a,
+    const double* x,
+    const double* a,
     double* cum,
     double* ccum)
 {
@@ -5142,10 +5142,10 @@ S10:
 
 void
 cdflib_cumnbn(
-    double* s,
-    double* xn,
-    double* pr,
-    double* ompr,
+    const double* s,
+    const double* xn,
+    const double* pr,
+    const double* ompr,
     double* cum,
     double* ccum)
 {
@@ -6727,8 +6727,8 @@ S50:
 
 void
 cdflib_gamma_inc(
-    double* a,
-    double* x,
+    const double* a,
+    const double* x,
     double* ans,
     double* qans,
     const int* ind)
@@ -7940,7 +7940,7 @@ cdflib_gamma_values(
 
 double
 cdflib_gamma_x(
-    double* a)
+    const double* a)
 {
     static const double d = .41893853320467274178e0;
     static const double pi = 3.1415926535898e0;

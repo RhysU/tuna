@@ -481,12 +481,12 @@ cdflib_beta_rcomp1(
  */
 double
 cdflib_beta_up(
-    double* a,
-    double* b,
-    double* x,
-    double* y,
-    int* n,
-    double* eps);
+    const double* a,
+    const double* b,
+    const double* x,
+    const double* y,
+    const int* n,
+    const double* eps);
 
 /**
  * \brief
@@ -617,7 +617,7 @@ cdflib_binomial_cdf_values(
  */
 void
 cdflib_cdfbet(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -706,7 +706,7 @@ cdflib_cdfbet(
  */
 void
 cdflib_cdfbin(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -791,7 +791,7 @@ cdflib_cdfbin(
  */
 void
 cdflib_cdfchi(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -884,7 +884,7 @@ cdflib_cdfchi(
  */
 void
 cdflib_cdfchn(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -971,7 +971,7 @@ cdflib_cdfchn(
  */
 void
 cdflib_cdff(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* f,
@@ -1089,7 +1089,7 @@ cdflib_cdff(
  */
 void
 cdflib_cdffnc(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* f,
@@ -1172,7 +1172,7 @@ cdflib_cdffnc(
  */
 void
 cdflib_cdfgam(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -1260,7 +1260,7 @@ cdflib_cdfgam(
  */
 void
 cdflib_cdfnbn(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -1348,7 +1348,7 @@ cdflib_cdfnbn(
  */
 void
 cdflib_cdfnor(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* x,
@@ -1420,7 +1420,7 @@ cdflib_cdfnor(
  */
 void
 cdflib_cdfpoi(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* s,
@@ -1495,7 +1495,7 @@ cdflib_cdfpoi(
  */
 void
 cdflib_cdft(
-    int* which,
+    const int* which,
     double* p,
     double* q,
     double* t,
@@ -1645,10 +1645,10 @@ cdflib_chi_square_cdf_values(
  */
 void
 cdflib_cumbet(
-    double* x,
-    double* y,
-    double* a,
-    double* b,
+    const double* x,
+    const double* y,
+    const double* a,
+    const double* b,
     double* cum,
     double* ccum);
 
@@ -1690,10 +1690,10 @@ cdflib_cumbet(
  */
 void
 cdflib_cumbin(
-    double* s,
-    double* xn,
-    double* pr,
-    double* ompr,
+    const double* s,
+    const double* xn,
+    const double* pr,
+    const double* ompr,
     double* cum,
     double* ccum);
 
@@ -1717,8 +1717,8 @@ cdflib_cumbin(
  */
 void
 cdflib_cumchi(
-    double* x,
-    double* df,
+    const double* x,
+    const double* df,
     double* cum,
     double* ccum);
 
@@ -1767,9 +1767,9 @@ cdflib_cumchi(
  */
 void
 cdflib_cumchn(
-    double* x,
-    double* df,
-    double* pnonc,
+    const double* x,
+    const double* df,
+    const double* pnonc,
     double* cum,
     double* ccum);
 
@@ -1802,9 +1802,9 @@ cdflib_cumchn(
  */
 void
 cdflib_cumf(
-    double* f,
-    double* dfn,
-    double* dfd,
+    const double* f,
+    const double* dfn,
+    const double* dfd,
     double* cum,
     double* ccum);
 
@@ -1859,10 +1859,10 @@ cdflib_cumf(
  */
 void
 cdflib_cumfnc(
-    double* f,
-    double* dfn,
-    double* dfd,
-    double* pnonc,
+    const double* f,
+    const double* dfn,
+    const double* dfd,
+    const double* pnonc,
     double* cum,
     double* ccum);
 
@@ -1895,8 +1895,8 @@ cdflib_cumfnc(
  */
 void
 cdflib_cumgam(
-    double* x,
-    double* a,
+    const double* x,
+    const double* a,
     double* cum,
     double* ccum);
 
@@ -1937,10 +1937,10 @@ cdflib_cumgam(
  */
 void
 cdflib_cumnbn(
-    double* s,
-    double* xn,
-    double* pr,
-    double* ompr,
+    const double* s,
+    const double* xn,
+    const double* pr,
+    const double* ompr,
     double* cum,
     double* ccum);
 
@@ -3037,8 +3037,8 @@ cdflib_gam1(
  */
 void
 cdflib_gamma_inc(
-    double* a,
-    double* x,
+    const double* a,
+    const double* x,
     double* ans,
     double* qans,
     const int* ind);
@@ -3315,7 +3315,7 @@ cdflib_gamma_values(
  */
 double
 cdflib_gamma_x(
-    double* a);
+    const double* a);
 
 /**
  * \brief
