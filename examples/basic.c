@@ -17,7 +17,7 @@ static const double N01(void)
 int main(int argc, char *argv[])
 {
     // Parse and display any incoming command line arguments in a header
-    const int    niter = argc > 1 ? atoi(argv[1]) : 100  ; // Iteration count?
+    const int    niter = argc > 1 ? atof(argv[1]) : 100  ; // Iteration count?
     const double mA    = argc > 2 ? atof(argv[2]) :  10.0; // Case A mean?
     const double sA    = argc > 3 ? atof(argv[3]) :   1.0; // Case A stddev?
     const double mB    = argc > 4 ? atof(argv[4]) :  10.1; // Case B mean?
