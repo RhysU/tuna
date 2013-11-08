@@ -51,8 +51,10 @@ FCT_BGN()
         static const double c_mu = 88.833, c_std = 7.1671, c_N = 6;
         static const double p_expected = 0.00339123;
 
+        // The infinite DOF provides errs on the side of small p-values.
+        // This can be seen from how the CDF changes as \nu \to \infty.
         double p = tuna_welch1_nuinf(t_mu, t_std, t_N, c_mu, c_std, c_N);
-        fct_chk_eqtol_dbl(p, p_expected, 1e-14); // FIXME Conservative compare
+        fct_chk(p < p_expected);
     }
     FCT_QTEST_END();
 }
