@@ -4,4 +4,5 @@ compiler:
   - clang
 before_script:
   - sudo apt-get -qq update
-script: ./bootstrap && ./configure && make && make check || (cat test-suite.log && false)
+script:
+  - ./bootstrap && ./configure && make all check VERBOSE=1
