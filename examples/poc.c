@@ -42,11 +42,12 @@ int main(int argc, char *argv[])
                       : tuna_stats_cnt(s+1) < b ? 1
                       : tuna_stats_welch1(s+0,s+1) < U01();
 
-        // Take the branch, tracking the "elapsed" time.
+        // Take the branch, tracking "elapsed" time in a hypothetical kernel
         double elapsed;
         switch (ndx) {
-            case 0: elapsed = mA + N01()*sA; break;
-            case 1: elapsed = mB + N01()*sB; break;
+            default:
+            case 0:  elapsed = mA + N01()*sA; break;
+            case 1:  elapsed = mB + N01()*sB; break;
         }
         tuna_stats_obs(s+ndx, elapsed);
 

@@ -31,11 +31,12 @@ int main(int argc, char *argv[])
         // Which branch should be taken this iteration?
         const int ndx = tuna(&s, tuna_countof(k), k);
 
-        // Take the branch, tracking the "elapsed" time.
+        // Take the branch, tracking "elapsed" time in a hypothetical kernel
         double elapsed;
         switch (ndx) {
-            case 0: elapsed = mA + N01()*sA; break;
-            case 1: elapsed = mB + N01()*sB; break;
+            default:
+            case 0:  elapsed = mA + N01()*sA; break;
+            case 1:  elapsed = mB + N01()*sB; break;
         }
         tuna_kernel_obs(k+ndx, elapsed);
 
