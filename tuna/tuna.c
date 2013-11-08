@@ -48,9 +48,9 @@ int tuna_algo_welch1_nuinf(const int nk,
     assert(nk == 2);                            // FIXME Generalize
     const tuna_stats * const a = &ks[0].stats;  // Brevity
     const tuna_stats * const b = &ks[1].stats;
-    if        (tuna_stats_cnt(a) == 0) {
+    if        (tuna_stats_cnt(a) < 1) {
         return 0;
-    } else if (tuna_stats_cnt(b) == 0) {
+    } else if (tuna_stats_cnt(b) < 1) {
         return 1;
     } else {
         double p = tuna_welch1_nuinf(tuna_stats_avg(a),
@@ -70,9 +70,9 @@ int tuna_algo_welch1(const int nk,
     assert(nk == 2);                            // FIXME Generalize
     const tuna_stats * const a = &ks[0].stats;  // Brevity
     const tuna_stats * const b = &ks[1].stats;
-    if        (tuna_stats_cnt(a) == 0) {
+    if        (tuna_stats_cnt(a) < 2) {
         return 0;
-    } else if (tuna_stats_cnt(b) == 0) {
+    } else if (tuna_stats_cnt(b) < 2) {
         return 1;
     } else {
         double p = tuna_welch1(tuna_stats_avg(a),
