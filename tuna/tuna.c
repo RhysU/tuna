@@ -17,11 +17,29 @@
 #include "tuna.h"
 
 #include <assert.h>
+#include <time.h>
 
 #include "welch.h"
 
-// C99 extern declarations for inlined functions from rand.h
-extern int tuna(tuna_state * st, const int nk, const tuna_kernel * ks);
+int tuna(tuna_state * st,
+         const int nk,
+         const tuna_kernel * ks)
+{
+    // Provide a time-based seed if trivial
+    if (!st->sd) {
+        struct timespec tp;
+        clock_gettime(CLOCK_REALTIME, &tp);
+        st->sd = tp.tv_sec + tp.tv_nsec;
+    }
+
+    // Provide a default algorithm if trivial
+    if (!st->al) {
+        st->al = &tuna_algo_welch1_nuinf;
+    }
+
+    // Invoke the algorithm
+    return st->al(nk, ks, &st->sd);
+}
 
 int tuna_algo_welch1_nuinf(const int nk,
                            const tuna_kernel * ks,

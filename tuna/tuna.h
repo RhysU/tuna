@@ -27,6 +27,7 @@
 
 #include <tuna/countof.h>
 #include <tuna/kernel.h>
+#include <tuna/ltqnorm.h>
 #include <tuna/rand.h>
 #include <tuna/stats.h>
 
@@ -68,12 +69,9 @@ typedef struct tuna_state {
  *
  * \return The zero-based index of the kernel which should be selected.
  */
-static inline int tuna(tuna_state * st,
-                       const int nk,
-                       const tuna_kernel * ks)
-{
-    return st->al(nk, ks, &st->sd);
-}
+int tuna(tuna_state * st,
+         const int nk,
+         const tuna_kernel * ks);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 int tuna_algo_welch1_nuinf(const int nk,

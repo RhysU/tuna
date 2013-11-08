@@ -8,20 +8,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #include <tuna/tuna.h>
 
-static const double U01(void) { return rand() / (double) RAND_MAX; }
-static const double N01(void) { return tuna_ltqnorm(U01());        }
+static const double N01(void)
+{ return tuna_ltqnorm(rand() / (double) RAND_MAX); }
 
-// TODO This is currently a work-in-progress to discover the correct APIs.
 int main(int argc, char *argv[])
 {
-    struct timespec tp;
-    clock_gettime(CLOCK_REALTIME, &tp);
-    srand((unsigned int) (tp.tv_sec + tp.tv_nsec));
-
     // Parse and display any incoming command line arguments in a header
     const int    niter = argc > 1 ? atoi(argv[1]) : 100  ; // Iteration count?
     const double mA    = argc > 2 ? atof(argv[2]) :  10.0; // Case A mean?
@@ -31,12 +25,11 @@ int main(int argc, char *argv[])
     const int    debug = argc > 6 ? atoi(argv[6]) :   0  ; // Output debugging?
     printf("# niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
-    tuna_kernel k[2] = {/*zero fill*/};
+    static tuna_state  s;
+    static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
         // Which branch should be taken this iteration?
-        const int ndx = !tuna_stats_cnt(&k[0].stats) ? 0
-                      : !tuna_stats_cnt(&k[1].stats) ? 1
-                      : tuna_stats_welch1(&k[0].stats,&k[1].stats) < U01();
+        const int ndx = tuna(&s, tuna_countof(k), k);
 
         // Take the branch, tracking the "elapsed" time.
         double elapsed;
@@ -50,14 +43,14 @@ int main(int argc, char *argv[])
         if (debug) printf("%6d\t%d\t%g\n", i, ndx, elapsed);
     }
 
-    // Summarize results, including any discarded outliers
+    // Display choice summary
     for (int i = 0; i < tuna_countof(k); ++i) {
-        tuna_stats s = {};
-        tuna_kernel_merge(&s, k + i);
-        printf("# m%c=%g, s%c=%g, c%c=%zd\n",
-               'A' + i, tuna_stats_avg(&s),
-               'A' + i, tuna_stats_std(&s),
-               'A' + i, tuna_stats_cnt(&s));
+        tuna_stats o = {};
+        tuna_kernel_merge(&o, k + i);
+        printf("# m%c=%g, o%c=%g, c%c=%zd\n",
+               'A' + i, tuna_stats_avg(&o),
+               'A' + i, tuna_stats_std(&o),
+               'A' + i, tuna_stats_cnt(&o));
     }
 
     return EXIT_SUCCESS;
