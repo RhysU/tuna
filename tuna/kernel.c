@@ -22,7 +22,7 @@
  * If doing so required swapping *a and *b, return 1.  Otherwise 0.
  */
 static inline
-int enforce_lt(double * const a, double * const b)
+int enforce_lt(double* const a, double* const b)
 {
     if (*a < *b) {
         return 0;
@@ -34,21 +34,23 @@ int enforce_lt(double * const a, double * const b)
     }
 }
 
-tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t)
+tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t)
 {
     // First, find smallest observation among set {t, k->outliers[0], ... }
     // placing it into storage t while maintaining sorted-ness of k->outliers.
     // The loop is one bubble sort pass with possibility of short-circuiting.
     if (enforce_lt(&t, k->outliers)) {
         for (size_t i = 1;
-                i < sizeof(k->outliers)/sizeof(k->outliers[0])
+             i < sizeof(k->outliers) / sizeof(k->outliers[0])
              && enforce_lt(k->outliers - 1 + i, k->outliers + i);
              ++i)
             ;
     }
 
     // Second, when non-zero, record statistics about the best observation.
-    if (t) tuna_stats_obs(&k->stats, t);
+    if (t) {
+        tuna_stats_obs(&k->stats, t);
+    }
 
     // Together, these two steps cause a zero-initialized tuna_kernel to
     // gather tuna_noutliers pieces of information before beginning to
@@ -59,14 +61,14 @@ tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t)
     return k;
 }
 
-tuna_stats tuna_kernel_stats(tuna_kernel * const k)
+tuna_stats tuna_kernel_stats(tuna_kernel* const k)
 {
     tuna_stats s = k->stats;
     return s;
 }
 
-tuna_stats* tuna_kernel_merge(      tuna_stats  * const s,
-                              const tuna_kernel * const k)
+tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
+                              const tuna_kernel* const k)
 {
     tuna_stats_merge(s, &k->stats);
     tuna_stats_nobs(s, k->outliers, tuna_countof(k->outliers));

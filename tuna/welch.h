@@ -41,14 +41,14 @@ extern "C" {
 static inline
 void tuna_welch(double xA, double sA2, size_t nA,
                 double xB, double sB2, size_t nB,
-                double * const t, double * const nu)
+                double* const t, double* const nu)
 {
     double sA2_nA = sA2 / nA;
     double sB2_nB = sB2 / nB;
     double t_den2 = sA2_nA + sB2_nB;
     *t            = (xA - xB) / sqrt(t_den2);
     double nu_den = sA2_nA * sA2_nA / (nA - 1)
-                  + sB2_nB * sB2_nB / (nB - 1);
+                    + sB2_nB * sB2_nB / (nB - 1);
     *nu           = t_den2 * t_den2 / nu_den;
 }
 
@@ -113,7 +113,9 @@ double tuna_welch1_approx(double xA, double sA2, size_t nA,
 {
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
-    if (nu > 2) t *= nu / (nu - 2);
+    if (nu > 2) {
+        t *= nu / (nu - 2);
+    }
     return 1 - erfc(-t * M_SQRT1_2) / 2;
 }
 

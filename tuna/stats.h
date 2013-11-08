@@ -36,8 +36,7 @@ extern "C" {
  * extended to permit merging statistics from multiple instances.  Storage
  * overhead reduced relative to Cook's presentation.
  */
-typedef struct tuna_stats
-{
+typedef struct tuna_stats {
     double m;
     double s;
     size_t n;
@@ -45,32 +44,42 @@ typedef struct tuna_stats
 
 /** Obtain the running number of samples provided thus far. */
 static inline
-size_t tuna_stats_cnt(const tuna_stats * const t)
-{ return t->n; }
+size_t tuna_stats_cnt(const tuna_stats* const t)
+{
+    return t->n;
+}
 
 /** Obtain the running mean. */
 static inline
-double tuna_stats_avg(const tuna_stats * const t)
-{ return t->n ? t->m : NAN; }
+double tuna_stats_avg(const tuna_stats* const t)
+{
+    return t->n ? t->m : NAN;
+}
 
 /** Obtain the running sample variance. */
 static inline
-double tuna_stats_var(const tuna_stats * const t)
-{ return t->n ? (t->n > 1 ? t->s / (t->n - 1): 0) : NAN; }
+double tuna_stats_var(const tuna_stats* const t)
+{
+    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
+}
 
 /** Obtain the running sample standard deviation. */
 static inline
-double tuna_stats_std(const tuna_stats * const t)
-{ return sqrt(tuna_stats_var(t)); }
+double tuna_stats_std(const tuna_stats* const t)
+{
+    return sqrt(tuna_stats_var(t));
+}
 
 /** Obtain the running sum. */
 static inline
-double tuna_stats_sum(const tuna_stats * const t)
-{ return tuna_stats_cnt(t) * tuna_stats_avg(t); }
+double tuna_stats_sum(const tuna_stats* const t)
+{
+    return tuna_stats_cnt(t) * tuna_stats_avg(t);
+}
 
 /** Accumulate a new observation \c x into statistics \c t. */
 static inline
-tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
+tuna_stats* tuna_stats_obs(tuna_stats* const t, const double x)
 {
     // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
     // Knuth shows better behavior than Welford 1962 on test data.
@@ -91,13 +100,13 @@ tuna_stats* tuna_stats_obs(tuna_stats * const t, const double x)
  * <code>x[N-1]</code> into statistics \c t.
  */
 static inline
-tuna_stats* tuna_stats_nobs(tuna_stats   * const t,
-                            const double *       x,
+tuna_stats* tuna_stats_nobs(tuna_stats*    const t,
+                            const double*        x,
                             size_t               N)
 {
     if (N) {                               // NOP on degenerate input
         tuna_stats_obs(t, *x++);           // Delegate possible n == 1
-        for (size_t i = --N; i --> 0 ;) {  // Henceforth, certainly n > 1
+        for (size_t i = --N; i -- > 0 ;) { // Henceforth, certainly n > 1
             size_t n  = ++(t->n);
             double d  = *x - t->m;
             t->m     += d / n;
@@ -108,15 +117,15 @@ tuna_stats* tuna_stats_nobs(tuna_stats   * const t,
 }
 
 /** Incorporate running information from another instance. */
-tuna_stats* tuna_stats_merge(      tuna_stats * const dst,
-                             const tuna_stats * const src);
+tuna_stats* tuna_stats_merge(tuna_stats* const dst,
+                             const tuna_stats* const src);
 
 /**
  * Compute a one-sided Welch t-test that \c a is greater than \c b.
  * See http://en.wikipedia.org/wiki/Welch's_t_test for background.
  */
-double tuna_stats_welch1(const tuna_stats * const a,
-                         const tuna_stats * const b);
+double tuna_stats_welch1(const tuna_stats* const a,
+                         const tuna_stats* const b);
 
 #ifdef __cplusplus
 } /* extern "C" */

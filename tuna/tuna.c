@@ -21,9 +21,9 @@
 
 #include "welch.h"
 
-int tuna(tuna_state * st,
+int tuna(tuna_state* st,
          const int nk,
-         const tuna_kernel * ks)
+         const tuna_kernel* ks)
 {
     // Provide a time-based seed if trivial
     if (!st->sd) {
@@ -42,13 +42,13 @@ int tuna(tuna_state * st,
 }
 
 int tuna_algo_welch1_nuinf(const int nk,
-                           const tuna_kernel * ks,
-                           tuna_seed * seed)
+                           const tuna_kernel* ks,
+                           tuna_seed* seed)
 {
     assert(nk == 2);                            // FIXME Generalize
-    const tuna_stats * const a = &ks[0].stats;  // Brevity
-    const tuna_stats * const b = &ks[1].stats;
-    if        (tuna_stats_cnt(a) < 1) {
+    const tuna_stats* const a = &ks[0].stats;   // Brevity
+    const tuna_stats* const b = &ks[1].stats;
+    if (tuna_stats_cnt(a) < 1) {
         return 0;
     } else if (tuna_stats_cnt(b) < 1) {
         return 1;
@@ -64,13 +64,13 @@ int tuna_algo_welch1_nuinf(const int nk,
 }
 
 int tuna_algo_welch1(const int nk,
-                     const tuna_kernel * ks,
-                     tuna_seed * seed)
+                     const tuna_kernel* ks,
+                     tuna_seed* seed)
 {
     assert(nk == 2);                            // FIXME Generalize
-    const tuna_stats * const a = &ks[0].stats;  // Brevity
-    const tuna_stats * const b = &ks[1].stats;
-    if        (tuna_stats_cnt(a) < 2) {
+    const tuna_stats* const a = &ks[0].stats;   // Brevity
+    const tuna_stats* const b = &ks[1].stats;
+    if (tuna_stats_cnt(a) < 2) {
         return 0;
     } else if (tuna_stats_cnt(b) < 2) {
         return 1;

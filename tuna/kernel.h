@@ -33,14 +33,14 @@ typedef struct tuna_kernel {
  * Record a new elapsed time observation \c t about kernel \c k.
  * If \c t is identically zero, no observation is recorded.
  */
-tuna_kernel* tuna_kernel_obs(tuna_kernel * const k, double t);
+tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t);
 
 /**
  * Incorporate all information recorded about kernel \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
-tuna_stats* tuna_kernel_merge(      tuna_stats  * const s,
-                              const tuna_kernel * const k);
+tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
+                              const tuna_kernel* const k);
 
 #ifdef __cplusplus
 } /* extern "C" */

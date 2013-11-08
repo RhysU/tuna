@@ -50,8 +50,8 @@ typedef struct tuna_state tuna_state;
  * \return The zero-based index of the kernel that has been selected.
  */
 typedef int (*tuna_algorithm)(const int nk,
-                              const tuna_kernel * ks,
-                              tuna_seed * sd);
+                              const tuna_kernel* ks,
+                              tuna_seed* sd);
 
 /** Kernel-independent state required for each autotuning site. */
 typedef struct tuna_state {
@@ -69,19 +69,19 @@ typedef struct tuna_state {
  *
  * \return The zero-based index of the kernel which should be selected.
  */
-int tuna(tuna_state * st,
+int tuna(tuna_state* st,
          const int nk,
-         const tuna_kernel * ks);
+         const tuna_kernel* ks);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 int tuna_algo_welch1_nuinf(const int nk,
-                           const tuna_kernel * ks,
-                           tuna_seed * sd);
+                           const tuna_kernel* ks,
+                           tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
 int tuna_algo_welch1(const int nk,
-                     const tuna_kernel * ks,
-                     tuna_seed * sd);
+                     const tuna_kernel* ks,
+                     tuna_seed* sd);
 
 #ifdef __cplusplus
 } /* extern "C" */
