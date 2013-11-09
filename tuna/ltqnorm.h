@@ -1,10 +1,5 @@
 /** \file
  * Provides \ref tuna_ltqnorm.
- *
- * Approximate the inverse of the standard normal per Peter John Acklam
- * (http://home.online.no/~pjacklam/notes/invnorm/) with error handling
- * following Chad Sprouse's implementation given at
- * (http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c).
  */
 
 #ifndef TUNA_LTQNORM_H
@@ -22,9 +17,16 @@ extern "C" {
  * an approximation to the X satisfying P = Pr{Z <= X} where Z is a
  * random variable from the standard normal distribution.
  *
+ * \internal
+ * Approximate the inverse of the standard normal per Peter John Acklam
+ * (http://home.online.no/~pjacklam/notes/invnorm/) with error handling
+ * following Chad Sprouse's implementation given at
+ * (http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c).
+ *
  * The algorithm uses a minimax approximation by rational functions
  * and the result has a relative error whose absolute value is less
  * than 1.15e-9.
+ * \endinternal
  */
 double tuna_ltqnorm(const double p);
 
