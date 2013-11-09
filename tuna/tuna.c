@@ -19,8 +19,6 @@
 #include <assert.h>
 #include <time.h>
 
-#include "welch.h"
-
 int tuna(tuna_state* st,
          const int nk,
          const tuna_kernel* ks)
@@ -39,48 +37,4 @@ int tuna(tuna_state* st,
 
     // Invoke the algorithm
     return st->al(nk, ks, &st->sd);
-}
-
-int tuna_algo_welch1_nuinf(const int nk,
-                           const tuna_kernel* ks,
-                           tuna_seed* seed)
-{
-    assert(nk == 2);                            // FIXME Generalize
-    const tuna_stats* const a = &ks[0].stats;   // Brevity
-    const tuna_stats* const b = &ks[1].stats;
-    if (tuna_stats_cnt(a) < 1) {
-        return 0;
-    } else if (tuna_stats_cnt(b) < 1) {
-        return 1;
-    } else {
-        double p = tuna_welch1_nuinf(tuna_stats_avg(a),
-                                     tuna_stats_var(a),
-                                     tuna_stats_cnt(a),
-                                     tuna_stats_avg(b),
-                                     tuna_stats_var(b),
-                                     tuna_stats_cnt(b));
-        return p < tuna_rand_u01(seed);
-    }
-}
-
-int tuna_algo_welch1(const int nk,
-                     const tuna_kernel* ks,
-                     tuna_seed* seed)
-{
-    assert(nk == 2);                            // FIXME Generalize
-    const tuna_stats* const a = &ks[0].stats;   // Brevity
-    const tuna_stats* const b = &ks[1].stats;
-    if (tuna_stats_cnt(a) < 2) {
-        return 0;
-    } else if (tuna_stats_cnt(b) < 2) {
-        return 1;
-    } else {
-        double p = tuna_welch1(tuna_stats_avg(a),
-                               tuna_stats_var(a),
-                               tuna_stats_cnt(a),
-                               tuna_stats_avg(b),
-                               tuna_stats_var(b),
-                               tuna_stats_cnt(b));
-        return p < tuna_rand_u01(seed);
-    }
 }
