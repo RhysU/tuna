@@ -16,25 +16,33 @@
 
 #include "tuna.h"
 
-#include <assert.h>
 #include <time.h>
 
 int tuna_pre(tuna_state* st,
              const tuna_kernel* ks,
              const int nk)
 {
-    // Provide a time-based seed if trivial
-    if (!st->sd) {
-        struct timespec tp;
-        clock_gettime(CLOCK_REALTIME, &tp);
-        st->sd = tp.tv_sec + tp.tv_nsec;
-    }
-
-    // Provide a default algorithm if trivial
+    // Ensure a zero-initialize st argument produces good behavior by...
     if (!st->al) {
+        // ...providing a default algorithm when not set, and
         st->al = &tuna_algo_welch1_nuinf;
+
+        if (!st->sd) {
+            // ...providing a wall-clock-based seed when not set.
+            clock_gettime(CLOCK_REALTIME, &st->ts);
+            st->sd = st->ts.tv_sec + st->ts.tv_nsec;
+        }
     }
 
-    // Invoke the algorithm recording the result
-    return st->ik = st->al(nk, ks, &st->sd);
+    // Invoke the algorithm recording the result in st for tuna_post()
+    st->ik = st->al(nk, ks, &st->sd);
+
+    // Glimpse at the clock so we may compute elapsed time in tuna_post()
+#ifdef CLOCK_PROCESS_CPUTIME_ID
+    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &st->ts);
+#else
+    clock_gettime(CLOCK_REALTIME, &st->ts);
+#endif
+
+    return st->ik;
 }

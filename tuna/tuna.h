@@ -25,6 +25,8 @@
  * TODO
  */
 
+#include <time.h>
+
 #include <tuna/algo.h>
 #include <tuna/countof.h>
 #include <tuna/kernel.h>
@@ -38,9 +40,10 @@ extern "C" {
 
 /** Kernel-independent state required for each autotuning site. */
 typedef struct tuna_state {
-    tuna_algo al;  /**< The chosen tuning algorithm.                */
-    tuna_seed sd;  /**< Random number generator state.              */
-    int       ik;  /**< Index of the most recently selected kernel. */
+    tuna_algo       al;  /**< The chosen tuning algorithm.                */
+    tuna_seed       sd;  /**< Random number generator state.              */
+    int             ik;  /**< Index of the most recently selected kernel. */
+    struct timespec ts;  /**< Records clock_gettime(2) in tuna_pre().     */
 } tuna_state;
 
 /**
