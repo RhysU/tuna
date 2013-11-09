@@ -17,7 +17,7 @@
 #include <math.h>
 #include <stddef.h>
 
-#include <tuna/cdflib.h>
+#include <tuna/as3.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -138,9 +138,7 @@ double tuna_welch1(double xA, double sA2, size_t nA,
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
     int which = 1, status;
-    double p, q, bound;
-    cdflib_cdft(&which, &p, &q, &t, &nu, &status, &bound);
-    return q;
+    return 1 - tuna_as3(t, nu);
 }
 
 #ifdef __cplusplus
