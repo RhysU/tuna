@@ -25,7 +25,7 @@ extern "C" {
  * reset an instance.
  */
 typedef struct tuna_kernel {
-    double     outliers[5];  /**< Invariantly-sorted greatest outliers.  */
+    double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */
     tuna_stats stats;        /**< Accumulated statistics sans outliers. */
 } tuna_kernel;
 
