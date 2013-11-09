@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
         // Which branch should be taken this iteration?
-        const int ndx = tuna(&s, k, tuna_countof(k));
+        const int ndx = tuna_pre(&s, k, tuna_countof(k));
 
         // Take the branch, tracking "elapsed" time in a hypothetical kernel
         double elapsed;

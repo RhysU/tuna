@@ -38,8 +38,9 @@ extern "C" {
 
 /** Kernel-independent state required for each autotuning site. */
 typedef struct tuna_state {
-    tuna_algo al;  /**< The chosen tuning algorithm.   */
-    tuna_seed sd;  /**< Random number generator state. */
+    tuna_algo al;  /**< The chosen tuning algorithm.                */
+    tuna_seed sd;  /**< Random number generator state.              */
+    int       ik;  /**< Index of the most recently selected kernel. */
 } tuna_state;
 
 /**
@@ -52,9 +53,9 @@ typedef struct tuna_state {
  *
  * \return The zero-based index of the kernel which should be selected.
  */
-int tuna(tuna_state* st,
-         const tuna_kernel* ks,
-         const int nk);
+int tuna_pre(tuna_state* st,
+             const tuna_kernel* ks,
+             const int nk);
 
 #ifdef __cplusplus
 } /* extern "C" */

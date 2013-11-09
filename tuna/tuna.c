@@ -19,9 +19,9 @@
 #include <assert.h>
 #include <time.h>
 
-int tuna(tuna_state* st,
-         const tuna_kernel* ks,
-         const int nk)
+int tuna_pre(tuna_state* st,
+             const tuna_kernel* ks,
+             const int nk)
 {
     // Provide a time-based seed if trivial
     if (!st->sd) {
@@ -35,6 +35,6 @@ int tuna(tuna_state* st,
         st->al = &tuna_algo_welch1_nuinf;
     }
 
-    // Invoke the algorithm
-    return st->al(nk, ks, &st->sd);
+    // Invoke the algorithm recording the result
+    return st->ik = st->al(nk, ks, &st->sd);
 }
