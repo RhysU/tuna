@@ -9,8 +9,8 @@
  *    Houston, Texas.
  */
 
-#ifndef TUNA_CDFLIB_H
-#define TUNA_CDFLIB_H
+#ifndef CDFLIB_H
+#define CDFLIB_H
 
 /** \file
  * A modified version of CDFLIB by
@@ -3778,4 +3778,4 @@ cdflib_stvaln(
 } /* extern "C" */
 #endif
 
-#endif /* TUNA_CDFLIB_H */
+#endif

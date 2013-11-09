@@ -28,10 +28,10 @@ tuna_libtuna_la_SOURCES += tuna/tuna.c    tuna/tuna.h
 tuna_libtuna_la_SOURCES += tuna/welch.c   tuna/welch.h
 tuna_libtuna_la_LIBADD   = $(LIBM)
 
-# CDFLIB is handy to keep available it is not installed
-# nobase_pkginclude_HEADERS += tuna/cdflib.h
-noinst_LTLIBRARIES        = tuna/libcdflib.la
-tuna_libcdflib_la_SOURCES = tuna/cdflib.c  tuna/cdflib.h
+# CDFLIB might be handy for testing but notice it is not installed
+# include_HEADERS           = cdflib/cdflib.h
+noinst_LTLIBRARIES          = cdflib/libcdflib.la
+cdflib_libcdflib_la_SOURCES = cdflib/cdflib.c  cdflib/cdflib.h
 
 # Example programs
 noinst_PROGRAMS      += examples/poc
