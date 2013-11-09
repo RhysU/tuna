@@ -45,14 +45,14 @@ extern "C" {
  *
  * \return The zero-based index of the kernel that has been selected.
  */
-typedef int (*tuna_algorithm)(const int nk,
-                              const tuna_kernel* ks,
-                              tuna_seed* sd);
+typedef int (*tuna_algo)(const int nk,
+                         const tuna_kernel* ks,
+                         tuna_seed* sd);
 
 /** Kernel-independent state required for each autotuning site. */
 typedef struct tuna_state {
-    tuna_algorithm al;  /**< The chosen tuning algorithm.   */
-    tuna_seed      sd;  /**< Random number generator state. */
+    tuna_algo al;  /**< The chosen tuning algorithm.   */
+    tuna_seed sd;  /**< Random number generator state. */
 } tuna_state;
 
 /**
