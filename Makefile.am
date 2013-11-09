@@ -37,9 +37,9 @@ noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
 
-noinst_PROGRAMS           += examples/shootout
-examples_shootout_SOURCES  = examples/shootout.c
-examples_shootout_LDADD    = tuna/libtuna.la $(LIBM)
+noinst_PROGRAMS           += examples/algodive
+examples_algodive_SOURCES  = examples/algodive.c
+examples_algodive_LDADD    = tuna/libtuna.la $(LIBM)
 
 # Test programs
 TESTS               += tests/stats

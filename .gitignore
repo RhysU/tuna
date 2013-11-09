@@ -37,9 +37,9 @@ test-suite.log
 tests/welch
 
 # Executables
+examples/algodive
 examples/basic
 examples/poc
-examples/shootout
 
 # Study results
 result.*.*
