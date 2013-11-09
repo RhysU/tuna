@@ -25,7 +25,7 @@ int tuna_pre(tuna_state* st,
     // Ensure a zero-initialize st argument produces good behavior by...
     if (!st->al) {
         // ...providing a default algorithm when not set, and
-        st->al = &tuna_algo_welch1_nuinf;
+        st->al = tuna_algo_default();
 
         if (!st->sd) {
             // ...providing a wall-clock-based seed when not set.

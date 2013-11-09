@@ -44,6 +44,14 @@ int tuna_algo_welch1(const int nk,
                      const tuna_kernel* ks,
                      tuna_seed* sd);
 
+/**
+ * Retrieve a default algorithm when left unspecified.  If the
+ * whitespace-trimmed environment variable <code>TUNA_ALGO</code>
+ * case-insensitively names an algorithm without the <code>tuna_algo_</code>
+ * prefix, that algorithm will be used.
+ */
+tuna_algo tuna_algo_default(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

@@ -17,8 +17,36 @@
 #include "algo.h"
 
 #include <assert.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <strings.h>
 
 #include "welch.h"
+
+// http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html
+static inline
+void trim(char * const a)
+{
+    char *p = a, *q = a;
+    while (isspace(*q))            ++q;
+    while (*q)                     *p++ = *q++;
+    *p = '\0';
+    while (p > a && isspace(*--p)) *p = '\0';
+}
+
+tuna_algo tuna_algo_default(void)
+{
+    char * d = getenv("TUNA_ALGO");
+    if (d) {
+        trim(d);
+        if (!strncasecmp(d, "welch1", sizeof("welch1"))) {
+            return &tuna_algo_welch1;
+        } else if (!strncasecmp(d, "welch1_nuinf", sizeof("welch1_nuinf"))) {
+            return &tuna_algo_welch1_nuinf;
+        }
+    }
+    return &tuna_algo_welch1_nuinf; // Default
+}
 
 int tuna_algo_welch1_nuinf(const int nk,
                            const tuna_kernel* ks,
