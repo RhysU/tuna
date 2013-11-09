@@ -7,6 +7,7 @@ TESTS            =
 # Installed artifacts
 dist_doc_DATA              = README.rst
 nobase_pkginclude_HEADERS  = tuna/algo.h
+nobase_pkginclude_HEADERS += tuna/as3.h
 nobase_pkginclude_HEADERS += tuna/cdflib.h
 nobase_pkginclude_HEADERS += tuna/countof.h
 nobase_pkginclude_HEADERS += tuna/kernel.h
@@ -19,6 +20,7 @@ lib_LTLIBRARIES            = tuna/libtuna.la
 
 # The sources build into the library
 tuna_libtuna_la_SOURCES  = tuna/algo.c    tuna/algo.h
+tuna_libtuna_la_SOURCES += tuna/as3.c     tuna/as3.h
 tuna_libtuna_la_SOURCES += tuna/cdflib.c  tuna/cdflib.h
 tuna_libtuna_la_SOURCES += tuna/kernel.c  tuna/kernel.h
 tuna_libtuna_la_SOURCES += tuna/ltqnorm.c tuna/ltqnorm.h
