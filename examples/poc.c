@@ -6,18 +6,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/** \file
+ * A minimum viable proof of concept for dynamic A/B-based autotuning
+ * using the minimum possible machinery from the libtuna library.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "tuna/ltqnorm.h"
-#include "tuna/stats.h"
+#include <tuna/ltqnorm.h>
+#include <tuna/stats.h>
 
 static const double U01(void) { return rand() / (double) RAND_MAX; }
 static const double N01(void) { return tuna_ltqnorm(U01());        }
 
-// A minimum viable proof of concept for dynamic A/B-based autotuning
-// using the minimum possible machinery from the libtuna library.
 int main(int argc, char *argv[])
 {
     struct timespec tp;

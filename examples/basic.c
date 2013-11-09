@@ -6,6 +6,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/** \file
+ * An example demonstrating bare-bones API usage.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
