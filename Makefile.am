@@ -41,6 +41,10 @@ noinst_PROGRAMS           += examples/algodive
 examples_algodive_SOURCES  = examples/algodive.c
 examples_algodive_LDADD    = tuna/libtuna.la $(LIBM)
 
+noinst_PROGRAMS            += examples/smallsort
+examples_smallsort_SOURCES  = examples/smallsort.c
+examples_smallsort_LDADD    = tuna/libtuna.la $(LIBM)
+
 # Test programs
 TESTS               += tests/stats
 noinst_PROGRAMS     += tests/stats

@@ -40,6 +40,7 @@ tests/welch
 examples/algodive
 examples/basic
 examples/poc
+examples/smallsort
 
 # Study results
 result.*.*
