@@ -34,15 +34,35 @@ int tuna_pre(tuna_state* st,
         }
     }
 
-    // Invoke the algorithm recording the result in st for tuna_post()
+    // Invoke the algorithm recording the result in for tuna_post_cost()
     st->ik = st->al(nk, ks, &st->sd);
 
     // Glimpse at the clock so we may compute elapsed time in tuna_post()
-#ifdef CLOCK_PROCESS_CPUTIME_ID
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &st->ts);
-#else
-    clock_gettime(CLOCK_REALTIME, &st->ts);
-#endif
+    clock_gettime(TUNA_CLOCK, &st->ts);
 
     return st->ik;
+}
+
+inline
+void tuna_post_cost(tuna_state*  st,
+                    tuna_kernel* ks,
+                    const double cost)
+{
+    tuna_kernel_obs(ks + st->ik, cost);
+}
+
+double tuna_post(tuna_state*  st,
+                 tuna_kernel* ks)
+{
+    // Glimpse at the clock and compute double-valued elapsed time
+    struct timespec te;
+    clock_gettime(TUNA_CLOCK, &te);
+    double elapsed = te.tv_nsec - st->ts.tv_nsec; // Nanoseconds...
+    elapsed *= 1e-9;                              // ...to seconds
+    elapsed += te.tv_sec - st->ts.tv_sec;         // ...plus seconds
+
+    // Delegate recording the observation to tuna_post_cost()
+    tuna_post_cost(st, ks, elapsed);
+
+    return elapsed;
 }

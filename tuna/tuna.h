@@ -38,7 +38,17 @@
 extern "C" {
 #endif
 
-/** Kernel-independent state required for each autotuning site. */
+/** The clock_gettime(2) used for internally-managed timing. */
+#define TUNA_CLOCK CLOCK_PROCESS_CPUTIME_ID
+#ifndef CLOCK_PROCESS_CPUTIME_ID
+# error "CLOCK_PROCESS_CPUTIME_ID unavailable"
+#endif
+
+/**
+ * Kernel-independent state required for each autotuning site.
+ * Contents are internally managed but a non-opaque type
+ * is used so the compiler may compute this POD type's size.
+ */
 typedef struct tuna_state {
     tuna_algo       al;  /**< The chosen tuning algorithm.                */
     tuna_seed       sd;  /**< Random number generator state.              */
@@ -59,6 +69,32 @@ typedef struct tuna_state {
 int tuna_pre(tuna_state* st,
              const tuna_kernel* ks,
              const int nk);
+
+/**
+ * Record the results from the last autotuned kernel invocation
+ * using internally-managed elapsed time via \ref TUNA_CLOCK.
+ *
+ * \param[inout] st   Information local to one autotuning site.
+ * \param[in   ] ks   Tracks information about the alternatives.
+ *
+ * \return The inclusive time in seconds as measured by \ref TUNA_CLOCK.
+ */
+double tuna_post(tuna_state*  st,
+                 tuna_kernel* ks);
+
+/**
+ * Record the last autotuned kernel invocation
+ * using a user-provided \c cost metric.
+ *
+ * \param[inout] st   Information local to one autotuning site.
+ * \param[in   ] ks   Tracks information about the alternatives.
+ * \param[in   ] cost User-provided measure of the employed kernel's cost.
+ *                    This may be elapsed time or some sophisticated measure.
+ *                    It should be strictly positive.  Lower means better.
+ */
+void tuna_post_cost(tuna_state*  st,
+                    tuna_kernel* ks,
+                    const double cost);
 
 #ifdef __cplusplus
 } /* extern "C" */
