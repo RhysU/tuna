@@ -18,6 +18,8 @@
 
 #include <time.h>
 
+// TODO Do something intelligent with clock_getres(2) information
+
 int tuna_pre(tuna_site* st,
              const tuna_kernel* ks,
              const int nk)
