@@ -8,7 +8,6 @@ TESTS            =
 dist_doc_DATA              = README.rst
 nobase_pkginclude_HEADERS  = tuna/algo.h
 nobase_pkginclude_HEADERS += tuna/as3.h
-nobase_pkginclude_HEADERS += tuna/cdflib.h
 nobase_pkginclude_HEADERS += tuna/countof.h
 nobase_pkginclude_HEADERS += tuna/kernel.h
 nobase_pkginclude_HEADERS += tuna/ltqnorm.h
@@ -21,7 +20,6 @@ lib_LTLIBRARIES            = tuna/libtuna.la
 # The sources build into the library
 tuna_libtuna_la_SOURCES  = tuna/algo.c    tuna/algo.h
 tuna_libtuna_la_SOURCES += tuna/as3.c     tuna/as3.h
-tuna_libtuna_la_SOURCES += tuna/cdflib.c  tuna/cdflib.h
 tuna_libtuna_la_SOURCES += tuna/kernel.c  tuna/kernel.h
 tuna_libtuna_la_SOURCES += tuna/ltqnorm.c tuna/ltqnorm.h
 tuna_libtuna_la_SOURCES += tuna/rand.c    tuna/rand.h
@@ -29,6 +27,11 @@ tuna_libtuna_la_SOURCES += tuna/stats.c   tuna/stats.h
 tuna_libtuna_la_SOURCES += tuna/tuna.c    tuna/tuna.h
 tuna_libtuna_la_SOURCES += tuna/welch.c   tuna/welch.h
 tuna_libtuna_la_LIBADD   = $(LIBM)
+
+# CDFLIB is handy to keep available it is not installed
+# nobase_pkginclude_HEADERS += tuna/cdflib.h
+noinst_LTLIBRARIES        = tuna/libcdflib.la
+tuna_libcdflib_la_SOURCES = tuna/cdflib.c  tuna/cdflib.h
 
 # Example programs
 noinst_PROGRAMS      += examples/poc
