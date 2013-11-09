@@ -22,13 +22,12 @@ int main(int argc, char *argv[])
     const double sA    = argc > 3 ? atof(argv[3]) :    1.0; // Case A stddev?
     const double mB    = argc > 4 ? atof(argv[4]) :   10.1; // Case B mean?
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
-    printf("niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
     static tuna_state  s;
     static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
 
-        // Autotune over the alternatives simulating kernel-specific costs
+        // Autotune over the alternatives (simulating kernel-specific costs)
         // To track runtime via TUNA_CLOCK, call tuna_post(&s, k) instead
         double cost;
         switch (tuna_pre(&s, k, tuna_countof(k))) {
@@ -40,6 +39,10 @@ int main(int argc, char *argv[])
         tuna_post_cost(&s, k, cost);
 
     }
+
+    // Display settings and static memory overhead required for autotuning
+    printf("niter=%d, mA=%g, sA=%g, mB=%g, sB=%g, memory=%zd bytes\n",
+           niter, mA, sA, mB, sB, sizeof(s) + sizeof(k));
 
     // Display observations from each alternative
     for (int i = 0; i < tuna_countof(k); ++i) {
