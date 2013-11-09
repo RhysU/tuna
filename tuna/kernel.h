@@ -30,13 +30,15 @@ typedef struct tuna_kernel {
 } tuna_kernel;
 
 /**
- * Record a new elapsed time observation \c t about kernel \c k.
- * If \c t is identically zero, no observation is recorded.
+ * Record a new cost observation \c t about kernel \c k.  If cost \c t is
+ * identically zero, no observation is recorded.  Cost might be elapsed time,
+ * but it might also be some other performance metric.  Regardless of what is
+ * chosen, smaller should mean better.
  */
 tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t);
 
 /**
- * Incorporate all information recorded about kernel \c k into \c s,
+ * Incorporate all cost information recorded about kernel \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
 tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
