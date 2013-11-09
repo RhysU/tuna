@@ -39,6 +39,7 @@ tests/welch
 # Executables
 examples/basic
 examples/poc
+examples/shootout
 
 # Study results
 result.*.*

@@ -28,15 +28,18 @@ tuna_libtuna_la_SOURCES += tuna/tuna.c    tuna/tuna.h
 tuna_libtuna_la_SOURCES += tuna/welch.c   tuna/welch.h
 tuna_libtuna_la_LIBADD   = $(LIBM)
 
-# A minimum viable proof of concept
+# Example programs
 noinst_PROGRAMS      += examples/poc
 examples_poc_SOURCES  = examples/poc.c
 examples_poc_LDADD    = tuna/libtuna.la $(LIBM)
 
-# Example programs
 noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
+
+noinst_PROGRAMS           += examples/shootout
+examples_shootout_SOURCES  = examples/shootout.c
+examples_shootout_LDADD    = tuna/libtuna.la $(LIBM)
 
 # Test programs
 TESTS               += tests/stats
