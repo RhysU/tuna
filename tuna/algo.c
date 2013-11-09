@@ -34,6 +34,8 @@ void trim(char * const a)
     while (p > a && isspace(*--p)) *p = '\0';
 }
 
+// TODO Is welch1_nuinf so much better for runtime that it should be default?
+//      The behavioral difference can be seen in, e.g., ./examples/smallsort.
 tuna_algo tuna_algo_default(void)
 {
     char * d = getenv("TUNA_ALGO");
