@@ -137,7 +137,6 @@ double tuna_welch1(double xA, double sA2, size_t nA,
 {
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
-    int which = 1, status;
     return 1 - tuna_as3(t, nu);
 }
 
