@@ -21,12 +21,12 @@
 // TODO Only 2 sorting algorithms currently employed
 // TODO Add system qsort(3)
 static const char *names[] = {
-    "bubble", "selection", "insertion", "heap"
+    "insertion", "heap", "selection", "bubble"
 };
-void sort_bubble   (int a[], int array_size);
-void sort_selection(int a[], int array_size);
 void sort_insertion(int a[], int array_size);
 void sort_heap     (int a[], int array_size);
+void sort_selection(int a[], int array_size);
+void sort_bubble   (int a[], int array_size);
 
 int main(int argc, char *argv[])
 {
@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
 
         // Autotune over the alternatives
         switch (tuna_pre(&s, k, tuna_countof(k))) {
-            default: sort_bubble   (data, nelem); break;
-            case 1:  sort_selection(data, nelem); break;
-            case 2:  sort_insertion(data, nelem); break;
-            case 3:  sort_heap     (data, nelem); break;
+            default: sort_insertion(data, nelem); break;
+            case 1:  sort_heap     (data, nelem); break;
+            case 2:  sort_selection(data, nelem); break;
+            case 3:  sort_bubble   (data, nelem); break;
         }
         tuna_post(&s, k);
     }
@@ -69,44 +69,6 @@ int main(int argc, char *argv[])
     }
 
     return EXIT_SUCCESS;
-}
-
-// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_bubble(int a[], int array_size)
-{
-     int i, j, temp;
-     for (i = 0; i < (array_size - 1); ++i)
-     {
-          for (j = 0; j < array_size - 1 - i; ++j )
-          {
-               if (a[j] > a[j+1])
-               {
-                    temp = a[j+1];
-                    a[j+1] = a[j];
-                    a[j] = temp;
-               }
-          }
-     }
-}
-
-// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_selection(int a[], int array_size)
-{
-     int i;
-     for (i = 0; i < array_size - 1; ++i)
-     {
-          int j, min, temp;
-          min = i;
-          for (j = i+1; j < array_size; ++j)
-          {
-               if (a[j] < a[min])
-                    min = j;
-          }
-
-          temp = a[i];
-          a[i] = a[min];
-          a[min] = temp;
-     }
 }
 
 // From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
@@ -170,5 +132,43 @@ void sort_heap(int a[], int array_size)
           a[i] = a[0];
           a[0] = temp;
           down_heap(a, 0, i-1);
+     }
+}
+
+// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
+void sort_selection(int a[], int array_size)
+{
+     int i;
+     for (i = 0; i < array_size - 1; ++i)
+     {
+          int j, min, temp;
+          min = i;
+          for (j = i+1; j < array_size; ++j)
+          {
+               if (a[j] < a[min])
+                    min = j;
+          }
+
+          temp = a[i];
+          a[i] = a[min];
+          a[min] = temp;
+     }
+}
+
+// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
+void sort_bubble(int a[], int array_size)
+{
+     int i, j, temp;
+     for (i = 0; i < (array_size - 1); ++i)
+     {
+          for (j = 0; j < array_size - 1 - i; ++j )
+          {
+               if (a[j] > a[j+1])
+               {
+                    temp = a[j+1];
+                    a[j+1] = a[j];
+                    a[j] = temp;
+               }
+          }
      }
 }
