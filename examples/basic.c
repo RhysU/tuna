@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     const double mB    = argc > 4 ? atof(argv[4]) :   10.1; // Case B mean?
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
 
-    static tuna_state  s;
+    static tuna_site   s;
     static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
 

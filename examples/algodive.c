@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     const int    best  = mA < mB  ? 0 : 1;                  // Who should win?
     printf("# niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
-    static tuna_state  s;
+    static tuna_site   s;
     static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
 

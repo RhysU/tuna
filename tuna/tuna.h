@@ -48,12 +48,12 @@ extern "C" {
  * Contents are internally managed but a non-opaque type
  * is used so the compiler may compute this POD type's size.
  */
-typedef struct tuna_state {
+typedef struct tuna_site {
     tuna_algo       al;  /**< The chosen tuning algorithm.                */
     tuna_seed       sd;  /**< Random number generator state.              */
     int             ik;  /**< Index of the most recently selected kernel. */
     struct timespec ts;  /**< Records clock_gettime(2) in tuna_pre().     */
-} tuna_state;
+} tuna_site;
 
 /**
  * Invoke the currently selected autotuning algorithm.
@@ -65,7 +65,7 @@ typedef struct tuna_state {
  *
  * \return The zero-based index of the kernel which should be selected.
  */
-int tuna_pre(tuna_state* st,
+int tuna_pre(tuna_site* st,
              const tuna_kernel* ks,
              const int nk);
 
@@ -78,7 +78,7 @@ int tuna_pre(tuna_state* st,
  *
  * \return The inclusive time in seconds as measured by \ref TUNA_CLOCK.
  */
-double tuna_post(tuna_state*  st,
+double tuna_post(tuna_site*  st,
                  tuna_kernel* ks);
 
 /**
@@ -91,7 +91,7 @@ double tuna_post(tuna_state*  st,
  *                    This may be elapsed time or some sophisticated measure.
  *                    It should be strictly positive.  Lower means better.
  */
-void tuna_post_cost(tuna_state*  st,
+void tuna_post_cost(tuna_site*  st,
                     tuna_kernel* ks,
                     const double cost);
 

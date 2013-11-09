@@ -18,7 +18,7 @@
 
 #include <time.h>
 
-int tuna_pre(tuna_state* st,
+int tuna_pre(tuna_site* st,
              const tuna_kernel* ks,
              const int nk)
 {
@@ -44,14 +44,14 @@ int tuna_pre(tuna_state* st,
 }
 
 inline
-void tuna_post_cost(tuna_state*  st,
+void tuna_post_cost(tuna_site*  st,
                     tuna_kernel* ks,
                     const double cost)
 {
     tuna_kernel_obs(ks + st->ik, cost);
 }
 
-double tuna_post(tuna_state*  st,
+double tuna_post(tuna_site*  st,
                  tuna_kernel* ks)
 {
     // Glimpse at the clock and compute double-valued elapsed time

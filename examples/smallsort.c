@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     const int nelem = argc > 2 ? atof(argv[2]) :   10; // Elements to sort?
 
     int data[nelem];
-    static tuna_state  s;
+    static tuna_site   s;
     static tuna_kernel k[2];
     for (int i = 0; i < niter; ++i) {
 
