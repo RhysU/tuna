@@ -20,8 +20,8 @@
 #include <time.h>
 
 int tuna(tuna_state* st,
-         const int nk,
-         const tuna_kernel* ks)
+         const tuna_kernel* ks,
+         const int nk)
 {
     // Provide a time-based seed if trivial
     if (!st->sd) {

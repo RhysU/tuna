@@ -46,15 +46,15 @@ typedef struct tuna_state {
  * Invoke the currently selected autotuning algorithm.
  *
  * \param[inout] st Information local to one autotuning site.
- * \param[in   ] nk How many alternatives are under consideration?
- * \param[inout] ks Tracks information about \c nk alternatives.
+ * \param[in   ] ks Tracks information about \c nk alternatives.
  *                  Must be stored contiguously in memory.
+ * \param[in   ] nk How many alternatives are under consideration?
  *
  * \return The zero-based index of the kernel which should be selected.
  */
 int tuna(tuna_state* st,
-         const int nk,
-         const tuna_kernel* ks);
+         const tuna_kernel* ks,
+         const int nk);
 
 #ifdef __cplusplus
 } /* extern "C" */
