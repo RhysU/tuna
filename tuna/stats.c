@@ -20,16 +20,20 @@
 #include "welch.h"
 
 // C99 extern declarations for inlined accessors from stats.h
-extern size_t tuna_stats_cnt(const tuna_stats* const t);
-extern double tuna_stats_avg(const tuna_stats* const t);
-extern double tuna_stats_var(const tuna_stats* const t);
-extern double tuna_stats_std(const tuna_stats* const t);
+extern size_t tuna_stats_cnt    (const tuna_stats* const t);
+extern double tuna_stats_avg    (const tuna_stats* const t);
+extern double tuna_stats_fastavg(const tuna_stats* const t);
+extern double tuna_stats_var    (const tuna_stats* const t);
+extern double tuna_stats_fastvar(const tuna_stats* const t);
+extern double tuna_stats_std    (const tuna_stats* const t);
+extern double tuna_stats_faststd(const tuna_stats* const t);
 
 // C99 extern declarations for inlined mutators from stats.h
-extern tuna_stats* tuna_stats_obs(tuna_stats* const t, const double x);
-extern tuna_stats* tuna_stats_nobs(tuna_stats*    const t,
-                                   const double*        x,
-                                   size_t               N);
+extern tuna_stats* tuna_stats_obs(tuna_stats* const t,
+                                  const double x);
+extern tuna_stats* tuna_stats_nobs(tuna_stats* const t,
+                                   const double* x,
+                                   size_t N);
 
 tuna_stats* tuna_stats_merge(tuna_stats* const dst,
                              const tuna_stats* const src)

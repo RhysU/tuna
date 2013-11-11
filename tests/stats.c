@@ -59,6 +59,11 @@ FCT_BGN()
             fct_chk_eq_dbl(tuna_stats_std(&s), sqrt(var[i]));
         }
 
+        // Test fast versions reproduce regular versions
+        fct_chk_eq_dbl(tuna_stats_avg(&s), tuna_stats_fastavg(&s));
+        fct_chk_eq_dbl(tuna_stats_var(&s), tuna_stats_fastvar(&s));
+        fct_chk_eq_dbl(tuna_stats_std(&s), tuna_stats_faststd(&s));
+
         // Copy accumulator and ensure we can resume processing
         tuna_stats r = s;
 
