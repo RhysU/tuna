@@ -29,11 +29,13 @@ extern double tuna_stats_std    (const tuna_stats* const t);
 extern double tuna_stats_faststd(const tuna_stats* const t);
 
 // C99 extern declarations for inlined mutators from stats.h
-extern tuna_stats* tuna_stats_obs(tuna_stats* const t,
-                                  const double x);
-extern tuna_stats* tuna_stats_nobs(tuna_stats* const t,
-                                   const double* x,
-                                   size_t N);
+extern tuna_stats* tuna_stats_obs    (tuna_stats* const t,
+                                      const double x);
+extern tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
+                                      const double x);
+extern tuna_stats* tuna_stats_nobs   (tuna_stats* const t,
+                                      const double* x,
+                                      size_t N);
 
 tuna_stats* tuna_stats_merge(tuna_stats* const dst,
                              const tuna_stats* const src)

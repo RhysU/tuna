@@ -131,6 +131,24 @@ tuna_stats* tuna_stats_obs(tuna_stats* const t,
 }
 
 /**
+ * Accumulate a new observation \c x into statistics \c t
+ * on precondition <code>tuna_stats_cnt(t) > 0</code>.
+ */
+static inline
+tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
+                               const double x)
+{
+    // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
+    // Knuth shows better behavior than Welford 1962 on test data.
+    assert(tuna_stats_cnt(t) > 0);
+    size_t n  = ++(t->n);
+    double d  = x - t->m;
+    t->m     += d / n;
+    t->s     += d * (x - t->m);
+    return t;
+}
+
+/**
  * Accumulate \c N distinct observations <code>x[0]</code>, ...,
  * <code>x[N-1]</code> into statistics \c t.
  */
@@ -142,10 +160,7 @@ tuna_stats* tuna_stats_nobs(tuna_stats* const t,
     if (N) {                               // NOP on degenerate input
         tuna_stats_obs(t, *x++);           // Delegate possible n == 1
         for (size_t i = --N; i -- > 0 ;) { // Henceforth, certainly n > 1
-            size_t n  = ++(t->n);
-            double d  = *x - t->m;
-            t->m     += d / n;
-            t->s     += d * (*x++ - t->m);
+            tuna_stats_fastobs(t, *x++);
         }
     }
     return t;
