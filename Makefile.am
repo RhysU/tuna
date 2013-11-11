@@ -69,8 +69,12 @@ tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
 tests_kernel_LDADD    = tuna/libtuna.la $(LIBM)
 
 check_PROGRAMS       += examples/basic
-TESTS                += tests/basic.sh
 dist_check_SCRIPTS   += tests/basic.sh
+TESTS                += tests/basic.sh
+
+check_PROGRAMS       += examples/smallsort
+dist_check_SCRIPTS   += tests/smallsort.sh
+TESTS                += tests/smallsort.sh
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
