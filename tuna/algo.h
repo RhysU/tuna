@@ -21,7 +21,9 @@ extern "C" {
 #endif
 
 /**
- * Type signature for all autotuning algorithms.
+ * Type signature for all autotuning algorithms.  As a precondition, at least
+ * two observations are available on each kernel prior to invocation.  This
+ * choice permits using branchless query functions like \ref tuna_stats_var().
  *
  * \param[in   ] nk How many alternatives are under consideration?
  * \param[inout] ks Tracks information about \c nk alternatives.

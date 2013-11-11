@@ -36,8 +36,15 @@ int tuna_pre(tuna_site* st,
         }
     }
 
-    // Invoke the algorithm recording the result in for tuna_post_cost()
+    // Ensure every alternative has produced two observations and afterwards
+    // invoke chosen algorithm.  Record selected index for tuna_post_cost().
+    // TODO Avoid runtime cost once first loop conditions wholly satisfied.
+    for (st->ik = 0; st->ik < nk; ++(st->ik)) {
+        if (tuna_stats_cnt(&ks[st->ik].stats) < 2) goto done;
+    }
     st->ik = st->al(nk, ks, &st->sd);
+
+done:
 
     // Glimpse at the clock so we may compute elapsed time in tuna_post()
     clock_gettime(TUNA_CLOCK, &st->ts);
