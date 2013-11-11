@@ -18,7 +18,6 @@
 
 #include <tuna/tuna.h>
 
-// TODO Only 2 sorting algorithms currently employed
 // TODO Add system qsort(3)
 static const char *names[] = {
     "insertion", "heap", "selection", "bubble"
@@ -40,7 +39,7 @@ int main(int argc, char *argv[])
 
     int data[nelem];
     static tuna_site   s;
-    static tuna_kernel k[2];
+    static tuna_kernel k[4];
     for (int i = 0; i < niter; ++i) {
 
         // Generate random input data
