@@ -29,12 +29,12 @@ tuna/config.h*
 tuna/stamp-h1
 
 # Test cases
+**/*.log
 tests/kernel
-tests/*.log
 tests/stats
-tests/*.trs
 test-suite.log
 tests/welch
+**/*.trs
 
 # Executables
 examples/algodive

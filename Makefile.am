@@ -52,7 +52,7 @@ noinst_PROGRAMS            += examples/smallsort
 examples_smallsort_SOURCES  = examples/smallsort.c
 examples_smallsort_LDADD    = tuna/libtuna.la $(LIBM)
 
-# Test programs
+# Test programs (either dedicated or reuse of examples as tests)
 TESTS               += tests/stats
 noinst_PROGRAMS     += tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
@@ -67,6 +67,9 @@ TESTS                += tests/kernel
 noinst_PROGRAMS      += tests/kernel
 tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
 tests_kernel_LDADD    = tuna/libtuna.la $(LIBM)
+
+check_PROGRAMS       += examples/poc
+TESTS                += examples/poc
 
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh
