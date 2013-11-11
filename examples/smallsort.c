@@ -18,14 +18,14 @@
 
 #include <tuna/tuna.h>
 
-// TODO Add system qsort(3)
 static const char *names[] = {
-    "insertion", "heap", "selection", "bubble"
+    "insertion", "heap", "selection", "bubble", "qsort(3)"
 };
 void sort_insertion(int a[], int array_size);
 void sort_heap     (int a[], int array_size);
 void sort_selection(int a[], int array_size);
 void sort_bubble   (int a[], int array_size);
+void sort_qsort    (int a[], int array_size);
 
 int main(int argc, char *argv[])
 {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
     int data[nelem];
     static tuna_site   s;
-    static tuna_kernel k[4];
+    static tuna_kernel k[5];
     for (int i = 0; i < niter; ++i) {
 
         // Generate random input data
@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
             case 1:  sort_heap     (data, nelem); break;
             case 2:  sort_selection(data, nelem); break;
             case 3:  sort_bubble   (data, nelem); break;
+            case 4:  sort_qsort    (data, nelem); break;
         }
         tuna_post(&s, k);
     }
@@ -170,4 +171,14 @@ void sort_bubble(int a[], int array_size)
                }
           }
      }
+}
+
+int qsort_compar(const void *a, const void *b)
+{
+    return *(const int*)a - *(const int*)b;
+}
+
+void sort_qsort(int a[], int array_size)
+{
+    return qsort(a, array_size, sizeof(int), &qsort_compar);
 }
