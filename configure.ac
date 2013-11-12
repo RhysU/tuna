@@ -6,6 +6,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 check-news color-tests foreign parallel-tests silent-rules subdir-objects tar-ustar -Wall])
 AC_PROG_CC
 AM_PROG_CC_C_O
+AX_CFLAGS_WARN_ALL
 dnl Isolate -std=c89 flags into STDC89
 CCSAVED=${CC}
 AC_PROG_CC_C89
@@ -18,7 +19,6 @@ AC_SUBST([STDC99],[${CC#$CCSAVED}])
 CC=$CCSAVED
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 AC_SEARCH_LIBS([clock_gettime],[rt])
-AX_CFLAGS_WARN_ALL
 LT_INIT
 LT_LIB_M
 AC_SUBST([LIBTOOL_DEPS])
