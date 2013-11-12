@@ -94,9 +94,9 @@ Instead of accepting or rejecting the null hypothesis based on interpreting the
 p-value from the t statistic, a uniform random number is drawn on [0,1] to
 determine which chunk to select.  This all occurs in ``tuna_algo_welch1()``.
 Other algorithms are available by setting ``TUNA_ALGO`` as described by from
-reading ``tuna_algo_default()``.  `tuna_post()` performs post-invocation
-bookkeeping.  Non-time cost measures can be used by calling `tuna_post_cost()`
-instead of `tuna_post()`.
+reading ``tuna_algo_default()``.  ``tuna_post()`` performs post-invocation
+bookkeeping.  Non-time cost measures can be used by calling
+``tuna_post_cost()`` instead of ``tuna_post()``.
 
 Possible Use Cases
 ------------------
