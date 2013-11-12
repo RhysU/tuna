@@ -12,51 +12,60 @@
 
 #include <tuna.h>
 
-size_t tuna_stats_cnt    (const tuna_stats* const t)
+size_t
+tuna_stats_cnt(const tuna_stats* const t)
 {
     return t->n;
 }
 
-double tuna_stats_avg    (const tuna_stats* const t)
+double
+tuna_stats_avg(const tuna_stats* const t)
 {
     return t->n ? t->m : NAN;
 }
 
-double tuna_stats_fastavg(const tuna_stats* const t)
+double
+tuna_stats_fastavg(const tuna_stats* const t)
 {
     assert(tuna_stats_cnt(t) > 0);
     return t->m;
 }
 
-double tuna_stats_var    (const tuna_stats* const t)
+double
+tuna_stats_var(const tuna_stats* const t)
 {
     return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
 }
 
-double tuna_stats_fastvar(const tuna_stats* const t)
+double
+tuna_stats_fastvar(const tuna_stats* const t)
 {
     assert(tuna_stats_cnt(t) > 1);
     return t->s / (t->n - 1);
 }
 
-double tuna_stats_std    (const tuna_stats* const t)
+double
+tuna_stats_std(const tuna_stats* const t)
 {
     return sqrt(tuna_stats_var(t));
 }
 
-double tuna_stats_sum(const tuna_stats* const t)
+double
+tuna_stats_sum(const tuna_stats* const t)
 {
     return tuna_stats_cnt(t) * tuna_stats_avg(t);
 }
 
-double tuna_stats_faststd(const tuna_stats* const t)
+double
+tuna_stats_faststd(const tuna_stats* const t)
 {
     assert(tuna_stats_cnt(t) > 1);
     return sqrt(tuna_stats_fastvar(t));
 }
 
-tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
-                               const double x)
+tuna_stats*
+tuna_stats_fastobs(tuna_stats* const t,
+                   const double x)
 {
     // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
     // Knuth shows better behavior than Welford 1962 on test data.
@@ -68,8 +77,9 @@ tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
     return t;
 }
 
-tuna_stats* tuna_stats_obs(tuna_stats* const t,
-                           const double x)
+tuna_stats*
+tuna_stats_obs(tuna_stats* const t,
+               const double x)
 {
     // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
     // Knuth shows better behavior than Welford 1962 on test data.
@@ -85,9 +95,10 @@ tuna_stats* tuna_stats_obs(tuna_stats* const t,
     return t;
 }
 
-tuna_stats* tuna_stats_nobs(tuna_stats* const t,
-                            const double* x,
-                            size_t N)
+tuna_stats*
+tuna_stats_nobs(tuna_stats* const t,
+                const double* x,
+                size_t N)
 {
     if (N) {                               // NOP on degenerate input
         tuna_stats_obs(t, *x++);           // Delegate possible n == 1
@@ -98,8 +109,9 @@ tuna_stats* tuna_stats_nobs(tuna_stats* const t,
     return t;
 }
 
-tuna_stats* tuna_stats_merge(tuna_stats* const dst,
-                             const tuna_stats* const src)
+tuna_stats*
+tuna_stats_merge(tuna_stats* const dst,
+                 const tuna_stats* const src)
 {
     if (src->n == 0) {         // src contains no data
         // NOP
@@ -134,7 +146,9 @@ int enforce_lt(double* const a, double* const b)
     }
 }
 
-tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t)
+tuna_kernel*
+tuna_kernel_obs(tuna_kernel* const k,
+                double t)
 {
     // First, find smallest observation among set {t, k->outliers[0], ... }
     // placing it into storage t while maintaining sorted-ness of k->outliers.
@@ -161,14 +175,16 @@ tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t)
     return k;
 }
 
-tuna_stats tuna_kernel_stats(tuna_kernel* const k)
+tuna_stats
+tuna_kernel_stats(tuna_kernel* const k)
 {
     tuna_stats s = k->stats;
     return s;
 }
 
-tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
-                              const tuna_kernel* const k)
+tuna_stats*
+tuna_kernel_merge(tuna_stats* const s,
+                  const tuna_kernel* const k)
 {
     tuna_stats_merge(s, &k->stats);
     for (size_t i = 0; i < tuna_countof(k->outliers); ++i) {
@@ -180,7 +196,8 @@ tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
     return s;
 }
 
-double tuna_ltqnorm(const double p)
+double
+tuna_ltqnorm(const double p)
 {
     // Coefficients in rational approximations.
     static const double a1 = -3.969683028665376e+01;
@@ -272,7 +289,8 @@ double tuna_ltqnorm(const double p)
 }
 
 // See header for source attribution
-double tuna_as3(double t, int nu)
+double
+tuna_as3(double t, int nu)
 {
     assert(nu > 0); // Use errno with EDOM instead?
 
@@ -315,17 +333,20 @@ L30:
     return 0.5 + (a * b * s + atan(a)) * M_1_PI;
 }
 
-double tuna_rand_u01(tuna_seed* sd)
+double
+tuna_rand_u01(tuna_seed* sd)
 {
     return rand_r(sd) / (double) RAND_MAX;
 }
 
-double tuna_rand_n01(tuna_seed* sd)
+double
+tuna_rand_n01(tuna_seed* sd)
 {
     return tuna_ltqnorm(tuna_rand_u01(sd));
 }
 
-tuna_seed tuna_seed_default()
+tuna_seed
+tuna_seed_default()
 {
     const char * d = getenv("TUNA_SEED");
     unsigned int retval;
@@ -337,9 +358,10 @@ tuna_seed tuna_seed_default()
     return retval;
 }
 
-void   tuna_welch(double xA, double sA2, size_t nA,
-                  double xB, double sB2, size_t nB,
-                  double* const t, double* const nu)
+void
+tuna_welch(double xA, double sA2, size_t nA,
+           double xB, double sB2, size_t nB,
+           double* const t, double* const nu)
 {
     double sA2_nA = sA2 / nA;
     double sB2_nB = sB2 / nB;
@@ -350,20 +372,23 @@ void   tuna_welch(double xA, double sA2, size_t nA,
     *nu           = t_den2 * t_den2 / nu_den;
 }
 
-double tuna_welch_t (double xA, double sA2, size_t nA,
-                     double xB, double sB2, size_t nB)
+double
+tuna_welch_t(double xA, double sA2, size_t nA,
+             double xB, double sB2, size_t nB)
 {
     return (xA - xB) / sqrt(sA2 / nA + sB2 / nB);
 }
 
-double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
-                         double xB, double sB2, size_t nB)
+double
+tuna_welch1_nuinf(double xA, double sA2, size_t nA,
+                  double xB, double sB2, size_t nB)
 {
     return 1 - erfc(-tuna_welch_t(xA, sA2, nA, xB, sB2, nB) * M_SQRT1_2) / 2;
 }
 
-double tuna_welch1_approx(double xA, double sA2, size_t nA,
-                          double xB, double sB2, size_t nB)
+double
+tuna_welch1_approx(double xA, double sA2, size_t nA,
+                   double xB, double sB2, size_t nB)
 {
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
@@ -373,8 +398,9 @@ double tuna_welch1_approx(double xA, double sA2, size_t nA,
     return 1 - erfc(-t * M_SQRT1_2) / 2;
 }
 
-double tuna_welch1(double xA, double sA2, size_t nA,
-                   double xB, double sB2, size_t nB)
+double
+tuna_welch1(double xA, double sA2, size_t nA,
+            double xB, double sB2, size_t nB)
 {
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
@@ -382,8 +408,9 @@ double tuna_welch1(double xA, double sA2, size_t nA,
 }
 
 // http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html
-static inline
-void trim(char * const a)
+static
+void
+trim(char * const a)
 {
     char *p = a, *q = a;
     while (isspace(*q))            ++q;
@@ -394,7 +421,8 @@ void trim(char * const a)
 
 // TODO Is welch1_nuinf so much better for runtime that it should be default?
 //      The behavioral difference can be seen in, e.g., ./examples/smallsort.
-tuna_algo tuna_algo_default(void)
+tuna_algo
+tuna_algo_default(void)
 {
     char * d = getenv("TUNA_ALGO");
     if (d) {
@@ -410,9 +438,10 @@ tuna_algo tuna_algo_default(void)
     return &tuna_algo_welch1_nuinf; // Default
 }
 
-int tuna_algo_welch1_nuinf(const int nk,
-                           const tuna_kernel* ks,
-                           tuna_seed* seed)
+int
+tuna_algo_welch1_nuinf(const int nk,
+                       const tuna_kernel* ks,
+                       tuna_seed* seed)
 {
     assert(nk > 0);
     int i = 0;
@@ -437,9 +466,10 @@ int tuna_algo_welch1_nuinf(const int nk,
     return i;
 }
 
-int tuna_algo_welch1(const int nk,
-                     const tuna_kernel* ks,
-                     tuna_seed* seed)
+int
+tuna_algo_welch1(const int nk,
+                 const tuna_kernel* ks,
+                 tuna_seed* seed)
 {
     assert(nk > 0);
     int i = 0;
@@ -464,9 +494,10 @@ int tuna_algo_welch1(const int nk,
     return i;
 }
 
-int tuna_algo_zero(const int nk,
-                   const tuna_kernel* ks,
-                   tuna_seed* seed)
+int
+tuna_algo_zero(const int nk,
+               const tuna_kernel* ks,
+               tuna_seed* seed)
 {
     (void) nk;
     (void) ks;
@@ -476,9 +507,10 @@ int tuna_algo_zero(const int nk,
 
 // TODO Do something intelligent with clock_getres(2) information
 
-int tuna_pre(tuna_site* st,
-             const tuna_kernel* ks,
-             const int nk)
+int
+tuna_pre(tuna_site* st,
+         const tuna_kernel* ks,
+         const int nk)
 {
     // Ensure a zero-initialize st argument produces good behavior by...
     if (!st->al) {
@@ -500,16 +532,17 @@ int tuna_pre(tuna_site* st,
     return st->ik;
 }
 
-inline
-void tuna_post_cost(tuna_site*  st,
-                    tuna_kernel* ks,
-                    const double cost)
+void
+tuna_post_cost(tuna_site*  st,
+               tuna_kernel* ks,
+               const double cost)
 {
     tuna_kernel_obs(ks + st->ik, cost);
 }
 
-double tuna_post(tuna_site*  st,
-                 tuna_kernel* ks)
+double
+tuna_post(tuna_site*  st,
+          tuna_kernel* ks)
 {
     // Glimpse at the clock and compute double-valued elapsed time
     struct timespec te;
