@@ -107,60 +107,72 @@ typedef struct tuna_stats {
 } tuna_stats;
 
 /** Obtain the running number of samples provided thus far. */
-size_t tuna_stats_cnt(const tuna_stats* const t);
+size_t
+tuna_stats_cnt(const tuna_stats* const t);
 
 /** Obtain the running mean. */
-double tuna_stats_avg(const tuna_stats* const t);
+double
+tuna_stats_avg(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running mean
  * on precondition <code>tuna_stats_cnt(t) > 0</code>.
  */
-double tuna_stats_fastavg(const tuna_stats* const t);
+double
+tuna_stats_fastavg(const tuna_stats* const t);
 
 /** Obtain the running sample variance. */
-double tuna_stats_var(const tuna_stats* const t);
+double
+tuna_stats_var(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running sample variance
  * on precondition <code>tuna_stats_cnt(t) > 1</code>.
  */
-double tuna_stats_fastvar(const tuna_stats* const t);
+double
+tuna_stats_fastvar(const tuna_stats* const t);
 
 /** Obtain the running sample standard deviation. */
-double tuna_stats_std(const tuna_stats* const t);
+double
+tuna_stats_std(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running sample standard deviation
  * on precondition <code>tuna_stats_cnt(t) > 1</code>.
  */
-double tuna_stats_faststd(const tuna_stats* const t);
+double
+tuna_stats_faststd(const tuna_stats* const t);
 
 /** Obtain the running sum. */
-double tuna_stats_sum(const tuna_stats* const t);
+double
+tuna_stats_sum(const tuna_stats* const t);
 
 /**
  * Accumulate a new observation \c x into statistics \c t
  * on precondition <code>tuna_stats_cnt(t) > 0</code>.
  */
-tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
-                               const double x);
+tuna_stats*
+tuna_stats_fastobs(tuna_stats* const t,
+                   const double x);
 
 /** Accumulate a new observation \c x into statistics \c t. */
-tuna_stats* tuna_stats_obs(tuna_stats* const t,
-                           const double x);
+tuna_stats*
+tuna_stats_obs(tuna_stats* const t,
+               const double x);
 
 /**
  * Accumulate \c N distinct observations <code>x[0]</code>, ...,
  * <code>x[N-1]</code> into statistics \c t.
  */
-tuna_stats* tuna_stats_nobs(tuna_stats* const t,
-                            const double* x,
-                            size_t N);
+tuna_stats*
+tuna_stats_nobs(tuna_stats* const t,
+                const double* x,
+                size_t N);
 
 /** Incorporate running information from another instance. */
-tuna_stats* tuna_stats_merge(tuna_stats* const dst,
-                             const tuna_stats* const src);
+tuna_stats*
+tuna_stats_merge(tuna_stats* const dst,
+                 const tuna_stats* const src);
 
 /** @} */
 
@@ -185,14 +197,17 @@ typedef struct tuna_kernel {
  * but it might also be some other performance metric.  Regardless of what is
  * chosen, smaller should mean better.
  */
-tuna_kernel* tuna_kernel_obs(tuna_kernel* const k, double t);
+tuna_kernel*
+tuna_kernel_obs(tuna_kernel* const k,
+                double t);
 
 /**
  * Incorporate all cost information recorded about kernel \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
-tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
-                              const tuna_kernel* const k);
+tuna_stats*
+tuna_kernel_merge(tuna_stats* const s,
+                  const tuna_kernel* const k);
 
 /** @} */
 
@@ -220,7 +235,8 @@ tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
  * than 1.15e-9.
  * \endinternal
  */
-double tuna_ltqnorm(const double p);
+double
+tuna_ltqnorm(const double p);
 
 /**
  * Computes the lower tail probability for Student's t-distribution.
@@ -239,7 +255,8 @@ double tuna_ltqnorm(const double p);
  *
  * \return The lower tail probability for \c t given \c nu.
  */
-double tuna_as3(double t, int nu);
+double
+tuna_as3(double t, int nu);
 
 /** @} */
 
@@ -259,13 +276,16 @@ typedef unsigned int tuna_seed;
  * <code>TUNA_SEED</code> can be parsed as a seed, it is used.  Otherwise, a
  * time-based seed is returned.
  */
-tuna_seed tuna_seed_default();
+tuna_seed
+tuna_seed_default();
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
-double tuna_rand_u01(tuna_seed* sd);
+double
+tuna_rand_u01(tuna_seed* sd);
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
-double tuna_rand_n01(tuna_seed* sd);
+double
+tuna_rand_n01(tuna_seed* sd);
 
 /** @} */
 
@@ -290,9 +310,10 @@ double tuna_rand_n01(tuna_seed* sd);
  * \param[out] nu  Number of degrees of freedom per
  *                 Welch--Satterthwaite equation
  */
-void tuna_welch(double xA, double sA2, size_t nA,
-                double xB, double sB2, size_t nB,
-                double* const t, double* const nu);
+void
+tuna_welch(double xA, double sA2, size_t nA,
+           double xB, double sB2, size_t nB,
+           double* const t, double* const nu);
 
 /**
  * Compute the Welch t-statistic given samples \c A and \c B.
@@ -306,8 +327,9 @@ void tuna_welch(double xA, double sA2, size_t nA,
  *
  * \return Welch's t-statistic.
  */
-double tuna_welch_t(double xA, double sA2, size_t nA,
-                    double xB, double sB2, size_t nB);
+double
+tuna_welch_t(double xA, double sA2, size_t nA,
+             double xB, double sB2, size_t nB);
 
 /**
  * Compute a one-sided Welch t-test that \c A is greater than \c B using a
@@ -324,8 +346,9 @@ double tuna_welch_t(double xA, double sA2, size_t nA,
  *
  * \return Approximate p-value.
  */
-double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
-                         double xB, double sB2, size_t nB);
+double
+tuna_welch1_nuinf(double xA, double sA2, size_t nA,
+                  double xB, double sB2, size_t nB);
 
 /**
  * Compute a one-sided Welch t-test that \c A is greater than \c B using a
@@ -341,8 +364,9 @@ double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
  *
  * \return Approximate p-value.
  */
-double tuna_welch1_approx(double xA, double sA2, size_t nA,
-                          double xB, double sB2, size_t nB);
+double
+tuna_welch1_approx(double xA, double sA2, size_t nA,
+                   double xB, double sB2, size_t nB);
 
 /**
  * Compute a one-sided Welch t-test that \c A is greater than \c B.
@@ -356,8 +380,9 @@ double tuna_welch1_approx(double xA, double sA2, size_t nA,
  *
  * \return Exact p-value.
  */
-double tuna_welch1(double xA, double sA2, size_t nA,
-                   double xB, double sB2, size_t nB);
+double
+tuna_welch1(double xA, double sA2, size_t nA,
+            double xB, double sB2, size_t nB);
 
 /** @} */
 
@@ -383,22 +408,25 @@ typedef int (*tuna_algo)(const int nk,
                          tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-int tuna_algo_welch1_nuinf(const int nk,
-                           const tuna_kernel* ks,
-                           tuna_seed* sd);
+int
+tuna_algo_welch1_nuinf(const int nk,
+                       const tuna_kernel* ks,
+                       tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
-int tuna_algo_welch1(const int nk,
-                     const tuna_kernel* ks,
-                     tuna_seed* sd);
+int
+tuna_algo_welch1(const int nk,
+                 const tuna_kernel* ks,
+                 tuna_seed* sd);
 
 /**
  * An "autotuning" algorithm always selecting index zero.
  * Useful for testing/debugging.  See also \ref tuna_seed_default().
  */
-int tuna_algo_zero(const int nk,
-                   const tuna_kernel* ks,
-                   tuna_seed* sd);
+int
+tuna_algo_zero(const int nk,
+               const tuna_kernel* ks,
+               tuna_seed* sd);
 
 /**
  * Retrieve a default algorithm when left unspecified.  If the
@@ -406,7 +434,8 @@ int tuna_algo_zero(const int nk,
  * case-insensitively names an algorithm without the <code>tuna_algo_</code>
  * prefix, that algorithm will be used.
  */
-tuna_algo tuna_algo_default(void);
+tuna_algo
+tuna_algo_default(void);
 
 /** @} */
 
@@ -443,9 +472,10 @@ typedef struct tuna_site {
  *
  * \return The zero-based index of the kernel which should be selected.
  */
-int tuna_pre(tuna_site* st,
-             const tuna_kernel* ks,
-             const int nk);
+int
+tuna_pre(tuna_site* st,
+         const tuna_kernel* ks,
+         const int nk);
 
 /**
  * Record the results from the last autotuned kernel invocation
@@ -456,8 +486,9 @@ int tuna_pre(tuna_site* st,
  *
  * \return The inclusive time in seconds as measured by \ref TUNA_CLOCK.
  */
-double tuna_post(tuna_site*  st,
-                 tuna_kernel* ks);
+double
+tuna_post(tuna_site*  st,
+          tuna_kernel* ks);
 
 /**
  * Record the last autotuned kernel invocation
@@ -469,9 +500,10 @@ double tuna_post(tuna_site*  st,
  *                    This may be elapsed time or some sophisticated measure.
  *                    It should be strictly positive.  Lower means better.
  */
-void tuna_post_cost(tuna_site*  st,
-                    tuna_kernel* ks,
-                    const double cost);
+void
+tuna_post_cost(tuna_site*  st,
+               tuna_kernel* ks,
+               const double cost);
 
 /** @} */
 
