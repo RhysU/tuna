@@ -42,8 +42,8 @@ Each autotuned site has an associated ``tuna_site`` and a contiguous array of
 ``tuna_chunk`` instances, one per chunk under consideration.  Here, static
 storage is used to ensure both are zero-initialized and that they persist
 across calls.  Sensible algorithmic defaults are chosen, but some
-runtime-selection of behavior can be had.  For details, look in ``tuna.h`` for
-the ``TUNA_ALGO`` and ``TUNA_SEED`` environment variables.
+runtime-selection of behavior can be had.  For details, look in `tuna.h
+<tuna/tuna.h`_ for the ``TUNA_ALGO`` and ``TUNA_SEED`` environment variables.
 
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
@@ -94,14 +94,16 @@ Instead of accepting or rejecting the null hypothesis based on interpreting the
 p-value from the t statistic, a uniform random number is drawn on [0,1] to
 determine which chunk to select.  This all occurs in ``tuna_algo_welch1()``.
 Other algorithms are available by setting ``TUNA_ALGO`` as described by from
-reading ``tuna_algo_default()``.
+reading ``tuna_algo_default()``.  `tuna_post()` performs post-invocation
+bookkeeping.  Non-time cost measures can be used by calling `tuna_post_cost()`
+instead of `tuna_post()`.
 
 Possible Use Cases
 ------------------
 
 Tuna was written to be easy to shoehorn into many similar problem contexts:
 
-1. Should I recompute some wildly expensive value or pay to retrieve it from a
+1. Should I recompute some mildly expensive value or pay to retrieve it from a
    cache?
 2. Should I offload some expensive computation to a coprocessor (Xeon Phi?
    GPU?) or will the offload latency kill me?
