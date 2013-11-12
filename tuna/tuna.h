@@ -107,72 +107,37 @@ typedef struct tuna_stats {
 } tuna_stats;
 
 /** Obtain the running number of samples provided thus far. */
-static inline
-size_t tuna_stats_cnt(const tuna_stats* const t)
-{
-    return t->n;
-}
+size_t tuna_stats_cnt(const tuna_stats* const t);
 
 /** Obtain the running mean. */
-static inline
-double tuna_stats_avg(const tuna_stats* const t)
-{
-    return t->n ? t->m : NAN;
-}
+double tuna_stats_avg(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running mean
  * on precondition <code>tuna_stats_cnt(t) > 0</code>.
  */
-static inline
-double tuna_stats_fastavg(const tuna_stats* const t)
-{
-    assert(tuna_stats_cnt(t) > 0);
-    return t->m;
-}
+double tuna_stats_fastavg(const tuna_stats* const t);
 
 /** Obtain the running sample variance. */
-static inline
-double tuna_stats_var(const tuna_stats* const t)
-{
-    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
-}
+double tuna_stats_var(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running sample variance
  * on precondition <code>tuna_stats_cnt(t) > 1</code>.
  */
-static inline
-double tuna_stats_fastvar(const tuna_stats* const t)
-{
-    assert(tuna_stats_cnt(t) > 1);
-    return t->s / (t->n - 1);
-}
+double tuna_stats_fastvar(const tuna_stats* const t);
 
 /** Obtain the running sample standard deviation. */
-static inline
-double tuna_stats_std(const tuna_stats* const t)
-{
-    return sqrt(tuna_stats_var(t));
-}
+double tuna_stats_std(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running sample standard deviation
  * on precondition <code>tuna_stats_cnt(t) > 1</code>.
  */
-static inline
-double tuna_stats_faststd(const tuna_stats* const t)
-{
-    assert(tuna_stats_cnt(t) > 1);
-    return sqrt(tuna_stats_fastvar(t));
-}
+double tuna_stats_faststd(const tuna_stats* const t);
 
 /** Obtain the running sum. */
-static inline
-double tuna_stats_sum(const tuna_stats* const t)
-{
-    return tuna_stats_cnt(t) * tuna_stats_avg(t);
-}
+double tuna_stats_sum(const tuna_stats* const t);
 
 /**
  * Accumulate a new observation \c x into statistics \c t
@@ -297,18 +262,10 @@ typedef unsigned int tuna_seed;
 tuna_seed tuna_seed_default();
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
-static inline
-double tuna_rand_u01(tuna_seed* sd)
-{
-    return rand_r(sd) / (double) RAND_MAX;
-}
+double tuna_rand_u01(tuna_seed* sd);
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
-static inline
-double tuna_rand_n01(tuna_seed* sd)
-{
-    return tuna_ltqnorm(tuna_rand_u01(sd));
-}
+double tuna_rand_n01(tuna_seed* sd);
 
 /** @} */
 
@@ -333,19 +290,9 @@ double tuna_rand_n01(tuna_seed* sd)
  * \param[out] nu  Number of degrees of freedom per
  *                 Welch--Satterthwaite equation
  */
-static inline
 void tuna_welch(double xA, double sA2, size_t nA,
                 double xB, double sB2, size_t nB,
-                double* const t, double* const nu)
-{
-    double sA2_nA = sA2 / nA;
-    double sB2_nB = sB2 / nB;
-    double t_den2 = sA2_nA + sB2_nB;
-    *t            = (xA - xB) / sqrt(t_den2);
-    double nu_den = sA2_nA * sA2_nA / (nA - 1)
-                    + sB2_nB * sB2_nB / (nB - 1);
-    *nu           = t_den2 * t_den2 / nu_den;
-}
+                double* const t, double* const nu);
 
 /**
  * Compute the Welch t-statistic given samples \c A and \c B.
@@ -359,12 +306,8 @@ void tuna_welch(double xA, double sA2, size_t nA,
  *
  * \return Welch's t-statistic.
  */
-static inline
 double tuna_welch_t(double xA, double sA2, size_t nA,
-                    double xB, double sB2, size_t nB)
-{
-    return (xA - xB) / sqrt(sA2 / nA + sB2 / nB);
-}
+                    double xB, double sB2, size_t nB);
 
 /**
  * Compute a one-sided Welch t-test that \c A is greater than \c B using a

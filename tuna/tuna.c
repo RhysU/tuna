@@ -12,14 +12,48 @@
 
 #include <tuna.h>
 
-// C99 extern declarations for inlined accessors for tuna_stats_*
-extern size_t tuna_stats_cnt    (const tuna_stats* const t);
-extern double tuna_stats_avg    (const tuna_stats* const t);
-extern double tuna_stats_fastavg(const tuna_stats* const t);
-extern double tuna_stats_var    (const tuna_stats* const t);
-extern double tuna_stats_fastvar(const tuna_stats* const t);
-extern double tuna_stats_std    (const tuna_stats* const t);
-extern double tuna_stats_faststd(const tuna_stats* const t);
+size_t tuna_stats_cnt    (const tuna_stats* const t)
+{
+    return t->n;
+}
+
+double tuna_stats_avg    (const tuna_stats* const t)
+{
+    return t->n ? t->m : NAN;
+}
+
+double tuna_stats_fastavg(const tuna_stats* const t)
+{
+    assert(tuna_stats_cnt(t) > 0);
+    return t->m;
+}
+
+double tuna_stats_var    (const tuna_stats* const t)
+{
+    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
+}
+
+double tuna_stats_fastvar(const tuna_stats* const t)
+{
+    assert(tuna_stats_cnt(t) > 1);
+    return t->s / (t->n - 1);
+}
+
+double tuna_stats_std    (const tuna_stats* const t)
+{
+    return sqrt(tuna_stats_var(t));
+}
+
+double tuna_stats_sum(const tuna_stats* const t)
+{
+    return tuna_stats_cnt(t) * tuna_stats_avg(t);
+}
+
+double tuna_stats_faststd(const tuna_stats* const t)
+{
+    assert(tuna_stats_cnt(t) > 1);
+    return sqrt(tuna_stats_fastvar(t));
+}
 
 tuna_stats* tuna_stats_fastobs(tuna_stats* const t,
                                const double x)
@@ -281,9 +315,15 @@ L30:
     return 0.5 + (a * b * s + atan(a)) * M_1_PI;
 }
 
-// C99 extern declarations for tuna_rand_*
-extern double tuna_rand_u01(tuna_seed* sd);
-extern double tuna_rand_n01(tuna_seed* sd);
+double tuna_rand_u01(tuna_seed* sd)
+{
+    return rand_r(sd) / (double) RAND_MAX;
+}
+
+double tuna_rand_n01(tuna_seed* sd)
+{
+    return tuna_ltqnorm(tuna_rand_u01(sd));
+}
 
 tuna_seed tuna_seed_default()
 {
@@ -297,12 +337,24 @@ tuna_seed tuna_seed_default()
     return retval;
 }
 
-// C99 extern declarations for inlined tuna_welch_*
-extern void   tuna_welch(double xA, double sA2, size_t nA,
-                         double xB, double sB2, size_t nB,
-                         double* const t, double* const nu);
-extern double tuna_welch_t (double xA, double sA2, size_t nA,
-                            double xB, double sB2, size_t nB);
+void   tuna_welch(double xA, double sA2, size_t nA,
+                  double xB, double sB2, size_t nB,
+                  double* const t, double* const nu)
+{
+    double sA2_nA = sA2 / nA;
+    double sB2_nB = sB2 / nB;
+    double t_den2 = sA2_nA + sB2_nB;
+    *t            = (xA - xB) / sqrt(t_den2);
+    double nu_den = sA2_nA * sA2_nA / (nA - 1)
+                    + sB2_nB * sB2_nB / (nB - 1);
+    *nu           = t_den2 * t_den2 / nu_den;
+}
+
+double tuna_welch_t (double xA, double sA2, size_t nA,
+                     double xB, double sB2, size_t nB)
+{
+    return (xA - xB) / sqrt(sA2 / nA + sB2 / nB);
+}
 
 double tuna_welch1_nuinf(double xA, double sA2, size_t nA,
                          double xB, double sB2, size_t nB)
