@@ -7,7 +7,12 @@
  */
 
 /** \file
- * Tuna implementation.
+ * Tuna library implementation as a single ANSI C89 compilation unit.
+ *
+ * As library eschews features beyond C89, having a single compilation unit may
+ * be important to permit effective interprocedural optimization.  It also
+ * simplifies adoption by other projects as it may simply be copied into an
+ * existing build tree.
  */
 
 #include <tuna.h>

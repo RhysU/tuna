@@ -19,7 +19,7 @@
  */
 
 /** \file
- * Tuna declarations.
+ * Tuna public API.
  */
 
 #ifndef TUNA_H
