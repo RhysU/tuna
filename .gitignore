@@ -30,7 +30,7 @@ tuna/stamp-h1
 
 # Test cases
 **/*.log
-tests/kernel
+tests/chunk
 tests/stats
 test-suite.log
 tests/welch

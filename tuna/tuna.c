@@ -152,9 +152,9 @@ int enforce_lt(double* const a, double* const b)
     }
 }
 
-tuna_kernel*
-tuna_kernel_obs(tuna_kernel* const k,
-                double t)
+tuna_chunk*
+tuna_chunk_obs(tuna_chunk* const k,
+               double t)
 {
     // First, find smallest observation among set {t, k->outliers[0], ... }
     // placing it into storage t while maintaining sorted-ness of k->outliers.
@@ -173,7 +173,7 @@ tuna_kernel_obs(tuna_kernel* const k,
         tuna_stats_obs(&k->stats, t);
     }
 
-    // Together, these two steps cause a zero-initialized tuna_kernel to
+    // Together, these two steps cause a zero-initialized tuna_chunk to
     // gather tuna_noutliers pieces of information before beginning to
     // track any statistics.  This effectively provides some "start up"
     // or "burn in" period in addition to preventing highly improbable
@@ -183,15 +183,15 @@ tuna_kernel_obs(tuna_kernel* const k,
 }
 
 tuna_stats
-tuna_kernel_stats(tuna_kernel* const k)
+tuna_chunk_stats(tuna_chunk* const k)
 {
     tuna_stats s = k->stats;
     return s;
 }
 
 tuna_stats*
-tuna_kernel_merge(tuna_stats* const s,
-                  const tuna_kernel* const k)
+tuna_chunk_merge(tuna_stats* const s,
+                  const tuna_chunk* const k)
 {
     size_t i;
     tuna_stats_merge(s, &k->stats);
@@ -489,7 +489,7 @@ tuna_algo_default(void)
 
 int
 tuna_algo_welch1_nuinf(const int nk,
-                       const tuna_kernel* ks,
+                       const tuna_chunk* ks,
                        tuna_seed* seed)
 {
     int i, j;
@@ -523,7 +523,7 @@ tuna_algo_welch1_nuinf(const int nk,
 
 int
 tuna_algo_welch1(const int nk,
-                 const tuna_kernel* ks,
+                 const tuna_chunk* ks,
                  tuna_seed* seed)
 {
     int i, j;
@@ -557,7 +557,7 @@ tuna_algo_welch1(const int nk,
 
 int
 tuna_algo_zero(const int nk,
-               const tuna_kernel* ks,
+               const tuna_chunk* ks,
                tuna_seed* seed)
 {
     (void) nk;
@@ -570,7 +570,7 @@ tuna_algo_zero(const int nk,
 
 int
 tuna_pre(tuna_site* st,
-         const tuna_kernel* ks,
+         const tuna_chunk* ks,
          const int nk)
 {
     // Ensure a zero-initialize st argument produces good behavior by...
@@ -595,15 +595,15 @@ tuna_pre(tuna_site* st,
 
 void
 tuna_post_cost(tuna_site*  st,
-               tuna_kernel* ks,
+               tuna_chunk* ks,
                const double cost)
 {
-    tuna_kernel_obs(ks + st->ik, cost);
+    tuna_chunk_obs(ks + st->ik, cost);
 }
 
 double
 tuna_post(tuna_site*  st,
-          tuna_kernel* ks)
+          tuna_chunk* ks)
 {
     // Glimpse at the clock and compute double-valued elapsed time
     struct timespec te;

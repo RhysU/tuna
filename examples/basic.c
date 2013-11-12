@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
 
     static tuna_site   s;                 // Notice zero initialization
-    static tuna_kernel k[2];              // Notice zero initialization
-    tuna_seed seed = tuna_seed_default(); // Used only to simulate kernel timings
+    static tuna_chunk k[2];               // Notice zero initialization
+    tuna_seed seed = tuna_seed_default(); // Used only to simulate chunk timings
     for (int i = 0; i < niter; ++i) {
 
-        // Autotune over the alternatives (simulating kernel-specific costs)
+        // Autotune over the alternatives (simulating chunk-specific costs)
         // To track runtime via TUNA_CLOCK, call tuna_post(&s, k) instead
         double cost;
         switch (tuna_pre(&s, k, tuna_countof(k))) {
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     // Display observations from each alternative
     for (int i = 0; i < tuna_countof(k); ++i) {
         tuna_stats o = {};
-        tuna_kernel_merge(&o, k + i);
+        tuna_chunk_merge(&o, k + i);
         printf("m%c=%g, s%c=%g, c%c=%zd\n",
                'A' + i, tuna_stats_avg(&o),
                'A' + i, tuna_stats_std(&o),

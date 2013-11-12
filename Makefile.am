@@ -48,11 +48,11 @@ tests_welch_SOURCES  = tests/welch.c tests/fct.h
 tests_welch_CFLAGS   = $(AM_CFLAGS) $(STDC99)
 tests_welch_LDADD    = tuna/libtuna.la $(LIBM)
 
-TESTS                += tests/kernel
-noinst_PROGRAMS      += tests/kernel
-tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
-tests_kernel_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-tests_kernel_LDADD    = tuna/libtuna.la $(LIBM)
+TESTS               += tests/chunk
+noinst_PROGRAMS     += tests/chunk
+tests_chunk_SOURCES  = tests/chunk.c tests/fct.h
+tests_chunk_CFLAGS   = $(AM_CFLAGS) $(STDC99)
+tests_chunk_LDADD    = tuna/libtuna.la $(LIBM)
 
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh

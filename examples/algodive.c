@@ -28,9 +28,9 @@ int main(int argc, char *argv[])
     const int    best  = mA < mB  ? 0 : 1;                  // Who should win?
     printf("# niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
-    static tuna_site   s;                 // Notice zero initialization
-    static tuna_kernel k[2];              // Notice zero initialization
-    tuna_seed seed = tuna_seed_default(); // Used only to simulate kernel timings
+    static tuna_site  s;                  // Notice zero initialization
+    static tuna_chunk k[2];               // Notice zero initialization
+    tuna_seed seed = tuna_seed_default(); // Used only to simulate chunk timings
     for (int i = 0; i < niter; ++i) {
 
         // Simulate one iteration of autotuning over alternatives
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         // indicates the fastest-in-the-limit-of-infinite-data algorithm has
         // been universally preferred.
         tuna_stats o = {};
-        tuna_kernel_merge(&o, k + best);
+        tuna_chunk_merge(&o, k + best);
         printf("m%c\t%d\t%12.8g\t%12.8g\t%12zd\t%12.8g\n", 'A' + best, i,
                 tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o),
                 (double) tuna_stats_cnt(&o) / niter);

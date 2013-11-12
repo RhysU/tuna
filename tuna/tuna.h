@@ -10,7 +10,7 @@
  * \mainpage
  *
  * Tuna provides lightweight autotuning over semantically indistinguishable
- * kernels.
+ * chunks of code.
  *
  * See the current <a
  * href="https://github.com/RhysU/tuna/blob/master/README.rst">README</a> for a
@@ -178,37 +178,37 @@ tuna_stats_merge(tuna_stats* const dst,
 /** @} */
 
 /**
- * Gathers elapsed time information for compute kernels.
+ * Gather and manipulate cost information for compute chunks.
  * @{
  */
 
 /**
- * Accumulates runtime information about the performance of a compute kernel.
+ * Accumulates runtime information about the performance of a compute chunk.
  * Fill storage with zeros, e.g. from POD zero initialization, to construct or
  * reset an instance.
  */
-typedef struct tuna_kernel {
+typedef struct tuna_chunk {
     double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */
     tuna_stats stats;        /**< Accumulated statistics sans outliers. */
-} tuna_kernel;
+} tuna_chunk;
 
 /**
- * Record a new cost observation \c t about kernel \c k.  If cost \c t is
+ * Record a new cost observation \c t about chunk \c k.  If cost \c t is
  * identically zero, no observation is recorded.  Cost might be elapsed time,
  * but it might also be some other performance metric.  Regardless of what is
  * chosen, smaller should mean better.
  */
-tuna_kernel*
-tuna_kernel_obs(tuna_kernel* const k,
-                double t);
+tuna_chunk*
+tuna_chunk_obs(tuna_chunk* const k,
+               double t);
 
 /**
- * Incorporate all cost information recorded about kernel \c k into \c s,
+ * Incorporate all cost information recorded about chunk \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
 tuna_stats*
-tuna_kernel_merge(tuna_stats* const s,
-                  const tuna_kernel* const k);
+tuna_chunk_merge(tuna_stats* const s,
+                 const tuna_chunk* const k);
 
 /** @} */
 
@@ -345,7 +345,7 @@ tuna_welch1(double xA, double sA2, size_t nA,
 
 /**
  * Type signature for all autotuning algorithms.  As a precondition, at least
- * two observations are available on each kernel prior to invocation.  This
+ * two observations are available on each chunk prior to invocation.  This
  * choice permits using branchless query functions like \ref tuna_stats_var().
  *
  * \param[in   ] nk How many alternatives are under consideration?
@@ -353,22 +353,22 @@ tuna_welch1(double xA, double sA2, size_t nA,
  *                  Must be stored contiguously in memory.
  * \param[inout] sd Localized pseudo-random number generator state.
  *
- * \return The zero-based index of the kernel that has been selected.
+ * \return The zero-based index of the chunk that has been selected.
  */
 typedef int (*tuna_algo)(const int nk,
-                         const tuna_kernel* ks,
+                         const tuna_chunk* ks,
                          tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 int
 tuna_algo_welch1_nuinf(const int nk,
-                       const tuna_kernel* ks,
+                       const tuna_chunk* ks,
                        tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
 int
 tuna_algo_welch1(const int nk,
-                 const tuna_kernel* ks,
+                 const tuna_chunk* ks,
                  tuna_seed* sd);
 
 /**
@@ -377,7 +377,7 @@ tuna_algo_welch1(const int nk,
  */
 int
 tuna_algo_zero(const int nk,
-               const tuna_kernel* ks,
+               const tuna_chunk* ks,
                tuna_seed* sd);
 
 /**
@@ -408,10 +408,10 @@ tuna_algo_default(void);
  * is used so the compiler may compute this POD type's size.
  */
 typedef struct tuna_site {
-    tuna_algo       al;  /**< The chosen tuning algorithm.                */
-    tuna_seed       sd;  /**< Random number generator state.              */
-    int             ik;  /**< Index of the most recently selected kernel. */
-    struct timespec ts;  /**< Records clock_gettime(2) in tuna_pre().     */
+    tuna_algo       al;  /**< The chosen tuning algorithm.               */
+    tuna_seed       sd;  /**< Random number generator state.             */
+    int             ik;  /**< Index of the most recently selected chunk. */
+    struct timespec ts;  /**< Records clock_gettime(2) in tuna_pre().    */
 } tuna_site;
 
 /**
@@ -422,15 +422,15 @@ typedef struct tuna_site {
  *                  Must be stored contiguously in memory.
  * \param[in   ] nk How many alternatives are under consideration?
  *
- * \return The zero-based index of the kernel which should be selected.
+ * \return The zero-based index of the chunk which should be selected.
  */
 int
 tuna_pre(tuna_site* st,
-         const tuna_kernel* ks,
+         const tuna_chunk* ks,
          const int nk);
 
 /**
- * Record the results from the last autotuned kernel invocation
+ * Record the results from the last autotuned chunk invocation
  * using internally-managed elapsed time via \ref TUNA_CLOCK.
  *
  * \param[inout] st   Information local to one autotuning site.
@@ -440,21 +440,21 @@ tuna_pre(tuna_site* st,
  */
 double
 tuna_post(tuna_site*  st,
-          tuna_kernel* ks);
+          tuna_chunk* ks);
 
 /**
- * Record the last autotuned kernel invocation
+ * Record the last autotuned chunk invocation
  * using a user-provided \c cost metric.
  *
  * \param[inout] st   Information local to one autotuning site.
  * \param[in   ] ks   Tracks information about the alternatives.
- * \param[in   ] cost User-provided measure of the employed kernel's cost.
+ * \param[in   ] cost User-provided measure of the employed chunk's cost.
  *                    This may be elapsed time or some sophisticated measure.
  *                    It should be strictly positive.  Lower means better.
  */
 void
 tuna_post_cost(tuna_site*  st,
-               tuna_kernel* ks,
+               tuna_chunk* ks,
                const double cost);
 
 /** @} */

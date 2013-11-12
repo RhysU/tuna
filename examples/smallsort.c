@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
     int data[nelem];
     static tuna_site   s;
-    static tuna_kernel k[5];
+    static tuna_chunk k[5];
     for (int i = 0; i < niter; ++i) {
 
         // Generate random input data
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // Display observations from each alternative
     for (int i = 0; i < tuna_countof(k); ++i) {
         tuna_stats o = {};
-        tuna_kernel_merge(&o, k + i);
+        tuna_chunk_merge(&o, k + i);
         printf("%12s\tm=%g,\ts=%g,\tc=%zd\n", names[i],
             tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o));
     }

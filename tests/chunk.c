@@ -19,7 +19,7 @@ FCT_BGN()
 {
     FCT_QTEST_BGN(observe)
     {
-        tuna_kernel k = {};
+        tuna_chunk k = {};
 
         // Testing initial behavior before any observations provided
         fct_chk_eq_int(noutliers, sizeof(k.outliers)/sizeof(k.outliers[0]));
@@ -31,31 +31,31 @@ FCT_BGN()
         // Record observations 1, 3, 0, 5, 0 checking state after each
         // Until the outliers are filled with non-zeros, count stays fixed
 
-        tuna_kernel_obs(&k, 1); // Recorded
+        tuna_chunk_obs(&k, 1); // Recorded
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         fct_chk_eq_dbl(k.outliers[0], 0);
         fct_chk_eq_dbl(k.outliers[1], 0);
         fct_chk_eq_dbl(k.outliers[2], 1);
 
-        tuna_kernel_obs(&k, 3); // Recorded
+        tuna_chunk_obs(&k, 3); // Recorded
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         fct_chk_eq_dbl(k.outliers[0], 0);
         fct_chk_eq_dbl(k.outliers[1], 1);
         fct_chk_eq_dbl(k.outliers[2], 3);
 
-        tuna_kernel_obs(&k, 0); // Ignored
+        tuna_chunk_obs(&k, 0); // Ignored
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         fct_chk_eq_dbl(k.outliers[0], 0);
         fct_chk_eq_dbl(k.outliers[1], 1);
         fct_chk_eq_dbl(k.outliers[2], 3);
 
-        tuna_kernel_obs(&k, 5); // Ignored
+        tuna_chunk_obs(&k, 5); // Ignored
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         fct_chk_eq_dbl(k.outliers[0], 1);
         fct_chk_eq_dbl(k.outliers[1], 3);
         fct_chk_eq_dbl(k.outliers[2], 5);
 
-        tuna_kernel_obs(&k, 0); // Ignored
+        tuna_chunk_obs(&k, 0); // Ignored
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         fct_chk_eq_dbl(k.outliers[0], 1);
         fct_chk_eq_dbl(k.outliers[1], 3);
@@ -64,35 +64,35 @@ FCT_BGN()
         // Record elapsed times that enter middle of outliers
         // and ensure that the sorted invariant remains correct
 
-        tuna_kernel_obs(&k, 2); // Recorded 1
+        tuna_chunk_obs(&k, 2); // Recorded 1
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 1);
         fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 1);
         fct_chk_eq_dbl(k.outliers[0], 2);
         fct_chk_eq_dbl(k.outliers[1], 3);
         fct_chk_eq_dbl(k.outliers[2], 5);
 
-        tuna_kernel_obs(&k, 6); // Recorded 2
+        tuna_chunk_obs(&k, 6); // Recorded 2
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)),   2);
         fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 1.5);
         fct_chk_eq_dbl(k.outliers[0], 3);
         fct_chk_eq_dbl(k.outliers[1], 5);
         fct_chk_eq_dbl(k.outliers[2], 6);
 
-        tuna_kernel_obs(&k, 0); // Ignored
+        tuna_chunk_obs(&k, 0); // Ignored
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 2);
         fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 1.5);
         fct_chk_eq_dbl(k.outliers[0], 3);
         fct_chk_eq_dbl(k.outliers[1], 5);
         fct_chk_eq_dbl(k.outliers[2], 6);
 
-        tuna_kernel_obs(&k, 2); // Recorded 2
+        tuna_chunk_obs(&k, 2); // Recorded 2
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 3);
         fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 5./3);
         fct_chk_eq_dbl(k.outliers[0], 3);
         fct_chk_eq_dbl(k.outliers[1], 5);
         fct_chk_eq_dbl(k.outliers[2], 6);
 
-        tuna_kernel_obs(&k, 7); // Recorded 3
+        tuna_chunk_obs(&k, 7); // Recorded 3
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 4);
         fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 2);
         fct_chk_eq_dbl(k.outliers[0], 5);
