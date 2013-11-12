@@ -17,7 +17,6 @@
 #endif
 
 #include "stats.h"
-#include "welch.h"
 
 // C99 extern declarations for inlined accessors from stats.h
 extern size_t tuna_stats_cnt    (const tuna_stats* const t);
