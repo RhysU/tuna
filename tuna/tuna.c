@@ -465,8 +465,6 @@ trim(char* const a)
     }
 }
 
-// TODO Is welch1_nuinf so much better for runtime that it should be default?
-//      The behavioral difference can be seen in, e.g., ./examples/smallsort.
 tuna_algo
 tuna_algo_default(void)
 {
@@ -481,7 +479,7 @@ tuna_algo_default(void)
             return &tuna_algo_zero;
         }
     }
-    return &tuna_algo_welch1_nuinf; // Default
+    return &tuna_algo_welch1; // Default
 }
 
 int
