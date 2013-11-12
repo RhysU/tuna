@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <tuna/tuna.h>
+#include <tuna.h>
 
 static const double N01(void)
 { return tuna_ltqnorm(rand() / (double) RAND_MAX); }

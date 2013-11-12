@@ -12,11 +12,7 @@
  * account for of compiler- and optimization-dependent leading constants.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
-#include <tuna/tuna.h>
+#include <tuna.h>
 
 static const char *names[] = {
     "insertion", "selection", "bubble", "qsort(3)", "heap"

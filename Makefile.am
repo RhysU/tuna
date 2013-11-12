@@ -1,34 +1,20 @@
 ## Process this file with automake to produce Makefile.in
 ## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS    = -I m4
+AM_CPPFLAGS        = -I$(top_srcdir)/tuna -I$(top_srcdir)/cdflib
 check_PROGRAMS     =
 dist_check_SCRIPTS =
 noinst_PROGRAMS    =
 TESTS              =
 
 # Installed artifacts
-dist_doc_DATA              = README.rst
-nobase_pkginclude_HEADERS  = tuna/algo.h
-nobase_pkginclude_HEADERS += tuna/as3.h
-nobase_pkginclude_HEADERS += tuna/countof.h
-nobase_pkginclude_HEADERS += tuna/kernel.h
-nobase_pkginclude_HEADERS += tuna/ltqnorm.h
-nobase_pkginclude_HEADERS += tuna/rand.h
-nobase_pkginclude_HEADERS += tuna/stats.h
-nobase_pkginclude_HEADERS += tuna/tuna.h
-nobase_pkginclude_HEADERS += tuna/welch.h
-lib_LTLIBRARIES            = tuna/libtuna.la
+dist_doc_DATA    = README.rst
+include_HEADERS  = tuna/tuna.h
+lib_LTLIBRARIES  = tuna/libtuna.la
 
 # The sources build into the library
-tuna_libtuna_la_SOURCES  = tuna/algo.c    tuna/algo.h
-tuna_libtuna_la_SOURCES += tuna/as3.c     tuna/as3.h
-tuna_libtuna_la_SOURCES += tuna/kernel.c  tuna/kernel.h
-tuna_libtuna_la_SOURCES += tuna/ltqnorm.c tuna/ltqnorm.h
-tuna_libtuna_la_SOURCES += tuna/rand.c    tuna/rand.h
-tuna_libtuna_la_SOURCES += tuna/stats.c   tuna/stats.h
-tuna_libtuna_la_SOURCES += tuna/tuna.c    tuna/tuna.h
-tuna_libtuna_la_SOURCES += tuna/welch.c   tuna/welch.h
-tuna_libtuna_la_LIBADD   = $(LIBM)
+tuna_libtuna_la_SOURCES = tuna/tuna.c tuna/tuna.h
+tuna_libtuna_la_LIBADD  = $(LIBM)
 
 # CDFLIB might be handy for testing but notice it is not installed
 # include_HEADERS           = cdflib/cdflib.h
