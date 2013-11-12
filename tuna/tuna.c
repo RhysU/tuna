@@ -30,9 +30,8 @@ int tuna_pre(tuna_site* st,
         st->al = tuna_algo_default();
 
         if (!st->sd) {
-            // ...providing a wall-clock-based seed when not set.
-            clock_gettime(CLOCK_REALTIME, &st->ts);
-            st->sd = st->ts.tv_sec + st->ts.tv_nsec;
+            // ...providing a default seed when not set.
+            st->sd = tuna_seed_default();
         }
     }
 

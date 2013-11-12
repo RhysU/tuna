@@ -27,6 +27,13 @@ extern "C" {
  */
 typedef unsigned int tuna_seed;
 
+/**
+ * Retrieves a default seed.  If the whitespace-trimmed environment variable
+ * <code>TUNA_SEED</code> can be parsed as a seed, it is used.  Otherwise, a
+ * time-based seed is returned.
+ */
+tuna_seed tuna_seed_default();
+
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 static inline double tuna_rand_u01(tuna_seed* sd)
 {
