@@ -71,6 +71,11 @@ tuna_stats* tuna_kernel_merge(tuna_stats*   const s,
                               const tuna_kernel* const k)
 {
     tuna_stats_merge(s, &k->stats);
-    tuna_stats_nobs(s, k->outliers, tuna_countof(k->outliers));
+    for (size_t i = 0; i < tuna_countof(k->outliers); ++i) {
+        if (k->outliers[i]) {
+            return tuna_stats_nobs(s, k->outliers + i,
+                                   tuna_countof(k->outliers) - i);
+        }
+    }
     return s;
 }
