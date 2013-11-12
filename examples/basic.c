@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < tuna_countof(k); ++i) {
         tuna_stats o = {};
         tuna_kernel_merge(&o, k + i);
-        printf("m%c=%g, o%c=%g, c%c=%zd\n",
+        printf("m%c=%g, s%c=%g, c%c=%zd\n",
                'A' + i, tuna_stats_avg(&o),
                'A' + i, tuna_stats_std(&o),
                'A' + i, tuna_stats_cnt(&o));

@@ -19,13 +19,13 @@
 #include <tuna/tuna.h>
 
 static const char *names[] = {
-    "insertion", "heap", "selection", "bubble", "qsort(3)"
+    "insertion", "selection", "bubble", "qsort(3)", "heap"
 };
 void sort_insertion(int a[], int array_size);
-void sort_heap     (int a[], int array_size);
 void sort_selection(int a[], int array_size);
 void sort_bubble   (int a[], int array_size);
 void sort_qsort    (int a[], int array_size);
+void sort_heap     (int a[], int array_size);
 
 int main(int argc, char *argv[])
 {
@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
         // Autotune over the alternatives
         switch (tuna_pre(&s, k, tuna_countof(k))) {
             default: sort_insertion(data, nelem); break;
-            case 1:  sort_heap     (data, nelem); break;
-            case 2:  sort_selection(data, nelem); break;
-            case 3:  sort_bubble   (data, nelem); break;
-            case 4:  sort_qsort    (data, nelem); break;
+            case 1:  sort_selection(data, nelem); break;
+            case 2:  sort_bubble   (data, nelem); break;
+            case 3:  sort_qsort    (data, nelem); break;
+            case 4:  sort_heap     (data, nelem); break;
         }
         tuna_post(&s, k);
     }
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < tuna_countof(k); ++i) {
         tuna_stats o = {};
         tuna_kernel_merge(&o, k + i);
-        printf("%12s m=%g, o=%g, c=%zd\n", names[i],
+        printf("%12s\tm=%g,\ts=%g,\tc=%zd\n", names[i],
             tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o));
     }
 
