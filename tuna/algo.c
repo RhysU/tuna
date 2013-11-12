@@ -45,6 +45,8 @@ tuna_algo tuna_algo_default(void)
             return &tuna_algo_welch1;
         } else if (!strncasecmp(d, "welch1_nuinf", sizeof("welch1_nuinf"))) {
             return &tuna_algo_welch1_nuinf;
+        } else if (!strncasecmp(d, "zero", sizeof("zero"))) {
+            return &tuna_algo_zero;
         }
     }
     return &tuna_algo_welch1_nuinf; // Default
@@ -98,4 +100,14 @@ int tuna_algo_welch1(const int nk,
         }
     }
     return i;
+}
+
+int tuna_algo_zero(const int nk,
+                   const tuna_kernel* ks,
+                   tuna_seed* seed)
+{
+    (void) nk;
+    (void) ks;
+    (void) seed;
+    return 0;
 }
