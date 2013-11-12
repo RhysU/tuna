@@ -8,8 +8,8 @@
 
 /** \file
  * An example for dynamically investigating sorting tradeoffs for small lists.
- * This is not astounding computer science, but rather an autotuned way to
- * account for of compiler- and optimization-dependent leading constants.
+ * This provides an autotuned way to account for of compiler- and
+ * optimization-dependent behavior.
  */
 
 #include <tuna.h>
