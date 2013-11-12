@@ -58,13 +58,15 @@ int tuna_algo_welch1_nuinf(const int nk,
 {
     assert(nk > 0);
     int i = 0;
+    double icnt = tuna_stats_cnt    (&ks[0].stats);
+    if (icnt < 2) return i;
     double iavg = tuna_stats_fastavg(&ks[0].stats);
     double ivar = tuna_stats_fastvar(&ks[0].stats);
-    double icnt = tuna_stats_cnt    (&ks[0].stats);
     for (int j = 1; j < nk; ++j) {
+        const double jcnt = tuna_stats_cnt    (&ks[j].stats);
+        if (jcnt < 2) return j;
         const double javg = tuna_stats_fastavg(&ks[j].stats);
         const double jvar = tuna_stats_fastvar(&ks[j].stats);
-        const double jcnt = tuna_stats_cnt    (&ks[j].stats);
         const double p    = tuna_welch1_nuinf (iavg, ivar, icnt,
                                                javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
@@ -83,13 +85,15 @@ int tuna_algo_welch1(const int nk,
 {
     assert(nk > 0);
     int i = 0;
+    double icnt = tuna_stats_cnt    (&ks[0].stats);
+    if (icnt < 2) return i;
     double iavg = tuna_stats_fastavg(&ks[0].stats);
     double ivar = tuna_stats_fastvar(&ks[0].stats);
-    double icnt = tuna_stats_cnt    (&ks[0].stats);
     for (int j = 1; j < nk; ++j) {
+        const double jcnt = tuna_stats_cnt    (&ks[j].stats);
+        if (jcnt < 2) return j;
         const double javg = tuna_stats_fastavg(&ks[j].stats);
         const double jvar = tuna_stats_fastvar(&ks[j].stats);
-        const double jcnt = tuna_stats_cnt    (&ks[j].stats);
         const double p    = tuna_welch1       (iavg, ivar, icnt,
                                                javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
