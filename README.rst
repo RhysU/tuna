@@ -43,7 +43,7 @@ Each autotuned site has an associated ``tuna_site`` and a contiguous array of
 storage is used to ensure both are zero-initialized and that they persist
 across calls.  Sensible algorithmic defaults are chosen, but some
 runtime-selection of behavior can be had.  For details, look in `tuna.h
-<tuna/tuna.h`_ for the ``TUNA_ALGO`` and ``TUNA_SEED`` environment variables.
+<tuna/tuna.h>`_ for the ``TUNA_ALGO`` and ``TUNA_SEED`` environment variables.
 
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
