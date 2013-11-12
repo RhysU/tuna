@@ -17,9 +17,6 @@
 
 #include <tuna.h>
 
-static const double N01(void)
-{ return tuna_ltqnorm(rand() / (double) RAND_MAX); }
-
 int main(int argc, char *argv[])
 {
     // Parse and display any incoming command line arguments in a header
@@ -31,16 +28,17 @@ int main(int argc, char *argv[])
     const int    best  = mA < mB  ? 0 : 1;                  // Who should win?
     printf("# niter=%d, mA=%g, sA=%g, mB=%g, sB=%g\n", niter, mA, sA, mB, sB);
 
-    static tuna_site   s;
-    static tuna_kernel k[2];
+    static tuna_site   s;                 // Notice zero initialization
+    static tuna_kernel k[2];              // Notice zero initialization
+    tuna_seed seed = tuna_seed_default(); // Used only to simulate kernel timings
     for (int i = 0; i < niter; ++i) {
 
         // Simulate one iteration of autotuning over alternatives
         double cost;
         switch (tuna_pre(&s, k, tuna_countof(k))) {
-            default: cost = mA + N01()*sA;
+            default: cost = mA + tuna_rand_n01(&seed)*sA;
                      break;
-            case 1:  cost = mB + N01()*sB;
+            case 1:  cost = mB + tuna_rand_n01(&seed)*sB;
                      break;
         }
         tuna_post_cost(&s, k, cost);

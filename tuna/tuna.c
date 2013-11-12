@@ -196,8 +196,28 @@ tuna_kernel_merge(tuna_stats* const s,
     return s;
 }
 
+/**
+ * Lower tail quantile for standard normal distribution function.
+ *
+ * This function returns an approximation of the inverse cumulative
+ * standard normal distribution function.  I.e., given P, it returns
+ * an approximation to the X satisfying P = Pr{Z <= X} where Z is a
+ * random variable from the standard normal distribution.
+ *
+ * \internal
+ * Approximate the inverse of the standard normal per Peter John Acklam
+ * (http://home.online.no/~pjacklam/notes/invnorm/) with error handling
+ * following Chad Sprouse's implementation given at
+ * (http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c).
+ *
+ * The algorithm uses a minimax approximation by rational functions
+ * and the result has a relative error whose absolute value is less
+ * than 1.15e-9.
+ * \endinternal
+ */
+static
 double
-tuna_ltqnorm(const double p)
+ltqnorm(const double p)
 {
     // Coefficients in rational approximations.
     static const double a1 = -3.969683028665376e+01;
@@ -288,9 +308,26 @@ tuna_ltqnorm(const double p)
     return x;
 }
 
-// See header for source attribution
+/**
+ * Computes the lower tail probability for Student's t-distribution.
+ *
+ * \internal
+ * The algorithm is AS 3 from Applied Statistics (1968) Volume 17 Page 189 as
+ * reported by <a href="http://lib.stat.cmu.edu/apstat/">StatLib</a>.  The <a
+ * href="http://lib.stat.cmu.edu/apstat/3">Fortran source</a> has been
+ * processed by <a href="http://www.netlib.org/f2c/">f2c</a> and then cleaned.
+ * Double precision has been used throughout, reentrant operation made
+ * possible, and parameters are passed by value.
+ * \endinternal
+ *
+ * \param t  Threshold of interest
+ * \param nu Strictly positive number of degrees of freedom.
+ *
+ * \return The lower tail probability for \c t given \c nu.
+ */
+static
 double
-tuna_as3(double t, int nu)
+as3(double t, int nu)
 {
     assert(nu > 0); // Use errno with EDOM instead?
 
@@ -342,7 +379,7 @@ tuna_rand_u01(tuna_seed* sd)
 double
 tuna_rand_n01(tuna_seed* sd)
 {
-    return tuna_ltqnorm(tuna_rand_u01(sd));
+    return ltqnorm(tuna_rand_u01(sd));
 }
 
 tuna_seed
@@ -404,7 +441,7 @@ tuna_welch1(double xA, double sA2, size_t nA,
 {
     double t, nu;
     tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
-    return 1 - tuna_as3(t, nu);
+    return 1 - as3(t, nu);
 }
 
 // http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html

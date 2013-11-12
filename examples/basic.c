@@ -15,9 +15,6 @@
 
 #include <tuna.h>
 
-static const double N01(void)
-{ return tuna_ltqnorm(rand() / (double) RAND_MAX); }
-
 int main(int argc, char *argv[])
 {
     // Parse any incoming command line arguments
@@ -27,17 +24,18 @@ int main(int argc, char *argv[])
     const double mB    = argc > 4 ? atof(argv[4]) :   10.1; // Case B mean?
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
 
-    static tuna_site   s;
-    static tuna_kernel k[2];
+    static tuna_site   s;                 // Notice zero initialization
+    static tuna_kernel k[2];              // Notice zero initialization
+    tuna_seed seed = tuna_seed_default(); // Used only to simulate kernel timings
     for (int i = 0; i < niter; ++i) {
 
         // Autotune over the alternatives (simulating kernel-specific costs)
         // To track runtime via TUNA_CLOCK, call tuna_post(&s, k) instead
         double cost;
         switch (tuna_pre(&s, k, tuna_countof(k))) {
-            default: cost = mA + N01()*sA;
+            default: cost = mA + tuna_rand_n01(&seed)*sA;
                      break;
-            case 1:  cost = mB + N01()*sB;
+            case 1:  cost = mB + tuna_rand_n01(&seed)*sB;
                      break;
         }
         tuna_post_cost(&s, k, cost);

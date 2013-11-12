@@ -213,55 +213,6 @@ tuna_kernel_merge(tuna_stats* const s,
 /** @} */
 
 /**
- * Statistical building blocks.
- * @{
- */
-
-/**
- * Lower tail quantile for standard normal distribution function.
- *
- * This function returns an approximation of the inverse cumulative
- * standard normal distribution function.  I.e., given P, it returns
- * an approximation to the X satisfying P = Pr{Z <= X} where Z is a
- * random variable from the standard normal distribution.
- *
- * \internal
- * Approximate the inverse of the standard normal per Peter John Acklam
- * (http://home.online.no/~pjacklam/notes/invnorm/) with error handling
- * following Chad Sprouse's implementation given at
- * (http://home.online.no/~pjacklam/notes/invnorm/impl/sprouse/ltqnorm.c).
- *
- * The algorithm uses a minimax approximation by rational functions
- * and the result has a relative error whose absolute value is less
- * than 1.15e-9.
- * \endinternal
- */
-double
-tuna_ltqnorm(const double p);
-
-/**
- * Computes the lower tail probability for Student's t-distribution.
- *
- * \internal
- * The algorithm is AS 3 from Applied Statistics (1968) Volume 17 Page 189 as
- * reported by <a href="http://lib.stat.cmu.edu/apstat/">StatLib</a>.  The <a
- * href="http://lib.stat.cmu.edu/apstat/3">Fortran source</a> has been
- * processed by <a href="http://www.netlib.org/f2c/">f2c</a> and then cleaned.
- * Double precision has been used throughout, reentrant operation made
- * possible, and parameters are passed by value.
- * \endinternal
- *
- * \param t  Threshold of interest
- * \param nu Strictly positive number of degrees of freedom.
- *
- * \return The lower tail probability for \c t given \c nu.
- */
-double
-tuna_as3(double t, int nu);
-
-/** @} */
-
-/**
  * Pseudo-random number generation.
  * @{
  */
