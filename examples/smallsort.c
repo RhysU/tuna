@@ -14,14 +14,21 @@
 
 #include <tuna.h>
 
-static const char *names[] = {
-    "insertion", "selection", "bubble", "qsort(3)", "heap"
-};
+static const char *names[] = { "insertion", "qsort(3)", "heap" };
 void sort_insertion(int a[], int array_size);
-void sort_selection(int a[], int array_size);
-void sort_bubble   (int a[], int array_size);
 void sort_qsort    (int a[], int array_size);
 void sort_heap     (int a[], int array_size);
+
+static tuna_site  s;     // Normally s and k would be inside smallsort()
+static tuna_chunk k[3];  // but they are external to permit querying them
+void smallsort(int a[], int n) {
+    switch (tuna_pre(&s, k, tuna_countof(k))) {
+        default: sort_insertion(a, n); break;
+        case 1:  sort_qsort    (a, n); break;
+        case 2:  sort_heap     (a, n); break;
+    }
+    tuna_post(&s, k);
+}
 
 int main(int argc, char *argv[])
 {
@@ -34,22 +41,12 @@ int main(int argc, char *argv[])
     const int nelem = argc > 2 ? atof(argv[2]) :   10; // Elements to sort?
 
     int data[nelem];
-    static tuna_site   s;
-    static tuna_chunk k[5];
     for (int i = 0; i < niter; ++i) {
 
-        // Generate random input data
-        for (int j = 0; j < nelem; ++j) data[j] = rand();
-
-        // Autotune over the alternatives
-        switch (tuna_pre(&s, k, tuna_countof(k))) {
-            default: sort_insertion(data, nelem); break;
-            case 1:  sort_selection(data, nelem); break;
-            case 2:  sort_bubble   (data, nelem); break;
-            case 3:  sort_qsort    (data, nelem); break;
-            case 4:  sort_heap     (data, nelem); break;
+        for (int j = 0; j < nelem; ++j) { // Random input
+            data[j] = rand();
         }
-        tuna_post(&s, k);
+        smallsort(data, nelem);           // Autotuned
     }
 
     // Display settings and static memory overhead required for autotuning
@@ -128,44 +125,6 @@ void sort_heap(int a[], int array_size)
           a[i] = a[0];
           a[0] = temp;
           down_heap(a, 0, i-1);
-     }
-}
-
-// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_selection(int a[], int array_size)
-{
-     int i;
-     for (i = 0; i < array_size - 1; ++i)
-     {
-          int j, min, temp;
-          min = i;
-          for (j = i+1; j < array_size; ++j)
-          {
-               if (a[j] < a[min])
-                    min = j;
-          }
-
-          temp = a[i];
-          a[i] = a[min];
-          a[min] = temp;
-     }
-}
-
-// From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_bubble(int a[], int array_size)
-{
-     int i, j, temp;
-     for (i = 0; i < (array_size - 1); ++i)
-     {
-          for (j = 0; j < array_size - 1 - i; ++j )
-          {
-               if (a[j] > a[j+1])
-               {
-                    temp = a[j+1];
-                    a[j+1] = a[j];
-                    a[j] = temp;
-               }
-          }
      }
 }
 
