@@ -100,9 +100,10 @@ tuna_stats_nobs(tuna_stats* const t,
                 const double* x,
                 size_t N)
 {
+    size_t i;
     if (N) {                               // NOP on degenerate input
         tuna_stats_obs(t, *x++);           // Delegate possible n == 1
-        for (size_t i = --N; i -- > 0 ;) { // Henceforth, certainly n > 1
+        for (i = --N; i -- > 0 ;) {        // Henceforth, certainly n > 1
             tuna_stats_fastobs(t, *x++);
         }
     }
@@ -154,7 +155,8 @@ tuna_kernel_obs(tuna_kernel* const k,
     // placing it into storage t while maintaining sorted-ness of k->outliers.
     // The loop is one bubble sort pass with possibility of short-circuiting.
     if (enforce_lt(&t, k->outliers)) {
-        for (size_t i = 1;
+        size_t i;
+        for (i = 1;
              i < sizeof(k->outliers) / sizeof(k->outliers[0])
              && enforce_lt(k->outliers - 1 + i, k->outliers + i);
              ++i)
@@ -186,8 +188,9 @@ tuna_stats*
 tuna_kernel_merge(tuna_stats* const s,
                   const tuna_kernel* const k)
 {
+    size_t i;
     tuna_stats_merge(s, &k->stats);
-    for (size_t i = 0; i < tuna_countof(k->outliers); ++i) {
+    for (i = 0; i < tuna_countof(k->outliers); ++i) {
         if (k->outliers[i]) {
             return tuna_stats_nobs(s, k->outliers + i,
                                    tuna_countof(k->outliers) - i);
@@ -486,23 +489,25 @@ tuna_algo_welch1_nuinf(const int nk,
                        const tuna_kernel* ks,
                        tuna_seed* seed)
 {
+    int i, j;
+    double icnt, iavg, ivar, jcnt, javg, jvar, p;
+
     assert(nk > 0);
-    int i = 0;
-    double icnt = tuna_stats_cnt(&ks[0].stats);
+    i = 0;
+    icnt = tuna_stats_cnt(&ks[0].stats);
     if (icnt < 2) {
         return i;
     }
-    double iavg = tuna_stats_fastavg(&ks[0].stats);
-    double ivar = tuna_stats_fastvar(&ks[0].stats);
-    for (int j = 1; j < nk; ++j) {
-        const double jcnt = tuna_stats_cnt(&ks[j].stats);
+    iavg = tuna_stats_fastavg(&ks[0].stats);
+    ivar = tuna_stats_fastvar(&ks[0].stats);
+    for (j = 1; j < nk; ++j) {
+        jcnt = tuna_stats_cnt(&ks[j].stats);
         if (jcnt < 2) {
             return j;
         }
-        const double javg = tuna_stats_fastavg(&ks[j].stats);
-        const double jvar = tuna_stats_fastvar(&ks[j].stats);
-        const double p    = tuna_welch1_nuinf(iavg, ivar, icnt,
-                                              javg, jvar, jcnt);
+        javg = tuna_stats_fastavg(&ks[j].stats);
+        jvar = tuna_stats_fastvar(&ks[j].stats);
+        p    = tuna_welch1_nuinf(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;
             iavg = javg;
@@ -518,23 +523,25 @@ tuna_algo_welch1(const int nk,
                  const tuna_kernel* ks,
                  tuna_seed* seed)
 {
+    int i, j;
+    double icnt, iavg, ivar, jcnt, javg, jvar, p;
+
     assert(nk > 0);
-    int i = 0;
-    double icnt = tuna_stats_cnt(&ks[0].stats);
+    i = 0;
+    icnt = tuna_stats_cnt(&ks[0].stats);
     if (icnt < 2) {
         return i;
     }
-    double iavg = tuna_stats_fastavg(&ks[0].stats);
-    double ivar = tuna_stats_fastvar(&ks[0].stats);
-    for (int j = 1; j < nk; ++j) {
-        const double jcnt = tuna_stats_cnt(&ks[j].stats);
+    iavg = tuna_stats_fastavg(&ks[0].stats);
+    ivar = tuna_stats_fastvar(&ks[0].stats);
+    for (j = 1; j < nk; ++j) {
+        jcnt = tuna_stats_cnt(&ks[j].stats);
         if (jcnt < 2) {
             return j;
         }
-        const double javg = tuna_stats_fastavg(&ks[j].stats);
-        const double jvar = tuna_stats_fastvar(&ks[j].stats);
-        const double p    = tuna_welch1(iavg, ivar, icnt,
-                                        javg, jvar, jcnt);
+        javg = tuna_stats_fastavg(&ks[j].stats);
+        jvar = tuna_stats_fastvar(&ks[j].stats);
+        p    = tuna_welch1(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;
             iavg = javg;
