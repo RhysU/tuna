@@ -55,12 +55,3 @@ tuna_stats* tuna_stats_merge(tuna_stats* const dst,
     }
     return dst;
 }
-
-double tuna_stats_welch1(const tuna_stats* const a,
-                         const tuna_stats* const b)
-{
-    // TODO Address shortcomings documented at tuna_welch1_{nuinf,approx,}
-    return tuna_welch1_nuinf(
-               tuna_stats_avg(a), tuna_stats_var(a), tuna_stats_cnt(a),
-               tuna_stats_avg(b), tuna_stats_var(b), tuna_stats_cnt(b));
-}

@@ -36,10 +36,6 @@ noinst_LTLIBRARIES          = cdflib/libcdflib.la
 cdflib_libcdflib_la_SOURCES = cdflib/cdflib.c  cdflib/cdflib.h
 
 # Example programs
-noinst_PROGRAMS      += examples/poc
-examples_poc_SOURCES  = examples/poc.c
-examples_poc_LDADD    = tuna/libtuna.la $(LIBM)
-
 noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
 examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
@@ -67,9 +63,6 @@ TESTS                += tests/kernel
 noinst_PROGRAMS      += tests/kernel
 tests_kernel_SOURCES  = tests/kernel.c tests/fct.h
 tests_kernel_LDADD    = tuna/libtuna.la $(LIBM)
-
-check_PROGRAMS       += examples/poc
-TESTS                += examples/poc
 
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh
