@@ -21,9 +21,8 @@ straightforward manner that definitely won't pass peer review.
 Example
 -------
 
-Let's say you want to sort many small lists.  For sufficiently small lists the
-leading constant on an algorithms' ``O(n log n)`` complexity matters.  Let's
-autotune over three candidates with Tuna::
+Hypothetically, say you want to sort many small lists.  Let's autotune over
+three candidate ``O(n ln n)`` sorting algorithms with Tuna::
 
     #include <tuna.h>
 
@@ -38,12 +37,18 @@ autotune over three candidates with Tuna::
         tuna_post(&s, k);
     }
 
-Each autotuned site has an associated ``tuna_site`` and a contiguous array of
-``tuna_chunk`` instances, one per chunk under consideration.  Here, static
-storage is used to ensure both are zero-initialized and that they persist
-across calls.  Sensible algorithmic defaults are chosen, but some
-runtime-selection of behavior can be had.  For details, look in `tuna.h
-<tuna/tuna.h>`_ for the ``TUNA_ALGO`` and ``TUNA_SEED`` environment variables.
+We just wrapped ``sort_insertion()``, ``sort_qsort()`` and ``sort_heap()`` so
+that the chunk of logic selected on any invocation of ``smallsort()`` is
+dynamically modified based on the observed performance thus far.  Nothing more
+is required.
+
+Generally, each call site autotuned by Tuna has an associated ``tuna_site`` and
+a contiguous array of ``tuna_chunk`` instances, one per chunk under
+consideration.  Here, static storage is used to ensure both are
+zero-initialized and that they persist across calls.  Sensible algorithmic
+defaults are chosen, but some runtime-selection of behavior can be had.  For
+details, look in `tuna.h <tuna/tuna.h>`_ for the ``TUNA_ALGO`` and
+``TUNA_SEED`` environment variables.
 
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
