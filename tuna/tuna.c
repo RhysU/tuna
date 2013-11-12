@@ -471,11 +471,11 @@ tuna_algo_default(void)
     char* d = getenv("TUNA_ALGO");
     if (d) {
         trim(d);
-        if (!strncasecmp(d, "welch1", sizeof("welch1"))) {
+        if (!strcasecmp("welch1", d)) {
             return &tuna_algo_welch1;
-        } else if (!strncasecmp(d, "welch1_nuinf", sizeof("welch1_nuinf"))) {
+        } else if (!strcasecmp("welch1_nuinf", d)) {
             return &tuna_algo_welch1_nuinf;
-        } else if (!strncasecmp(d, "zero", sizeof("zero"))) {
+        } else if (!strcasecmp("zero", d)) {
             return &tuna_algo_zero;
         }
     }
