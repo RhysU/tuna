@@ -415,7 +415,42 @@ typedef struct tuna_site {
 } tuna_site;
 
 /**
- * Invoke the currently selected autotuning algorithm.
+ * Invoke the currently selected autotuning algorithm.  Only \ref
+ * tuna_post_cost() may be invoked after the selected chunk completes
+ * executing.
+ *
+ * \param[inout] st Information local to one autotuning site.
+ * \param[in   ] ks Tracks information about \c nk alternatives.
+ *                  Must be stored contiguously in memory.
+ * \param[in   ] nk How many alternatives are under consideration?
+ *
+ * \return The zero-based index of the chunk which should be selected.
+ */
+int
+tuna_pre_cost(tuna_site* st,
+              const tuna_chunk* ks,
+              const int nk);
+
+/**
+ * Record the last autotuned chunk invocation using a user-provided \c cost
+ * metric.  Either \ref tuna_pre() or \ref tuna_pre_cost() should have been
+ * invoked beforehand.
+ *
+ * \param[inout] st   Information local to one autotuning site.
+ * \param[in   ] ks   Tracks information about the alternatives.
+ * \param[in   ] cost User-provided measure of the employed chunk's cost.
+ *                    This may be elapsed time or some sophisticated measure.
+ *                    It should be strictly positive.  Lower means better.
+ */
+void
+tuna_post_cost(tuna_site*  st,
+               tuna_chunk* ks,
+               const double cost);
+
+/**
+ * Invoke the currently selected autotuning algorithm.  Either \ref tuna_post()
+ * or \ref tuna_post_cost() may be invoked after the selected chunk completes
+ * executing.
  *
  * \param[inout] st Information local to one autotuning site.
  * \param[in   ] ks Tracks information about \c nk alternatives.
@@ -430,8 +465,9 @@ tuna_pre(tuna_site* st,
          const int nk);
 
 /**
- * Record the results from the last autotuned chunk invocation
- * using internally-managed elapsed time via \ref TUNA_CLOCK.
+ * Record the results from the last autotuned chunk invocation using
+ * internally-managed elapsed time via \ref TUNA_CLOCK.  Method \ref tuna_pre()
+ * should have been invoked before the chunk began executing.
  *
  * \param[inout] st   Information local to one autotuning site.
  * \param[in   ] ks   Tracks information about the alternatives.
@@ -441,21 +477,6 @@ tuna_pre(tuna_site* st,
 double
 tuna_post(tuna_site*  st,
           tuna_chunk* ks);
-
-/**
- * Record the last autotuned chunk invocation
- * using a user-provided \c cost metric.
- *
- * \param[inout] st   Information local to one autotuning site.
- * \param[in   ] ks   Tracks information about the alternatives.
- * \param[in   ] cost User-provided measure of the employed chunk's cost.
- *                    This may be elapsed time or some sophisticated measure.
- *                    It should be strictly positive.  Lower means better.
- */
-void
-tuna_post_cost(tuna_site*  st,
-               tuna_chunk* ks,
-               const double cost);
 
 /** @} */
 

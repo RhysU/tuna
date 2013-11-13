@@ -569,9 +569,9 @@ tuna_algo_zero(const int nk,
 // TODO Do something intelligent with clock_getres(2) information
 
 int
-tuna_pre(tuna_site* st,
-         const tuna_chunk* ks,
-         const int nk)
+tuna_pre_cost(tuna_site* st,
+              const tuna_chunk* ks,
+              const int nk)
 {
     // Ensure a zero-initialize st argument produces good behavior by...
     if (!st->al) {
@@ -587,9 +587,6 @@ tuna_pre(tuna_site* st,
     // Invoke chosen algorithm recording selection index for tuna_post_cost().
     st->ik = st->al(nk, ks, &st->sd);
 
-    // Glimpse at the clock so we may compute elapsed time in tuna_post()
-    clock_gettime(TUNA_CLOCK, &st->ts);
-
     return st->ik;
 }
 
@@ -599,6 +596,20 @@ tuna_post_cost(tuna_site*  st,
                const double cost)
 {
     tuna_chunk_obs(ks + st->ik, cost);
+}
+
+int
+tuna_pre(tuna_site* st,
+         const tuna_chunk* ks,
+         const int nk)
+{
+    // Delegate chunk selection to tuna_pre_cost
+    tuna_pre_cost(st, ks, nk);
+
+    // Glimpse at the clock so we may compute elapsed time in tuna_post()
+    clock_gettime(TUNA_CLOCK, &st->ts);
+
+    return st->ik;
 }
 
 double
