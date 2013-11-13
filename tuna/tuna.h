@@ -381,13 +381,15 @@ tuna_algo_zero(const int nk,
                tuna_seed* sd);
 
 /**
- * Retrieve a default algorithm when left unspecified.  If the
- * whitespace-trimmed environment variable <code>TUNA_ALGO</code>
- * case-insensitively names an algorithm without the <code>tuna_algo_</code>
- * prefix, that algorithm will be used.
+ * Retrieve a default algorithm when one is left unspecified.  If <code>nk <
+ * 2</code>, \ref tuna_algo_zero() is returned.  If the whitespace-trimmed
+ * environment variable <code>TUNA_ALGO</code> case-insensitively names an
+ * algorithm without the <code>tuna_algo_</code> prefix, that algorithm will be
+ * used.  Otherwise, a sensible default which may or may not take into account
+ * \c nk is chosen.
  */
 tuna_algo
-tuna_algo_default(void);
+tuna_algo_default(const int nk);
 
 /** @} */
 

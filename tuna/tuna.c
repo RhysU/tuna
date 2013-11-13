@@ -471,9 +471,13 @@ trim(char* const a)
 }
 
 tuna_algo
-tuna_algo_default(void)
+tuna_algo_default(const int nk)
 {
-    char* d = getenv("TUNA_ALGO");
+    char* d;
+    if (nk < 2) {
+        return &tuna_algo_zero;
+    }
+    d = getenv("TUNA_ALGO");
     if (d) {
         trim(d);
         if (!strcasecmp("welch1", d)) {
@@ -576,7 +580,7 @@ tuna_pre_cost(tuna_site* st,
     // Ensure a zero-initialize st argument produces good behavior by...
     if (!st->al) {
         // ...providing a default algorithm when not set, and
-        st->al = tuna_algo_default();
+        st->al = tuna_algo_default(nk);
 
         if (!st->sd) {
             // ...providing a default seed when not set.
