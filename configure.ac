@@ -10,6 +10,7 @@ AX_CFLAGS_WARN_ALL
 dnl Isolate -std=c89 flags into STDC89
 CCSAVED=${CC}
 AC_PROG_CC_C89
+AX_CFLAGS_FORCE_C89([CC])
 AC_SUBST([STDC89],[${CC#$CCSAVED}])
 CC=$CCSAVED
 dnl Isolate -std=c99 flags into STDC99

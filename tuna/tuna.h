@@ -25,6 +25,12 @@
 #ifndef TUNA_H
 #define TUNA_H
 
+/* TODO Move into tuna.c per https://github.com/RhysU/tuna/issues/4 */
+/* TODO Regardless of location, this is hackish. */
+#if (_POSIX_C_SOURCE < 200112L)
+#define _POSIX_C_SOURCE (200112L)
+#endif
+
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>

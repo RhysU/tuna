@@ -17,6 +17,26 @@
 
 #include <tuna.h>
 
+#ifndef NAN
+/** C89 mechanism to obtain not-a-number. */
+#define NAN (sqrt(-1))
+#endif
+
+#ifndef M_PI
+/** Constant \f$\pi\f$ */
+#define M_PI (3.14159265358979323844)
+#endif
+
+#ifndef M_1_PI
+/** Constant \f$1/\pi\f$ */
+#define M_1_PI (.31830988618379067154)
+#endif
+
+#ifndef M_SQRT1_2
+/** Constant \f$1/\sqrt{2}\f$. */
+#define M_SQRT1_2 (.70710678118654752440)
+#endif
+
 size_t
 tuna_stats_cnt(const tuna_stats* const t)
 {
@@ -72,13 +92,15 @@ tuna_stats*
 tuna_stats_fastobs(tuna_stats* const t,
                    const double x)
 {
-    // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
-    // Knuth shows better behavior than Welford 1962 on test data.
+    /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
+    /* Knuth shows better behavior than Welford 1962 on test data. */
+    size_t n;
+    double d;
     assert(tuna_stats_cnt(t) > 0);
-    size_t n  = ++(t->n);
-    double d  = x - t->m;
-    t->m     += d / n;
-    t->s     += d * (x - t->m);
+    n     = ++(t->n);
+    d     = x - t->m;
+    t->m += d / n;
+    t->s += d * (x - t->m);
     return t;
 }
 
@@ -86,14 +108,14 @@ tuna_stats*
 tuna_stats_obs(tuna_stats* const t,
                const double x)
 {
-    // Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.
-    // Knuth shows better behavior than Welford 1962 on test data.
+    /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
+    /* Knuth shows better behavior than Welford 1962 on test data. */
     const size_t n = ++(t->n);
-    if (n > 1) {  // Second and subsequent invocation
+    if (n > 1) {  /* Second and subsequent invocation */
         double d  = x - t->m;
         t->m     += d / n;
         t->s     += d * (x - t->m);
-    } else {      // First invocation requires special treatment
+    } else {      /* First invocation requires special treatment */
         t->m = x;
         t->s = 0;
     }
@@ -106,9 +128,9 @@ tuna_stats_nobs(tuna_stats* const t,
                 size_t N)
 {
     size_t i;
-    if (N) {                               // NOP on degenerate input
-        tuna_stats_obs(t, *x++);           // Delegate possible n == 1
-        for (i = --N; i -- > 0 ;) {        // Henceforth, certainly n > 1
+    if (N) {                               /* NOP on degenerate input     */
+        tuna_stats_obs(t, *x++);           /* Delegate possible n == 1    */
+        for (i = --N; i -- > 0 ;) {        /* Henceforth, certainly n > 1 */
             tuna_stats_fastobs(t, *x++);
         }
     }
@@ -119,13 +141,13 @@ tuna_stats*
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    if (src->n == 0) {         // src contains no data
-        // NOP
-    } else if (dst->n == 0) {  // dst contains no data
+    if (src->n == 0) {         /* src contains no data */
+        /* NOP */
+    } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
-    } else {                   // merge src into dst
+    } else {                   /* merge src into dst */
         size_t total = dst->n + src->n;
-        double dM    = dst->m - src->m;  // Cancellation issues?
+        double dM    = dst->m - src->m;  /* Cancellation issues? */
         dst->m       = (dst->n * dst->m + src->n * src->m) / total;
         dst->s       = (dst->n == 1 ? 0 : dst->s)
                        + (src->n == 1 ? 0 : src->s)
@@ -139,7 +161,7 @@ tuna_stats_merge(tuna_stats* const dst,
  * Enforces <code>*a < *b<code> as a postcondition.
  * If doing so required swapping *a and *b, return 1.  Otherwise 0.
  */
-static inline
+static
 int enforce_lt(double* const a, double* const b)
 {
     if (*a < *b) {
@@ -156,9 +178,9 @@ tuna_chunk*
 tuna_chunk_obs(tuna_chunk* const k,
                double t)
 {
-    // First, find smallest observation among set {t, k->outliers[0], ... }
-    // placing it into storage t while maintaining sorted-ness of k->outliers.
-    // The loop is one bubble sort pass with possibility of short-circuiting.
+    /* First, find smallest observation among set {t, k->outliers[0], ... } */
+    /* placing it into t while maintaining sorted-ness of k->outliers.      */
+    /* The loop is one sort pass with possibility of short-circuiting.      */
     if (enforce_lt(&t, k->outliers)) {
         size_t i;
         for (i = 1;
@@ -168,16 +190,16 @@ tuna_chunk_obs(tuna_chunk* const k,
             ;
     }
 
-    // Second, when non-zero, record statistics about the best observation.
+    /* Second, when non-zero, record statistics about the best observation. */
     if (t) {
         tuna_stats_obs(&k->stats, t);
     }
 
-    // Together, these two steps cause a zero-initialized tuna_chunk to
-    // gather tuna_noutliers pieces of information before beginning to
-    // track any statistics.  This effectively provides some "start up"
-    // or "burn in" period in addition to preventing highly improbable
-    // observations from unduly inflating the discovered variability.
+    /* Together, these two steps cause a zero-initialized tuna_chunk to */
+    /* gather tuna_noutliers pieces of information before beginning to  */
+    /* track any statistics.  This effectively provides some "start up" */
+    /* or "burn in" period in addition to preventing highly improbable  */
+    /* observations from unduly inflating the discovered variability.   */
 
     return k;
 }
@@ -227,7 +249,7 @@ static
 double
 ltqnorm(const double p)
 {
-    // Coefficients in rational approximations.
+    /* Coefficients in rational approximations. */
     static const double a1 = -3.969683028665376e+01;
     static const double a2 =  2.209460984245205e+02;
     static const double a3 = -2.759285104469687e+02;
@@ -253,19 +275,19 @@ ltqnorm(const double p)
     static const double d3 =  2.445134137142996e+00;
     static const double d4 =  3.754408661907416e+00;
 
-    // Define break-points.
+    /* Define break-points. */
     const double p_low  = 0.02425;
     const double p_high = 1 - p_low;
 
-    // Compute rational approximation for...
-    double x, q, r;
-    if (p < 0) {                      // ...domain error.
+    /* Compute rational approximation for... */
+    double x, q, r, e, u;
+    if (p < 0) {                      /* ...domain error. */
         errno = EDOM;
         return 0;
 #ifdef __INTEL_COMPILER
 #pragma warning(push,disable:1572)
 #endif
-    } else if (p == 0) {              // ...improbable point.
+    } else if (p == 0) {              /* ...improbable point. */
 #ifdef __INTEL_COMPILER
 #pragma warning(pop)
 #endif
@@ -275,23 +297,23 @@ ltqnorm(const double p)
 #else
         return -DBL_MAX;
 #endif
-    } else if (p < p_low) {           // ...lower region.
+    } else if (p < p_low) {           /* ...lower region. */
         q = sqrt(-2 * log(p));
         x = (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) /
             ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
-    } else if (p <= p_high) {         // ...central region
+    } else if (p <= p_high) {         /* ...central region */
         q = p - 0.5;
         r = q * q;
         x = (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q /
             (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
-    } else if (p < 1) {               // ...upper region.
+    } else if (p < 1) {               /* ...upper region. */
         q = sqrt(-2 * log(1 - p));
         x = -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) /
             ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
 #ifdef __INTEL_COMPILER
 #pragma warning(push,disable:1572)
 #endif
-    } else if (p == 1) {              // ...improbable point.
+    } else if (p == 1) {              /* ...improbable point. */
 #ifdef __INTEL_COMPILER
 #pragma warning(pop)
 #endif
@@ -301,16 +323,16 @@ ltqnorm(const double p)
 #else
         return DBL_MAX;
 #endif
-    } else {                          // ...domain error.
+    } else {                          /* ...domain error. */
         errno = EDOM;
         return 0;
     }
 
-    // One iteration of Halley's rational method improves to machine precision.
-    const double sqrt_2pi = sqrt(2 * M_PI);
-    double e, u;
+    /* One hit with Halley's rational method improves to machine precision. */
     e = 0.5 * erfc(x * -M_SQRT1_2) - p;
-    u = e * sqrt_2pi * exp(x * x / 2);
+#define SQRT_2PI (2.50662827463100050240)
+    u = e * SQRT_2PI * exp(x * x / 2);
+#undef SQRT_2PI
     x = x - u / (1 + x * u / 2);
 
     return x;
@@ -337,10 +359,10 @@ static
 double
 as3(double t, int nu)
 {
-    assert(nu > 0); // Use errno with EDOM instead?
-
     double r, a, b, c, f, s, fk;
     int i, k, ks, im2, ioe;
+
+    assert(nu > 0); /* Use errno with EDOM instead? */
 
     f = nu;
     a = t / sqrt(f);
@@ -411,9 +433,9 @@ tuna_welch(double xA, double sA2, size_t nA,
     double sA2_nA = sA2 / nA;
     double sB2_nB = sB2 / nB;
     double t_den2 = sA2_nA + sB2_nB;
-    *t            = (xA - xB) / sqrt(t_den2);
     double nu_den = sA2_nA * sA2_nA / (nA - 1)
                     + sB2_nB * sB2_nB / (nB - 1);
+    *t            = (xA - xB) / sqrt(t_den2);
     *nu           = t_den2 * t_den2 / nu_den;
 }
 
@@ -452,7 +474,7 @@ tuna_welch1(double xA, double sA2, size_t nA,
     return 1 - as3(t, nu);
 }
 
-// http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html
+/* http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html */
 static
 void
 trim(char* const a)
@@ -488,7 +510,7 @@ tuna_algo_default(const int nk)
             return &tuna_algo_zero;
         }
     }
-    return &tuna_algo_welch1; // Default
+    return &tuna_algo_welch1; /* Default */
 }
 
 int
@@ -570,25 +592,25 @@ tuna_algo_zero(const int nk,
     return 0;
 }
 
-// TODO Do something intelligent with clock_getres(2) information
+/* TODO Do something intelligent with clock_getres(2) information */
 
 int
 tuna_pre_cost(tuna_site* st,
               const tuna_chunk* ks,
               const int nk)
 {
-    // Ensure a zero-initialize st argument produces good behavior by...
+    /* Ensure a zero-initialize st argument produces good behavior by... */
     if (!st->al) {
-        // ...providing a default algorithm when not set, and
+        /* ...providing a default algorithm when not set, and */
         st->al = tuna_algo_default(nk);
 
         if (!st->sd) {
-            // ...providing a default seed when not set.
+            /* ...providing a default seed when not set. */
             st->sd = tuna_seed_default();
         }
     }
 
-    // Invoke chosen algorithm recording selection index for tuna_post_cost().
+    /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
     st->ik = st->al(nk, ks, &st->sd);
 
     return st->ik;
@@ -607,10 +629,10 @@ tuna_pre(tuna_site* st,
          const tuna_chunk* ks,
          const int nk)
 {
-    // Delegate chunk selection to tuna_pre_cost
+    /* Delegate chunk selection to tuna_pre_cost */
     tuna_pre_cost(st, ks, nk);
 
-    // Glimpse at the clock so we may compute elapsed time in tuna_post()
+    /* Glimpse at the clock so we may compute elapsed time in tuna_post() */
     clock_gettime(TUNA_CLOCK, &st->ts);
 
     return st->ik;
@@ -620,14 +642,15 @@ double
 tuna_post(tuna_site*  st,
           tuna_chunk* ks)
 {
-    // Glimpse at the clock and compute double-valued elapsed time
+    /* Glimpse at the clock and compute double-valued elapsed time */
     struct timespec te;
+    double elapsed;
     clock_gettime(TUNA_CLOCK, &te);
-    double elapsed = te.tv_nsec - st->ts.tv_nsec; // Nanoseconds...
-    elapsed *= 1e-9;                              // ...to seconds
-    elapsed += te.tv_sec - st->ts.tv_sec;         // ...plus seconds
+    elapsed  = te.tv_nsec - st->ts.tv_nsec; /* Nanoseconds...  */
+    elapsed *= 1e-9;                        /* ...to seconds   */
+    elapsed += te.tv_sec - st->ts.tv_sec;   /* ...plus seconds */
 
-    // Delegate recording the observation to tuna_post_cost()
+    /* Delegate recording the observation to tuna_post_cost() */
     tuna_post_cost(st, ks, elapsed);
 
     return elapsed;
