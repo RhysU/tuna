@@ -12,6 +12,8 @@
  * optimization-dependent behavior.
  */
 
+#include <time.h>
+
 #include <tuna.h>
 
 static const char *names[] = { "insertion", "qsort(3)", "heap" };

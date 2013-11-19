@@ -15,7 +15,14 @@
  * existing build tree.
  */
 
+/* This is hackish. */
+#if (_POSIX_C_SOURCE < 200112L)
+#define _POSIX_C_SOURCE (200112L)
+#endif
+
 #include <tuna.h>
+
+#include <time.h>
 
 #ifndef NAN
 /** C89 mechanism to obtain not-a-number. */
@@ -35,6 +42,12 @@
 #ifndef M_SQRT1_2
 /** Constant \f$1/\sqrt{2}\f$. */
 #define M_SQRT1_2 (.70710678118654752440)
+#endif
+
+/** The clock_gettime(2) used for internally-managed timing. */
+#define TUNA_CLOCK CLOCK_PROCESS_CPUTIME_ID
+#ifndef CLOCK_PROCESS_CPUTIME_ID
+# error "CLOCK_PROCESS_CPUTIME_ID unavailable"
 #endif
 
 size_t
@@ -629,11 +642,15 @@ tuna_pre(tuna_site* st,
          const tuna_chunk* ks,
          const int nk)
 {
+    struct timespec ts;
+
     /* Delegate chunk selection to tuna_pre_cost */
     tuna_pre_cost(st, ks, nk);
 
     /* Glimpse at the clock so we may compute elapsed time in tuna_post() */
-    clock_gettime(TUNA_CLOCK, &st->ts);
+    clock_gettime(TUNA_CLOCK, &ts);
+    st->tv_sec  = ts.tv_sec;
+    st->tv_nsec = ts.tv_nsec;
 
     return st->ik;
 }
@@ -646,9 +663,9 @@ tuna_post(tuna_site*  st,
     struct timespec te;
     double elapsed;
     clock_gettime(TUNA_CLOCK, &te);
-    elapsed  = te.tv_nsec - st->ts.tv_nsec; /* Nanoseconds...  */
-    elapsed *= 1e-9;                        /* ...to seconds   */
-    elapsed += te.tv_sec - st->ts.tv_sec;   /* ...plus seconds */
+    elapsed  = te.tv_nsec - st->tv_nsec;  /* Nanoseconds...  */
+    elapsed *= 1e-9;                      /* ...to seconds   */
+    elapsed += te.tv_sec  - st->tv_sec;   /* ...plus seconds */
 
     /* Delegate recording the observation to tuna_post_cost() */
     tuna_post_cost(st, ks, elapsed);

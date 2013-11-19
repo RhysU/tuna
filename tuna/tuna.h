@@ -25,22 +25,16 @@
 #ifndef TUNA_H
 #define TUNA_H
 
-/* TODO Move into tuna.c per https://github.com/RhysU/tuna/issues/4 */
-/* TODO Regardless of location, this is hackish. */
-#if (_POSIX_C_SOURCE < 200112L)
-#define _POSIX_C_SOURCE (200112L)
-#endif
-
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <float.h>
 #include <math.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
-#include <time.h>
+#include <sys/types.h>
 
 /**
  * Macros to count the number of array elements at compile time.  Provides both
@@ -399,12 +393,6 @@ tuna_algo_default(const int nk);
 
 /** @} */
 
-/** The clock_gettime(2) used for internally-managed timing. */
-#define TUNA_CLOCK CLOCK_PROCESS_CPUTIME_ID
-#ifndef CLOCK_PROCESS_CPUTIME_ID
-# error "CLOCK_PROCESS_CPUTIME_ID unavailable"
-#endif
-
 /**
  * High-level APIs for autotuning.
  * @{
@@ -416,10 +404,11 @@ tuna_algo_default(const int nk);
  * is used so the compiler may compute this POD type's size.
  */
 typedef struct tuna_site {
-    tuna_algo       al;  /**< The chosen tuning algorithm.               */
-    tuna_seed       sd;  /**< Random number generator state.             */
-    int             ik;  /**< Index of the most recently selected chunk. */
-    struct timespec ts;  /**< Records clock_gettime(2) in tuna_pre().    */
+    tuna_algo al;      /**< The chosen tuning algorithm.                     */
+    tuna_seed sd;      /**< Random number generator state.                   */
+    int       ik;      /**< Index of the most recently selected chunk.       */
+    time_t    tv_sec;  /**< Stores seconds from clock_gettime in tuna_pre(). */
+    long      tv_nsec; /**< Stores nanos from clock_gettime in tuna_pre().   */
 } tuna_site;
 
 /**
@@ -474,13 +463,13 @@ tuna_pre(tuna_site* st,
 
 /**
  * Record the results from the last autotuned chunk invocation using
- * internally-managed elapsed time via \ref TUNA_CLOCK.  Method \ref tuna_pre()
- * should have been invoked before the chunk began executing.
+ * internally-managed elapsed time via an appropriate clock.  Method \ref
+ * tuna_pre() should have been invoked before the chunk began executing.
  *
  * \param[inout] st   Information local to one autotuning site.
  * \param[in   ] ks   Tracks information about the alternatives.
  *
- * \return The inclusive time in seconds as measured by \ref TUNA_CLOCK.
+ * \return The inclusive process time in seconds.
  */
 double
 tuna_post(tuna_site*  st,
