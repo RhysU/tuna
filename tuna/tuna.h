@@ -9,8 +9,7 @@
 /**
  * \mainpage
  *
- * Tuna provides lightweight autotuning over semantically indistinguishable
- * chunks of code.
+ * (A) Chunk(-based) Light(weight) (Auto)Tuna.
  *
  * See the current <a
  * href="https://github.com/RhysU/tuna/blob/master/README.rst">README</a> for a

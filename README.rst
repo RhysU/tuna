@@ -1,5 +1,5 @@
-(A) Chunk(-based) Light(weight) (Auto)Tuna in C89
-=================================================
+(A) Chunk(-based) Light(weight) (Auto)Tuna
+==========================================
 
 Overview
 --------
