@@ -658,8 +658,8 @@ tuna_pre(tuna_site* st,
     /* Glimpse at the clock so we may compute elapsed time in tuna_post(). */
     /* Calling memcpy a side effect of exposing only opaque st->tv buffer. */
     clock_gettime(TUNA_CLOCK, &ts);
-    assert(sizeof(ts.tv_sec ) <= 8);
-    assert(sizeof(ts.tv_nsec) <= 8);
+    tuna_assert_static(sizeof(ts.tv_sec ) <= 8);
+    tuna_assert_static(sizeof(ts.tv_nsec) <= 8);
     memcpy(&st->ts[0], &ts.tv_sec,  sizeof(ts.tv_sec ));
     memcpy(&st->ts[8], &ts.tv_nsec, sizeof(ts.tv_nsec));
 
@@ -675,8 +675,8 @@ tuna_post(tuna_site*  st,
     struct timespec ts, te;
     double elapsed;
     clock_gettime(TUNA_CLOCK, &te);
-    assert(sizeof(ts.tv_sec ) <= 8);
-    assert(sizeof(ts.tv_nsec) <= 8);
+    tuna_assert_static(sizeof(ts.tv_sec ) <= 8);
+    tuna_assert_static(sizeof(ts.tv_nsec) <= 8);
     memcpy(&ts.tv_sec,  &st->ts[0], sizeof(ts.tv_sec ));
     memcpy(&ts.tv_nsec, &st->ts[8], sizeof(ts.tv_nsec));
     elapsed  = te.tv_nsec - ts.tv_nsec;  /* Nanoseconds...  */
