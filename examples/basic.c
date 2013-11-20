@@ -7,7 +7,7 @@
  */
 
 /** \file
- * An example demonstrating bare-bones API usage.
+ * An Tuna example demonstrating bare-bones API usage.
  */
 
 #include <stdio.h>

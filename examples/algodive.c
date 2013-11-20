@@ -7,9 +7,9 @@
  */
 
 /** \file
- * Dumps iteration-by-iteration algorithm behavior to aid comparisons.  See
- * \ref tuna_algo_default() for how to change the default algorithm at runtime
- * using the process environment.
+ * Dumps iteration-by-iteration Tuna algorithm behavior to aid comparisons.
+ * See \ref tuna_algo_default() for how to change the default algorithm at
+ * runtime using the process environment.
  */
 
 #include <stdio.h>

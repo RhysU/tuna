@@ -7,8 +7,8 @@
  */
 
 /** \file
- * An example for dynamically investigating sorting tradeoffs for small lists.
- * This provides an autotuned way to account for of compiler- and
+ * A Tuna example for dynamically investigating sorting tradeoffs for small
+ * lists.  This provides an autotuned way to account for of compiler- and
  * optimization-dependent behavior.
  */
 

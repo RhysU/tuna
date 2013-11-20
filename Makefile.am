@@ -18,21 +18,24 @@ tuna_libtuna_la_SOURCES = tuna/tuna.c tuna/tuna.h
 tuna_libtuna_la_CFLAGS  = $(AM_CFLAGS) $(STDC89)
 tuna_libtuna_la_LIBADD  = $(LIBM)
 
-# C99-based example programs
+# C99-based example programs with sources installed alongside the documentation
 noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
 examples_basic_CFLAGS   = $(AM_CFLAGS) $(STDC99)
 examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
+dist_doc_DATA          += $(examples_basic_SOURCES)
 
 noinst_PROGRAMS           += examples/algodive
 examples_algodive_SOURCES  = examples/algodive.c
 examples_algodive_CFLAGS   = $(AM_CFLAGS) $(STDC99)
 examples_algodive_LDADD    = tuna/libtuna.la $(LIBM)
+dist_doc_DATA             += $(examples_algodive_SOURCES)
 
 noinst_PROGRAMS            += examples/smallsort
 examples_smallsort_SOURCES  = examples/smallsort.c
 examples_smallsort_CFLAGS   = $(AM_CFLAGS) $(STDC99)
 examples_smallsort_LDADD    = tuna/libtuna.la $(LIBM)
+dist_doc_DATA              += $(examples_smallsort_SOURCES)
 
 # C99-based test programs
 # (either dedicated sources or simply reusing examples as tests)
