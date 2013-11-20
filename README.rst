@@ -1,5 +1,5 @@
-(A) Chunk(-based) Light(weight) (Auto)Tuna
-==========================================
+Tuna: A Chunk-based Lightweight AutoTuna
+========================================
 
 Overview
 --------
