@@ -4,19 +4,30 @@ ACLOCAL_AMFLAGS    = -I m4
 AM_CPPFLAGS        = -I$(top_srcdir)/tuna -I$(top_srcdir)/cdflib
 check_PROGRAMS     =
 dist_check_SCRIPTS =
+include_HEADERS    =
+lib_LTLIBRARIES    =
+noinst_LTLIBRARIES =
 noinst_PROGRAMS    =
 TESTS              =
+dist_doc_DATA      =
 
-# Installed artifacts
-dist_doc_DATA    = README.rst
-include_HEADERS  = tuna/tuna.h
-lib_LTLIBRARIES  = tuna/libtuna.la
+# Build a debug library for internal, performance agnostic use...
+# (Two small, C89-compliant source files comprise the entire library)
+# (These files can be copied directly into other projects if desired)
+noinst_LTLIBRARIES             += tuna/libtuna-debug.la
+tuna_libtuna_debug_la_SOURCES   = tuna/tuna.c tuna/tuna.h
+tuna_libtuna_debug_la_CFLAGS    = $(AM_CFLAGS) $(STDC89)
+tuna_libtuna_debug_la_CPPFLAGS  = $(AM_CPPFLAGS)
+tuna_libtuna_debug_la_LIBADD    = $(LIBM)
 
-# Two small, C89-compliant source files comprise the entire library
-# They can be copied directly into other projects if desired
-tuna_libtuna_la_SOURCES = tuna/tuna.c tuna/tuna.h
-tuna_libtuna_la_CFLAGS  = $(AM_CFLAGS) $(STDC89)
-tuna_libtuna_la_LIBADD  = $(LIBM)
+# ...and reusing the libtuna-debug settings, prepare an assertless library.
+dist_doc_DATA            += README.rst
+include_HEADERS          += tuna/tuna.h
+lib_LTLIBRARIES          += tuna/libtuna.la
+tuna_libtuna_la_SOURCES   = $(tuna_libtuna_debug_la_SOURCES)
+tuna_libtuna_la_CFLAGS    = $(tuna_libtuna_debug_la_CFLAGS)
+tuna_libtuna_la_CPPFLAGS  = $(tuna_libtuna_debug_la_CPPFLAGS) -DNDEBUG
+tuna_libtuna_la_LIBADD    = $(tuna_libtuna_debug_la_LIBADD)
 
 # C99-based example programs with sources installed alongside the documentation
 noinst_PROGRAMS        += examples/basic
@@ -66,9 +77,9 @@ dist_check_SCRIPTS   += tests/smallsort.sh
 TESTS                += tests/smallsort.sh
 
 # CDFLIB might be handy for development but it is not installed
-# include_HEADERS           = cdflib/cdflib.h
-noinst_LTLIBRARIES          = cdflib/libcdflib.la
-cdflib_libcdflib_la_SOURCES = cdflib/cdflib.c  cdflib/cdflib.h
+# include_HEADERS            = cdflib/cdflib.h
+noinst_LTLIBRARIES          += cdflib/libcdflib.la
+cdflib_libcdflib_la_SOURCES  = cdflib/cdflib.c  cdflib/cdflib.h
 
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
