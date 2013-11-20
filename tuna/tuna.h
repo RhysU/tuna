@@ -19,12 +19,13 @@
 
 /** \file
  * Tuna public API.
+ * Designed to have the minimial possible set of dependencies.
  */
 
 #ifndef TUNA_H
 #define TUNA_H
 
-#include <sys/types.h>
+#include <stddef.h>
 
 /**
  * Macros to count the number of array elements at compile time.  Provides both
@@ -390,15 +391,17 @@ tuna_algo_default(const int nk);
 
 /**
  * Kernel-independent state required for each autotuning site.
- * Contents are internally managed but a non-opaque type
- * is used so the compiler may compute this POD type's size.
+ * Contents are internally managed but a non-opaque type is used so
+ * the compiler may compute this POD type's size.  Member \c tv is
+ * deliberately opaque and therefore independent of \c time_t and \c
+ * long representation caveat both fitting into the buffer).  It is also
+ * Fortran \c ISO_C_BINDING friendly.
  */
 typedef struct tuna_site {
-    tuna_algo al;      /**< The chosen tuning algorithm.                     */
-    tuna_seed sd;      /**< Random number generator state.                   */
-    int       ik;      /**< Index of the most recently selected chunk.       */
-    time_t    tv_sec;  /**< Stores seconds from clock_gettime in tuna_pre(). */
-    long      tv_nsec; /**< Stores nanos from clock_gettime in tuna_pre().   */
+    tuna_algo al;      /**< The chosen tuning algorithm.               */
+    tuna_seed sd;      /**< Random number generator state.             */
+    int       ik;      /**< Index of the most recently selected chunk. */
+    char      ts[16];  /**< Stores clock_gettime(2) within tuna_pre(). */
 } tuna_site;
 
 /**

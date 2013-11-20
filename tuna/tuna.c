@@ -9,17 +9,16 @@
 /** \file
  * Tuna library implementation as a single ANSI C89 compilation unit.
  *
- * As library eschews features beyond C89, having a single compilation unit may
- * be important to permit effective interprocedural optimization.  It also
- * simplifies adoption by other projects as it may simply be copied into an
- * existing build tree.
+ * As library avoids features beyond C89 and the necessary evil of POSIX
+ * 2001, having a single compilation unit may be important to permit
+ * effective interprocedural optimization.  It also simplifies adoption by
+ * other projects as it may simply be copied into an existing build tree.
  */
+#include <tuna.h>
 
 #if (_POSIX_C_SOURCE < 200112L)
 #define _POSIX_C_SOURCE (200112L)
 #endif
-
-#include <tuna.h>
 
 #include <assert.h>
 #include <ctype.h>
@@ -29,6 +28,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 #include <time.h>
 
@@ -655,10 +655,13 @@ tuna_pre(tuna_site* st,
     /* Delegate chunk selection to tuna_pre_cost */
     tuna_pre_cost(st, ks, nk);
 
-    /* Glimpse at the clock so we may compute elapsed time in tuna_post() */
+    /* Glimpse at the clock so we may compute elapsed time in tuna_post(). */
+    /* Calling memcpy a side effect of exposing only opaque st->tv buffer. */
     clock_gettime(TUNA_CLOCK, &ts);
-    st->tv_sec  = ts.tv_sec;
-    st->tv_nsec = ts.tv_nsec;
+    assert(sizeof(ts.tv_sec ) <= 8);
+    assert(sizeof(ts.tv_nsec) <= 8);
+    memcpy(&st->ts[0], &ts.tv_sec,  sizeof(ts.tv_sec ));
+    memcpy(&st->ts[8], &ts.tv_nsec, sizeof(ts.tv_nsec));
 
     return st->ik;
 }
@@ -668,12 +671,17 @@ tuna_post(tuna_site*  st,
           tuna_chunk* ks)
 {
     /* Glimpse at the clock and compute double-valued elapsed time */
-    struct timespec te;
+    /* Calling memcpy a side effect of exposing only opaque st->tv buffer. */
+    struct timespec ts, te;
     double elapsed;
     clock_gettime(TUNA_CLOCK, &te);
-    elapsed  = te.tv_nsec - st->tv_nsec;  /* Nanoseconds...  */
-    elapsed *= 1e-9;                      /* ...to seconds   */
-    elapsed += te.tv_sec  - st->tv_sec;   /* ...plus seconds */
+    assert(sizeof(ts.tv_sec ) <= 8);
+    assert(sizeof(ts.tv_nsec) <= 8);
+    memcpy(&ts.tv_sec,  &st->ts[0], sizeof(ts.tv_sec ));
+    memcpy(&ts.tv_nsec, &st->ts[8], sizeof(ts.tv_nsec));
+    elapsed  = te.tv_nsec - ts.tv_nsec;  /* Nanoseconds...  */
+    elapsed *= 1e-9;                     /* ...to seconds   */
+    elapsed += te.tv_sec  - ts.tv_sec;   /* ...plus seconds */
 
     /* Delegate recording the observation to tuna_post_cost() */
     tuna_post_cost(st, ks, elapsed);
