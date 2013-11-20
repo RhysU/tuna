@@ -68,15 +68,6 @@ public:
 
 /** @} */
 
-/**
- * Compile-time static assertion macro from Ralf Holly's <a
- * href="http://drdobbs.com/184401873">Compile Time Assertions</a>.
- */
-#define tuna_assert_static(e)             \
-    do {                                  \
-        enum { assert_static__ = 1/(e) }; \
-    } while (0)
-
 #ifdef __cplusplus
 extern "C" {
 #endif
