@@ -30,22 +30,23 @@ tuna_libtuna_la_CPPFLAGS  = $(tuna_libtuna_debug_la_CPPFLAGS) -DNDEBUG
 tuna_libtuna_la_LIBADD    = $(tuna_libtuna_debug_la_LIBADD)
 
 # C99-based example programs with sources installed alongside the documentation
+# Use libtuna-debug.la when performance is noncritical to improve coverage.
 noinst_PROGRAMS        += examples/basic
 examples_basic_SOURCES  = examples/basic.c
 examples_basic_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-examples_basic_LDADD    = tuna/libtuna.la $(LIBM)
+examples_basic_LDADD    = tuna/libtuna-debug.la $(LIBM)
 dist_doc_DATA          += $(examples_basic_SOURCES)
 
 noinst_PROGRAMS           += examples/algodive
 examples_algodive_SOURCES  = examples/algodive.c
 examples_algodive_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-examples_algodive_LDADD    = tuna/libtuna.la $(LIBM)
+examples_algodive_LDADD    = tuna/libtuna-debug.la $(LIBM)
 dist_doc_DATA             += $(examples_algodive_SOURCES)
 
 noinst_PROGRAMS            += examples/smallsort
 examples_smallsort_SOURCES  = examples/smallsort.c
 examples_smallsort_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-examples_smallsort_LDADD    = tuna/libtuna.la $(LIBM)
+examples_smallsort_LDADD    = tuna/libtuna-debug.la $(LIBM)
 dist_doc_DATA              += $(examples_smallsort_SOURCES)
 
 # C99-based test programs
@@ -54,19 +55,19 @@ TESTS               += tests/stats
 noinst_PROGRAMS     += tests/stats
 tests_stats_SOURCES  = tests/stats.c tests/fct.h
 tests_stats_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-tests_stats_LDADD    = tuna/libtuna.la $(LIBM)
+tests_stats_LDADD    = tuna/libtuna-debug.la $(LIBM)
 
 TESTS               += tests/welch
 noinst_PROGRAMS     += tests/welch
 tests_welch_SOURCES  = tests/welch.c tests/fct.h
 tests_welch_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-tests_welch_LDADD    = tuna/libtuna.la $(LIBM)
+tests_welch_LDADD    = tuna/libtuna-debug.la $(LIBM)
 
 TESTS               += tests/chunk
 noinst_PROGRAMS     += tests/chunk
 tests_chunk_SOURCES  = tests/chunk.c tests/fct.h
 tests_chunk_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-tests_chunk_LDADD    = tuna/libtuna.la $(LIBM)
+tests_chunk_LDADD    = tuna/libtuna-debug.la $(LIBM)
 
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh
