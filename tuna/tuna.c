@@ -645,6 +645,20 @@ tuna_post_cost(tuna_site*  st,
     tuna_chunk_obs(ks + st->ik, cost);
 }
 
+/**
+ * A minimal, standard-compliant <code>struct timespec</code> to provide sane
+ * alignment-aware <code>sizeof</code> behavior for the <code>memcpy(3)</code>
+ * operation in \ref tuna_pre() and \ref tuna_post().  Required as <a
+ * href="http://pubs.opengroup.org/onlinepubs/009695299/basedefs/time.h.html">man
+ * time.h</a> states "The <time.h> header shall declare the structure timespec,
+ * which has at least the following members..." so <code>sizeof(struct
+ * timespec)</code> may vary in undesired ways on conforming systems.
+ */
+struct tuna_timespec_minimal {
+    time_t tv_sec;
+    long   tv_nsec;
+};
+
 int
 tuna_pre(tuna_site* st,
          const tuna_chunk* ks,
@@ -656,12 +670,12 @@ tuna_pre(tuna_site* st,
     tuna_pre_cost(st, ks, nk);
 
     /* Glimpse at the clock so we may compute elapsed time in tuna_post(). */
-    /* Calling memcpy a side effect of exposing only opaque st->tv buffer. */
     clock_gettime(TUNA_CLOCK, &ts);
-    tuna_assert_static(sizeof(ts.tv_sec ) <= 8);
-    tuna_assert_static(sizeof(ts.tv_nsec) <= 8);
-    memcpy(&st->ts[0], &ts.tv_sec,  sizeof(ts.tv_sec ));
-    memcpy(&st->ts[8], &ts.tv_nsec, sizeof(ts.tv_nsec));
+
+    /* Stash the time in the opaque st->ts buffer            */
+    /* (after being certain the buffer is adequately sized). */
+    tuna_assert_static(sizeof(st->ts) >= sizeof(struct tuna_timespec_minimal));
+    memcpy(st->ts, &ts, sizeof(struct tuna_timespec_minimal));
 
     return st->ik;
 }
@@ -670,15 +684,18 @@ double
 tuna_post(tuna_site*  st,
           tuna_chunk* ks)
 {
-    /* Glimpse at the clock and compute double-valued elapsed time */
-    /* Calling memcpy a side effect of exposing only opaque st->tv buffer. */
     struct timespec ts, te;
     double elapsed;
+
+    /* Glimpse at the clock */
     clock_gettime(TUNA_CLOCK, &te);
-    tuna_assert_static(sizeof(ts.tv_sec ) <= 8);
-    tuna_assert_static(sizeof(ts.tv_nsec) <= 8);
-    memcpy(&ts.tv_sec,  &st->ts[0], sizeof(ts.tv_sec ));
-    memcpy(&ts.tv_nsec, &st->ts[8], sizeof(ts.tv_nsec));
+
+    /* Retrieve tuna_pre time from the opaque st->ts buffer  */
+    /* (after being certain the buffer is adequately sized). */
+    tuna_assert_static(sizeof(st->ts) >= sizeof(struct tuna_timespec_minimal));
+    memcpy(&ts, st->ts, sizeof(struct tuna_timespec_minimal));
+
+    /* Compute double-valued elapsed time */
     elapsed  = te.tv_nsec - ts.tv_nsec;  /* Nanoseconds...  */
     elapsed *= 1e-9;                     /* ...to seconds   */
     elapsed += te.tv_sec  - ts.tv_sec;   /* ...plus seconds */
