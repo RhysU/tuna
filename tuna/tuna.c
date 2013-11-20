@@ -15,13 +15,21 @@
  * existing build tree.
  */
 
-/* This is hackish. */
 #if (_POSIX_C_SOURCE < 200112L)
 #define _POSIX_C_SOURCE (200112L)
 #endif
 
 #include <tuna.h>
 
+#include <assert.h>
+#include <ctype.h>
+#include <errno.h>
+#include <float.h>
+#include <math.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
 #include <time.h>
 
 #ifndef NAN

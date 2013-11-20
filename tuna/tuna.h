@@ -25,15 +25,6 @@
 #ifndef TUNA_H
 #define TUNA_H
 
-#include <assert.h>
-#include <ctype.h>
-#include <errno.h>
-#include <float.h>
-#include <math.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 #include <sys/types.h>
 
 /**
