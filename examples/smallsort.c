@@ -23,15 +23,16 @@ void sort_insertion(int a[], int array_size);
 void sort_qsort    (int a[], int array_size);
 void sort_heap     (int a[], int array_size);
 
-static tuna_site  s;     // Normally s and k would be inside smallsort()
-static tuna_chunk k[3];  // but they are external to permit querying them
+static tuna_site  si;     // Normally si and ks would be inside smallsort()
+static tuna_chunk ks[3];  // but they are global to permit querying them
 void smallsort(int a[], int n) {
-    switch (tuna_pre(&s, k, tuna_countof(k))) {
+    tuna_stack st;
+    switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
         default: sort_insertion(a, n); break;
         case 1:  sort_qsort    (a, n); break;
         case 2:  sort_heap     (a, n); break;
     }
-    tuna_post(&s, k);
+    tuna_post(&st, ks);
 }
 
 int main(int argc, char *argv[])
@@ -55,12 +56,12 @@ int main(int argc, char *argv[])
 
     // Display settings and static memory overhead required for autotuning
     printf("niter=%d, nelem=%d, memory=%zd bytes\n",
-           niter, nelem, sizeof(s) + sizeof(k));
+           niter, nelem, sizeof(si) + sizeof(ks));
 
     // Display observations from each alternative
-    for (int i = 0; i < tuna_countof(k); ++i) {
+    for (int i = 0; i < tuna_countof(ks); ++i) {
         tuna_stats o = {};
-        tuna_chunk_merge(&o, k + i);
+        tuna_chunk_merge(&o, ks + i);
         printf("%12s\tm=%g,\ts=%g,\tc=%zd\n", names[i],
             tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o));
     }

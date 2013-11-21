@@ -27,14 +27,15 @@ three candidate ``O(n ln n)`` sorting algorithms with Tuna::
     #include <tuna.h>
 
     void smallsort(int a[], int n) {
-        static tuna_site  s;
-        static tuna_chunk k[3];
-        switch (tuna_pre(&s, k, tuna_countof(k))) {
+        static tuna_site  si;
+        static tuna_chunk ks[3];
+        tuna_stack st;
+        switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
             default: sort_insertion(a, n); break;
             case 1:  sort_qsort    (a, n); break;
             case 2:  sort_heap     (a, n); break;
         }
-        tuna_post(&s, k);
+        tuna_post(&st, ks);
     }
 
 We just wrapped ``sort_insertion()``, ``sort_qsort()`` and ``sort_heap()`` so
@@ -42,13 +43,15 @@ that the chunk of logic selected on any invocation of ``smallsort()`` is
 dynamically modified based on the observed performance thus far.  Nothing more
 is required.
 
-Generally, each call site autotuned by Tuna has an associated ``tuna_site`` and
+Generally, each call site autotuned by Tuna has a long-lived ``tuna_site`` and
 a contiguous array of ``tuna_chunk`` instances, one per chunk under
 consideration.  Here, static storage is used to ensure both are
-zero-initialized and that they persist across calls.  Sensible algorithmic
-defaults are chosen, but some runtime-selection of behavior can be had.  For
-details, look in `tuna.h <tuna/tuna.h>`_ for the ``TUNA_ALGO`` and
-``TUNA_SEED`` environment variables.
+zero-initialized and that they persist across calls.  Additionally, a
+``tuna_stack`` shuttles stack-oriented, one-time information from
+``tuna_pre()`` to ``tuna_post()``.  Sensible algorithmic defaults are chosen,
+but some runtime-selection of behavior can be had.  For details, look in
+`tuna.h <tuna/tuna.h>`_ for the ``TUNA_ALGO`` and ``TUNA_SEED`` environment
+variables.
 
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::

@@ -24,33 +24,34 @@ int main(int argc, char *argv[])
     const double mB    = argc > 4 ? atof(argv[4]) :   10.1; // Case B mean?
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
 
-    static tuna_site   s;                 // Notice zero initialization
-    static tuna_chunk k[2];               // Notice zero initialization
+    static tuna_site  si;                 // Notice zero initialization
+    tuna_stack        st;                 // Stack-based state
+    static tuna_chunk ks[2];              // Notice zero initialization
     tuna_seed seed = tuna_seed_default(); // Used only to simulate chunk timings
     for (int i = 0; i < niter; ++i) {
 
         // Autotune over the alternatives (simulating chunk-specific costs)
-        // To track runtime via TUNA_CLOCK, call tuna_post(&s, k) instead
+        // To track runtime via TUNA_CLOCK, call tuna_post(&si, ks) instead
         double cost;
-        switch (tuna_pre(&s, k, tuna_countof(k))) {
+        switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
             default: cost = mA + tuna_rand_n01(&seed)*sA;
                      break;
             case 1:  cost = mB + tuna_rand_n01(&seed)*sB;
                      break;
         }
-        tuna_post_cost(&s, k, cost);
+        tuna_post_cost(&st, ks, cost);
 
     }
 
     // Display settings and static memory overhead required for autotuning
     printf("niter=%d, mA=%g, sA=%g, mB=%g, sB=%g, memory=%zd bytes\n",
-           niter, mA, sA, mB, sB, sizeof(s) + sizeof(k));
+           niter, mA, sA, mB, sB, sizeof(si) + sizeof(ks));
 
     // Display observations from each alternative
-    for (int i = 0; i < tuna_countof(k); ++i) {
+    for (int i = 0; i < tuna_countof(ks); ++i) {
         tuna_stats o = {};
-        tuna_chunk_merge(&o, k + i);
-        printf("m%c=%g, s%c=%g, c%c=%zd\n",
+        tuna_chunk_merge(&o, ks + i);
+        printf("m%c=%g, si%c=%g, c%c=%zd\n",
                'A' + i, tuna_stats_avg(&o),
                'A' + i, tuna_stats_std(&o),
                'A' + i, tuna_stats_cnt(&o));

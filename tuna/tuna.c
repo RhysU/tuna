@@ -616,29 +616,30 @@ tuna_algo_zero(const int nk,
 /* TODO Do something intelligent with clock_getres(2) information */
 
 int
-tuna_pre_cost(tuna_site* st,
+tuna_pre_cost(tuna_site* si,
+              tuna_stack* st,
               const tuna_chunk* ks,
               const int nk)
 {
     /* Ensure a zero-initialize st argument produces good behavior by... */
-    if (!st->al) {
+    if (!si->al) {
         /* ...providing a default algorithm when not set, and */
-        st->al = tuna_algo_default(nk);
+        si->al = tuna_algo_default(nk);
 
-        if (!st->sd) {
+        if (!si->sd) {
             /* ...providing a default seed when not set. */
-            st->sd = tuna_seed_default();
+            si->sd = tuna_seed_default();
         }
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    st->ik = st->al(nk, ks, &st->sd);
+    st->ik = si->al(nk, ks, &si->sd);
 
     return st->ik;
 }
 
 void
-tuna_post_cost(tuna_site*  st,
+tuna_post_cost(const tuna_stack* st,
                tuna_chunk* ks,
                const double cost)
 {
@@ -660,16 +661,18 @@ struct tuna_timespec_minimal {
 };
 
 int
-tuna_pre(tuna_site* st,
+tuna_pre(tuna_site* si,
+         tuna_stack* st,
          const tuna_chunk* ks,
          const int nk)
 {
     struct timespec ts;
 
     /* Delegate chunk selection to tuna_pre_cost */
-    tuna_pre_cost(st, ks, nk);
+    tuna_pre_cost(si, st, ks, nk);
 
     /* Glimpse at the clock so we may compute elapsed time in tuna_post(). */
+    /* Done after algorithm performed to avoid accumulating its runtime.   */
     clock_gettime(TUNA_CLOCK, &ts);
 
     /* Stash the time in the opaque st->ts buffer            */
@@ -681,13 +684,13 @@ tuna_pre(tuna_site* st,
 }
 
 double
-tuna_post(tuna_site*  st,
+tuna_post(const tuna_stack* st,
           tuna_chunk* ks)
 {
     struct timespec ts, te;
     double elapsed;
 
-    /* Glimpse at the clock */
+    /* Glimpse at the clock before bookkeeping to ignore its overhead. */
     clock_gettime(TUNA_CLOCK, &te);
 
     /* Retrieve tuna_pre time from the opaque st->ts buffer  */

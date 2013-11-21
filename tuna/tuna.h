@@ -401,34 +401,41 @@ tuna_algo_default(const int nk);
  */
 
 /**
- * Kernel-independent state required for each autotuning site.
- * Contents are internally managed but a non-opaque type is used so
- * the compiler may compute this POD type's size.  Member \c tv is
- * deliberately opaque and therefore independent of \c time_t and \c
- * long representation caveat both fitting into the buffer).  It is also
- * Fortran \c ISO_C_BINDING friendly.
+ * Chunk-independent state maintained \e once for each autotuning site.
+ * Members are managed by Tuna but a non-opaque type is used so the compiler
+ * may compute this POD type's size to permit \c static instances.
  */
 typedef struct tuna_site {
-    tuna_algo al;      /**< The chosen tuning algorithm.               */
-    tuna_seed sd;      /**< Random number generator state.             */
-    int       ik;      /**< Index of the most recently selected chunk. */
-    char      ts[16];  /**< Stores clock_gettime(2) within tuna_pre(). */
+    tuna_algo al; /**< The chosen tuning algorithm.   */
+    tuna_seed sd; /**< Random number generator state. */
 } tuna_site;
+
+/**
+ * Chunk-independent state maintained for \e every autotuned invocation.
+ * Members are managed by Tuna but a non-opaque type is used so the compiler
+ * may compute this POD type's size to permit stack-allocated instances.  Stack
+ * allocation is recommended to allow reentrant usage of the library.
+ */
+typedef struct tuna_stack {
+    int  ik;      /**< Index of the most recently selected chunk. */
+    char ts[16];  /**< Stores clock_gettime(2) within tuna_pre(). */
+} tuna_stack;
 
 /**
  * Invoke the currently selected autotuning algorithm.  Only \ref
  * tuna_post_cost() may be invoked after the selected chunk completes
  * executing.
  *
- * \param[inout] st Information local to one autotuning site.
- * \param[in   ] ks Tracks information about \c nk alternatives.
- *                  Must be stored contiguously in memory.
+ * \param[inout] si Durable information local to autotuning site.
+ * \param[inout] st Stack-based information stored from this invocation.
+ * \param[in   ] ks Durable information tracking for \c nk alternatives.
  * \param[in   ] nk How many alternatives are under consideration?
  *
  * \return The zero-based index of the chunk which should be selected.
  */
 int
-tuna_pre_cost(tuna_site* st,
+tuna_pre_cost(tuna_site* si,
+              tuna_stack* st,
               const tuna_chunk* ks,
               const int nk);
 
@@ -437,14 +444,14 @@ tuna_pre_cost(tuna_site* st,
  * metric.  Either \ref tuna_pre() or \ref tuna_pre_cost() should have been
  * invoked beforehand.
  *
- * \param[inout] st   Information local to one autotuning site.
- * \param[in   ] ks   Tracks information about the alternatives.
+ * \param[in   ] st   Stack-based information from one autotuned invocation.
+ * \param[inout] ks   Updated with information learned from chosen alternative.
  * \param[in   ] cost User-provided measure of the employed chunk's cost.
  *                    This may be elapsed time or some sophisticated measure.
  *                    It should be strictly positive.  Lower means better.
  */
 void
-tuna_post_cost(tuna_site*  st,
+tuna_post_cost(const tuna_stack* st,
                tuna_chunk* ks,
                const double cost);
 
@@ -453,15 +460,16 @@ tuna_post_cost(tuna_site*  st,
  * or \ref tuna_post_cost() may be invoked after the selected chunk completes
  * executing.
  *
- * \param[inout] st Information local to one autotuning site.
- * \param[in   ] ks Tracks information about \c nk alternatives.
- *                  Must be stored contiguously in memory.
+ * \param[inout] si Durable information local to one autotuning site.
+ * \param[inout] st Stack-based information stored from this invocation.
+ * \param[in   ] ks Durable information tracking for \c nk alternatives.
  * \param[in   ] nk How many alternatives are under consideration?
  *
  * \return The zero-based index of the chunk which should be selected.
  */
 int
-tuna_pre(tuna_site* st,
+tuna_pre(tuna_site* si,
+         tuna_stack* st,
          const tuna_chunk* ks,
          const int nk);
 
@@ -470,13 +478,13 @@ tuna_pre(tuna_site* st,
  * internally-managed elapsed time via an appropriate clock.  Method \ref
  * tuna_pre() should have been invoked before the chunk began executing.
  *
- * \param[inout] st   Information local to one autotuning site.
- * \param[in   ] ks   Tracks information about the alternatives.
+ * \param[in   ] st Stack-based information from one autotuned invocation.
+ * \param[inout] ks Updated with information learned from chosen alternative.
  *
  * \return The inclusive process time in seconds.
  */
 double
-tuna_post(tuna_site*  st,
+tuna_post(const tuna_stack* st,
           tuna_chunk* ks);
 
 /** @} */
