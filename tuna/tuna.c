@@ -752,7 +752,25 @@ tuna_fprint(void *stream,
             const int nk,
             const char *prefix)
 {
-    return tuna_fprint(stream, st, ks, nk, prefix);
+    int nwritten = tuna_site_fprint(stream, st, prefix);
+    if (nwritten >= 0) {
+        int status, ik;
+        status = fprintf(stream,
+                         "%s"
+                         "%" STRINGIFY(DBL_DIG) "s\n",
+                         prefix[0] ? " " : "",
+                         "site");
+        nwritten = status >= 0
+                 ? nwritten + status
+                 : status;
+        for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
+            status = tuna_chunk_fprint(stream, ks + ik, prefix);
+            nwritten = status >= 0
+                     ? nwritten + status
+                     : status;
+        }
+    }
+    return nwritten;
 }
 
 int
@@ -809,20 +827,4 @@ tuna_site_fprintf(void *stream,
                  : status;
     }
     return nwritten;
-}
-
-int
-tuna_fprintf(void *stream,
-             const tuna_site* st,
-             const tuna_chunk ks[],
-             const int nk,
-             const char *format,
-             ...)
-{
-    va_list ap;
-
-    va_start(ap, format);
-    /* TODO */
-    va_end(ap);
-    return -1;
 }
