@@ -358,19 +358,19 @@ tuna_welch1(double xA, double sA2, size_t nA,
  * \return The zero-based index of the chunk that has been selected.
  */
 typedef int (*tuna_algo)(const int nk,
-                         const tuna_chunk* ks,
+                         const tuna_chunk ks[],
                          tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 int
 tuna_algo_welch1_nuinf(const int nk,
-                       const tuna_chunk* ks,
+                       const tuna_chunk ks[],
                        tuna_seed* sd);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
 int
 tuna_algo_welch1(const int nk,
-                 const tuna_chunk* ks,
+                 const tuna_chunk ks[],
                  tuna_seed* sd);
 
 /**
@@ -379,7 +379,7 @@ tuna_algo_welch1(const int nk,
  */
 int
 tuna_algo_zero(const int nk,
-               const tuna_chunk* ks,
+               const tuna_chunk ks[],
                tuna_seed* sd);
 
 /**
@@ -436,7 +436,7 @@ typedef struct tuna_stack {
 int
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
-              const tuna_chunk* ks,
+              const tuna_chunk ks[],
               const int nk);
 
 /**
@@ -452,7 +452,7 @@ tuna_pre_cost(tuna_site* si,
  */
 void
 tuna_post_cost(const tuna_stack* st,
-               tuna_chunk* ks,
+               tuna_chunk ks[],
                const double cost);
 
 /**
@@ -470,7 +470,7 @@ tuna_post_cost(const tuna_stack* st,
 int
 tuna_pre(tuna_site* si,
          tuna_stack* st,
-         const tuna_chunk* ks,
+         const tuna_chunk ks[],
          const int nk);
 
 /**
@@ -485,7 +485,7 @@ tuna_pre(tuna_site* si,
  */
 double
 tuna_post(const tuna_stack* st,
-          tuna_chunk* ks);
+          tuna_chunk ks[]);
 
 /** @} */
 
@@ -547,7 +547,7 @@ tuna_site_fprint(void *stream,
 int
 tuna_fprint(void *stream,
             const tuna_site* st,
-            const tuna_chunk* ks,
+            const tuna_chunk ks[],
             const int nk,
             const char *prefix);
 
@@ -608,7 +608,7 @@ tuna_site_fprintf(void *stream,
 int
 tuna_fprintf(void *stream,
              const tuna_site* st,
-             const tuna_chunk* ks,
+             const tuna_chunk ks[],
              const int nk,
              const char *format,
              ...);

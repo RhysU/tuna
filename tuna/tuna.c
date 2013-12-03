@@ -537,7 +537,7 @@ tuna_algo_default(const int nk)
 
 int
 tuna_algo_welch1_nuinf(const int nk,
-                       const tuna_chunk* ks,
+                       const tuna_chunk ks[],
                        tuna_seed* seed)
 {
     int i, j;
@@ -571,7 +571,7 @@ tuna_algo_welch1_nuinf(const int nk,
 
 int
 tuna_algo_welch1(const int nk,
-                 const tuna_chunk* ks,
+                 const tuna_chunk ks[],
                  tuna_seed* seed)
 {
     int i, j;
@@ -605,7 +605,7 @@ tuna_algo_welch1(const int nk,
 
 int
 tuna_algo_zero(const int nk,
-               const tuna_chunk* ks,
+               const tuna_chunk ks[],
                tuna_seed* seed)
 {
     (void) nk;
@@ -619,7 +619,7 @@ tuna_algo_zero(const int nk,
 int
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
-              const tuna_chunk* ks,
+              const tuna_chunk ks[],
               const int nk)
 {
     /* Ensure a zero-initialize st argument produces good behavior by... */
@@ -641,7 +641,7 @@ tuna_pre_cost(tuna_site* si,
 
 void
 tuna_post_cost(const tuna_stack* st,
-               tuna_chunk* ks,
+               tuna_chunk ks[],
                const double cost)
 {
     tuna_chunk_obs(ks + st->ik, cost);
@@ -664,7 +664,7 @@ struct tuna_timespec_minimal {
 int
 tuna_pre(tuna_site* si,
          tuna_stack* st,
-         const tuna_chunk* ks,
+         const tuna_chunk ks[],
          const int nk)
 {
     struct timespec ts;
@@ -686,7 +686,7 @@ tuna_pre(tuna_site* si,
 
 double
 tuna_post(const tuna_stack* st,
-          tuna_chunk* ks)
+          tuna_chunk ks[])
 {
     struct timespec ts, te;
     double elapsed;
@@ -729,7 +729,7 @@ tuna_site_fprint(void *stream,
 int
 tuna_fprint(void *stream,
             const tuna_site* st,
-            const tuna_chunk* ks,
+            const tuna_chunk ks[],
             const int nk,
             const char *prefix)
 {
@@ -768,7 +768,7 @@ tuna_site_fprintf(void *stream,
 int
 tuna_fprintf(void *stream,
              const tuna_site* st,
-             const tuna_chunk* ks,
+             const tuna_chunk ks[],
              const int nk,
              const char *format,
              ...)
