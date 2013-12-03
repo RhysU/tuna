@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
         // Output running information for best alternative (includes outliers).
         //
-        // An perfect algorithm has the final column be identically one as this
+        // A perfect algorithm has the final column be identically one as this
         // indicates the fastest-in-the-limit-of-infinite-data algorithm has
         // been universally preferred.
         tuna_stats o = {};
