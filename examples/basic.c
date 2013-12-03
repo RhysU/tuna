@@ -48,14 +48,7 @@ int main(int argc, char *argv[])
            niter, mA, sA, mB, sB, sizeof(si) + sizeof(ks));
 
     // Display observations from each alternative
-    for (int i = 0; i < tuna_countof(ks); ++i) {
-        tuna_stats o = {};
-        tuna_chunk_merge(&o, ks + i);
-        printf("m%c=%g, si%c=%g, c%c=%zd\n",
-               'A' + i, tuna_stats_avg(&o),
-               'A' + i, tuna_stats_std(&o),
-               'A' + i, tuna_stats_cnt(&o));
-    }
+    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "basic");
 
     return EXIT_SUCCESS;
 }
