@@ -767,7 +767,7 @@ tuna_chunk_fprintf(void *stream,
     nwritten = vfprintf(stream, format, ap);
     va_end(ap);
     if (nwritten >= 0) {
-        int status = -1;
+        int status;
         tuna_stats o;
         memset(&o, 0, sizeof(o));
         tuna_chunk_merge(&o, k);
@@ -776,11 +776,11 @@ tuna_chunk_fprintf(void *stream,
                          "%" STRINGIFY(DBL_DIG) "lu "
                          "%" STRINGIFY(DBL_DIG) "g +/- "
                          "%" STRINGIFY(DBL_DIG) "g\n",
-                         *format ? " " : "",
+                         format[0] ? " " : "",
                          (long unsigned) tuna_stats_cnt(&o),
                          tuna_stats_avg(&o),
                          tuna_stats_std(&o));
-        nwritten = status > 0
+        nwritten = status >= 0
                  ? nwritten + status
                  : status;
     }
@@ -793,12 +793,22 @@ tuna_site_fprintf(void *stream,
                   const char *format,
                   ...)
 {
+    int nwritten;
     va_list ap;
-
     va_start(ap, format);
-    /* TODO */
+    nwritten = vfprintf(stream, format, ap);
     va_end(ap);
-    return -1;
+    if (nwritten >= 0) {
+        int status = fprintf(stream,
+                             "%s"
+                             "%s",
+                             format[0] ? " " : "",
+                             tuna_algo_name(st->al));
+        nwritten = status >= 0
+                 ? nwritten + status
+                 : status;
+    }
+    return nwritten;
 }
 
 int
