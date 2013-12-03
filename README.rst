@@ -57,33 +57,33 @@ This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
 
     $ ./examples/smallsort 1000 150
-    niter=1000, nelem=150, memory=176 bytes
-       insertion    m=2.44684e-05,  s=4.84736e-06,  c=990
-        qsort(3)    m=3.15622e-05,  s=3.55379e-06,  c=5
-            heap    m=2.54556e-05,  s=4.70778e-07,  c=5
+    niter=1000, nelem=150, memory=160 bytes
+    insertion              481     2.45536e-05 +/-     3.00301e-06
+    qsort(3)                 5     3.90884e-05 +/-     1.18106e-05
+    heap                   514     7.19700e-06 +/-     3.18348e-06
 
-The ``m``, ``s``, and ``c`` outputs are the mean, standard deviation, and count
-observed for each chunk.  Times are given in seconds as measured by
-``CLOCK_PROCESS_CPUTIME_ID``.  On lists of 150 elements, ``sort_insertion()``
-is faster and invoked the lion's share of the time we call ``smallsort()``.
-The other two chunks are called 5 times each.  Why five?  Tuna omits the three
-worst outliers from consideration when computing statistics.  This forgives
-one-time hiccups like slow startup times.  Two more calls are required to have
-a sample standard deviation.
+The first, second, and third numeric columns are the mean, standard deviation,
+and count observed for each chunk, respectively.  Times are given in seconds as
+measured by ``CLOCK_PROCESS_CPUTIME_ID``.  On lists of 150 elements,
+``sort_insertion()`` is faster and invoked the lion's share of the time we call
+``smallsort()``.  The other two chunks are called 5 times each.  Why five?
+Tuna omits the three worst outliers from consideration when computing
+statistics.  This forgives one-time hiccups like slow startup times.  Two more
+calls are required to have a sample standard deviation.
 
 Turning to 165 and then 180 elements per list::
 
     $ ./examples/smallsort 1000 165
-    niter=1000, nelem=165, memory=176 bytes
-       insertion    m=2.8681e-05,   s=3.34925e-06,  c=645
-        qsort(3)    m=3.43562e-05,  s=4.09837e-06,  c=5
-            heap    m=2.92237e-05,  s=6.77316e-06,  c=350
+    niter=1000, nelem=165, memory=160 bytes
+    insertion              989     1.07414e-05 +/-     7.80852e-06
+    qsort(3)                 5     3.97584e-05 +/-     6.18204e-06
+    heap                     6     3.14592e-05 +/-     5.43398e-07
 
     $ ./examples/smallsort 1000 180
-    niter=1000, nelem=180, memory=176 bytes
-       insertion    m=3.34436e-05,  s=3.22715e-06,  c=22
-        qsort(3)    m=3.74018e-05,  s=3.99413e-06,  c=5
-            heap    m=3.16163e-05,  s=9.34823e-07,  c=973
+    niter=1000, nelem=180, memory=160 bytes
+    insertion               41     3.49403e-05 +/-     2.80174e-06
+    qsort(3)                 5     4.42012e-05 +/-     4.93605e-06
+    heap                   954     1.04687e-05 +/-     6.86004e-06
 
 At 165 elements per list, you can see ``sort_heap()`` has a mean performance
 closer to ``sort_insertion()`` now.  Tuna invokes it frequently, sampling it

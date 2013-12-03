@@ -60,10 +60,7 @@ int main(int argc, char *argv[])
 
     // Display observations from each alternative
     for (int i = 0; i < tuna_countof(ks); ++i) {
-        tuna_stats o = {};
-        tuna_chunk_merge(&o, ks + i);
-        printf("%12s\tm=%g,\ts=%g,\tc=%zd\n", names[i],
-            tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o));
+        tuna_chunk_fprintf(stdout, ks + i, "%-10s", names[i]);
     }
 
     return EXIT_SUCCESS;
