@@ -739,21 +739,21 @@ tuna_chunk_fprint(void *stream,
 
 int
 tuna_site_fprint(void *stream,
-                 const tuna_site* st,
+                 const tuna_site* si,
                  const char *prefix)
 {
-    return tuna_site_fprintf(stream, st, prefix);
+    return tuna_site_fprintf(stream, si, prefix);
 }
 
 int
 tuna_fprint(void *stream,
-            const tuna_site* st,
+            const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
             const char *prefix)
 {
     int status, ik;
-    int nwritten = tuna_site_fprint(stream, st, prefix);
+    int nwritten = tuna_site_fprint(stream, si, prefix);
     for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
         status = tuna_chunk_fprintf(stream,
                                     ks + ik,
@@ -802,7 +802,7 @@ tuna_chunk_fprintf(void *stream,
 
 int
 tuna_site_fprintf(void *stream,
-                  const tuna_site* st,
+                  const tuna_site* si,
                   const char *format,
                   ...)
 {
@@ -816,7 +816,7 @@ tuna_site_fprintf(void *stream,
                              "%s"
                              "%s\n",
                              format[0] ? " " : "",
-                             tuna_algo_name(st->al));
+                             tuna_algo_name(si->al));
         nwritten = status >= 0
                  ? nwritten + status
                  : status;

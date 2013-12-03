@@ -526,7 +526,7 @@ tuna_chunk_fprint(void *stream,
  * stream prefixed by \c prefix.
  *
  * @param stream <code>FILE*</code> on which output is produced.
- * @param st     Site for which information is output.
+ * @param si     Site for which information is output.
  * @param prefix A string used to prefix the output.
  *
  * @return The number of characters output on success.
@@ -534,7 +534,7 @@ tuna_chunk_fprint(void *stream,
  */
 int
 tuna_site_fprint(void *stream,
-                 const tuna_site* st,
+                 const tuna_site* si,
                  const char *prefix);
 
 /**
@@ -543,7 +543,7 @@ tuna_site_fprint(void *stream,
  * <code>FILE*</code> stream prefixed by \c prefix.
  *
  * @param stream <code>FILE*</code> on which output is produced.
- * @param st     Site for which information is output.
+ * @param si     Site for which information is output.
  * @param ks     Chunks about which information is output.
  * @param nk     Number of contiguous chunks in \c ks.
  * @param prefix A string used to prefix the output.
@@ -553,7 +553,7 @@ tuna_site_fprint(void *stream,
  */
 int
 tuna_fprint(void *stream,
-            const tuna_site* st,
+            const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
             const char *prefix);
@@ -581,7 +581,7 @@ tuna_chunk_fprintf(void *stream,
  * \copybrief tuna_site_fprint
  *
  * @param stream <code>FILE*</code> on which output is produced.
- * @param k      Chunk for which information is output.
+ * @param si     Site for which information is output.
  * @param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
@@ -592,7 +592,7 @@ tuna_chunk_fprintf(void *stream,
  */
 int
 tuna_site_fprintf(void *stream,
-                  const tuna_site* st,
+                  const tuna_site* si,
                   const char *format,
                   ...);
 
