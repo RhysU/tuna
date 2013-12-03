@@ -709,3 +709,74 @@ tuna_post(const tuna_stack* st,
 
     return elapsed;
 }
+
+int
+tuna_chunk_fprint(void *stream,
+                  const tuna_chunk* k,
+                  const char *prefix)
+{
+    return tuna_chunk_fprintf(stream, k, prefix);
+}
+
+int
+tuna_site_fprint(void *stream,
+                 const tuna_site* st,
+                 const char *prefix)
+{
+    return tuna_site_fprintf(stream, st, prefix);
+}
+
+int
+tuna_fprint(void *stream,
+            const tuna_site* st,
+            const tuna_chunk* ks,
+            const int nk,
+            const char *prefix)
+{
+    return tuna_fprint(stream, st, ks, nk, prefix);
+}
+
+int
+tuna_chunk_fprintf(void *stream,
+                   const tuna_chunk* k,
+                   const char *format,
+                   ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    /* TODO */
+    va_end(ap);
+
+    return -1;
+}
+
+int
+tuna_site_fprintf(void *stream,
+                  const tuna_site* st,
+                  const char *format,
+                  ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    /* TODO */
+    va_end(ap);
+    return -1;
+}
+
+int
+tuna_fprintf(void *stream,
+             const tuna_site* st,
+             const tuna_chunk* ks,
+             const int nk,
+             const char *format,
+             ...)
+{
+    va_list ap;
+
+    va_start(ap, format);
+    /* TODO */
+    va_end(ap);
+    return -1;
+}
