@@ -489,6 +489,132 @@ tuna_post(const tuna_stack* st,
 
 /** @} */
 
+/**
+ * Human-readable output for summarizing runtime behavior.
+ *
+ * The simpler, non-<code>varargs</code> <code>*_fprint</code> routines are
+ * intended for non-C purposes while the more flexible but less typesafe
+ * <code>*_fprintf</code> variants are intended for C usage.
+ * @{
+ */
+
+/**
+ * Output a single status line about \ref tuna_chunk k to <code>FILE*</code>
+ * stream prefixed by \c prefix.
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param st     Site for which information is output.
+ * @param prefix A string used to prefix the output.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_chunk_fprint(void *stream,
+                  const tuna_chunk* k,
+                  const char *prefix);
+
+/**
+ * Output a single status line about \ref tuna_site st to <code>FILE*</code>
+ * stream prefixed by \c prefix.
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param st     Site for which information is output.
+ * @param prefix A string used to prefix the output.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_site_fprint(void *stream,
+                 const tuna_site* st,
+                 const char *prefix);
+
+/**
+ * Output <code>nk+1</code> status line(s) about \ref tuna_site st and
+ * associated \ref tuna_chunk <code>ks[0]</code>, ..., <code>ks[nk-1]</code> to
+ * <code>FILE*</code> stream prefixed by \c prefix.
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param st     Site for which information is output.
+ * @param ks     Chunks about which information is output.
+ * @param nk     Number of contiguous chunks in \c ks.
+ * @param prefix A string used to prefix the output.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_fprint(void *stream,
+            const tuna_site* st,
+            const tuna_chunk* ks,
+            const int nk,
+            const char *prefix);
+
+/**
+ * \copybrief tuna_chunk_fprint
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param k      Chunk for which information is output.
+ * @param format A <code>printf</code>-style specifying prefixing
+ *               the output.  Any subsequent arguments are consumed
+ *               as if <code>fprintf(stream, format, ...)</code> had
+ *               been called.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_chunk_fprintf(void *stream,
+                   const tuna_chunk* k,
+                   const char *format,
+                   ...);
+
+/**
+ * \copybrief tuna_site_fprint
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param k      Chunk for which information is output.
+ * @param format A <code>printf</code>-style specifying prefixing
+ *               the output.  Any subsequent arguments are consumed
+ *               as if <code>fprintf(stream, format, ...)</code> had
+ *               been called.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_site_fprintf(void *stream,
+                  const tuna_site* st,
+                  const char *format,
+                  ...);
+
+/**
+ * \copybrief tuna_fprint
+ *
+ *
+ * @param stream <code>FILE*</code> on which output is produced.
+ * @param st     Site for which information is output.
+ * @param ks     Chunks about which information is output.
+ * @param nk     Number of contiguous chunks in \c ks.
+ * @param format A <code>printf</code>-style specifying prefixing
+ *               the output.  Any subsequent arguments are consumed
+ *               as if <code>fprintf(stream, format, ...)</code> had
+ *               been called.
+ *
+ * @return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+tuna_fprintf(void *stream,
+             const tuna_site* st,
+             const tuna_chunk* ks,
+             const int nk,
+             const char *format,
+             ...);
+
+/** @} */
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
