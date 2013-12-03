@@ -4,5 +4,10 @@ compiler:
   - clang
 before_script:
   - sudo apt-get -qq update
+  - sudo apt-get install doxygen graphviz
 script:
-  - ./bootstrap && ./configure && make all check VERBOSE=1
+  - ./bootstrap
+  - ./configure
+  - make all
+  - make check VERBOSE=1
+  - make html

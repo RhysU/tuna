@@ -85,3 +85,12 @@ cdflib_libcdflib_la_SOURCES  = cdflib/cdflib.c  cdflib/cdflib.h
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status libtool
+
+# Documentation hooks in with the 'html' target
+html-local: doxygen-run
+
+# Target for all documentation
+docs: doxygen-run
+
+# Required for AX_PROG_DOXYGEN
+include doxygen.am

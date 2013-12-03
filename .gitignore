@@ -44,3 +44,6 @@ examples/smallsort
 
 # Study results
 result.*.*
+
+# Generated documentation
+docs/*

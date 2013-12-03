@@ -23,6 +23,11 @@ AC_SEARCH_LIBS([clock_gettime],[rt])
 LT_INIT
 LT_LIB_M
 AC_SUBST([LIBTOOL_DEPS])
+DX_DOXYGEN_FEATURE([ON])
+DX_DOT_FEATURE([ON])
+DX_HTML_FEATURE([ON])
+DX_MAN_FEATURE([ON])
+DX_INIT_DOXYGEN([tuna],[doxygen.cfg],[docs])
 AC_CONFIG_FILES([
   Makefile
 ])

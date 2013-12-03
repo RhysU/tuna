@@ -13,7 +13,7 @@
  *
  * See the current <a
  * href="https://github.com/RhysU/tuna/blob/master/README.rst">README</a> for a
- * more detailed overview and http://github.com/RhysU/ar for project
+ * more detailed overview and http://github.com/RhysU/tuna for project
  * information.
  */
 
@@ -510,7 +510,7 @@ tuna_post(const tuna_stack* st,
  * stream prefixed by \c prefix.
  *
  * @param stream <code>FILE*</code> on which output is produced.
- * @param st     Site for which information is output.
+ * @param k      Chunk for which information is output.
  * @param prefix A string used to prefix the output.
  *
  * @return The number of characters output on success.
