@@ -752,23 +752,18 @@ tuna_fprint(void *stream,
             const int nk,
             const char *prefix)
 {
+    int status, ik;
     int nwritten = tuna_site_fprint(stream, st, prefix);
-    if (nwritten >= 0) {
-        int status, ik;
-        status = fprintf(stream,
-                         "%s"
-                         "%" STRINGIFY(DBL_DIG) "s\n",
-                         prefix[0] ? " " : "",
-                         "site");
+    for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
+        status = tuna_chunk_fprintf(stream,
+                                    ks + ik,
+                                    "%s "
+                                    "%" STRINGIFY(DBL_DIG) "d",
+                                    prefix,
+                                    ik);
         nwritten = status >= 0
                  ? nwritten + status
                  : status;
-        for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
-            status = tuna_chunk_fprint(stream, ks + ik, prefix);
-            nwritten = status >= 0
-                     ? nwritten + status
-                     : status;
-        }
     }
     return nwritten;
 }
@@ -791,9 +786,9 @@ tuna_chunk_fprintf(void *stream,
         tuna_chunk_merge(&o, k);
         status = fprintf(stream,
                          "%s"
-                         "%" STRINGIFY(DBL_DIG) "lu "
-                         "%" STRINGIFY(DBL_DIG) "g +/- "
-                         "%" STRINGIFY(DBL_DIG) "g\n",
+                         "%"  STRINGIFY(DBL_DIG) "lu "
+                         "%#" STRINGIFY(DBL_DIG) "g +/- "
+                         "%#" STRINGIFY(DBL_DIG) "g\n",
                          format[0] ? " " : "",
                          (long unsigned) tuna_stats_cnt(&o),
                          tuna_stats_avg(&o),
@@ -819,7 +814,7 @@ tuna_site_fprintf(void *stream,
     if (nwritten >= 0) {
         int status = fprintf(stream,
                              "%s"
-                             "%s",
+                             "%s\n",
                              format[0] ? " " : "",
                              tuna_algo_name(st->al));
         nwritten = status >= 0
