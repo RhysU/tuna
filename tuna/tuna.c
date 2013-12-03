@@ -517,6 +517,22 @@ trim(char* const a)
     }
 }
 
+/* Should be kept in sync with tuna_algo_default just below */
+const char *
+tuna_algo_name(tuna_algo al)
+{
+    if        (al == &tuna_algo_welch1) {
+        return "welch1";
+    } else if (al == &tuna_algo_welch1_nuinf) {
+        return "welch1_nuinf";
+    } else if (al == &tuna_algo_zero) {
+        return "zero";
+    } else {
+        return "unknown";
+    }
+}
+
+/* Should be kept in sync with tuna_algo_name just above */
 tuna_algo
 tuna_algo_default(const int nk)
 {

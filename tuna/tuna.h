@@ -383,6 +383,12 @@ tuna_algo_zero(const int nk,
                tuna_seed* sd);
 
 /**
+ * Retrieve the name of the algorithm, if known.  Otherwise, return "unknown".
+ */
+const char *
+tuna_algo_name(tuna_algo al);
+
+/**
  * Retrieve a default algorithm when one is left unspecified.  If <code>nk <
  * 2</code>, \ref tuna_algo_zero() is returned.  If the whitespace-trimmed
  * environment variable <code>TUNA_ALGO</code> case-insensitively names an
