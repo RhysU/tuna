@@ -33,6 +33,9 @@
 #include <strings.h>
 #include <time.h>
 
+#define STRINGIFY(s) STRINGIFY_HELPER(s)
+#define STRINGIFY_HELPER(s) #s
+
 #ifndef NAN
 /** C89 mechanism to obtain not-a-number. */
 #define NAN (sqrt(-1))
@@ -235,7 +238,7 @@ tuna_chunk_stats(tuna_chunk* const k)
 
 tuna_stats*
 tuna_chunk_merge(tuna_stats* const s,
-                  const tuna_chunk* const k)
+                 const tuna_chunk* const k)
 {
     size_t i;
     tuna_stats_merge(s, &k->stats);
@@ -742,13 +745,30 @@ tuna_chunk_fprintf(void *stream,
                    const char *format,
                    ...)
 {
+    int nwritten;
     va_list ap;
-
     va_start(ap, format);
-    /* TODO */
+    nwritten = vfprintf(stream, format, ap);
     va_end(ap);
-
-    return -1;
+    if (nwritten >= 0) {
+        int status = -1;
+        tuna_stats o;
+        memset(&o, 0, sizeof(o));
+        tuna_chunk_merge(&o, k);
+        status = fprintf(stream,
+                         "%s"
+                         "%" STRINGIFY(DBL_DIG) "lu "
+                         "%" STRINGIFY(DBL_DIG) "g +/- "
+                         "%" STRINGIFY(DBL_DIG) "g\n",
+                         *format ? " " : "",
+                         (long unsigned) tuna_stats_cnt(&o),
+                         tuna_stats_avg(&o),
+                         tuna_stats_std(&o));
+        nwritten = status > 0
+                 ? nwritten + status
+                 : status;
+    }
+    return nwritten;
 }
 
 int
