@@ -68,6 +68,12 @@ tuna_stats_cnt(const tuna_stats* const t)
     return t->n;
 }
 
+size_t
+tuna_stats_fastcnt(const tuna_stats* const t)
+{
+    return t->n;
+}
+
 double
 tuna_stats_avg(const tuna_stats* const t)
 {
@@ -77,7 +83,7 @@ tuna_stats_avg(const tuna_stats* const t)
 double
 tuna_stats_fastavg(const tuna_stats* const t)
 {
-    assert(tuna_stats_cnt(t) > 0);
+    assert(tuna_stats_fastcnt(t) > 0);
     return t->m;
 }
 
@@ -90,7 +96,7 @@ tuna_stats_var(const tuna_stats* const t)
 double
 tuna_stats_fastvar(const tuna_stats* const t)
 {
-    assert(tuna_stats_cnt(t) > 1);
+    assert(tuna_stats_fastcnt(t) > 1);
     return t->s / (t->n - 1);
 }
 
@@ -109,7 +115,7 @@ tuna_stats_sum(const tuna_stats* const t)
 double
 tuna_stats_faststd(const tuna_stats* const t)
 {
-    assert(tuna_stats_cnt(t) > 1);
+    assert(tuna_stats_fastcnt(t) > 1);
     return sqrt(tuna_stats_fastvar(t));
 }
 
@@ -121,7 +127,7 @@ tuna_stats_fastobs(tuna_stats* const t,
     /* Knuth shows better behavior than Welford 1962 on test data. */
     size_t n;
     double d;
-    assert(tuna_stats_cnt(t) > 0);
+    assert(tuna_stats_fastcnt(t) > 0);
     n     = ++(t->n);
     d     = x - t->m;
     t->m += d / n;

@@ -113,6 +113,12 @@ typedef struct tuna_stats {
 size_t
 tuna_stats_cnt(const tuna_stats* const t);
 
+/**
+ * Quickly obtain the running number of samples provided thus far.
+ */
+size_t
+tuna_stats_fastcnt(const tuna_stats* const t);
+
 /** Obtain the running mean. */
 double
 tuna_stats_avg(const tuna_stats* const t);
