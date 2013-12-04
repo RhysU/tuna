@@ -85,6 +85,26 @@ extern "C" {
 #endif
 
 /**
+ * Spinlocking utilities for protecting critical data structures.
+ *
+ * Spinlocks chosen as critical regions are short and lack OS-intensive calls.
+ * Also, our contention should be light.  These definitions may need to be
+ * modified depending on the compiler and/or platform used.
+ * @{
+ */
+
+/** Provides storage necessary to support one spinlock. */
+typedef volatile int tuna_spinlock;
+
+/** Lock a \ref tuna_spinlock using a GCC-defined atomic operation. */
+#define tuna_lock(spinlock)   while (__sync_lock_test_and_set(&spinlock, 1));
+
+/** Unlock a \ref tuna_spinlock using a GCC-defined atomic operation. */
+#define tuna_unlock(spinlock) while __sync_lock_release(&spinlock);
+
+/** @} */
+
+/**
  * Provides statistical accumulators for special cases of interest.
  * @{
  */
