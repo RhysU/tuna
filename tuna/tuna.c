@@ -107,16 +107,22 @@ tuna_stats_std(const tuna_stats* const t)
 }
 
 double
+tuna_stats_faststd(const tuna_stats* const t)
+{
+    assert(tuna_stats_fastcnt(t) > 1);
+    return sqrt(tuna_stats_fastvar(t));
+}
+
+double
 tuna_stats_sum(const tuna_stats* const t)
 {
     return tuna_stats_cnt(t) * tuna_stats_avg(t);
 }
 
 double
-tuna_stats_faststd(const tuna_stats* const t)
+tuna_stats_fastsum(const tuna_stats* const t)
 {
-    assert(tuna_stats_fastcnt(t) > 1);
-    return sqrt(tuna_stats_fastvar(t));
+    return tuna_stats_fastcnt(t) * tuna_stats_fastavg(t);
 }
 
 tuna_stats*

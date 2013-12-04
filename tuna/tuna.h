@@ -147,7 +147,7 @@ tuna_stats_std(const tuna_stats* const t);
 
 /**
  * Quickly obtain the running sample standard deviation
- * on precondition <code>tuna_stats_cnt(t) > 1</code>.
+ * on precondition <code>tuna_stats_fastcnt(t) > 1</code>.
  */
 double
 tuna_stats_faststd(const tuna_stats* const t);
@@ -157,8 +157,15 @@ double
 tuna_stats_sum(const tuna_stats* const t);
 
 /**
- * Accumulate a new observation \c x into statistics \c t
- * on precondition <code>tuna_stats_cnt(t) > 0</code>.
+ * Quickly obtain the running sum
+ * on precondition <code>tuna_stats_fastcnt(t) > 0</code>.
+ */
+double
+tuna_stats_fastsum(const tuna_stats* const t);
+
+/**
+ * Quickly accumulate a new observation \c x into statistics \c t on
+ * precondition <code>tuna_stats_fastcnt(t) > 0</code>.
  */
 tuna_stats*
 tuna_stats_fastobs(tuna_stats* const t,
