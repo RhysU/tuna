@@ -1,0 +1,17 @@
+# An aspirational Artistic Style (astyle) code formatting specification
+style=otbs
+add-brackets
+align-pointer=type
+align-reference=type
+convert-tabs
+indent-col1-comments
+indent-preprocessor
+indent=spaces=4
+# !indent-switches
+# !indent-cases
+keep-one-line-statements
+min-conditional-indent=0
+pad-header
+pad-oper
+preserve-date
+unpad-paren

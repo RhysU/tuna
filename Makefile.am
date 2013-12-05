@@ -4,12 +4,13 @@ ACLOCAL_AMFLAGS    = -I m4
 AM_CPPFLAGS        = -I$(top_srcdir)/tuna -I$(top_srcdir)/cdflib
 check_PROGRAMS     =
 dist_check_SCRIPTS =
+dist_doc_DATA      =
+EXTRA_DIST         =
 include_HEADERS    =
 lib_LTLIBRARIES    =
 noinst_LTLIBRARIES =
 noinst_PROGRAMS    =
 TESTS              =
-dist_doc_DATA      =
 
 # Build a debug library for internal, performance agnostic use...
 # (Two small, C89-compliant source files comprise the entire library)
@@ -82,6 +83,13 @@ TESTS                += tests/smallsort.sh
 noinst_LTLIBRARIES          += cdflib/libcdflib.la
 cdflib_libcdflib_la_SOURCES  = cdflib/cdflib.c  cdflib/cdflib.h
 
+# Ease the process of running Artistic Style on the library sources
+EXTRA_DIST += astyle.rc
+astyle:     astyle.out
+astyle.out: $(tuna_libtuna_la_SOURCES)
+	astyle --verbose --options=$(srcdir)/astyle.rc $? | tee astyle.out
+
+# Automates updating libtool dependencies when necessary
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status libtool

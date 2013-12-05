@@ -11,6 +11,7 @@
 **/*.so.*
 
 aclocal.m4
+astyle.out
 autom4te.cache
 build-aux
 config.cache
