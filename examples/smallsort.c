@@ -58,10 +58,8 @@ int main(int argc, char *argv[])
     printf("niter=%d, nelem=%d, memory=%zd bytes\n",
            niter, nelem, sizeof(si) + sizeof(ks));
 
-    // Display observations from each alternative
-    for (int i = 0; i < tuna_countof(ks); ++i) {
-        tuna_chunk_fprintf(stdout, ks + i, "%-10s", names[i]);
-    }
+    // Display summary of observations from each alternative
+    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "smallsort", names);
 
     return EXIT_SUCCESS;
 }

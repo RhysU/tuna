@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
            niter, mA, sA, mB, sB, sizeof(si) + sizeof(ks));
 
     // Display observations from each alternative
-    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "basic");
+    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "basic", NULL);
 
     return EXIT_SUCCESS;
 }

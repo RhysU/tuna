@@ -580,6 +580,9 @@ tuna_site_fprint(void *stream,
  * @param ks     Chunks about which information is output.
  * @param nk     Number of contiguous chunks in \c ks.
  * @param prefix A string used to prefix the output.
+ * @param names  If non-NULL and non-trivial, <code>names[ik]</code> identifies
+ *               the <code>ik</code>th chunk in the output.  Otherwise,
+ *               each chunk is identified by its index <code>ik</code>.
  *
  * @return The number of characters output on success.
  *         On error, a negative value is returned.
@@ -589,7 +592,8 @@ tuna_fprint(void *stream,
             const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
-            const char *prefix);
+            const char *prefix,
+            const char *names[]);
 
 /**
  * \copybrief tuna_chunk_fprint

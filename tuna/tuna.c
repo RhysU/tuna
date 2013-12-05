@@ -762,17 +762,21 @@ tuna_fprint(void *stream,
             const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
-            const char *prefix)
+            const char *prefix,
+            const char *names[])
 {
     int status, ik;
     int nwritten = tuna_site_fprint(stream, si, prefix);
     for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
-        status = tuna_chunk_fprintf(stream,
-                                    ks + ik,
-                                    "%s "
-                                    "%" STRINGIFY(DBL_DIG) "d",
-                                    prefix,
-                                    ik);
+        if (names && names[ik] && *names[ik]) {
+            status = tuna_chunk_fprintf(stream, ks + ik,
+                                        "%s %" STRINGIFY(DBL_DIG) "s",
+                                        prefix, names[ik]);
+        } else {
+            status = tuna_chunk_fprintf(stream, ks + ik,
+                                        "%s chunk%0*d",
+                                        prefix, DBL_DIG-sizeof("chunk"), ik);
+        }
         nwritten = status >= 0
                  ? nwritten + status
                  : status;
