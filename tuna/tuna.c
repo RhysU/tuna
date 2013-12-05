@@ -870,7 +870,7 @@ typedef struct tuna_registry_node {
 
 /* TODO Document. */
 tuna_registry_node*
-tuna_registry_alloc(const char* id)
+tuna_registry_alloc(const char id[])
 {
     /* Struct hack using id[1] already includes space for NULL terminator. */
     /* Using calloc(3) sets left = right = NULL and enforces termination.  */
