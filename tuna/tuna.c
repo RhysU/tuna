@@ -893,3 +893,30 @@ tuna_registry_free(tuna_registry_node* n)
         free(n);
     }
 }
+
+/** Generate a preorder accumulator producing \c acc named \c func. */
+#define TRAVERSE_PREORDER(func, node, acc)                           \
+    acc func(node* n, acc (*v)(node*, acc), acc a)                   \
+    { return !n ? a : func(n->right, v, func(n->left, v, v(n, a))); }
+
+/** Generate an inorder accumulator producing \c acc named \c func. */
+#define TRAVERSE_INORDER(func, node, acc)                            \
+    acc func(node* n, acc (*v)(node*, acc), acc a)                   \
+    { return !n ? a : func(n->right, v, v(n, func(n->left, v, a))); }
+
+/** Generate a postorder accumulator producing \c acc named \c func. */
+#define TRAVERSE_POSTORDER(func, node, acc)                           \
+    acc func(node* n, acc (*v)(node*, acc), acc a)                    \
+    { return !n ? a : v(n, func(n->right, v, func(n->left, v, a))); }
+
+/* TODO Document. */
+
+TRAVERSE_PREORDER  (tuna_registry_preorder_double,  tuna_registry_node, double )
+TRAVERSE_PREORDER  (tuna_registry_preorder_int,     tuna_registry_node, int    )
+TRAVERSE_PREORDER  (tuna_registry_preorder_size_t,  tuna_registry_node, size_t )
+TRAVERSE_INORDER   (tuna_registry_inorder_double,   tuna_registry_node, double )
+TRAVERSE_INORDER   (tuna_registry_inorder_int,      tuna_registry_node, int    )
+TRAVERSE_INORDER   (tuna_registry_inorder_size_t,   tuna_registry_node, size_t )
+TRAVERSE_POSTORDER (tuna_registry_postorder_double, tuna_registry_node, double )
+TRAVERSE_POSTORDER (tuna_registry_postorder_int,    tuna_registry_node, int    )
+TRAVERSE_POSTORDER (tuna_registry_postorder_size_t, tuna_registry_node, size_t )
