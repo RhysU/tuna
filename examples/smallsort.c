@@ -18,7 +18,7 @@
 
 #include <tuna.h>
 
-static const char *names[] = { "insertion", "qsort(3)", "heap" };
+static const char *labels[] = { "insertion", "qsort(3)", "heap" };
 void sort_insertion(int a[], int array_size);
 void sort_qsort    (int a[], int array_size);
 void sort_heap     (int a[], int array_size);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
            niter, nelem, sizeof(si) + sizeof(ks));
 
     // Display summary of observations from each alternative
-    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "smallsort", names);
+    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "smallsort", labels);
 
     return EXIT_SUCCESS;
 }
