@@ -896,7 +896,7 @@ tuna_registry_free(tuna_registry* n)
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_insert(tuna_registry **n, const char id[])
+tuna_registry_insert(tuna_registry** n, const char id[])
 {
     if (*n) {
         const int cmp = strcmp(id, (*n)->id);
@@ -914,7 +914,7 @@ tuna_registry_insert(tuna_registry **n, const char id[])
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_find(tuna_registry *n, const char id[])
+tuna_registry_find(tuna_registry* n, const char id[])
 {
     if (n) {
         const int cmp = strcmp(id, n->id);
@@ -947,12 +947,12 @@ tuna_registry_find(tuna_registry *n, const char id[])
 
 /* TODO Document. */
 
-TRAVERSE_PREORDER (tuna_registry_preorder_double,  tuna_registry, double)
-TRAVERSE_PREORDER (tuna_registry_preorder_int,     tuna_registry, int   )
-TRAVERSE_PREORDER (tuna_registry_preorder_size_t,  tuna_registry, size_t)
-TRAVERSE_INORDER  (tuna_registry_inorder_double,   tuna_registry, double)
-TRAVERSE_INORDER  (tuna_registry_inorder_int,      tuna_registry, int   )
-TRAVERSE_INORDER  (tuna_registry_inorder_size_t,   tuna_registry, size_t)
+TRAVERSE_PREORDER(tuna_registry_preorder_double,   tuna_registry, double)
+TRAVERSE_PREORDER(tuna_registry_preorder_int,      tuna_registry, int)
+TRAVERSE_PREORDER(tuna_registry_preorder_size_t,   tuna_registry, size_t)
+TRAVERSE_INORDER(tuna_registry_inorder_double,     tuna_registry, double)
+TRAVERSE_INORDER(tuna_registry_inorder_int,        tuna_registry, int)
+TRAVERSE_INORDER(tuna_registry_inorder_size_t,     tuna_registry, size_t)
 TRAVERSE_POSTORDER(tuna_registry_postorder_double, tuna_registry, double)
-TRAVERSE_POSTORDER(tuna_registry_postorder_int,    tuna_registry, int   )
+TRAVERSE_POSTORDER(tuna_registry_postorder_int,    tuna_registry, int)
 TRAVERSE_POSTORDER(tuna_registry_postorder_size_t, tuna_registry, size_t)
