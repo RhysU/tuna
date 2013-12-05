@@ -763,19 +763,32 @@ tuna_fprint(void *stream,
             const tuna_chunk ks[],
             const int nk,
             const char *prefix,
-            const char *names[])
+            const char *labels[])
 {
-    int status, ik;
-    int nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
+    int ik, nwritten, namelen, status;
+
+    /* Output a bash-like "TUNA$" prompt identifying this tuning site. */
+    nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
+
+    /* Find the maximum label length so post-label outputs may be aligned */
+    namelen = sizeof("chunk")+5;
+    if (labels) {
+        for (ik = 0; ik < nk; ++ik) {
+            if (labels[ik] && *labels[ik]) {
+                int len = strlen(labels[ik]);
+                if (len > namelen) namelen = len;
+            }
+        }
+    }
+
+    /* Output continuation-like "TUNA>", the site, labels, and statistics. */
     for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
-        if (names && names[ik] && *names[ik]) {
-            status = tuna_chunk_fprintf(stream, ks + ik,
-                                        "TUNA> %s %-" STRINGIFY(DBL_DIG) "s",
-                                        prefix, names[ik]);
+        if (labels && labels[ik] && *labels[ik]) {
+            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s %-*s",
+                                        prefix, namelen, labels[ik]);
         } else {
-            status = tuna_chunk_fprintf(stream, ks + ik,
-                                        "TUNA> %s chunk%0*d",
-                                        prefix, DBL_DIG-sizeof("chunk"), ik);
+            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*d",
+                                        prefix, namelen-sizeof("chunk"), ik);
         }
         nwritten = status >= 0
                  ? nwritten + status
