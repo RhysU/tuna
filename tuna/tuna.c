@@ -854,3 +854,42 @@ tuna_site_fprintf(void* stream,
     }
     return nwritten;
 }
+
+/******************************************************/
+/* Below here is scratch storage for half-baked ideas */
+/******************************************************/
+
+/* TODO Document.                                   */
+/* TODO Note that nodes own their \c id strings.    */
+/* TODO Add enough additional members to be useful. */
+typedef struct tuna_registry_node {
+    struct tuna_registry_node* left;  /**< Left subtree; may be \c NULL.  */
+    struct tuna_registry_node* right; /**< Right subtree; may be \c NULL. */
+    const char id[1];                 /**< Collation uses flexible struct */
+} tuna_registry_node;
+
+/* TODO Document. */
+tuna_registry_node*
+tuna_registry_alloc(const char* id)
+{
+    /* Struct hack using id[1] already includes space for NULL terminator. */
+    /* Using calloc(3) sets left = right = NULL and enforces termination.  */
+    const int n = strlen(id);
+    tuna_registry_node* p = calloc(n + sizeof(tuna_registry_node), 1);
+    if (p) {
+        memcpy((void*) p->id, (void*) id, n);
+    }
+    return p;
+}
+
+/* TODO Document. */
+void
+tuna_registry_free(tuna_registry_node* n)
+{
+    /* Postorder in which struct hack for id implies just one free(3) call. */
+    if (n) {
+        tuna_registry_free(n->left);
+        tuna_registry_free(n->right);
+        free(n);
+    }
+}
