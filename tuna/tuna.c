@@ -530,10 +530,10 @@ trim(char* const a)
 }
 
 /* Should be kept in sync with tuna_algo_default just below */
-const char *
+const char*
 tuna_algo_name(tuna_algo al)
 {
-    if        (al == &tuna_algo_welch1) {
+    if (al == &tuna_algo_welch1) {
         return "welch1";
     } else if (al == &tuna_algo_welch1_nuinf) {
         return "welch1_nuinf";
@@ -742,28 +742,28 @@ tuna_post(const tuna_stack* st,
 }
 
 int
-tuna_chunk_fprint(void *stream,
+tuna_chunk_fprint(void* stream,
                   const tuna_chunk* k,
-                  const char *prefix)
+                  const char* prefix)
 {
     return tuna_chunk_fprintf(stream, k, prefix);
 }
 
 int
-tuna_site_fprint(void *stream,
+tuna_site_fprint(void* stream,
                  const tuna_site* si,
-                 const char *prefix)
+                 const char* prefix)
 {
     return tuna_site_fprintf(stream, si, prefix);
 }
 
 int
-tuna_fprint(void *stream,
+tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
-            const char *prefix,
-            const char *labels[])
+            const char* prefix,
+            const char* labels[])
 {
     int ik, nwritten, namelen, status;
 
@@ -771,12 +771,14 @@ tuna_fprint(void *stream,
     nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
 
     /* Find the maximum label length so post-label outputs may be aligned */
-    namelen = sizeof("chunk")+5;
+    namelen = sizeof("chunk") + 5;
     if (labels) {
         for (ik = 0; ik < nk; ++ik) {
             if (labels[ik] && *labels[ik]) {
                 int len = strlen(labels[ik]);
-                if (len > namelen) namelen = len;
+                if (len > namelen) {
+                    namelen = len;
+                }
             }
         }
     }
@@ -788,19 +790,19 @@ tuna_fprint(void *stream,
                                         prefix, namelen, labels[ik]);
         } else {
             status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*d",
-                                        prefix, namelen-sizeof("chunk"), ik);
+                                        prefix, namelen - sizeof("chunk"), ik);
         }
         nwritten = status >= 0
-                 ? nwritten + status
-                 : status;
+                   ? nwritten + status
+                   : status;
     }
     return nwritten;
 }
 
 int
-tuna_chunk_fprintf(void *stream,
+tuna_chunk_fprintf(void* stream,
                    const tuna_chunk* k,
-                   const char *format,
+                   const char* format,
                    ...)
 {
     int nwritten;
@@ -823,16 +825,16 @@ tuna_chunk_fprintf(void *stream,
                          tuna_stats_avg(&o),
                          tuna_stats_std(&o));
         nwritten = status >= 0
-                 ? nwritten + status
-                 : status;
+                   ? nwritten + status
+                   : status;
     }
     return nwritten;
 }
 
 int
-tuna_site_fprintf(void *stream,
+tuna_site_fprintf(void* stream,
                   const tuna_site* si,
-                  const char *format,
+                  const char* format,
                   ...)
 {
     int nwritten;
@@ -847,8 +849,8 @@ tuna_site_fprintf(void *stream,
                              format[0] ? " " : "",
                              tuna_algo_name(si->al));
         nwritten = status >= 0
-                 ? nwritten + status
-                 : status;
+                   ? nwritten + status
+                   : status;
     }
     return nwritten;
 }

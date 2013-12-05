@@ -418,7 +418,7 @@ tuna_algo_zero(const int nk,
 /**
  * Retrieve the name of the algorithm, if known.  Otherwise, return "unknown".
  */
-const char *
+const char*
 tuna_algo_name(tuna_algo al);
 
 /**
@@ -550,9 +550,9 @@ tuna_post(const tuna_stack* st,
  *         On error, a negative value is returned.
  */
 int
-tuna_chunk_fprint(void *stream,
+tuna_chunk_fprint(void* stream,
                   const tuna_chunk* k,
-                  const char *prefix);
+                  const char* prefix);
 
 /**
  * Output a single status line about \ref tuna_site st to <code>FILE*</code>
@@ -566,9 +566,9 @@ tuna_chunk_fprint(void *stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_site_fprint(void *stream,
+tuna_site_fprint(void* stream,
                  const tuna_site* si,
-                 const char *prefix);
+                 const char* prefix);
 
 /**
  * Output <code>nk+1</code> status line(s) about \ref tuna_site st and
@@ -588,12 +588,12 @@ tuna_site_fprint(void *stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_fprint(void *stream,
+tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk ks[],
             const int nk,
-            const char *prefix,
-            const char *labels[]);
+            const char* prefix,
+            const char* labels[]);
 
 /**
  * \copybrief tuna_chunk_fprint
@@ -609,9 +609,9 @@ tuna_fprint(void *stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_chunk_fprintf(void *stream,
+tuna_chunk_fprintf(void* stream,
                    const tuna_chunk* k,
-                   const char *format,
+                   const char* format,
                    ...);
 
 /**
@@ -628,9 +628,9 @@ tuna_chunk_fprintf(void *stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_site_fprintf(void *stream,
+tuna_site_fprintf(void* stream,
                   const tuna_site* si,
-                  const char *format,
+                  const char* format,
                   ...);
 
 /** @} */
