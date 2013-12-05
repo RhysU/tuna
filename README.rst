@@ -13,7 +13,7 @@ observations.  Maybe you lack the details to concoct a representative use case
 for tuning purposes.  Or maybe you want to do a little future-proofing just in
 case the requirements change...
 
-Tuna is for you.  Tuna provides portable, lightweight automatic tuning over
+Tuna is for you.  Tuna provides lightweight automatic tuning over
 semantically-indistinguishable chunks of code.  It works by misusing the ideas
 behind `A/B testing <http://en.wikipedia.org/wiki/A/B_testing>`_ in a
 straightforward manner that definitely won't pass peer review.
