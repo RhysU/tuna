@@ -894,6 +894,42 @@ tuna_registry_free(tuna_registry_node* n)
     }
 }
 
+/* TODO Document. */
+tuna_registry_node*
+tuna_registry_insert(tuna_registry_node **n, const char id[])
+{
+    if (*n) {
+        const int cmp = strcmp(id, (*n)->id);
+        if (cmp < 0) {
+            return tuna_registry_insert(&(*n)->left, id);
+        } else if (cmp == 0) {
+            return *n;
+        } else {
+            return tuna_registry_insert(&(*n)->right, id);
+        }
+    } else {
+        return *n = tuna_registry_alloc(id);
+    }
+}
+
+/* TODO Document. */
+tuna_registry_node*
+tuna_registry_find(tuna_registry_node *n, const char id[])
+{
+    if (n) {
+        const int cmp = strcmp(id, n->id);
+        if (cmp < 0) {
+            return tuna_registry_find(n->left, id);
+        } else if (cmp == 0) {
+            return n;
+        } else {
+            return tuna_registry_find(n->right, id);
+        }
+    } else {
+        return NULL;
+    }
+}
+
 /** Generate a preorder accumulator producing \c acc named \c func. */
 #define TRAVERSE_PREORDER(func, node, acc)                           \
     acc func(node* n, acc (*v)(node*, acc), acc a)                   \
