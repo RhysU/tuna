@@ -56,11 +56,12 @@ variables.
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
 
-    $ ./examples/smallsort 1000 150
-    niter=1000, nelem=150, memory=160 bytes
-    insertion              481     2.45536e-05 +/-     3.00301e-06
-    qsort(3)                 5     3.90884e-05 +/-     1.18106e-05
-    heap                   514     7.19700e-06 +/-     3.18348e-06
+   $ ./examples/smallsort 1000 150
+   niter=1000, nelem=150, memory=160 bytes
+   TUNA$ smallsort welch1
+   TUNA> smallsort insertion           961     2.50007e-05 +/-     2.57965e-06
+   TUNA> smallsort qsort(3)              5     3.58456e-05 +/-     6.24654e-06
+   TUNA> smallsort heap                 34     2.77568e-05 +/-     1.71520e-06
 
 The first, second, and third numeric columns are the mean, standard deviation,
 and count observed for each chunk, respectively.  Times are given in seconds as
@@ -73,21 +74,23 @@ calls are required to have a sample standard deviation.
 
 Turning to 165 and then 180 elements per list::
 
-    $ ./examples/smallsort 1000 165
-    niter=1000, nelem=165, memory=160 bytes
-    insertion              989     1.07414e-05 +/-     7.80852e-06
-    qsort(3)                 5     3.97584e-05 +/-     6.18204e-06
-    heap                     6     3.14592e-05 +/-     5.43398e-07
+   $ ./examples/smallsort 1000 165
+   niter=1000, nelem=165, memory=160 bytes
+   TUNA$ smallsort welch1
+   TUNA> smallsort insertion           471     3.08471e-05 +/-     4.24399e-06
+   TUNA> smallsort qsort(3)              5     4.01970e-05 +/-     6.12079e-06
+   TUNA> smallsort heap                524     3.07392e-05 +/-     2.57830e-06
 
     $ ./examples/smallsort 1000 180
     niter=1000, nelem=180, memory=160 bytes
-    insertion               41     3.49403e-05 +/-     2.80174e-06
-    qsort(3)                 5     4.42012e-05 +/-     4.93605e-06
-    heap                   954     1.04687e-05 +/-     6.86004e-06
+    TUNA$ smallsort welch1
+    TUNA> smallsort insertion           81     3.47211e-05 +/-     2.72590e-06
+    TUNA> smallsort qsort(3)             5     5.46578e-05 +/-     2.03987e-05
+    TUNA> smallsort heap               914     3.34313e-05 +/-     2.05495e-06
 
 At 165 elements per list, you can see ``sort_heap()`` has a mean performance
 closer to ``sort_insertion()`` now.  Tuna invokes it frequently, sampling it
-more frequently than before on account of its standard deviation arguably
+more often than before on account of its standard deviation arguably
 making it the fastest given the samples Tuna observed thus far.  At 180
 elements, ``sort_heap()`` becomes statistically faster and is therefore more
 heavily used.  Tuna discovered change in behavior around 165 samples in the
