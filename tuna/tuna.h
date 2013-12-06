@@ -93,14 +93,32 @@ extern "C" {
  * @{
  */
 
-/** Provides storage necessary to support one spinlock. */
+/**
+ * Provides storage necessary to support one spinlock.  "Initializing" this
+ * spinlock requires setting it to zero.  Consequently, instances with static
+ * storage will be automatically initialized.
+ */
 typedef volatile int tuna_spinlock;
 
-/** Lock a \ref tuna_spinlock using a GCC-defined atomic operation. */
-#define tuna_lock(spinlock)   while (__sync_lock_test_and_set(&spinlock, 1));
+/**
+ * Lock a \ref tuna_spinlock using a GCC-defined atomic operation.
+ *
+ * \internal The outer loop uses a compiler intrinsic.  The intrinsic hits the
+ * memory bus heavily and so the inner loop attempts to avoid saturating it so
+ * badly via a dirty read.  Finally, the <code>_mm_pause</code> informs the
+ * processor that we want a short duration stall which allegedly plays nicer in
+ * hyperthreaded environments.  So far as I know, caveat a backoff loop and/or
+ * a timer eventually leading to a yield operation, this implementation is
+ * mildly acceptable.  Portability remains TBD.
+ */
+#define tuna_lock(spinlock)                        \
+    while (__sync_lock_test_and_set(&spinlock, 1)) \
+        while (spinlock)                           \
+            _mm_pause();
 
 /** Unlock a \ref tuna_spinlock using a GCC-defined atomic operation. */
-#define tuna_unlock(spinlock) while __sync_lock_release(&spinlock);
+#define tuna_unlock(spinlock)       \
+    __sync_lock_release(&spinlock);
 
 /** @} */
 
