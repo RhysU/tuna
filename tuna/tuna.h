@@ -98,7 +98,7 @@ extern "C" {
  * spinlock requires setting it to zero.  Consequently, instances with static
  * storage will be automatically initialized.
  */
-typedef volatile int tuna_spinlock;
+typedef int tuna_spinlock;
 
 /**
  * \def tuna_relax()
@@ -160,7 +160,8 @@ typedef volatile int tuna_spinlock;
 /**
  * Accumulates running mean and variance details from a data stream.  Fill
  * storage with zeros, e.g. from POD zero initialization, to construct or reset
- * an instance.
+ * an instance.  All access to member data requires using \ref tuna_lock and
+ * \ref tuna_unlock on member #l.  All public methods do so automatically.
  *
  * Adapted from <a
  * href="https://red.ices.utexas.edu/projects/suzerain/wiki">Suzerain</a>'s
@@ -170,9 +171,10 @@ typedef volatile int tuna_spinlock;
  * overhead reduced relative to Cook's presentation.
  */
 typedef struct tuna_stats {
-    double m;
-    double s;
-    size_t n;
+    double        m;
+    double        s;
+    size_t        n;
+    tuna_spinlock l; /* necessarily the last member */
 } tuna_stats;
 
 /** Obtain the running number of samples provided thus far. */
@@ -236,7 +238,9 @@ tuna_stats_merge(tuna_stats* const dst,
 /**
  * Accumulates runtime information about the performance of a compute chunk.
  * Fill storage with zeros, e.g. from POD zero initialization, to construct or
- * reset an instance.
+ * reset an instance.  Access to member data requires using \ref tuna_lock and
+ * \ref tuna_unlock on member #stats.l.  All public methods do so
+ * automatically.
  */
 typedef struct tuna_chunk {
     double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */

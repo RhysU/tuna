@@ -62,22 +62,48 @@
 # error "CLOCK_PROCESS_CPUTIME_ID unavailable"
 #endif
 
+/**
+ * Return an unlocked, atomic snapshot of running state t.
+ * Relies on tuna_stats.l being the last member and on
+ * an initialized-but-unlocked lock being only zero bits.
+ */
+static
+tuna_stats
+cpy(const tuna_stats* const t)
+{
+    tuna_stats snapshot = { 0 };
+    tuna_lock(((tuna_stats*) t)->l);
+    memcpy(&snapshot, t, offsetof(tuna_stats, l));
+    tuna_unlock(((tuna_stats*) t)->l);
+    return snapshot;
+}
+
 size_t
 tuna_stats_cnt(const tuna_stats* const t)
 {
-    return t->n;
+    /* While the following is the general pattern one expects
+     *     size_t n;
+     *     tuna_lock(((tuna_stats*) t)->l);
+     *     n = t->n;
+     *     tuna_unlock(((tuna_stats*) t)->l);
+     *     return n;
+     * in this instance, an atomic fetch is all we require.
+     */
+    return __sync_add_and_fetch(&((tuna_stats*) t)->n, 0);
 }
 
 double
 tuna_stats_avg(const tuna_stats* const t)
 {
-    return t->n ? t->m : NAN;
+    const tuna_stats c = cpy(t);
+    return c.n ? c.m : NAN;
 }
 
 double
 tuna_stats_var(const tuna_stats* const t)
 {
-    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
+    const tuna_stats c = cpy(t);
+    return c.n ? (c.n > 1 ? c.s / (c.n - 1) : 0) : NAN;
 }
 
 double
@@ -89,7 +115,8 @@ tuna_stats_std(const tuna_stats* const t)
 double
 tuna_stats_sum(const tuna_stats* const t)
 {
-    return tuna_stats_cnt(t) * tuna_stats_avg(t);
+    const tuna_stats c = cpy(t);
+    return c.n * c.m;
 }
 
 size_t
@@ -97,27 +124,29 @@ tuna_stats_mom(const tuna_stats* const t,
                double* const avg,
                double* const var)
 {
-    size_t n = t->n;
-    switch (n) {
+    const tuna_stats c = cpy(t);
+    switch (c.n) {
     case 0:
         *avg = NAN;
         *var = NAN;
         break;
     case 1:
-        *avg = t->m;
+        *avg = c.m;
         *var = 0;
         break;
     default:
-        *avg = t->m;
-        *var = t->s / (t->n - 1);
+        *avg = c.m;
+        *var = c.s / (c.n - 1);
         break;
     }
-    return n;
+    return c.n;
 }
 
-tuna_stats*
-tuna_stats_obs(tuna_stats* const t,
-               const double x)
+/* Internal method requiring that t already be locked */
+static
+void
+obs(tuna_stats* const t,
+    const double x)
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
@@ -130,6 +159,15 @@ tuna_stats_obs(tuna_stats* const t,
         t->m = x;
         t->s = 0;
     }
+}
+
+tuna_stats*
+tuna_stats_obs(tuna_stats* const t,
+               const double x)
+{
+    tuna_lock(t->l);
+    obs(t, x);
+    tuna_unlock(t->l);
     return t;
 }
 
@@ -139,9 +177,11 @@ tuna_stats_nobs(tuna_stats* const t,
                 size_t N)
 {
     size_t i;
+    tuna_lock(t->l);
     for (i = N; i -- > 0 ;) {
-        tuna_stats_obs(t, *x++);
+        obs(t, *x++);
     }
+    tuna_unlock(t->l);
     return t;
 }
 
@@ -149,19 +189,27 @@ tuna_stats*
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    if (src->n == 0) {         /* src contains no data */
+    /* Merge an atomic snapshot of src to avoid holding two locks.  */
+    /* Locking both is fruitless as src could change immediately    */
+    /* after return but before the caller could observe it.  Hence  */
+    /* any stronger behavior introduces contention without benefit. */
+    tuna_stats snap = cpy(src);
+    tuna_lock(dst->l);
+    if (snap.n == 0) {         /* snp contains no data */
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
-        *dst = *src;
-    } else {                   /* merge src into dst */
-        size_t total = dst->n + src->n;
-        double dM    = dst->m - src->m;  /* Cancellation issues? */
-        dst->m       = (dst->n * dst->m + src->n * src->m) / total;
+        *dst = snap;
+    } else {                   /* merge snp into dst */
+        size_t total = dst->n + snap.n;
+        double dM    = dst->m - snap.m;  /* Cancellation issues? */
+        dst->m       = (dst->n * dst->m + snap.n * snap.m) / total;
         dst->s       = (dst->n == 1 ? 0 : dst->s)
-                       + (src->n == 1 ? 0 : src->s)
-                       + ((dM * dM) * (dst->n * src->n)) / total;
+                       + (snap.n == 1 ? 0 : snap.s)
+                       + ((dM * dM) * (dst->n * snap.n)) / total;
         dst->n       = total;
     }
+    tuna_unlock(dst->l);
+
     return dst;
 }
 
@@ -170,7 +218,8 @@ tuna_stats_merge(tuna_stats* const dst,
  * If doing so required swapping *a and *b, return 1.  Otherwise 0.
  */
 static
-int enforce_lt(double* const a, double* const b)
+int
+enforce_lt(double* const a, double* const b)
 {
     if (*a < *b) {
         return 0;
