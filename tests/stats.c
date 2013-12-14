@@ -39,6 +39,13 @@ FCT_BGN()
             fct_chk_eqtol_dbl(tuna_stats_avg(&s),      avg[i], 1e-14);
             fct_chk_eqtol_dbl(tuna_stats_var(&s),      var[i], 1e-14);
             fct_chk_eq_dbl   (tuna_stats_std(&s), sqrt(var[i])      );
+
+            // Does the behavior of tuna_stats_mom(...) match?
+            double avg, var;
+            size_t cnt = tuna_stats_mom(&s, &avg, &var);
+            fct_chk_eq_int(tuna_stats_cnt(&s), cnt);
+            fct_chk_eq_dbl(tuna_stats_avg(&s), avg);
+            fct_chk_eq_dbl(tuna_stats_var(&s), var);
         }
 
         // Clear the accumulator and retest

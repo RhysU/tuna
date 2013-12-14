@@ -195,6 +195,18 @@ tuna_stats_std(const tuna_stats* const t);
 double
 tuna_stats_sum(const tuna_stats* const t);
 
+/**
+ * Obtain all running moments at once.
+ * \param[in ] t   Instance of interest
+ * \param[out] avg The mean
+ * \param[out] var The sample variance
+ * \return The number of samples thus far.
+ */
+size_t
+tuna_stats_mom(const tuna_stats* const t,
+               double* const avg,
+               double* const var);
+
 /** Accumulate a new observation \c x into statistics \c t. */
 tuna_stats*
 tuna_stats_obs(tuna_stats* const t,

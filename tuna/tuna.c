@@ -92,6 +92,29 @@ tuna_stats_sum(const tuna_stats* const t)
     return tuna_stats_cnt(t) * tuna_stats_avg(t);
 }
 
+size_t
+tuna_stats_mom(const tuna_stats* const t,
+               double* const avg,
+               double* const var)
+{
+    size_t n = t->n;
+    switch (n) {
+    case 0:
+        *avg = NAN;
+        *var = NAN;
+        break;
+    case 1:
+        *avg = t->m;
+        *var = 0;
+        break;
+    default:
+        *avg = t->m;
+        *var = t->s / (t->n - 1);
+        break;
+    }
+    return n;
+}
+
 tuna_stats*
 tuna_stats_obs(tuna_stats* const t,
                const double x)
