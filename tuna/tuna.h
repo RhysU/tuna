@@ -584,11 +584,11 @@ tuna_post(const tuna_stack* st,
  * Output a single status line about \ref tuna_chunk k to <code>FILE*</code>
  * stream prefixed by \c prefix.
  *
- * @param stream <code>FILE*</code> on which output is produced.
- * @param k      Chunk for which information is output.
- * @param prefix A string used to prefix the output.
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param k      Chunk for which information is output.
+ * \param prefix A string used to prefix the output.
  *
- * @return The number of characters output on success.
+ * \return The number of characters output on success.
  *         On error, a negative value is returned.
  */
 int
@@ -600,11 +600,11 @@ tuna_chunk_fprint(void* stream,
  * Output a single status line about \ref tuna_site st to <code>FILE*</code>
  * stream prefixed by \c prefix.
  *
- * @param stream <code>FILE*</code> on which output is produced.
- * @param si     Site for which information is output.
- * @param prefix A string used to prefix the output.
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param si     Site for which information is output.
+ * \param prefix A string used to prefix the output.
  *
- * @return The number of characters output on success.
+ * \return The number of characters output on success.
  *         On error, a negative value is returned.
  */
 int
@@ -617,16 +617,16 @@ tuna_site_fprint(void* stream,
  * associated \ref tuna_chunk <code>ks[0]</code>, ..., <code>ks[nk-1]</code> to
  * <code>FILE*</code> stream prefixed by \c prefix.
  *
- * @param stream <code>FILE*</code> on which output is produced.
- * @param si     Site for which information is output.
- * @param ks     Chunks about which information is output.
- * @param nk     Number of contiguous chunks in \c ks.
- * @param prefix A string used to prefix the output.
- * @param labels If non-NULL and non-trivial, <code>labels[ik]</code> labels
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param si     Site for which information is output.
+ * \param ks     Chunks about which information is output.
+ * \param nk     Number of contiguous chunks in \c ks.
+ * \param prefix A string used to prefix the output.
+ * \param labels If non-NULL and non-trivial, <code>labels[ik]</code> labels
  *               the <code>ik</code>th chunk in the output.  Otherwise,
  *               each chunk is labelled with its index <code>ik</code>.
  *
- * @return The number of characters output on success.
+ * \return The number of characters output on success.
  *         On error, a negative value is returned.
  */
 int
@@ -640,14 +640,14 @@ tuna_fprint(void* stream,
 /**
  * \copybrief tuna_chunk_fprint
  *
- * @param stream <code>FILE*</code> on which output is produced.
- * @param k      Chunk for which information is output.
- * @param format A <code>printf</code>-style specifying prefixing
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param k      Chunk for which information is output.
+ * \param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
  *               been called.
  *
- * @return The number of characters output on success.
+ * \return The number of characters output on success.
  *         On error, a negative value is returned.
  */
 int
@@ -659,14 +659,14 @@ tuna_chunk_fprintf(void* stream,
 /**
  * \copybrief tuna_site_fprint
  *
- * @param stream <code>FILE*</code> on which output is produced.
- * @param si     Site for which information is output.
- * @param format A <code>printf</code>-style specifying prefixing
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param si     Site for which information is output.
+ * \param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
  *               been called.
  *
- * @return The number of characters output on success.
+ * \return The number of characters output on success.
  *         On error, a negative value is returned.
  */
 int
