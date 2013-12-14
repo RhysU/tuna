@@ -68,23 +68,10 @@ tuna_stats_cnt(const tuna_stats* const t)
     return t->n;
 }
 
-size_t
-tuna_stats_fastcnt(const tuna_stats* const t)
-{
-    return t->n;
-}
-
 double
 tuna_stats_avg(const tuna_stats* const t)
 {
     return t->n ? t->m : NAN;
-}
-
-double
-tuna_stats_fastavg(const tuna_stats* const t)
-{
-    assert(tuna_stats_fastcnt(t) > 0);
-    return t->m;
 }
 
 double
@@ -94,51 +81,15 @@ tuna_stats_var(const tuna_stats* const t)
 }
 
 double
-tuna_stats_fastvar(const tuna_stats* const t)
-{
-    assert(tuna_stats_fastcnt(t) > 1);
-    return t->s / (t->n - 1);
-}
-
-double
 tuna_stats_std(const tuna_stats* const t)
 {
     return sqrt(tuna_stats_var(t));
 }
 
 double
-tuna_stats_faststd(const tuna_stats* const t)
-{
-    assert(tuna_stats_fastcnt(t) > 1);
-    return sqrt(tuna_stats_fastvar(t));
-}
-
-double
 tuna_stats_sum(const tuna_stats* const t)
 {
     return tuna_stats_cnt(t) * tuna_stats_avg(t);
-}
-
-double
-tuna_stats_fastsum(const tuna_stats* const t)
-{
-    return tuna_stats_fastcnt(t) * tuna_stats_fastavg(t);
-}
-
-tuna_stats*
-tuna_stats_fastobs(tuna_stats* const t,
-                   const double x)
-{
-    /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
-    /* Knuth shows better behavior than Welford 1962 on test data. */
-    size_t n;
-    double d;
-    assert(tuna_stats_fastcnt(t) > 0);
-    n     = ++(t->n);
-    d     = x - t->m;
-    t->m += d / n;
-    t->s += d * (x - t->m);
-    return t;
 }
 
 tuna_stats*
@@ -165,11 +116,8 @@ tuna_stats_nobs(tuna_stats* const t,
                 size_t N)
 {
     size_t i;
-    if (N) {                               /* NOP on degenerate input     */
-        tuna_stats_obs(t, *x++);           /* Delegate possible n == 1    */
-        for (i = --N; i -- > 0 ;) {        /* Henceforth, certainly n > 1 */
-            tuna_stats_fastobs(t, *x++);
-        }
+    for (i = N; i --> 0 ;) {
+        tuna_stats_obs(t, *x++);
     }
     return t;
 }
@@ -580,15 +528,15 @@ tuna_algo_welch1_nuinf(const int nk,
     if (icnt < 2) {
         return i;
     }
-    iavg = tuna_stats_fastavg(&ks[0].stats);
-    ivar = tuna_stats_fastvar(&ks[0].stats);
+    iavg = tuna_stats_avg(&ks[0].stats);
+    ivar = tuna_stats_var(&ks[0].stats);
     for (j = 1; j < nk; ++j) {
         jcnt = tuna_stats_cnt(&ks[j].stats);
         if (jcnt < 2) {
             return j;
         }
-        javg = tuna_stats_fastavg(&ks[j].stats);
-        jvar = tuna_stats_fastvar(&ks[j].stats);
+        javg = tuna_stats_avg(&ks[j].stats);
+        jvar = tuna_stats_var(&ks[j].stats);
         p    = tuna_welch1_nuinf(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;
@@ -614,15 +562,15 @@ tuna_algo_welch1(const int nk,
     if (icnt < 2) {
         return i;
     }
-    iavg = tuna_stats_fastavg(&ks[0].stats);
-    ivar = tuna_stats_fastvar(&ks[0].stats);
+    iavg = tuna_stats_avg(&ks[0].stats);
+    ivar = tuna_stats_var(&ks[0].stats);
     for (j = 1; j < nk; ++j) {
         jcnt = tuna_stats_cnt(&ks[j].stats);
         if (jcnt < 2) {
             return j;
         }
-        javg = tuna_stats_fastavg(&ks[j].stats);
-        jvar = tuna_stats_fastvar(&ks[j].stats);
+        javg = tuna_stats_avg(&ks[j].stats);
+        jvar = tuna_stats_var(&ks[j].stats);
         p    = tuna_welch1(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;

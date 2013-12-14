@@ -175,63 +175,21 @@ typedef struct tuna_stats {
 size_t
 tuna_stats_cnt(const tuna_stats* const t);
 
-/**
- * Quickly obtain the running number of samples provided thus far.
- */
-size_t
-tuna_stats_fastcnt(const tuna_stats* const t);
-
 /** Obtain the running mean. */
 double
 tuna_stats_avg(const tuna_stats* const t);
-
-/**
- * Quickly obtain the running mean
- * on precondition <code>tuna_stats_cnt(t) > 0</code>.
- */
-double
-tuna_stats_fastavg(const tuna_stats* const t);
 
 /** Obtain the running sample variance. */
 double
 tuna_stats_var(const tuna_stats* const t);
 
-/**
- * Quickly obtain the running sample variance
- * on precondition <code>tuna_stats_cnt(t) > 1</code>.
- */
-double
-tuna_stats_fastvar(const tuna_stats* const t);
-
 /** Obtain the running sample standard deviation. */
 double
 tuna_stats_std(const tuna_stats* const t);
 
-/**
- * Quickly obtain the running sample standard deviation
- * on precondition <code>tuna_stats_fastcnt(t) > 1</code>.
- */
-double
-tuna_stats_faststd(const tuna_stats* const t);
-
 /** Obtain the running sum. */
 double
 tuna_stats_sum(const tuna_stats* const t);
-
-/**
- * Quickly obtain the running sum
- * on precondition <code>tuna_stats_fastcnt(t) > 0</code>.
- */
-double
-tuna_stats_fastsum(const tuna_stats* const t);
-
-/**
- * Quickly accumulate a new observation \c x into statistics \c t on
- * precondition <code>tuna_stats_fastcnt(t) > 0</code>.
- */
-tuna_stats*
-tuna_stats_fastobs(tuna_stats* const t,
-                   const double x);
 
 /** Accumulate a new observation \c x into statistics \c t. */
 tuna_stats*
