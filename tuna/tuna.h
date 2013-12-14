@@ -101,24 +101,48 @@ extern "C" {
 typedef volatile int tuna_spinlock;
 
 /**
+ * \def tuna_relax()
+ * Issue busy-wait loop friendly pause instruction(s).  Intended to behave
+ * vaguely like <code>_mm_pause</code> but without requiring the
+ * intrinsic-specific header to have been included.
+ */
+
+#if defined(__i386__) || defined(__x86_64__) || defined(__amd64__)
+#define tuna_relax() __asm__ __volatile__("rep; nop"    ::: "memory")
+#elif defined(__ia64__)
+#define tuna_relax() __asm__ __volatile__("hint @pause" ::: "memory")
+#else
+#define tuna_relax() __asm__ __volatile__(""            ::: "memory")
+#endif
+
+/**
+ * Issue \c count tuna_relax() statements.
+ */
+#define tuna_spinwait(count)                                                \
+    do { unsigned i; for (i = (count); i --> 0 ;) tuna_relax(); } while (0)
+
+/**
  * Lock a \ref tuna_spinlock using a GCC-defined atomic operation.
  *
- * \internal The outer loop uses a compiler intrinsic.  The intrinsic hits the
- * memory bus heavily and so the inner loop attempts to avoid saturating it so
- * badly via a dirty read.  Finally, the <code>_mm_pause</code> informs the
- * processor that we want a short duration stall which allegedly plays nicer in
- * hyperthreaded environments.  So far as I know, caveat a backoff loop and/or
- * a timer eventually leading to a yield operation, this implementation is
- * mildly acceptable.  Portability remains TBD.
+ * An exponential backoff spinlock is chosen rather than a fair spinlock to
+ * reduce single thread overhead and to also avoid FIFO bottlenecks if the
+ * number of threads exceeds the number of cores for short critical sections.
+ * See http://dx.doi.org/10.1145/103727.103729 for some initial background.
+ *
+ * \internal If behavior is unsatisfying in practice, try fair, scalable MCS.
  */
-#define tuna_lock(spinlock)                        \
-    while (__sync_lock_test_and_set(&spinlock, 1)) \
-        while (spinlock)                           \
-            _mm_pause();
+#define tuna_lock(spinlock)                                \
+    do {                                                   \
+        unsigned count = 1;                                \
+        while (__sync_lock_test_and_set(&(spinlock), 1)) { \
+            tuna_spinwait(count);                          \
+            count *= 2;                                    \
+        }                                                  \
+    } while (0)
 
 /** Unlock a \ref tuna_spinlock using a GCC-defined atomic operation. */
-#define tuna_unlock(spinlock)       \
-    __sync_lock_release(&spinlock);
+#define tuna_unlock(spinlock)      \
+    __sync_lock_release(&spinlock)
 
 /** @} */
 
