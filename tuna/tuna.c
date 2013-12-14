@@ -543,23 +543,20 @@ tuna_algo_welch1_nuinf(const int nk,
                        tuna_seed* seed)
 {
     int i, j;
-    double icnt, iavg, ivar, jcnt, javg, jvar, p;
+    size_t icnt, jcnt;
+    double iavg, ivar, javg, jvar, p;
 
     assert(nk > 0);
     i = 0;
-    icnt = tuna_stats_cnt(&ks[0].stats);
+    icnt = tuna_stats_mom(&ks[0].stats, &iavg, &ivar);
     if (icnt < 2) {
         return i;
     }
-    iavg = tuna_stats_avg(&ks[0].stats);
-    ivar = tuna_stats_var(&ks[0].stats);
     for (j = 1; j < nk; ++j) {
-        jcnt = tuna_stats_cnt(&ks[j].stats);
+        jcnt = tuna_stats_mom(&ks[j].stats, &javg, &jvar);
         if (jcnt < 2) {
             return j;
         }
-        javg = tuna_stats_avg(&ks[j].stats);
-        jvar = tuna_stats_var(&ks[j].stats);
         p    = tuna_welch1_nuinf(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;
@@ -577,23 +574,20 @@ tuna_algo_welch1(const int nk,
                  tuna_seed* seed)
 {
     int i, j;
-    double icnt, iavg, ivar, jcnt, javg, jvar, p;
+    size_t icnt, jcnt;
+    double iavg, ivar, javg, jvar, p;
 
     assert(nk > 0);
     i = 0;
-    icnt = tuna_stats_cnt(&ks[0].stats);
+    icnt = tuna_stats_mom(&ks[0].stats, &iavg, &ivar);
     if (icnt < 2) {
         return i;
     }
-    iavg = tuna_stats_avg(&ks[0].stats);
-    ivar = tuna_stats_var(&ks[0].stats);
     for (j = 1; j < nk; ++j) {
-        jcnt = tuna_stats_cnt(&ks[j].stats);
+        jcnt = tuna_stats_mom(&ks[j].stats, &javg, &jvar);
         if (jcnt < 2) {
             return j;
         }
-        javg = tuna_stats_avg(&ks[j].stats);
-        jvar = tuna_stats_var(&ks[j].stats);
         p    = tuna_welch1(iavg, ivar, icnt, javg, jvar, jcnt);
         if (p < tuna_rand_u01(seed)) {
             i    = j;
