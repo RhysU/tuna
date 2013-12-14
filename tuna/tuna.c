@@ -292,8 +292,9 @@ tuna_chunk_merge(tuna_stats* const s,
     tuna_stats_merge(s, &k->stats);
     for (i = 0; i < tuna_countof(k->outliers); ++i) {
         if (k->outliers[i]) {
-            return tuna_stats_nobs(s, k->outliers + i,
-                                   tuna_countof(k->outliers) - i);
+            tuna_stats_nobs(s, k->outliers + i,
+                            tuna_countof(k->outliers) - i);
+            break;
         }
     }
     return s;
