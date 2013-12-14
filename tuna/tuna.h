@@ -118,8 +118,12 @@ typedef volatile int tuna_spinlock;
 /**
  * Issue \c count tuna_relax() statements.
  */
-#define tuna_spinwait(count)                                                \
-    do { unsigned i; for (i = (count); i --> 0 ;) tuna_relax(); } while (0)
+#define tuna_spinwait(count)         \
+    do {                             \
+        unsigned i;                  \
+        for (i = (count); i --> 0 ;) \
+            tuna_relax();            \
+    } while (0)
 
 /**
  * Lock a \ref tuna_spinlock using a GCC-defined atomic operation.
