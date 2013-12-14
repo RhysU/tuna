@@ -116,7 +116,7 @@ tuna_stats_nobs(tuna_stats* const t,
                 size_t N)
 {
     size_t i;
-    for (i = N; i --> 0 ;) {
+    for (i = N; i -- > 0 ;) {
         tuna_stats_obs(t, *x++);
     }
     return t;
