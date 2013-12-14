@@ -185,16 +185,13 @@ tuna_stats_nobs(tuna_stats* const t,
     return t;
 }
 
-tuna_stats*
-tuna_stats_merge(tuna_stats* const dst,
-                 const tuna_stats* const src)
+/* Internal method requiring that dst already be locked.        */
+/* Notice that snap is passed by value and is assumed unshared. */
+static
+void
+merge(tuna_stats* const dst,
+      const tuna_stats snap)
 {
-    /* Merge an atomic snapshot of src to avoid holding two locks.  */
-    /* Locking both is fruitless as src could change immediately    */
-    /* after return but before the caller could observe it.  Hence  */
-    /* any stronger behavior introduces contention without benefit. */
-    tuna_stats snap = cpy(src);
-    tuna_lock(dst->l);
     if (snap.n == 0) {         /* snp contains no data */
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
@@ -208,8 +205,21 @@ tuna_stats_merge(tuna_stats* const dst,
                        + ((dM * dM) * (dst->n * snap.n)) / total;
         dst->n       = total;
     }
-    tuna_unlock(dst->l);
+}
 
+
+tuna_stats*
+tuna_stats_merge(tuna_stats* const dst,
+                 const tuna_stats* const src)
+{
+    /* Merge an atomic snapshot of src to avoid holding two locks.  */
+    /* Locking both is fruitless as src could change immediately    */
+    /* after return but before the caller could observe it.  Hence  */
+    /* any stronger behavior introduces contention without benefit. */
+    tuna_stats snap = cpy(src);
+    tuna_lock(dst->l);
+    merge(dst, snap);
+    tuna_unlock(dst->l);
     return dst;
 }
 
@@ -235,6 +245,8 @@ tuna_chunk*
 tuna_chunk_obs(tuna_chunk* const k,
                double t)
 {
+    tuna_lock(k->stats.l);
+
     /* First, find smallest observation among set {t, k->outliers[0], ... } */
     /* placing it into t while maintaining sorted-ness of k->outliers.      */
     /* The loop is one sort pass with possibility of short-circuiting.      */
@@ -248,8 +260,9 @@ tuna_chunk_obs(tuna_chunk* const k,
     }
 
     /* Second, when non-zero, record statistics about the best observation. */
+    /* Use the internal method to avoid deadlock as we already hold lock.   */
     if (t) {
-        tuna_stats_obs(&k->stats, t);
+        obs(&k->stats, t);
     }
 
     /* Together, these two steps cause a zero-initialized tuna_chunk to */
@@ -258,15 +271,18 @@ tuna_chunk_obs(tuna_chunk* const k,
     /* or "burn in" period in addition to preventing highly improbable  */
     /* observations from unduly inflating the discovered variability.   */
 
+    tuna_unlock(k->stats.l);
+
     return k;
 }
 
 tuna_stats
 tuna_chunk_stats(tuna_chunk* const k)
 {
-    tuna_stats s = k->stats;
-    return s;
+    return cpy(&k->stats);
 }
+
+/* FIXME Work on thread safety below here */
 
 tuna_stats*
 tuna_chunk_merge(tuna_stats* const s,
