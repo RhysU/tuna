@@ -777,18 +777,19 @@ tuna_chunk_fprintf(void* stream,
     va_end(ap);
     if (nwritten >= 0) {
         int status;
+        size_t cnt;
+        double avg, var;
         tuna_stats o;
         memset(&o, 0, sizeof(o));
         tuna_chunk_merge(&o, k);
+        cnt = tuna_stats_mom(&o, &avg, &var);
         status = fprintf(stream,
                          "%s"
                          "%"  STRINGIFY(DBL_DIG) "lu "
                          "%#" STRINGIFY(DBL_DIG) "g +/- "
                          "%#" STRINGIFY(DBL_DIG) "g\n",
                          format[0] ? " " : "",
-                         (long unsigned) tuna_stats_cnt(&o),
-                         tuna_stats_avg(&o),
-                         tuna_stats_std(&o));
+                         (long unsigned) cnt, avg, sqrt(var));
         nwritten = status >= 0
                    ? nwritten + status
                    : status;
