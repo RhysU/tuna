@@ -709,8 +709,6 @@ tuna_algo_zero(const int nk,
     return 0;
 }
 
-/* FIXME Work on thread safety below here */
-
 /* TODO Do something intelligent with clock_getres(2) information */
 
 int
@@ -721,6 +719,8 @@ tuna_pre_cost(tuna_site* si,
 {
     size_t i;
     double* u01;
+
+    tuna_lock(si->l);
 
     /* Ensure a zero-initialize st argument produces good behavior by... */
     if (!si->al) {
@@ -740,6 +740,8 @@ tuna_pre_cost(tuna_site* si,
     for (i = 0; i < nk; ++i) {
         u01[i] = tuna_rand_u01(&si->sd);
     }
+
+    tuna_unlock(si->l);
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
     st->ik = si->al(nk, ks, u01);
@@ -915,17 +917,21 @@ tuna_site_fprintf(void* stream,
                   const char* format,
                   ...)
 {
+    const char *name;
     int nwritten;
     va_list ap;
     va_start(ap, format);
     nwritten = vfprintf(stream, format, ap);
     va_end(ap);
+    tuna_lock(((tuna_site*) si)->l);
+    name = tuna_algo_name(si->al);
+    tuna_unlock(((tuna_site*) si)->l);
     if (nwritten >= 0) {
         int status = fprintf(stream,
                              "%s"
                              "%s\n",
                              format[0] ? " " : "",
-                             tuna_algo_name(si->al));
+                             name);
         nwritten = status >= 0
                    ? nwritten + status
                    : status;

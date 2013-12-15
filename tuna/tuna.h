@@ -462,11 +462,14 @@ tuna_algo_default(const int nk);
 /**
  * Chunk-independent state maintained \e once for each autotuning site.
  * Members are managed by Tuna but a non-opaque type is used so the compiler
- * may compute this POD type's size to permit \c static instances.
+ * may compute this POD type's size to permit \c static instances.  All access
+ * to member data requires using \ref tuna_lock and \ref tuna_unlock on member
+ * #l.  All public methods do so automatically.
  */
 typedef struct tuna_site {
-    tuna_algo al; /**< The chosen tuning algorithm.   */
-    tuna_seed sd; /**< Random number generator state. */
+    tuna_algo     al; /**< The chosen tuning algorithm.           */
+    tuna_seed     sd; /**< Random number generator state.         */
+    tuna_spinlock l;  /**< Spinlock protecting critical sections. */
 } tuna_site;
 
 /**
