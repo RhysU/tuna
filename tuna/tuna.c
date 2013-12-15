@@ -171,16 +171,26 @@ tuna_stats_obs(tuna_stats* const t,
     return t;
 }
 
+/* Internal method requiring that t already be locked */
+static
+void
+stats_nobs(tuna_stats* const t,
+           const double* x,
+           size_t N)
+{
+    size_t i;
+    for (i = N; i -- > 0 ;) {
+        stats_obs(t, *x++);
+    }
+}
+
 tuna_stats*
 tuna_stats_nobs(tuna_stats* const t,
                 const double* x,
                 size_t N)
 {
-    size_t i;
     tuna_lock(t->l);
-    for (i = N; i -- > 0 ;) {
-        stats_obs(t, *x++);
-    }
+    stats_nobs(t, x, N);
     tuna_unlock(t->l);
     return t;
 }
