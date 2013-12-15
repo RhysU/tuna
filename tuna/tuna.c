@@ -69,7 +69,7 @@
  */
 static
 tuna_stats
-cpy(const tuna_stats* const t)
+stats_cpy(const tuna_stats* const t)
 {
     tuna_stats snapshot = { 0 };
     tuna_lock(((tuna_stats*) t)->l);
@@ -95,14 +95,14 @@ tuna_stats_cnt(const tuna_stats* const t)
 double
 tuna_stats_avg(const tuna_stats* const t)
 {
-    const tuna_stats c = cpy(t);
+    const tuna_stats c = stats_cpy(t);
     return c.n ? c.m : NAN;
 }
 
 double
 tuna_stats_var(const tuna_stats* const t)
 {
-    const tuna_stats c = cpy(t);
+    const tuna_stats c = stats_cpy(t);
     return c.n ? (c.n > 1 ? c.s / (c.n - 1) : 0) : NAN;
 }
 
@@ -115,7 +115,7 @@ tuna_stats_std(const tuna_stats* const t)
 double
 tuna_stats_sum(const tuna_stats* const t)
 {
-    const tuna_stats c = cpy(t);
+    const tuna_stats c = stats_cpy(t);
     return c.n * c.m;
 }
 
@@ -124,7 +124,7 @@ tuna_stats_mom(const tuna_stats* const t,
                double* const avg,
                double* const var)
 {
-    const tuna_stats c = cpy(t);
+    const tuna_stats c = stats_cpy(t);
     switch (c.n) {
     case 0:
         *avg = NAN;
@@ -145,8 +145,8 @@ tuna_stats_mom(const tuna_stats* const t,
 /* Internal method requiring that t already be locked */
 static
 void
-obs(tuna_stats* const t,
-    const double x)
+stats_obs(tuna_stats* const t,
+          const double x)
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
@@ -166,7 +166,7 @@ tuna_stats_obs(tuna_stats* const t,
                const double x)
 {
     tuna_lock(t->l);
-    obs(t, x);
+    stats_obs(t, x);
     tuna_unlock(t->l);
     return t;
 }
@@ -179,7 +179,7 @@ tuna_stats_nobs(tuna_stats* const t,
     size_t i;
     tuna_lock(t->l);
     for (i = N; i -- > 0 ;) {
-        obs(t, *x++);
+        stats_obs(t, *x++);
     }
     tuna_unlock(t->l);
     return t;
@@ -189,8 +189,8 @@ tuna_stats_nobs(tuna_stats* const t,
 /* Notice that snap is passed by value and is assumed unshared. */
 static
 void
-merge(tuna_stats* const dst,
-      const tuna_stats snap)
+stats_merge(tuna_stats* const dst,
+            const tuna_stats snap)
 {
     if (snap.n == 0) {         /* snp contains no data */
         /* NOP */
@@ -216,9 +216,9 @@ tuna_stats_merge(tuna_stats* const dst,
     /* Locking both is fruitless as src could change immediately    */
     /* after return but before the caller could observe it.  Hence  */
     /* any stronger behavior introduces contention without benefit. */
-    tuna_stats snap = cpy(src);
+    tuna_stats snap = stats_cpy(src);
     tuna_lock(dst->l);
-    merge(dst, snap);
+    stats_merge(dst, snap);
     tuna_unlock(dst->l);
     return dst;
 }
@@ -262,7 +262,7 @@ tuna_chunk_obs(tuna_chunk* const k,
     /* Second, when non-zero, record statistics about the best observation. */
     /* Use the internal method to avoid deadlock as we already hold lock.   */
     if (t) {
-        obs(&k->stats, t);
+        stats_obs(&k->stats, t);
     }
 
     /* Together, these two steps cause a zero-initialized tuna_chunk to */
@@ -279,7 +279,7 @@ tuna_chunk_obs(tuna_chunk* const k,
 tuna_stats
 tuna_chunk_stats(tuna_chunk* const k)
 {
-    return cpy(&k->stats);
+    return stats_cpy(&k->stats);
 }
 
 /* FIXME Work on thread safety below here */
