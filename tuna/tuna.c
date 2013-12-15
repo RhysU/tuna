@@ -331,8 +331,6 @@ tuna_chunk_merge(tuna_stats* const s,
     return s;
 }
 
-/* FIXME Work on thread safety below here */
-
 /**
  * Lower tail quantile for standard normal distribution function.
  *
@@ -599,6 +597,8 @@ trim(char* const a)
     }
 }
 
+/* TODO Should algo be a struct with a pointer to its own name? */
+
 /* Should be kept in sync with tuna_algo_default just below */
 const char*
 tuna_algo_name(tuna_algo al)
@@ -635,6 +635,8 @@ tuna_algo_default(const int nk)
     }
     return &tuna_algo_welch1; /* Default */
 }
+
+/* FIXME Work on thread safety below here */
 
 int
 tuna_algo_welch1_nuinf(const int nk,
