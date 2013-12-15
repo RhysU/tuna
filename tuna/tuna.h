@@ -161,7 +161,7 @@ typedef int tuna_spinlock;
  * Accumulates running mean and variance details from a data stream.  Fill
  * storage with zeros, e.g. from POD zero initialization, to construct or reset
  * an instance.  All access to member data requires using \ref tuna_lock and
- * \ref tuna_unlock on member #l.  All public methods do so automatically.
+ * \ref tuna_unlock on member \c l.  All public methods do so automatically.
  *
  * Adapted from <a
  * href="https://red.ices.utexas.edu/projects/suzerain/wiki">Suzerain</a>'s
@@ -239,8 +239,7 @@ tuna_stats_merge(tuna_stats* const dst,
  * Accumulates runtime information about the performance of a compute chunk.
  * Fill storage with zeros, e.g. from POD zero initialization, to construct or
  * reset an instance.  Access to member data requires using \ref tuna_lock and
- * \ref tuna_unlock on member #stats.l.  All public methods do so
- * automatically.
+ * \ref tuna_unlock on member \c l.  All public methods do so automatically.
  */
 typedef struct tuna_chunk {
     double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */
