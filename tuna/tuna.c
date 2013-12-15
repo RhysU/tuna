@@ -636,12 +636,10 @@ tuna_algo_default(const int nk)
     return &tuna_algo_welch1; /* Default */
 }
 
-/* FIXME Work on thread safety below here */
-
 int
 tuna_algo_welch1_nuinf(const int nk,
                        const tuna_chunk ks[],
-                       tuna_seed* seed)
+                       const double u01[])
 {
     int i, j;
     size_t icnt, jcnt;
@@ -659,7 +657,7 @@ tuna_algo_welch1_nuinf(const int nk,
             return j;
         }
         p    = tuna_welch1_nuinf(iavg, ivar, icnt, javg, jvar, jcnt);
-        if (p < tuna_rand_u01(seed)) {
+        if (p < u01[j]) {
             i    = j;
             iavg = javg;
             ivar = jvar;
@@ -672,7 +670,7 @@ tuna_algo_welch1_nuinf(const int nk,
 int
 tuna_algo_welch1(const int nk,
                  const tuna_chunk ks[],
-                 tuna_seed* seed)
+                 const double u01[])
 {
     int i, j;
     size_t icnt, jcnt;
@@ -690,7 +688,7 @@ tuna_algo_welch1(const int nk,
             return j;
         }
         p    = tuna_welch1(iavg, ivar, icnt, javg, jvar, jcnt);
-        if (p < tuna_rand_u01(seed)) {
+        if (p < u01[j]) {
             i    = j;
             iavg = javg;
             ivar = jvar;
@@ -703,13 +701,15 @@ tuna_algo_welch1(const int nk,
 int
 tuna_algo_zero(const int nk,
                const tuna_chunk ks[],
-               tuna_seed* seed)
+               const double u01[])
 {
     (void) nk;
     (void) ks;
-    (void) seed;
+    (void) u01;
     return 0;
 }
+
+/* FIXME Work on thread safety below here */
 
 /* TODO Do something intelligent with clock_getres(2) information */
 
@@ -719,9 +719,12 @@ tuna_pre_cost(tuna_site* si,
               const tuna_chunk ks[],
               const int nk)
 {
+    size_t i;
+    double* u01;
+
     /* Ensure a zero-initialize st argument produces good behavior by... */
     if (!si->al) {
-        /* ...providing a default algorithm when not set, and */
+        /* ...providing a default algorithm when not set, and... */
         si->al = tuna_algo_default(nk);
 
         if (!si->sd) {
@@ -730,8 +733,16 @@ tuna_pre_cost(tuna_site* si,
         }
     }
 
+    /* Prepare nk random numbers for use by the algorithm.        */
+    /* Drawing variates here avoids seed updates from algorithms. */
+    /* That permits a short critical section on the tuna_site.    */
+    u01 = __builtin_alloca(nk * sizeof(double));
+    for (i = 0; i < nk; ++i) {
+        u01[i] = tuna_rand_u01(&si->sd);
+    }
+
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    st->ik = si->al(nk, ks, &si->sd);
+    st->ik = si->al(nk, ks, u01);
 
     return st->ik;
 }

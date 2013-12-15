@@ -399,32 +399,32 @@ tuna_welch1(double xA, double sA2, size_t nA,
  */
 
 /**
- * Type signature for all autotuning algorithms.  As a precondition, at least
- * two observations are available on each chunk prior to invocation.  This
- * choice permits using branchless query functions like \ref tuna_stats_var().
+ * Type signature for all \e deterministic autotuning algorithms.
+ * That is, all randomness occurs outside such algorithmic calls.
  *
- * \param[in   ] nk How many alternatives are under consideration?
- * \param[inout] ks Tracks information about \c nk alternatives.
- *                  Must be stored contiguously in memory.
- * \param[inout] sd Localized pseudo-random number generator state.
+ * \param[in] nk  How many alternatives are under consideration?
+ * \param[in] ks  Tracks information about \c nk alternatives.
+ *                Must be stored contiguously in memory.
+ * \param[in] u01 Provides \c nk uniform random draws on [0,1]
+ *                for consumption by the algorithm.
  *
  * \return The zero-based index of the chunk that has been selected.
  */
 typedef int (*tuna_algo)(const int nk,
                          const tuna_chunk ks[],
-                         tuna_seed* sd);
+                         const double u01[]);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 int
 tuna_algo_welch1_nuinf(const int nk,
                        const tuna_chunk ks[],
-                       tuna_seed* sd);
+                       const double u01[]);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
 int
 tuna_algo_welch1(const int nk,
                  const tuna_chunk ks[],
-                 tuna_seed* sd);
+                 const double u01[]);
 
 /**
  * An "autotuning" algorithm always selecting index zero.
@@ -433,7 +433,7 @@ tuna_algo_welch1(const int nk,
 int
 tuna_algo_zero(const int nk,
                const tuna_chunk ks[],
-               tuna_seed* sd);
+               const double u01[]);
 
 /**
  * Retrieve the name of the algorithm, if known.  Otherwise, return "unknown".
