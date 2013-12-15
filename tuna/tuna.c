@@ -292,23 +292,46 @@ tuna_chunk_stats(tuna_chunk* const k)
     return stats_cpy(&k->stats);
 }
 
-/* FIXME Work on thread safety below here */
+/**
+ * Return an unlocked, atomic snapshot of running state k.
+ * Relies on an initialized-but-unlocked lock being only zero bits.
+ */
+static
+tuna_chunk
+chunk_cpy(const tuna_chunk* const k)
+{
+    tuna_chunk snapshot;
+    tuna_lock(((tuna_chunk*) k)->stats.l);
+    memcpy(&snapshot, k, sizeof(tuna_chunk));
+    tuna_unlock(((tuna_chunk*) k)->stats.l);
+    memset(&snapshot.stats.l, 0, sizeof(snapshot.stats.l));
+    return snapshot;
+}
 
 tuna_stats*
 tuna_chunk_merge(tuna_stats* const s,
                  const tuna_chunk* const k)
 {
+    /* Merge an atomic snapshot of k to avoid holding two locks.    */
+    /* Locking both is fruitless as k could change immediately      */
+    /* after return but before the caller could observe it.  Hence  */
+    /* any stronger behavior introduces contention without benefit. */
     size_t i;
-    tuna_stats_merge(s, &k->stats);
-    for (i = 0; i < tuna_countof(k->outliers); ++i) {
-        if (k->outliers[i]) {
-            tuna_stats_nobs(s, k->outliers + i,
-                            tuna_countof(k->outliers) - i);
+    tuna_chunk snap = chunk_cpy(k);
+    tuna_lock(s->l);
+    stats_merge(s, snap.stats);
+    for (i = 0; i < tuna_countof(snap.outliers); ++i) {
+        if (snap.outliers[i]) {
+            stats_nobs(s, snap.outliers + i,
+                       tuna_countof(snap.outliers) - i);
             break;
         }
     }
+    tuna_unlock(s->l);
     return s;
 }
+
+/* FIXME Work on thread safety below here */
 
 /**
  * Lower tail quantile for standard normal distribution function.
