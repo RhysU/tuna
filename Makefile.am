@@ -47,8 +47,14 @@ dist_doc_DATA             += $(examples_algodive_SOURCES)
 noinst_PROGRAMS            += examples/smallsort
 examples_smallsort_SOURCES  = examples/smallsort.c
 examples_smallsort_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-examples_smallsort_LDADD    = tuna/libtuna-debug.la $(LIBM)
+examples_smallsort_LDADD    = tuna/libtuna.la $(LIBM)
 dist_doc_DATA              += $(examples_smallsort_SOURCES)
+
+noinst_PROGRAMS            += examples/blockedmm
+examples_blockedmm_SOURCES  = examples/blockedmm.c
+examples_blockedmm_CFLAGS   = $(AM_CFLAGS) $(STDC99)
+examples_blockedmm_LDADD    = tuna/libtuna.la $(LIBM)
+dist_doc_DATA              += $(examples_blockedmm_SOURCES)
 
 # C99-based test programs
 # (either dedicated sources or simply reusing examples as tests)
@@ -77,6 +83,10 @@ TESTS                += tests/basic.sh
 check_PROGRAMS       += examples/smallsort
 dist_check_SCRIPTS   += tests/smallsort.sh
 TESTS                += tests/smallsort.sh
+
+check_PROGRAMS       += examples/blockedmm
+dist_check_SCRIPTS   += tests/blockedmm.sh
+TESTS                += tests/blockedmm.sh
 
 # CDFLIB might be handy for development but it is not installed
 # include_HEADERS            = cdflib/cdflib.h

@@ -40,6 +40,7 @@ tests/welch
 # Executables
 examples/algodive
 examples/basic
+examples/blockedmm
 examples/poc
 examples/smallsort
 

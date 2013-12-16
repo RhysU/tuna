@@ -118,14 +118,17 @@ Tuna was written to be easy to shoehorn into many similar problem contexts:
    cache?
 2. Should I offload some expensive computation to a coprocessor (Xeon Phi?
    GPU?) or will the offload latency kill me?
-3. How many threads should I employ for a compute kernel before resource
+3. What problem-size-dependent algorithmic parameters should I use for compute
+   kernels?  An `example using blocked matrix multiplication
+   <examples/blockedmm.c>`_ is available.
+4. How many threads should I employ for a compute kernel before resource
    contention causes them to all fall over?
-4. Which of several numerics choices will give me the best time-to-solution
+5. Which of several numerics choices will give me the best time-to-solution
    for the particular physics problem I want to solve?
-5. Write a decorator for Python to add nice, crisp syntax so you can
+6. Write a decorator for Python to add nice, crisp syntax so you can
    automatically find the fastest of the 57 ways you can write your logic using
    NumPy/SciPy.
-6. You tell me.
+7. You tell me.
 
 The necessary ``tuna_site`` and ``tuna_chunk`` data may be stored anywhere.
 For example, one could make them member data in a C++ object.  Or protect the
