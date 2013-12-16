@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     const int N     = 1 << log2N;
     printf("niter=%d, log2N=%d, N=%d\n", niter, log2N, N);
 
-    // Allocate matrix storage
+    // Allocate storage
     double* const a = malloc(N*N*sizeof(double));
     double* const b = malloc(N*N*sizeof(double));
     double* const c = malloc(N*N*sizeof(double));
@@ -87,11 +87,13 @@ int main(int argc, char *argv[])
         for (int i = 0; i < N*N; ++i) c[i] = rand() / (double) RAND_MAX;
         blockedmm(c, a, b, log2N);
     }
+
+    // Deallocate storage
     free(c);
     free(b);
     free(a);
 
-    // Display observations
+    // Display observations.  Chunks are labeled by log2 of block size.
     tuna_fprint(stdout, &si, ks, tuna_countof(ks), "blockedmm", NULL);
 
     return EXIT_SUCCESS;
