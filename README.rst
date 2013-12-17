@@ -135,11 +135,14 @@ Tuna was written to be easy to shoehorn into many similar problem contexts:
 7. You tell me.
 
 The necessary ``tuna_site`` and ``tuna_chunk`` data may be stored anywhere.
-For example, one could make them member data in a C++ object.  Or protect the
-``tuna_pre()`` and ``tuna_post()`` invocations with locking or some thread
-local storage.  Or have them live in a large map keyed by some identifier to
-permit interrogating what autotuning choices were made by an ``atexit(3)``
-hook.
+For simplicity, the examples have them as file- or function-scoped static data.
+But they could just as well be member data in a C++ object.  Or they could live
+in a map keyed by some identifier to permit interrogating what autotuning
+choices were made by an ``atexit(3)`` hook.  Regardless of where they are
+stored, any access to them is made threadsafe by internal synchronization
+within Tuna.  Hence, no additional locking is necessary in multithreaded
+contexts (though scalability may be helped in some circumstances by using
+thread local storage for these data structures).
 
 Build and Installation
 ----------------------
