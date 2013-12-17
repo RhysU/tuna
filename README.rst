@@ -1,6 +1,8 @@
 Tuna: A Chunk-based Lightweight AutoTuna
 ========================================
 
+.. contents:: :local:
+
 Overview
 --------
 
@@ -18,8 +20,8 @@ semantically-indistinguishable chunks of code.  It works by misusing the ideas
 behind `A/B testing <http://en.wikipedia.org/wiki/A/B_testing>`_ in a
 straightforward manner that definitely won't pass peer review.
 
-Example
--------
+A Sorting Example
+-----------------
 
 Hypothetically, say you want to sort many small lists.  Let's autotune over
 three candidate ``O(n ln n)`` sorting algorithms with Tuna::
@@ -56,12 +58,12 @@ variables.
 This `smallsort example <examples/smallsort.c>`_ is included with Tuna.  Let's
 run 1000 sorts on integer lists with 150 elements::
 
-   $ ./examples/smallsort 1000 150
-   niter=1000, nelem=150, memory=160 bytes
-   TUNA$ smallsort welch1
-   TUNA> smallsort insertion           961     2.50007e-05 +/-     2.57965e-06
-   TUNA> smallsort qsort(3)              5     3.58456e-05 +/-     6.24654e-06
-   TUNA> smallsort heap                 34     2.77568e-05 +/-     1.71520e-06
+    $ ./examples/smallsort 1000 150
+    niter=1000, nelem=150, memory=160 bytes
+    TUNA$ smallsort welch1
+    TUNA> smallsort insertion           961     2.50007e-05 +/-     2.57965e-06
+    TUNA> smallsort qsort(3)              5     3.58456e-05 +/-     6.24654e-06
+    TUNA> smallsort heap                 34     2.77568e-05 +/-     1.71520e-06
 
 The first, second, and third numeric columns are the mean, standard deviation,
 and count observed for each chunk, respectively.  Times are given in seconds as
@@ -74,12 +76,12 @@ calls are required to have a sample standard deviation.
 
 Turning to 165 and then 180 elements per list::
 
-   $ ./examples/smallsort 1000 165
-   niter=1000, nelem=165, memory=160 bytes
-   TUNA$ smallsort welch1
-   TUNA> smallsort insertion           471     3.08471e-05 +/-     4.24399e-06
-   TUNA> smallsort qsort(3)              5     4.01970e-05 +/-     6.12079e-06
-   TUNA> smallsort heap                524     3.07392e-05 +/-     2.57830e-06
+    $ ./examples/smallsort 1000 165
+    niter=1000, nelem=165, memory=160 bytes
+    TUNA$ smallsort welch1
+    TUNA> smallsort insertion           471     3.08471e-05 +/-     4.24399e-06
+    TUNA> smallsort qsort(3)              5     4.01970e-05 +/-     6.12079e-06
+    TUNA> smallsort heap                524     3.07392e-05 +/-     2.57830e-06
 
     $ ./examples/smallsort 1000 180
     niter=1000, nelem=180, memory=160 bytes
