@@ -29,6 +29,7 @@ tuna_libtuna_la_SOURCES   = $(tuna_libtuna_debug_la_SOURCES)
 tuna_libtuna_la_CFLAGS    = $(tuna_libtuna_debug_la_CFLAGS)
 tuna_libtuna_la_CPPFLAGS  = $(tuna_libtuna_debug_la_CPPFLAGS) -DNDEBUG
 tuna_libtuna_la_LIBADD    = $(tuna_libtuna_debug_la_LIBADD)
+tuna_libtuna_la_LDFLAGS   = -release $(PACKAGE_VERSION)
 
 # C99-based example programs with sources installed alongside the documentation
 # Use libtuna-debug.la when performance is noncritical to improve coverage.
