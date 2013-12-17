@@ -22,8 +22,18 @@
 
 #include <tuna.h>
 
-static tuna_site si;      // Normally si and ks would be inside blockedmm()
-static tuna_chunk ks[12]; // but they are global to permit querying them
+// Normally si and ks might be inside blockedmm() but
+// they are global to permit querying them in main().
+static tuna_site si;
+static const char *labels[] = { "block___1",
+                                "block___2",
+                                "block___4",
+                                "block___8",
+                                "block__16",
+                                "block__32",
+                                "block__64",
+                                "block_128"  };
+static tuna_chunk ks[tuna_countof(labels)];
 
 // Preform a blocked matrix-matrix multiply using autotuned blocking.
 static
@@ -33,16 +43,13 @@ blockedmm(double       c[], // Output C += A*B
           const double b[], // Input B of size N-by-N
           const int log2N)  // Base-2 log of A, B, and C's dimension
 {
-    // Sanity check incoming arguments
-    assert(log2N >=  0);
-    assert(log2N <= tuna_countof(ks));
-
-    // Autotune on the power-of-2 block size over range possible given N.
-    // Routine (weirdly) took log2N so (trivially) any smaller
-    // power-of-2 block size will evenly divide the matrix extents.
+    // Routine takes log2N so any smaller power-of-2 block size
+    // will trivially partition the matrix into uniform submatrices.
+    assert(log2N >= 0);
     tuna_stack st;
-    const int N = 1 << log2N;
-    const int B = 1 << tuna_pre(&si, &st, ks, log2N);
+    const int N     = 1 << log2N;
+    const int log2B = log2N < tuna_countof(ks) ? log2N+1 : tuna_countof(ks);
+    const int B     = 1 << tuna_pre(&si, &st, ks, log2B);
 
     // Multiply logic based upon the documentation (but not the source)
     // from https://code.google.com/p/mm-matrixmultiplicationtool/
@@ -63,7 +70,7 @@ blockedmm(double       c[], // Output C += A*B
         }
     }
 
-    // Record autotuning results
+    // Update autotuning knowledge
     tuna_post(&st, ks);
 }
 
@@ -75,26 +82,22 @@ int main(int argc, char *argv[])
     const int N     = 1 << log2N;
     printf("niter=%d, log2N=%d, N=%d\n", niter, log2N, N);
 
-    // Allocate storage
+    // Fill matrices with U[0,1] data and repeatedly compute C += A*B
     double* const a = malloc(N*N*sizeof(double));
     double* const b = malloc(N*N*sizeof(double));
     double* const c = malloc(N*N*sizeof(double));
-
-    // On each iteration, fill matrices with U[0,1] data and computed C += A*B
     for (int i = 0; i < niter; ++i) {
         for (int i = 0; i < N*N; ++i) a[i] = rand() / (double) RAND_MAX;
         for (int i = 0; i < N*N; ++i) b[i] = rand() / (double) RAND_MAX;
         for (int i = 0; i < N*N; ++i) c[i] = rand() / (double) RAND_MAX;
         blockedmm(c, a, b, log2N);
     }
-
-    // Deallocate storage
     free(c);
     free(b);
     free(a);
 
-    // Display observations.  Chunks are labeled by log2 of block size.
-    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "blockedmm", NULL);
+    // Display observations
+    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "blockedmm", labels);
 
     return EXIT_SUCCESS;
 }
