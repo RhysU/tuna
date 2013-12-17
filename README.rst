@@ -1,5 +1,7 @@
-Tuna: A Chunk-based Lightweight AutoTuna
-========================================
+Tuna
+====
+
+A Chunk-based Lightweight AutoTuna
 
 .. contents:: :local:
 
