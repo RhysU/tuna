@@ -3,7 +3,7 @@ AC_CONFIG_SRCDIR([tuna/tuna.h])
 AC_CONFIG_HEADERS([tuna/config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.11 color-tests foreign parallel-tests silent-rules subdir-objects tar-ustar -Wall])
+AM_INIT_AUTOMAKE([1.11 check-news color-tests foreign parallel-tests silent-rules subdir-objects tar-ustar -Wall])
 AC_PROG_CC
 AM_PROG_CC_C_O
 AX_CFLAGS_WARN_ALL
