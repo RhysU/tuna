@@ -20,6 +20,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef _OPENMP
+# include <omp.h>
+#else
+# define omp_get_num_threads() (1)
+#endif
+
 #include <tuna.h>
 
 // Normally si and ks might be inside blockedmm() but
@@ -76,25 +82,32 @@ blockedmm(double       c[], // Output C += A*B
 
 int main(int argc, char *argv[])
 {
-    // Parse any incoming command line arguments and echo settings
+    // Parse any incoming command line arguments
     const int niter = argc > 1 ? atof(argv[1]) : 64; // Iteration count?
     const int log2N = argc > 2 ? atof(argv[2]) :  8; // log2 of matrix size?
     const int N     = 1 << log2N;
-    printf("niter=%d, log2N=%d, N=%d\n", niter, log2N, N);
 
-    // Fill matrices with U[0,1] data and repeatedly compute C += A*B
-    double* const a = malloc(N*N*sizeof(double));
-    double* const b = malloc(N*N*sizeof(double));
-    double* const c = malloc(N*N*sizeof(double));
-    for (int i = 0; i < niter; ++i) {
-        for (int i = 0; i < N*N; ++i) a[i] = rand() / (double) RAND_MAX;
-        for (int i = 0; i < N*N; ++i) b[i] = rand() / (double) RAND_MAX;
-        for (int i = 0; i < N*N; ++i) c[i] = rand() / (double) RAND_MAX;
-        blockedmm(c, a, b, log2N);
+    #pragma omp parallel default(none) firstprivate(niter, log2N, N)
+    {
+        #pragma omp single
+        printf("nthread=%d, niter=%d, log2N=%d, N=%d\n",
+               omp_get_num_threads(), niter, log2N, N);
+
+        // Fill matrices with U[0,1] data and repeatedly compute C += A*B
+        double* const a = malloc(N*N*sizeof(double));
+        double* const b = malloc(N*N*sizeof(double));
+        double* const c = malloc(N*N*sizeof(double));
+        #pragma omp for
+        for (int i = 0; i < niter; ++i) {
+            for (int i = 0; i < N*N; ++i) a[i] = rand() / (double) RAND_MAX;
+            for (int i = 0; i < N*N; ++i) b[i] = rand() / (double) RAND_MAX;
+            for (int i = 0; i < N*N; ++i) c[i] = rand() / (double) RAND_MAX;
+            blockedmm(c, a, b, log2N);
+        }
+        free(c);
+        free(b);
+        free(a);
     }
-    free(c);
-    free(b);
-    free(a);
 
     // Display observations
     tuna_fprint(stdout, &si, ks, tuna_countof(ks), "blockedmm", labels);

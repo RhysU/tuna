@@ -52,8 +52,8 @@ dist_doc_DATA              += $(examples_smallsort_SOURCES)
 
 noinst_PROGRAMS            += examples/blockedmm
 examples_blockedmm_SOURCES  = examples/blockedmm.c
-examples_blockedmm_CFLAGS   = $(AM_CFLAGS) $(STDC99)
-examples_blockedmm_LDADD    = tuna/libtuna.la $(LIBM)
+examples_blockedmm_CFLAGS   = $(AM_CFLAGS) $(STDC99) $(OPENMP_CFLAGS)
+examples_blockedmm_LDADD    = tuna/libtuna.la $(LIBM) $(OPENMP_CFLAGS)
 dist_doc_DATA              += $(examples_blockedmm_SOURCES)
 
 # C99-based test programs
