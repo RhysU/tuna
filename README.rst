@@ -67,9 +67,9 @@ run 1000 sorts on integer lists with 150 elements::
     TUNA> smallsort qsort(3)              5     3.58456e-05 +/-     6.24654e-06
     TUNA> smallsort heap                 34     2.77568e-05 +/-     1.71520e-06
 
-The first, second, and third numeric columns are the mean, standard deviation,
-and count observed for each chunk, respectively.  Times are given in seconds as
-measured by ``CLOCK_PROCESS_CPUTIME_ID``.  On lists of 150 elements,
+The first, second, and third numeric columns are the sample count, mean, and
+standard deviation observed for each chunk, respectively.  Times are given in
+seconds as measured by ``CLOCK_PROCESS_CPUTIME_ID``.  On lists of 150 elements,
 ``sort_insertion()`` is faster and invoked the lion's share of the time we call
 ``smallsort()``.  The other two chunks are called 5 times each.  Why five?
 Tuna omits the three worst outliers from consideration when computing
