@@ -71,8 +71,8 @@ The first, second, and third numeric columns are the sample count, mean, and
 standard deviation observed for each chunk, respectively.  Times are given in
 seconds as measured by ``CLOCK_PROCESS_CPUTIME_ID``.  On lists of 150 elements,
 ``sort_insertion()`` is faster and invoked the lion's share of the time we call
-``smallsort()``.  The other two chunks are called 5 times each.  Why five?
-Tuna omits the three worst outliers from consideration when computing
+``smallsort()``.  The other two chunks are called at least five times each.  Why
+five?  Tuna omits the three worst outliers from consideration when computing
 statistics.  This forgives one-time hiccups like slow startup times.  Two more
 calls are required to have a sample standard deviation.
 
