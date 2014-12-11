@@ -97,7 +97,7 @@ closer to ``sort_insertion()`` now.  Tuna invokes it frequently, sampling it
 more often than before on account of its standard deviation arguably
 making it the fastest given the samples Tuna observed thus far.  At 180
 elements, ``sort_heap()`` becomes statistically faster and is therefore more
-heavily used.  Tuna discovered change in behavior around 165 samples in the
+heavily used.  Tuna discovered the change in behavior around 165 samples in the
 presence of sampling noise allowing the code to automatically benefit from the
 faster chunk regardless of input size.
 
