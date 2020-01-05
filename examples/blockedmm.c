@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
         double* const a = malloc(N*N*sizeof(double));
         double* const b = malloc(N*N*sizeof(double));
         double* const c = malloc(N*N*sizeof(double));
-        #pragma omp for
+        #pragma omp for schedule(runtime)
         for (int i = 0; i < niter; ++i) {
             for (int i = 0; i < N*N; ++i) a[i] = rand() / (double) RAND_MAX;
             for (int i = 0; i < N*N; ++i) b[i] = rand() / (double) RAND_MAX;
