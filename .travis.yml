@@ -10,5 +10,6 @@ script:
   - ./bootstrap
   - ./configure
   - make all
+  - export LD_LIBRARY_PATH=$(if [[ "$CC" == "clang" ]]; then echo -n '/usr/local/clang/lib'; fi)
   - make check VERBOSE=1
   - make html
