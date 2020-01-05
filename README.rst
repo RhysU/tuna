@@ -138,11 +138,8 @@ The necessary ``tuna_site`` and ``tuna_chunk`` data may be stored anywhere.
 For simplicity, the examples have them as file- or function-scoped static data.
 But they could just as well be member data in a C++ object.  Or they could live
 in a map keyed by some identifier to permit interrogating what autotuning
-choices were made by an ``atexit(3)`` hook.  Regardless of where they are
-stored, any access to them is made threadsafe by internal synchronization
-within Tuna.  Hence, no additional locking is necessary in multithreaded
-contexts (though scalability may be helped in some circumstances by using
-thread local storage for these data structures).
+choices were made by an ``atexit(3)`` hook.  Additional locking *is* required
+should a multi-threaded setting be desired.
 
 Build and Installation
 ----------------------

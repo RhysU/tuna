@@ -62,48 +62,22 @@
 # error "CLOCK_PROCESS_CPUTIME_ID unavailable"
 #endif
 
-/**
- * Return an unlocked, atomic snapshot of running state t.
- * Relies on tuna_stats.l being the last member and on
- * an initialized-but-unlocked lock being only zero bits.
- */
-static
-tuna_stats
-stats_cpy(const tuna_stats* const t)
-{
-    tuna_stats snapshot = { 0 };
-    tuna_lock(((tuna_stats*) t)->l);
-    memcpy(&snapshot, t, offsetof(tuna_stats, l));
-    tuna_unlock(((tuna_stats*) t)->l);
-    return snapshot;
-}
-
 size_t
 tuna_stats_cnt(const tuna_stats* const t)
 {
-    /* While the following is the general pattern one expects
-     *     size_t n;
-     *     tuna_lock(((tuna_stats*) t)->l);
-     *     n = t->n;
-     *     tuna_unlock(((tuna_stats*) t)->l);
-     *     return n;
-     * in this instance, an atomic fetch is all we require.
-     */
-    return __sync_add_and_fetch(&((tuna_stats*) t)->n, 0);
+    return t->n;
 }
 
 double
 tuna_stats_avg(const tuna_stats* const t)
 {
-    const tuna_stats c = stats_cpy(t);
-    return c.n ? c.m : NAN;
+    return t->n ? t->m : NAN;
 }
 
 double
 tuna_stats_var(const tuna_stats* const t)
 {
-    const tuna_stats c = stats_cpy(t);
-    return c.n ? (c.n > 1 ? c.s / (c.n - 1) : 0) : NAN;
+    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
 }
 
 double
@@ -115,8 +89,7 @@ tuna_stats_std(const tuna_stats* const t)
 double
 tuna_stats_sum(const tuna_stats* const t)
 {
-    const tuna_stats c = stats_cpy(t);
-    return c.n * c.m;
+    return t->n * t->m;
 }
 
 size_t
@@ -124,29 +97,26 @@ tuna_stats_mom(const tuna_stats* const t,
                double* const avg,
                double* const var)
 {
-    const tuna_stats c = stats_cpy(t);
-    switch (c.n) {
+    switch (t->n) {
     case 0:
         *avg = NAN;
         *var = NAN;
         break;
     case 1:
-        *avg = c.m;
+        *avg = t->m;
         *var = 0;
         break;
     default:
-        *avg = c.m;
-        *var = c.s / (c.n - 1);
+        *avg = t->m;
+        *var = t->s / (t->n - 1);
         break;
     }
-    return c.n;
+    return t->n;
 }
 
-/* Internal method requiring that t already be locked */
-static
-void
-stats_obs(tuna_stats* const t,
-          const double x)
+tuna_stats*
+tuna_stats_obs(tuna_stats* const t,
+               const double x)
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
@@ -159,29 +129,7 @@ stats_obs(tuna_stats* const t,
         t->m = x;
         t->s = 0;
     }
-}
-
-tuna_stats*
-tuna_stats_obs(tuna_stats* const t,
-               const double x)
-{
-    tuna_lock(t->l);
-    stats_obs(t, x);
-    tuna_unlock(t->l);
     return t;
-}
-
-/* Internal method requiring that t already be locked */
-static
-void
-stats_nobs(tuna_stats* const t,
-           const double* x,
-           size_t N)
-{
-    size_t i;
-    for (i = N; i -- > 0 ;) {
-        stats_obs(t, *x++);
-    }
 }
 
 tuna_stats*
@@ -189,47 +137,30 @@ tuna_stats_nobs(tuna_stats* const t,
                 const double* x,
                 size_t N)
 {
-    tuna_lock(t->l);
-    stats_nobs(t, x, N);
-    tuna_unlock(t->l);
+    size_t i;
+    for (i = N; i -- > 0 ;) {
+        tuna_stats_obs(t, *x++);
+    }
     return t;
 }
-
-/* Internal method requiring that dst already be locked.        */
-/* Notice that snap is passed by value and is assumed unshared. */
-static
-void
-stats_merge(tuna_stats* const dst,
-            const tuna_stats snap)
-{
-    if (snap.n == 0) {         /* snp contains no data */
-        /* NOP */
-    } else if (dst->n == 0) {  /* dst contains no data */
-        *dst = snap;
-    } else {                   /* merge snp into dst */
-        size_t total = dst->n + snap.n;
-        double dM    = dst->m - snap.m;  /* Cancellation issues? */
-        dst->m       = (dst->n * dst->m + snap.n * snap.m) / total;
-        dst->s       = (dst->n == 1 ? 0 : dst->s)
-                       + (snap.n == 1 ? 0 : snap.s)
-                       + ((dM * dM) * (dst->n * snap.n)) / total;
-        dst->n       = total;
-    }
-}
-
 
 tuna_stats*
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    /* Merge an atomic snapshot of src to avoid holding two locks.  */
-    /* Locking both is fruitless as src could change immediately    */
-    /* after return but before the caller could observe it.  Hence  */
-    /* any stronger behavior introduces contention without benefit. */
-    tuna_stats snap = stats_cpy(src);
-    tuna_lock(dst->l);
-    stats_merge(dst, snap);
-    tuna_unlock(dst->l);
+    if (src->n == 0) {         /* snp contains no data */
+        /* NOP */
+    } else if (dst->n == 0) {  /* dst contains no data */
+        *dst = *src;
+    } else {                   /* merge snp into dst */
+        size_t total = dst->n + src->n;
+        double dM    = dst->m - src->m;  /* Cancellation issues? */
+        dst->m       = (dst->n * dst->m + src->n * src->m) / total;
+        dst->s       = (dst->n == 1 ? 0 : dst->s)
+                       + (src->n == 1 ? 0 : src->s)
+                       + ((dM * dM) * (dst->n * src->n)) / total;
+        dst->n       = total;
+    }
     return dst;
 }
 
@@ -255,8 +186,6 @@ tuna_chunk*
 tuna_chunk_obs(tuna_chunk* const k,
                double t)
 {
-    tuna_lock(k->stats.l);
-
     /* First, find smallest observation among set {t, k->outliers[0], ... } */
     /* placing it into t while maintaining sorted-ness of k->outliers.      */
     /* The loop is one sort pass with possibility of short-circuiting.      */
@@ -272,62 +201,30 @@ tuna_chunk_obs(tuna_chunk* const k,
     /* Second, when non-zero, record statistics about the best observation. */
     /* Use the internal method to avoid deadlock as we already hold lock.   */
     if (t) {
-        stats_obs(&k->stats, t);
+        tuna_stats_obs(&k->stats, t);
     }
 
-    /* Together, these two steps cause a zero-initialized tuna_chunk to */
+    /* Together, the above steps cause a zero-initialized tuna_chunk to */
     /* gather tuna_noutliers pieces of information before beginning to  */
     /* track any statistics.  This effectively provides some "start up" */
     /* or "burn in" period in addition to preventing highly improbable  */
     /* observations from unduly inflating the discovered variability.   */
 
-    tuna_unlock(k->stats.l);
-
     return k;
-}
-
-tuna_stats
-tuna_chunk_stats(tuna_chunk* const k)
-{
-    return stats_cpy(&k->stats);
-}
-
-/**
- * Return an unlocked, atomic snapshot of running state k.
- * Relies on an initialized-but-unlocked lock being only zero bits.
- */
-static
-tuna_chunk
-chunk_cpy(const tuna_chunk* const k)
-{
-    tuna_chunk snapshot;
-    tuna_lock(((tuna_chunk*) k)->stats.l);
-    memcpy(&snapshot, k, sizeof(tuna_chunk));
-    tuna_unlock(((tuna_chunk*) k)->stats.l);
-    memset(&snapshot.stats.l, 0, sizeof(snapshot.stats.l));
-    return snapshot;
 }
 
 tuna_stats*
 tuna_chunk_merge(tuna_stats* const s,
                  const tuna_chunk* const k)
 {
-    /* Merge an atomic snapshot of k to avoid holding two locks.    */
-    /* Locking both is fruitless as k could change immediately      */
-    /* after return but before the caller could observe it.  Hence  */
-    /* any stronger behavior introduces contention without benefit. */
     size_t i;
-    tuna_chunk snap = chunk_cpy(k);
-    tuna_lock(s->l);
-    stats_merge(s, snap.stats);
-    for (i = 0; i < tuna_countof(snap.outliers); ++i) {
-        if (snap.outliers[i]) {
-            stats_nobs(s, snap.outliers + i,
-                       tuna_countof(snap.outliers) - i);
+    tuna_stats_merge(s, &k->stats);
+    for (i = 0; i < tuna_countof(k->outliers); ++i) {
+        if (k->outliers[i]) {
+            tuna_stats_nobs(s, k->outliers + i, tuna_countof(k->outliers) - i);
             break;
         }
     }
-    tuna_unlock(s->l);
     return s;
 }
 
@@ -710,7 +607,6 @@ tuna_algo_zero(const int nk,
 }
 
 /* TODO Do something intelligent with clock_getres(2) information */
-
 int
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
@@ -719,8 +615,6 @@ tuna_pre_cost(tuna_site* si,
 {
     size_t i;
     double* u01;
-
-    tuna_lock(si->l);
 
     /* Ensure a zero-initialize st argument produces good behavior by... */
     if (!si->al) {
@@ -740,8 +634,6 @@ tuna_pre_cost(tuna_site* si,
     for (i = 0; i < nk; ++i) {
         u01[i] = tuna_rand_u01(&si->sd);
     }
-
-    tuna_unlock(si->l);
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
     st->ik = si->al(nk, ks, u01);
@@ -923,9 +815,7 @@ tuna_site_fprintf(void* stream,
     va_start(ap, format);
     nwritten = vfprintf(stream, format, ap);
     va_end(ap);
-    tuna_lock(((tuna_site*) si)->l);
     name = tuna_algo_name(si->al);
-    tuna_unlock(((tuna_site*) si)->l);
     if (nwritten >= 0) {
         int status = fprintf(stream,
                              "%s"

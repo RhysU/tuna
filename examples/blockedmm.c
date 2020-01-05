@@ -50,10 +50,12 @@ blockedmm(double       c[], // Output C += A*B
     // Routine takes log2N so any smaller power-of-2 block size
     // will trivially partition the matrix into uniform submatrices.
     assert(log2N >= 0);
-    tuna_stack st;
-    const int N     = 1 << log2N;
+    const int N = 1 << log2N;
     const int log2B = log2N < tuna_countof(ks) ? log2N+1 : tuna_countof(ks);
-    const int B     = 1 << tuna_pre(&si, &st, ks, log2B);
+    tuna_stack st;
+    int B;
+    #pragma omp critical (tuna_blockedmm)
+    B = 1 << tuna_pre(&si, &st, ks, log2B);
 
     // Multiply logic based upon the documentation (but not the source)
     // from https://code.google.com/p/mm-matrixmultiplicationtool/
@@ -75,6 +77,7 @@ blockedmm(double       c[], // Output C += A*B
     }
 
     // Update autotuning knowledge
+    #pragma omp critical (tuna_blockedmm)
     tuna_post(&st, ks);
 }
 

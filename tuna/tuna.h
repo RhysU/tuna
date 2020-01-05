@@ -20,6 +20,8 @@
 /** \file
  * Tuna public API.
  * Designed to have the minimial possible set of dependencies.
+ * The implementation is not thread-safe but it can be used in thread-safe
+ * fashion provided that some external lock guards access to struct instances.
  */
 
 #ifndef TUNA_H
@@ -44,9 +46,9 @@
 
 /** Type safe count the number of elements in an array at compile time */
 #define tuna_countof(x)  (                                                  \
-        0*sizeof(reinterpret_cast<const ::tuna::BAD_ARGUMENT_TO_COUNTOF*>(x)) + \
-        0*sizeof(::tuna::BAD_ARGUMENT_TO_COUNTOF::check_type((x), &(x))     ) + \
-        sizeof(x)/sizeof((x)[0])   )
+    0*sizeof(reinterpret_cast<const ::tuna::BAD_ARGUMENT_TO_COUNTOF*>(x)) + \
+    0*sizeof(::tuna::BAD_ARGUMENT_TO_COUNTOF::check_type((x), &(x))     ) + \
+    sizeof(x)/sizeof((x)[0])   )
 
 #ifndef TUNA_PARSED_BY_DOXYGEN
 namespace tuna
@@ -85,72 +87,6 @@ extern "C" {
 #endif
 
 /**
- * Spinlocking utilities for protecting critical data structures.
- *
- * Spinlocks chosen as critical regions are short and lack OS-intensive calls.
- * Also, our contention should be light.  These definitions may need to be
- * modified depending on the compiler and/or platform used.
- * @{
- */
-
-/**
- * Provides storage necessary to support one spinlock.  "Initializing" this
- * spinlock requires setting it to zero.  Consequently, instances with static
- * storage will be automatically initialized.
- */
-typedef int tuna_spinlock;
-
-/**
- * \def tuna_relax()
- * Issue busy-wait loop friendly pause instruction(s).  Intended to behave
- * vaguely like <code>_mm_pause</code> but without requiring the
- * intrinsic-specific header to have been included.
- */
-
-#if defined(__i386__) || defined(__x86_64__) || defined(__amd64__)
-#define tuna_relax() __asm__ __volatile__("rep; nop"    ::: "memory")
-#elif defined(__ia64__)
-#define tuna_relax() __asm__ __volatile__("hint @pause" ::: "memory")
-#else
-#define tuna_relax() __asm__ __volatile__(""            ::: "memory")
-#endif
-
-/**
- * Issue \c count tuna_relax() statements.
- */
-#define tuna_spinwait(count)         \
-    do {                             \
-        unsigned i;                  \
-        for (i = (count); i --> 0 ;) \
-            tuna_relax();            \
-    } while (0)
-
-/**
- * Lock a \ref tuna_spinlock using a GCC-defined atomic operation.
- *
- * An exponential backoff spinlock is chosen rather than a fair spinlock to
- * reduce single thread overhead and to also avoid FIFO bottlenecks if the
- * number of threads exceeds the number of cores for short critical sections.
- * See http://dx.doi.org/10.1145/103727.103729 for some initial background.
- *
- * \internal If behavior is unsatisfying in practice, try fair, scalable MCS.
- */
-#define tuna_lock(spinlock)                                \
-    do {                                                   \
-        unsigned count = 1;                                \
-        while (__sync_lock_test_and_set(&(spinlock), 1)) { \
-            tuna_spinwait(count);                          \
-            count *= 2;                                    \
-        }                                                  \
-    } while (0)
-
-/** Unlock a \ref tuna_spinlock using a GCC-defined atomic operation. */
-#define tuna_unlock(spinlock)      \
-    __sync_lock_release(&spinlock)
-
-/** @} */
-
-/**
  * Provides statistical accumulators for special cases of interest.
  * @{
  */
@@ -158,10 +94,9 @@ typedef int tuna_spinlock;
 /* TODO Defend against overflowing the counter tuna_stats.n */
 
 /**
- * Accumulates running mean and variance details from a data stream.  Fill
- * storage with zeros, e.g. from POD zero initialization, to construct or reset
- * an instance.  All access to member data requires using \ref tuna_lock and
- * \ref tuna_unlock on member \c l.  All public methods do so automatically.
+ * Accumulates running mean and variance details from a data stream.
+ * Fill storage with zeros, e.g. from POD zero initialization,
+ * to construct or reset an instance.
  *
  * Adapted from <a
  * href="https://red.ices.utexas.edu/projects/suzerain/wiki">Suzerain</a>'s
@@ -174,7 +109,6 @@ typedef struct tuna_stats {
     double        m;
     double        s;
     size_t        n;
-    tuna_spinlock l; /* necessarily the last member */
 } tuna_stats;
 
 /** Obtain the running number of samples provided thus far. */
@@ -238,8 +172,7 @@ tuna_stats_merge(tuna_stats* const dst,
 /**
  * Accumulates runtime information about the performance of a compute chunk.
  * Fill storage with zeros, e.g. from POD zero initialization, to construct or
- * reset an instance.  Access to member data requires using \ref tuna_lock and
- * \ref tuna_unlock on member \c l.  All public methods do so automatically.
+ * reset an instance.
  */
 typedef struct tuna_chunk {
     double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */
@@ -461,14 +394,11 @@ tuna_algo_default(const int nk);
 /**
  * Chunk-independent state maintained \e once for each autotuning site.
  * Members are managed by Tuna but a non-opaque type is used so the compiler
- * may compute this POD type's size to permit \c static instances.  All access
- * to member data requires using \ref tuna_lock and \ref tuna_unlock on member
- * #l.  All public methods do so automatically.
+ * may compute this POD type's size to permit \c static instances.
  */
 typedef struct tuna_site {
     tuna_algo     al; /**< The chosen tuning algorithm.           */
     tuna_seed     sd; /**< Random number generator state.         */
-    tuna_spinlock l;  /**< Spinlock protecting critical sections. */
 } tuna_site;
 
 /**
