@@ -2,6 +2,12 @@
 Tuna Changes
 ++++++++++++
 
+Whats new in Tuna (NEXT)
+-----------------------
+
+ - Travis-CI now successfully checks the clang build
+ - Miscellaneous clang and Doxygen warning fixes
+
 Whats new in Tuna 0.2.1
 -----------------------
 
