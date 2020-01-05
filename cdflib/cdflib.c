@@ -5634,12 +5634,12 @@ cdflib_E0000(
 {
 # define qxmon(zx,zy,zz) (int)((zx) <= (zy) && (zy) <= (zz))
 
-    double absstp;
+    double absstp = 0;
     double abstol;
-    double big = 0, fbig, fsmall, relstp, reltol, small = 0, step, stpmul, xhi,
-           xlb, xlo, xsave, xub, yy;
+    double big = 0, fbig, fsmall = 0, relstp = 0, reltol, small = 0,
+           step = 0, stpmul = 0, xhi, xlb = 0, xlo, xsave = 0, xub = 0, yy;
     int i99999 = 0;
-    unsigned long qbdd, qcond, qdum1, qdum2, qincr, qlim, qup;
+    unsigned long qbdd, qcond, qdum1, qdum2, qincr = 0, qlim, qup;
     switch (IENTRY) {
     case 0: goto DINVR;
     case 1: goto DSTINV;
@@ -5884,9 +5884,9 @@ cdflib_E0001(
 {
 # define ftol(zx) (0.5e0*cdflib_fifdmax1(abstol,reltol*fabs((zx))))
 
-    double a, abstol, b, c, d, fa, fb, fc, fd, fda;
-    double fdb, m, mb, p, q, reltol, tol, w, xxhi = 0, xxlo = 0;
-    int ext, i99999 = 0;
+    double a = 0, abstol = 0, b = 0, c, d, fa = 0, fb = 0, fc = 0, fd, fda;
+    double fdb, m, mb = 0, p, q, reltol = 0, tol, w = 0, xxhi = 0, xxlo = 0;
+    int ext = 0, i99999 = 0;
     unsigned long first, qrzero;
     switch (IENTRY) {
     case 0: goto DZROR;
