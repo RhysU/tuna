@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     const int log2N = argc > 2 ? atof(argv[2]) :  8; // log2 of matrix size?
     const int N     = 1 << log2N;
 
-    #pragma omp parallel default(none)
+    #pragma omp parallel default(none) firstprivate(niter, log2N, N)
     {
         #pragma omp single
         printf("nthread=%d, niter=%d, log2N=%d, N=%d\n",
