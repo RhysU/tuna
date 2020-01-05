@@ -22,8 +22,6 @@
 
 #ifdef _OPENMP
 # include <omp.h>
-#else
-# define omp_get_num_threads() (1)
 #endif
 
 #include <tuna.h>
@@ -90,8 +88,7 @@ int main(int argc, char *argv[])
     #pragma omp parallel default(none) firstprivate(niter, log2N, N)
     {
         #pragma omp single
-        printf("nthread=%d, niter=%d, log2N=%d, N=%d\n",
-               omp_get_num_threads(), niter, log2N, N);
+        printf("niter=%d, log2N=%d, N=%d\n", niter, log2N, N);
 
         // Fill matrices with U[0,1] data and repeatedly compute C += A*B
         double* const a = malloc(N*N*sizeof(double));
