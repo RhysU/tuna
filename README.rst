@@ -149,6 +149,6 @@ The usual GNU Autotools dance should work::
     ./bootstrap && ./configure --prefix=somewhere && make all check install
 
 Afterwards you can ``include <tuna.h>`` and link with ``-ltuna``.  For those
-that hate the GNU Autotools or who simply want to directly incorporate the
+that dislike the GNU Autotools or who simply want to directly incorporate the
 functionality, the files `tuna.h <tuna/tuna.h>`_ and `tuna.c <tuna/tuna.c>`_
 comprise the entire library and they can be dropped in place nearly anywhere.
