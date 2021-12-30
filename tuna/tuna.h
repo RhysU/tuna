@@ -113,23 +113,23 @@ typedef struct tuna_stats {
 
 /** Obtain the running number of samples provided thus far. */
 size_t
-tuna_stats_cnt(const tuna_stats* const t);
+tuna_stats_cnt(const tuna_stats* t);
 
 /** Obtain the running mean. */
 double
-tuna_stats_avg(const tuna_stats* const t);
+tuna_stats_avg(const tuna_stats* t);
 
 /** Obtain the running sample variance. */
 double
-tuna_stats_var(const tuna_stats* const t);
+tuna_stats_var(const tuna_stats* t);
 
 /** Obtain the running sample standard deviation. */
 double
-tuna_stats_std(const tuna_stats* const t);
+tuna_stats_std(const tuna_stats* t);
 
 /** Obtain the running sum. */
 double
-tuna_stats_sum(const tuna_stats* const t);
+tuna_stats_sum(const tuna_stats* t);
 
 /**
  * Obtain all running moments at once.
@@ -139,13 +139,13 @@ tuna_stats_sum(const tuna_stats* const t);
  * \return The number of samples thus far.
  */
 size_t
-tuna_stats_mom(const tuna_stats* const t,
-               double* const avg,
-               double* const var);
+tuna_stats_mom(const tuna_stats* t,
+               double* avg,
+               double* var);
 
 /** Accumulate a new observation \c x into statistics \c t. */
 tuna_stats*
-tuna_stats_obs(tuna_stats* const t,
+tuna_stats_obs(tuna_stats* t,
                const double x);
 
 /**
@@ -153,14 +153,14 @@ tuna_stats_obs(tuna_stats* const t,
  * <code>x[N-1]</code> into statistics \c t.
  */
 tuna_stats*
-tuna_stats_nobs(tuna_stats* const t,
+tuna_stats_nobs(tuna_stats* t,
                 const double* x,
                 size_t N);
 
 /** Incorporate running information from another instance. */
 tuna_stats*
-tuna_stats_merge(tuna_stats* const dst,
-                 const tuna_stats* const src);
+tuna_stats_merge(tuna_stats* dst,
+                 const tuna_stats* src);
 
 /** @} */
 
@@ -186,7 +186,7 @@ typedef struct tuna_chunk {
  * chosen, smaller should mean better.
  */
 tuna_chunk*
-tuna_chunk_obs(tuna_chunk* const k,
+tuna_chunk_obs(tuna_chunk* k,
                double t);
 
 /**
@@ -194,8 +194,8 @@ tuna_chunk_obs(tuna_chunk* const k,
  * including any outliers otherwise discarded from consideration.
  */
 tuna_stats*
-tuna_chunk_merge(tuna_stats* const s,
-                 const tuna_chunk* const k);
+tuna_chunk_merge(tuna_stats* s,
+                 const tuna_chunk* k);
 
 /** @} */
 
@@ -252,7 +252,7 @@ tuna_rand_n01(tuna_seed* sd);
 void
 tuna_welch(double xA, double sA2, size_t nA,
            double xB, double sB2, size_t nB,
-           double* const t, double* const nu);
+           double* t, double* nu);
 
 /**
  * Compute the Welch t-statistic given samples \c A and \c B.
