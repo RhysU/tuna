@@ -205,8 +205,8 @@ tuna_chunk_merge(tuna_stats* s,
  */
 
 /**
- * What state is required for tuna_u01() and tuna_n01() to be re-entrant safe
- * and orthogonal to all other pseudo-random generators that might be in use?
+ * The state required so that tuna_u01() and tuna_n01() can be re-entrant safe
+ * and orthogonal to all other pseudo-random generators that might be in use.
  */
 typedef unsigned int tuna_seed;
 
