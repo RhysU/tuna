@@ -2,16 +2,16 @@
 Tuna Changes
 ++++++++++++
 
-Whats new in Tuna (0.2.2)
------------------------
+What's new in Tuna 0.2.2
+------------------------
 
  - examples/blockedmm.c has schedule(runtime) so one can experiment with
    OMP_SCHEDULE and OMP_DISPLAY_ENV=TRUE in conjunction with OMP_PLACES.
  - Travis-CI now successfully checks the clang build.
  - Miscellaneous clang and Doxygen warning fixes.
 
-Whats new in Tuna 0.2.1
------------------------
+What's new in Tuna 0.2.1
+------------------------
 
  - FIX: blockedmm example now builds on recent GCC versions
  - Miscellaneous, minor documentation fixes and clarifications.
