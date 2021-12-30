@@ -809,7 +809,7 @@ tuna_site_fprintf(void* stream,
                   const char* format,
                   ...)
 {
-    const char *name;
+    const char* name;
     int nwritten;
     va_list ap;
     va_start(ap, format);

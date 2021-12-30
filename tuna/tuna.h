@@ -46,9 +46,9 @@
 
 /** Type safe count the number of elements in an array at compile time */
 #define tuna_countof(x)  (                                                  \
-    0*sizeof(reinterpret_cast<const ::tuna::BAD_ARGUMENT_TO_COUNTOF*>(x)) + \
-    0*sizeof(::tuna::BAD_ARGUMENT_TO_COUNTOF::check_type((x), &(x))     ) + \
-    sizeof(x)/sizeof((x)[0])   )
+        0*sizeof(reinterpret_cast<const ::tuna::BAD_ARGUMENT_TO_COUNTOF*>(x)) + \
+        0*sizeof(::tuna::BAD_ARGUMENT_TO_COUNTOF::check_type((x), &(x))     ) + \
+        sizeof(x)/sizeof((x)[0])   )
 
 #ifndef TUNA_PARSED_BY_DOXYGEN
 namespace tuna
