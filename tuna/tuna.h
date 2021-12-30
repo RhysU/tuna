@@ -216,7 +216,7 @@ typedef unsigned int tuna_seed;
  * time-based seed is returned.
  */
 tuna_seed
-tuna_seed_default();
+tuna_seed_default(void);
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 double
