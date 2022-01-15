@@ -2,7 +2,8 @@ Tuna
 ====
 
 A Chunk-based Lightweight AutoTuna
-[![Build Status](https://travis-ci.com/RhysU/tuna.svg?branch=master)](https://travis-ci.com/github/RhysU/tuna)
+.. image:: https://app.travis-ci.com/RhysU/tuna.svg?branch=master
+    :target: https://app.travis-ci.com/RhysU/tuna
 
 .. contents:: :local:
 
