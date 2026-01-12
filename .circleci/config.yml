@@ -1,0 +1,62 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    parameters:
+      compiler:
+        type: string
+    docker:
+      - image: cimg/base:2021.04  # Ubuntu-based image similar to bionic
+    resource_class: small
+    environment:
+      CC: << parameters.compiler >>
+      CXX: << parameters.compiler >>++
+    steps:
+      - checkout
+
+      - run:
+          name: Update package lists
+          command: sudo apt-get -qq update
+
+      - run:
+          name: Install dependencies
+          command: sudo apt-get install -y doxygen graphviz
+
+      - run:
+          name: Bootstrap
+          command: ./bootstrap
+
+      - run:
+          name: Configure
+          command: ./configure
+
+      - run:
+          name: Build
+          command: make all
+
+      - run:
+          name: Set library path for clang
+          command: |
+            if [[ "$CC" == "clang" ]]; then
+              echo 'export LD_LIBRARY_PATH=/usr/local/clang/lib' >> $BASH_ENV
+              source $BASH_ENV
+            fi
+
+      - run:
+          name: Run tests
+          command: make check VERBOSE=1
+
+      - run:
+          name: Build documentation
+          command: make html
+
+workflows:
+  version: 2
+  build-matrix:
+    jobs:
+      - build-and-test:
+          name: build-gcc
+          compiler: gcc
+      - build-and-test:
+          name: build-clang
+          compiler: clang
