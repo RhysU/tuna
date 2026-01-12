@@ -3,14 +3,16 @@ version: 2.1
 jobs:
   build-and-test:
     parameters:
-      compiler:
+      cc:
+        type: string
+      cxx:
         type: string
     docker:
       - image: cimg/base:2021.04  # Ubuntu-based image similar to bionic
     resource_class: small
     environment:
-      CC: << parameters.compiler >>
-      CXX: << parameters.compiler >>++
+      CC: << parameters.cc >>
+      CXX: << parameters.cxx >>
     steps:
       - checkout
 
@@ -35,14 +37,6 @@ jobs:
           command: make all
 
       - run:
-          name: Set library path for clang
-          command: |
-            if [[ "$CC" == "clang" ]]; then
-              echo 'export LD_LIBRARY_PATH=/usr/local/clang/lib' >> $BASH_ENV
-              source $BASH_ENV
-            fi
-
-      - run:
           name: Run tests
           command: make check VERBOSE=1
 
@@ -56,7 +50,9 @@ workflows:
     jobs:
       - build-and-test:
           name: build-gcc
-          compiler: gcc
+          cc: gcc
+          cxx: g++
       - build-and-test:
           name: build-clang
-          compiler: clang
+          cc: clang
+          cxx: clang++
