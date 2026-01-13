@@ -28,6 +28,7 @@
 #define TUNA_H
 
 #include <stddef.h>
+#include <stdio.h>
 
 /**
  * Macros to count the number of array elements at compile time.  Provides both
@@ -502,7 +503,7 @@ tuna_post(const tuna_stack* st,
  *         On error, a negative value is returned.
  */
 int
-tuna_chunk_fprint(void* stream,
+tuna_chunk_fprint(FILE* stream,
                   const tuna_chunk* k,
                   const char* prefix);
 
@@ -518,7 +519,7 @@ tuna_chunk_fprint(void* stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_site_fprint(void* stream,
+tuna_site_fprint(FILE* stream,
                  const tuna_site* si,
                  const char* prefix);
 
@@ -540,7 +541,7 @@ tuna_site_fprint(void* stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_fprint(void* stream,
+tuna_fprint(FILE* stream,
             const tuna_site* si,
             const tuna_chunk *ks,
             const size_t nk,
@@ -561,7 +562,7 @@ tuna_fprint(void* stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_chunk_fprintf(void* stream,
+tuna_chunk_fprintf(FILE* stream,
                    const tuna_chunk* k,
                    const char* format,
                    ...);
@@ -580,7 +581,7 @@ tuna_chunk_fprintf(void* stream,
  *         On error, a negative value is returned.
  */
 int
-tuna_site_fprintf(void* stream,
+tuna_site_fprintf(FILE* stream,
                   const tuna_site* si,
                   const char* format,
                   ...);

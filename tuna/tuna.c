@@ -14,11 +14,12 @@
  * effective interprocedural optimization.  It also simplifies adoption by
  * other projects as it may simply be copied into an existing build tree.
  */
-#include <tuna.h>
 
 #if (_POSIX_C_SOURCE < 200112L)
 #define _POSIX_C_SOURCE (200112L)
 #endif
+
+#include <tuna.h>
 
 #include <assert.h>
 #include <ctype.h>
@@ -705,7 +706,7 @@ tuna_post(const tuna_stack* st,
 }
 
 int
-tuna_chunk_fprint(void* stream,
+tuna_chunk_fprint(FILE* stream,
                   const tuna_chunk* k,
                   const char* prefix)
 {
@@ -713,7 +714,7 @@ tuna_chunk_fprint(void* stream,
 }
 
 int
-tuna_site_fprint(void* stream,
+tuna_site_fprint(FILE* stream,
                  const tuna_site* si,
                  const char* prefix)
 {
@@ -721,7 +722,7 @@ tuna_site_fprint(void* stream,
 }
 
 int
-tuna_fprint(void* stream,
+tuna_fprint(FILE* stream,
             const tuna_site* si,
             const tuna_chunk *ks,
             const size_t nk,
@@ -764,7 +765,7 @@ tuna_fprint(void* stream,
 }
 
 int
-tuna_chunk_fprintf(void* stream,
+tuna_chunk_fprintf(FILE* stream,
                    const tuna_chunk* k,
                    const char* format,
                    ...)
@@ -797,7 +798,7 @@ tuna_chunk_fprintf(void* stream,
 }
 
 int
-tuna_site_fprintf(void* stream,
+tuna_site_fprintf(FILE* stream,
                   const tuna_site* si,
                   const char* format,
                   ...)
