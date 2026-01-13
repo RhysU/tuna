@@ -535,8 +535,8 @@ tuna_algo_default(const int nk)
 
 int
 tuna_algo_welch1_nuinf(const int nk,
-                       const tuna_chunk ks[],
-                       const double u01[])
+                       const tuna_chunk *ks,
+                       const double *u01)
 {
     int i, j;
     size_t icnt, jcnt;
@@ -566,8 +566,8 @@ tuna_algo_welch1_nuinf(const int nk,
 
 int
 tuna_algo_welch1(const int nk,
-                 const tuna_chunk ks[],
-                 const double u01[])
+                 const tuna_chunk *ks,
+                 const double *u01)
 {
     int i, j;
     size_t icnt, jcnt;
@@ -597,8 +597,8 @@ tuna_algo_welch1(const int nk,
 
 int
 tuna_algo_zero(const int nk,
-               const tuna_chunk ks[],
-               const double u01[])
+               const tuna_chunk *ks,
+               const double *u01)
 {
     (void) nk;
     (void) ks;
@@ -610,7 +610,7 @@ tuna_algo_zero(const int nk,
 int
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
-              const tuna_chunk ks[],
+              const tuna_chunk *ks,
               const int nk)
 {
     size_t i;
@@ -643,7 +643,7 @@ tuna_pre_cost(tuna_site* si,
 
 void
 tuna_post_cost(const tuna_stack* st,
-               tuna_chunk ks[],
+               tuna_chunk *ks,
                const double cost)
 {
     tuna_chunk_obs(ks + st->ik, cost);
@@ -666,7 +666,7 @@ struct tuna_timespec_minimal {
 int
 tuna_pre(tuna_site* si,
          tuna_stack* st,
-         const tuna_chunk ks[],
+         const tuna_chunk *ks,
          const int nk)
 {
     struct timespec ts;
@@ -688,7 +688,7 @@ tuna_pre(tuna_site* si,
 
 double
 tuna_post(const tuna_stack* st,
-          tuna_chunk ks[])
+          tuna_chunk *ks)
 {
     struct timespec ts, te;
     double elapsed;
@@ -731,10 +731,10 @@ tuna_site_fprint(void* stream,
 int
 tuna_fprint(void* stream,
             const tuna_site* si,
-            const tuna_chunk ks[],
+            const tuna_chunk *ks,
             const int nk,
             const char* prefix,
-            const char* labels[])
+            const char **labels)
 {
     int ik, nwritten, namelen, status;
 
@@ -844,7 +844,7 @@ typedef struct tuna_registry {
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_alloc(const char id[])
+tuna_registry_alloc(const char *id)
 {
     /* Struct hack using id[1] already includes space for NULL terminator. */
     /* Using calloc(3) sets left = right = NULL and enforces termination.  */
@@ -870,7 +870,7 @@ tuna_registry_free(tuna_registry* n)
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_insert(tuna_registry** n, const char id[])
+tuna_registry_insert(tuna_registry** n, const char *id)
 {
     if (*n) {
         const int cmp = strcmp(id, (*n)->id);
@@ -888,7 +888,7 @@ tuna_registry_insert(tuna_registry** n, const char id[])
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_find(tuna_registry* n, const char id[])
+tuna_registry_find(tuna_registry* n, const char *id)
 {
     if (n) {
         const int cmp = strcmp(id, n->id);
