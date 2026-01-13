@@ -10,9 +10,6 @@ jobs:
     docker:
       - image: cimg/base:2021.04  # Ubuntu-based image similar to bionic
     resource_class: small
-    environment:
-      CC: << parameters.cc >>
-      CXX: << parameters.cxx >>
     steps:
       - checkout
 
@@ -30,7 +27,7 @@ jobs:
 
       - run:
           name: Configure
-          command: ./configure
+          command: ./configure CC=<< parameters.cc >> CXX=<< parameters.cxx >>
 
       - run:
           name: Build
