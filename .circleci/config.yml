@@ -19,7 +19,7 @@ jobs:
 
       - run:
           name: Install dependencies
-          command: sudo apt-get install -y doxygen graphviz
+          command: sudo apt-get install -y autoconf automake libtool doxygen graphviz
 
       - run:
           name: Bootstrap
