@@ -415,9 +415,9 @@ tuna_rand_n01(tuna_state* st)
 }
 
 tuna_state
-tuna_state_default()
+tuna_seed_default()
 {
-    const char* d = getenv("TUNA_STATE");
+    const char* d = getenv("TUNA_SEED");
     unsigned int retval;
     if (!d || 1 != sscanf(d, " %u", &retval)) {
         struct timespec ts;
@@ -622,8 +622,8 @@ tuna_pre_cost(tuna_site* si,
         si->al = tuna_algo_default(nk);
 
         if (!si->st) {
-            /* ...providing a default state when not set. */
-            si->st = tuna_state_default();
+            /* ...providing a default seed when not set. */
+            si->st = tuna_seed_default();
         }
     }
 
