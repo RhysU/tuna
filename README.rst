@@ -3,8 +3,8 @@ Tuna
 
 A Chunk-based Lightweight AutoTuna |BuildStatus|_
 
-.. |BuildStatus| image:: https://app.travis-ci.com/RhysU/tuna.svg?branch=master
-.. _BuildStatus: https://app.travis-ci.com/RhysU/tuna
+.. |BuildStatus| image:: https://circleci.com/gh/RhysU/tuna.svg?style=shield
+.. _BuildStatus: https://circleci.com/gh/RhysU/tuna
 
 .. contents:: :local:
 
