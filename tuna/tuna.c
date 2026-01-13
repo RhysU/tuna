@@ -403,21 +403,21 @@ L30:
 }
 
 double
-tuna_rand_u01(tuna_seed* sd)
+tuna_rand_u01(tuna_state* st)
 {
-    return rand_r(sd) / (double) RAND_MAX;
+    return rand_r(st) / (double) RAND_MAX;
 }
 
 double
-tuna_rand_n01(tuna_seed* sd)
+tuna_rand_n01(tuna_state* st)
 {
-    return ltqnorm(tuna_rand_u01(sd));
+    return ltqnorm(tuna_rand_u01(st));
 }
 
-tuna_seed
-tuna_seed_default()
+tuna_state
+tuna_state_default()
 {
-    const char* d = getenv("TUNA_SEED");
+    const char* d = getenv("TUNA_STATE");
     unsigned int retval;
     if (!d || 1 != sscanf(d, " %u", &retval)) {
         struct timespec ts;
@@ -621,18 +621,18 @@ tuna_pre_cost(tuna_site* si,
         /* ...providing a default algorithm when not set, and... */
         si->al = tuna_algo_default(nk);
 
-        if (!si->sd) {
-            /* ...providing a default seed when not set. */
-            si->sd = tuna_seed_default();
+        if (!si->st) {
+            /* ...providing a default state when not set. */
+            si->st = tuna_state_default();
         }
     }
 
     /* Prepare nk random numbers for use by the algorithm.        */
-    /* Drawing variates here avoids seed updates from algorithms. */
+    /* Drawing variates here avoids state updates from algorithms. */
     /* That permits a short critical section on the tuna_site.    */
     u01 = __builtin_alloca(nk * sizeof(double));
     for (i = 0; i < nk; ++i) {
-        u01[i] = tuna_rand_u01(&si->sd);
+        u01[i] = tuna_rand_u01(&si->st);
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */

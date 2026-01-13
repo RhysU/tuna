@@ -208,23 +208,23 @@ tuna_chunk_merge(tuna_stats* s,
  * The state required so that tuna_u01() and tuna_n01() can be re-entrant safe
  * and orthogonal to all other pseudo-random generators that might be in use.
  */
-typedef unsigned int tuna_seed;
+typedef unsigned int tuna_state;
 
 /**
- * Retrieves a default seed.  If the whitespace-trimmed environment variable
- * <code>TUNA_SEED</code> can be parsed as a seed, it is used.  Otherwise, a
- * time-based seed is returned.
+ * Retrieves a default state.  If the whitespace-trimmed environment variable
+ * <code>TUNA_STATE</code> can be parsed as a state, it is used.  Otherwise, a
+ * time-based state is returned.
  */
-tuna_seed
-tuna_seed_default(void);
+tuna_state
+tuna_state_default(void);
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 double
-tuna_rand_u01(tuna_seed* sd);
+tuna_rand_u01(tuna_state* st);
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
 double
-tuna_rand_n01(tuna_seed* sd);
+tuna_rand_n01(tuna_state* st);
 
 /** @} */
 
@@ -360,7 +360,7 @@ tuna_algo_welch1(const int nk,
 
 /**
  * An "autotuning" algorithm always selecting index zero.
- * Useful for testing/debugging.  See also \ref tuna_seed_default().
+ * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
 int
 tuna_algo_zero(const int nk,
@@ -398,7 +398,7 @@ tuna_algo_default(const int nk);
  */
 typedef struct tuna_site {
     tuna_algo     al; /**< The chosen tuning algorithm.           */
-    tuna_seed     sd; /**< Random number generator state.         */
+    tuna_state    st; /**< Random number generator state.         */
 } tuna_site;
 
 /**
