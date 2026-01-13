@@ -170,13 +170,20 @@ tuna_stats_merge(tuna_stats* dst,
  */
 
 /**
+ * Number of outliers tracked per chunk.
+ * Tuna omits this many worst outliers from consideration when computing
+ * statistics, forgiving one-time hiccups like slow startup times.
+ */
+#define TUNA_NOUTLIERS 3
+
+/**
  * Accumulates runtime information about the performance of a compute chunk.
  * Fill storage with zeros, e.g. from POD zero initialization, to construct or
  * reset an instance.
  */
 typedef struct tuna_chunk {
-    double     outliers[3];  /**< Invariantly-sorted greatest outliers.  */
-    tuna_stats stats;        /**< Accumulated statistics sans outliers. */
+    double     outliers[TUNA_NOUTLIERS];  /**< Invariantly-sorted greatest outliers.  */
+    tuna_stats stats;                     /**< Accumulated statistics sans outliers. */
 } tuna_chunk;
 
 /**

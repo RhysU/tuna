@@ -13,7 +13,7 @@
 #include "fct.h"
 
 // Many tests rely on having a known number of outliers
-enum { noutliers = 3 };
+#define noutliers TUNA_NOUTLIERS
 
 FCT_BGN()
 {
