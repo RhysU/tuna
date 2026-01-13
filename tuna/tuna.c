@@ -513,7 +513,7 @@ tuna_algo_name(tuna_algo al)
 
 /* Should be kept in sync with tuna_algo_name just above */
 tuna_algo
-tuna_algo_default(const int nk)
+tuna_algo_default(const size_t nk)
 {
     char* d;
     if (nk < 2) {
@@ -533,12 +533,12 @@ tuna_algo_default(const int nk)
     return &tuna_algo_welch1; /* Default */
 }
 
-int
-tuna_algo_welch1_nuinf(const int nk,
+size_t
+tuna_algo_welch1_nuinf(const size_t nk,
                        const tuna_chunk ks[],
                        const double u01[])
 {
-    int i, j;
+    size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
@@ -564,12 +564,12 @@ tuna_algo_welch1_nuinf(const int nk,
     return i;
 }
 
-int
-tuna_algo_welch1(const int nk,
+size_t
+tuna_algo_welch1(const size_t nk,
                  const tuna_chunk ks[],
                  const double u01[])
 {
-    int i, j;
+    size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
@@ -595,8 +595,8 @@ tuna_algo_welch1(const int nk,
     return i;
 }
 
-int
-tuna_algo_zero(const int nk,
+size_t
+tuna_algo_zero(const size_t nk,
                const tuna_chunk ks[],
                const double u01[])
 {
@@ -607,11 +607,11 @@ tuna_algo_zero(const int nk,
 }
 
 /* TODO Do something intelligent with clock_getres(2) information */
-int
+size_t
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
               const tuna_chunk ks[],
-              const int nk)
+              const size_t nk)
 {
     size_t i;
     double* u01;
@@ -663,11 +663,11 @@ struct tuna_timespec_minimal {
     long   tv_nsec;
 };
 
-int
+size_t
 tuna_pre(tuna_site* si,
          tuna_stack* st,
          const tuna_chunk ks[],
-         const int nk)
+         const size_t nk)
 {
     struct timespec ts;
 
@@ -732,11 +732,12 @@ int
 tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk ks[],
-            const int nk,
+            const size_t nk,
             const char* prefix,
             const char* labels[])
 {
-    int ik, nwritten, namelen, status;
+    size_t ik;
+    int nwritten, namelen, status;
 
     /* Output a bash-like "TUNA$" prompt identifying this tuning site. */
     nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
@@ -760,7 +761,7 @@ tuna_fprint(void* stream,
             status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s %-*s",
                                         prefix, namelen, labels[ik]);
         } else {
-            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*d",
+            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*zu",
                                         prefix, namelen - sizeof("chunk"), ik);
         }
         nwritten = status >= 0
@@ -848,7 +849,7 @@ tuna_registry_alloc(const char id[])
 {
     /* Struct hack using id[1] already includes space for NULL terminator. */
     /* Using calloc(3) sets left = right = NULL and enforces termination.  */
-    const int n = strlen(id);
+    const size_t n = strlen(id);
     tuna_registry* p = calloc(n + sizeof(tuna_registry), 1);
     if (p) {
         memcpy((void*) p->id, (void*) id, n);

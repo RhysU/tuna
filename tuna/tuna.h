@@ -342,19 +342,19 @@ tuna_welch1(double xA, double sA2, size_t nA,
  *
  * \return The zero-based index of the chunk that has been selected.
  */
-typedef int (*tuna_algo)(const int nk,
-                         const tuna_chunk ks[],
-                         const double u01[]);
+typedef size_t (*tuna_algo)(const size_t nk,
+                            const tuna_chunk ks[],
+                            const double u01[]);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-int
-tuna_algo_welch1_nuinf(const int nk,
+size_t
+tuna_algo_welch1_nuinf(const size_t nk,
                        const tuna_chunk ks[],
                        const double u01[]);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
-int
-tuna_algo_welch1(const int nk,
+size_t
+tuna_algo_welch1(const size_t nk,
                  const tuna_chunk ks[],
                  const double u01[]);
 
@@ -362,8 +362,8 @@ tuna_algo_welch1(const int nk,
  * An "autotuning" algorithm always selecting index zero.
  * Useful for testing/debugging.  See also \ref tuna_seed_default().
  */
-int
-tuna_algo_zero(const int nk,
+size_t
+tuna_algo_zero(const size_t nk,
                const tuna_chunk ks[],
                const double u01[]);
 
@@ -382,7 +382,7 @@ tuna_algo_name(tuna_algo al);
  * \c nk is chosen.
  */
 tuna_algo
-tuna_algo_default(const int nk);
+tuna_algo_default(const size_t nk);
 
 /** @} */
 
@@ -408,7 +408,7 @@ typedef struct tuna_site {
  * allocation is recommended to allow reentrant usage of the library.
  */
 typedef struct tuna_stack {
-    int  ik;      /**< Index of the most recently selected chunk. */
+    size_t  ik;   /**< Index of the most recently selected chunk. */
     char ts[16];  /**< Stores clock_gettime(2) within tuna_pre(). */
 } tuna_stack;
 
@@ -424,11 +424,11 @@ typedef struct tuna_stack {
  *
  * \return The zero-based index of the chunk which should be selected.
  */
-int
+size_t
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
               const tuna_chunk ks[],
-              const int nk);
+              const size_t nk);
 
 /**
  * Record the last autotuned chunk invocation using a user-provided \c cost
@@ -458,11 +458,11 @@ tuna_post_cost(const tuna_stack* st,
  *
  * \return The zero-based index of the chunk which should be selected.
  */
-int
+size_t
 tuna_pre(tuna_site* si,
          tuna_stack* st,
          const tuna_chunk ks[],
-         const int nk);
+         const size_t nk);
 
 /**
  * Record the results from the last autotuned chunk invocation using
@@ -543,7 +543,7 @@ int
 tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk ks[],
-            const int nk,
+            const size_t nk,
             const char* prefix,
             const char* labels[]);
 
