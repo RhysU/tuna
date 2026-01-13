@@ -7,6 +7,8 @@ jobs:
         type: string
       cxx:
         type: string
+      compiler_packages:
+        type: string
     docker:
       - image: cimg/base:2021.04  # Ubuntu-based image similar to bionic
     resource_class: small
@@ -16,6 +18,10 @@ jobs:
       - run:
           name: Update package lists
           command: sudo apt-get -qq update
+
+      - run:
+          name: Install compiler packages
+          command: sudo apt-get install -y << parameters.compiler_packages >>
 
       - run:
           name: Install dependencies
@@ -49,7 +55,9 @@ workflows:
           name: build-gcc
           cc: gcc
           cxx: g++
+          compiler_packages: build-essential gcc g++
       - build-and-test:
           name: build-clang
           cc: clang
           cxx: clang++
+          compiler_packages: build-essential clang
