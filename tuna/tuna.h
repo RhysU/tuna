@@ -144,7 +144,7 @@ tuna_stats_mom(const tuna_stats* t,
                double* var);
 
 /** Accumulate a new observation \c x into statistics \c t. */
-tuna_stats*
+void
 tuna_stats_obs(tuna_stats* t,
                const double x);
 
@@ -152,13 +152,13 @@ tuna_stats_obs(tuna_stats* t,
  * Accumulate \c N distinct observations <code>x[0]</code>, ...,
  * <code>x[N-1]</code> into statistics \c t.
  */
-tuna_stats*
+void
 tuna_stats_nobs(tuna_stats* t,
                 const double* x,
                 size_t N);
 
 /** Incorporate running information from another instance. */
-tuna_stats*
+void
 tuna_stats_merge(tuna_stats* dst,
                  const tuna_stats* src);
 
@@ -185,7 +185,7 @@ typedef struct tuna_chunk {
  * but it might also be some other performance metric.  Regardless of what is
  * chosen, smaller should mean better.
  */
-tuna_chunk*
+void
 tuna_chunk_obs(tuna_chunk* k,
                double t);
 
@@ -193,7 +193,7 @@ tuna_chunk_obs(tuna_chunk* k,
  * Incorporate all cost information recorded about chunk \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
-tuna_stats*
+void
 tuna_chunk_merge(tuna_stats* s,
                  const tuna_chunk* k);
 

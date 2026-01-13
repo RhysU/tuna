@@ -114,7 +114,7 @@ tuna_stats_mom(const tuna_stats* const t,
     return t->n;
 }
 
-tuna_stats*
+void
 tuna_stats_obs(tuna_stats* const t,
                const double x)
 {
@@ -129,10 +129,9 @@ tuna_stats_obs(tuna_stats* const t,
         t->m = x;
         t->s = 0;
     }
-    return t;
 }
 
-tuna_stats*
+void
 tuna_stats_nobs(tuna_stats* const t,
                 const double* x,
                 size_t N)
@@ -141,10 +140,9 @@ tuna_stats_nobs(tuna_stats* const t,
     for (i = N; i -- > 0 ;) {
         tuna_stats_obs(t, *x++);
     }
-    return t;
 }
 
-tuna_stats*
+void
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
@@ -161,7 +159,6 @@ tuna_stats_merge(tuna_stats* const dst,
                        + ((dM * dM) * (dst->n * src->n)) / total;
         dst->n       = total;
     }
-    return dst;
 }
 
 /**
@@ -182,7 +179,7 @@ enforce_lt(double* const a, double* const b)
     }
 }
 
-tuna_chunk*
+void
 tuna_chunk_obs(tuna_chunk* const k,
                double t)
 {
@@ -209,11 +206,9 @@ tuna_chunk_obs(tuna_chunk* const k,
     /* track any statistics.  This effectively provides some "start up" */
     /* or "burn in" period in addition to preventing highly improbable  */
     /* observations from unduly inflating the discovered variability.   */
-
-    return k;
 }
 
-tuna_stats*
+void
 tuna_chunk_merge(tuna_stats* const s,
                  const tuna_chunk* const k)
 {
@@ -225,7 +220,6 @@ tuna_chunk_merge(tuna_stats* const s,
             break;
         }
     }
-    return s;
 }
 
 /**
