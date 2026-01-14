@@ -211,9 +211,9 @@ tuna_chunk_merge(tuna_stats* s,
 typedef unsigned int tuna_state;
 
 /**
- * Retrieves a default seed for initializing state.  If the whitespace-trimmed
- * environment variable <code>TUNA_SEED</code> can be parsed as a seed, it is
- * used.  Otherwise, a time-based seed is returned.
+ * Retrieves a default state value.  If the whitespace-trimmed environment
+ * variable <code>TUNA_SEED</code> can be parsed as a seed, that seed is used
+ * to initialize the state.  Otherwise, a time-based seed is used.
  */
 tuna_state
 tuna_state_default(void);
