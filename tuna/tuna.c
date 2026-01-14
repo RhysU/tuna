@@ -415,7 +415,7 @@ tuna_rand_n01(tuna_state* st)
 }
 
 tuna_state
-tuna_seed_default()
+tuna_state_default()
 {
     const char* d = getenv("TUNA_SEED");
     unsigned int retval;
@@ -623,7 +623,7 @@ tuna_pre_cost(tuna_site* si,
 
         if (!si->st) {
             /* ...providing a default seed when not set. */
-            si->st = tuna_seed_default();
+            si->st = tuna_state_default();
         }
     }
 

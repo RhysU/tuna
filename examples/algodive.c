@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     static tuna_site  si;                   // Notice zero initialization
     static tuna_chunk ks[2];                // Notice zero initialization
-    tuna_state state = tuna_seed_default(); // Used only to simulate chunk timings
+    tuna_state state = tuna_state_default(); // Used only to simulate chunk timings
     for (int i = 0; i < niter; ++i) {
 
         // Simulate one iteration of autotuning over alternatives

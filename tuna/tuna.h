@@ -216,7 +216,7 @@ typedef unsigned int tuna_state;
  * used.  Otherwise, a time-based seed is returned.
  */
 tuna_state
-tuna_seed_default(void);
+tuna_state_default(void);
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 double
@@ -360,7 +360,7 @@ tuna_algo_welch1(const int nk,
 
 /**
  * An "autotuning" algorithm always selecting index zero.
- * Useful for testing/debugging.  See also \ref tuna_seed_default().
+ * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
 int
 tuna_algo_zero(const int nk,
