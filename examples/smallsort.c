@@ -19,13 +19,13 @@
 #include <tuna.h>
 
 static const char *labels[] = { "insertion", "qsort(3)", "heap" };
-void sort_insertion(int a[], int array_size);
-void sort_qsort    (int a[], int array_size);
-void sort_heap     (int a[], int array_size);
+void sort_insertion(int *a, int array_size);
+void sort_qsort    (int *a, int array_size);
+void sort_heap     (int *a, int array_size);
 
 static tuna_site  si;     // Normally si and ks would be inside smallsort()
 static tuna_chunk ks[3];  // but they are global to permit querying them
-void smallsort(int a[], int n) {
+void smallsort(int *a, int n) {
     tuna_stack st;
     switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
         default: sort_insertion(a, n); break;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 }
 
 // From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_insertion(int a[], int array_size)
+void sort_insertion(int *a, int array_size)
 {
      int i, j, index;
      for (i = 1; i < array_size; ++i)
@@ -79,7 +79,7 @@ void sort_insertion(int a[], int array_size)
 }
 
 // From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void down_heap(int a[], int root, int bottom)
+void down_heap(int *a, int root, int bottom)
 {
      int maxchild, temp, child;
      while (root*2 < bottom)
@@ -110,7 +110,7 @@ void down_heap(int a[], int root, int bottom)
 }
 
 // From http://www.codebeach.com/2008/09/sorting-algorithms-in-c.html
-void sort_heap(int a[], int array_size)
+void sort_heap(int *a, int array_size)
 {
      int i;
      for (i = (array_size/2 -1); i >= 0; --i)
@@ -133,7 +133,7 @@ int qsort_compar(const void *a, const void *b)
     return *(const int*)a - *(const int*)b;
 }
 
-void sort_qsort(int a[], int array_size)
+void sort_qsort(int *a, int array_size)
 {
     return qsort(a, array_size, sizeof(int), &qsort_compar);
 }

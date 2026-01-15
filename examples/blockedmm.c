@@ -42,9 +42,9 @@ static tuna_chunk ks[tuna_countof(labels)];
 // Preform a blocked matrix-matrix multiply using autotuned blocking.
 static
 void
-blockedmm(double       c[], // Output C += A*B
-          const double a[], // Input A of size N-by-N
-          const double b[], // Input B of size N-by-N
+blockedmm(double       *c, // Output C += A*B
+          const double *a, // Input A of size N-by-N
+          const double *b, // Input B of size N-by-N
           const int log2N)  // Base-2 log of A, B, and C's dimension
 {
     // Routine takes log2N so any smaller power-of-2 block size
