@@ -15,7 +15,7 @@
 
 #include <tuna.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     // Parse any incoming command line arguments
     const int    niter = argc > 1 ? atof(argv[1]) : 1000  ; // Iteration count?

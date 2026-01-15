@@ -33,7 +33,7 @@ three candidate ``O(n ln n)`` sorting algorithms with Tuna::
 
     #include <tuna.h>
 
-    void smallsort(int a[], int n) {
+    void smallsort(int *a, int n) {
         static tuna_site  si;
         static tuna_chunk ks[3];
         tuna_stack st;
