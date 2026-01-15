@@ -26,9 +26,9 @@
 
 #include <tuna.h>
 
-// Normally si and ks might be inside blockedmm() but
+// Normally site and chunks might be inside blockedmm() but
 // they are global to permit querying them in main().
-static tuna_site si;
+static tuna_site site;
 static const char *labels[] = { "block___1",
                                 "block___2",
                                 "block___4",
@@ -37,7 +37,7 @@ static const char *labels[] = { "block___1",
                                 "block__32",
                                 "block__64",
                                 "block_128"  };
-static tuna_chunk ks[tuna_countof(labels)];
+static tuna_chunk chunks[tuna_countof(labels)];
 
 // Preform a blocked matrix-matrix multiply using autotuned blocking.
 static
@@ -51,11 +51,11 @@ blockedmm(double       *c, // Output C += A*B
     // will trivially partition the matrix into uniform submatrices.
     assert(log2N >= 0);
     const int N = 1 << log2N;
-    const int log2B = log2N < tuna_countof(ks) ? log2N+1 : tuna_countof(ks);
-    tuna_stack st;
+    const int log2B = log2N < tuna_countof(chunks) ? log2N+1 : tuna_countof(chunks);
+    tuna_stack stack;
     int B;
     #pragma omp critical (tuna_blockedmm)
-    B = 1 << tuna_pre(&si, &st, ks, log2B);
+    B = 1 << tuna_pre(&site, &stack, chunks, log2B);
 
     // Multiply logic based upon the documentation (but not the source)
     // from https://code.google.com/p/mm-matrixmultiplicationtool/
@@ -78,7 +78,7 @@ blockedmm(double       *c, // Output C += A*B
 
     // Update autotuning knowledge
     #pragma omp critical (tuna_blockedmm)
-    tuna_post(&st, ks);
+    tuna_post(&stack, chunks);
 }
 
 int main(int argc, char *argv[])
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
     }
 
     // Display observations
-    tuna_fprint(stdout, &si, ks, tuna_countof(ks), "blockedmm", labels);
+    tuna_fprint(stdout, &site, chunks, tuna_countof(chunks), "blockedmm", labels);
 
     return EXIT_SUCCESS;
 }

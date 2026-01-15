@@ -114,47 +114,47 @@ typedef struct tuna_stats {
 
 /** Obtain the running number of samples provided thus far. */
 size_t
-tuna_stats_cnt(const tuna_stats* t);
+tuna_stats_cnt(const tuna_stats* stats);
 
 /** Obtain the running mean. */
 double
-tuna_stats_avg(const tuna_stats* t);
+tuna_stats_avg(const tuna_stats* stats);
 
 /** Obtain the running sample variance. */
 double
-tuna_stats_var(const tuna_stats* t);
+tuna_stats_var(const tuna_stats* stats);
 
 /** Obtain the running sample standard deviation. */
 double
-tuna_stats_std(const tuna_stats* t);
+tuna_stats_std(const tuna_stats* stats);
 
 /** Obtain the running sum. */
 double
-tuna_stats_sum(const tuna_stats* t);
+tuna_stats_sum(const tuna_stats* stats);
 
 /**
  * Obtain all running moments at once.
- * \param[in ] t   Instance of interest
- * \param[out] avg The mean
- * \param[out] var The sample variance
+ * \param[in ] stats Instance of interest
+ * \param[out] avg   The mean
+ * \param[out] var   The sample variance
  * \return The number of samples thus far.
  */
 size_t
-tuna_stats_mom(const tuna_stats* t,
+tuna_stats_mom(const tuna_stats* stats,
                double* avg,
                double* var);
 
-/** Accumulate a new observation \c x into statistics \c t. */
+/** Accumulate a new observation \c x into statistics \c stats. */
 void
-tuna_stats_obs(tuna_stats* t,
+tuna_stats_obs(tuna_stats* stats,
                const double x);
 
 /**
  * Accumulate \c N distinct observations <code>x[0]</code>, ...,
- * <code>x[N-1]</code> into statistics \c t.
+ * <code>x[N-1]</code> into statistics \c stats.
  */
 void
-tuna_stats_nobs(tuna_stats* t,
+tuna_stats_nobs(tuna_stats* stats,
                 const double* x,
                 size_t N);
 
@@ -181,22 +181,22 @@ typedef struct tuna_chunk {
 } tuna_chunk;
 
 /**
- * Record a new cost observation \c t about chunk \c k.  If cost \c t is
+ * Record a new cost observation \c cost about chunk \c chunk.  If cost \c cost is
  * identically zero, no observation is recorded.  Cost might be elapsed time,
  * but it might also be some other performance metric.  Regardless of what is
  * chosen, smaller should mean better.
  */
 void
-tuna_chunk_obs(tuna_chunk* k,
-               double t);
+tuna_chunk_obs(tuna_chunk* chunk,
+               double cost);
 
 /**
- * Incorporate all cost information recorded about chunk \c k into \c s,
+ * Incorporate all cost information recorded about chunk \c chunk into \c stats,
  * including any outliers otherwise discarded from consideration.
  */
 void
-tuna_chunk_merge(tuna_stats* s,
-                 const tuna_chunk* k);
+tuna_chunk_merge(tuna_stats* stats,
+                 const tuna_chunk* chunk);
 
 /** @} */
 
@@ -221,11 +221,11 @@ tuna_state_default(void);
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 double
-tuna_rand_u01(tuna_state* st);
+tuna_rand_u01(tuna_state* state);
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
 double
-tuna_rand_n01(tuna_state* st);
+tuna_rand_n01(tuna_state* state);
 
 /** @} */
 
@@ -335,28 +335,28 @@ tuna_welch1(double xA, double sA2, size_t nA,
  * Type signature for all \e deterministic autotuning algorithms.
  * That is, all randomness occurs outside such algorithmic calls.
  *
- * \param[in] nk  How many alternatives are under consideration?
- * \param[in] ks  Tracks information about \c nk alternatives.
- *                Must be stored contiguously in memory.
- * \param[in] u01 Provides \c nk uniform random draws on [0,1]
- *                for consumption by the algorithm.
+ * \param[in] nchunk How many alternatives are under consideration?
+ * \param[in] chunks Tracks information about \c nchunk alternatives.
+ *                   Must be stored contiguously in memory.
+ * \param[in] u01    Provides \c nchunk uniform random draws on [0,1]
+ *                   for consumption by the algorithm.
  *
  * \return The zero-based index of the chunk that has been selected.
  */
-typedef size_t (*tuna_algo)(const size_t nk,
-                            const tuna_chunk *ks,
+typedef size_t (*tuna_algo)(const size_t nchunk,
+                            const tuna_chunk *chunks,
                             const double *u01);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
 size_t
-tuna_algo_welch1_nuinf(const size_t nk,
-                       const tuna_chunk *ks,
+tuna_algo_welch1_nuinf(const size_t nchunk,
+                       const tuna_chunk *chunks,
                        const double *u01);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
 size_t
-tuna_algo_welch1(const size_t nk,
-                 const tuna_chunk *ks,
+tuna_algo_welch1(const size_t nchunk,
+                 const tuna_chunk *chunks,
                  const double *u01);
 
 /**
@@ -364,26 +364,26 @@ tuna_algo_welch1(const size_t nk,
  * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
 size_t
-tuna_algo_zero(const size_t nk,
-               const tuna_chunk *ks,
+tuna_algo_zero(const size_t nchunk,
+               const tuna_chunk *chunks,
                const double *u01);
 
 /**
  * Retrieve the name of the algorithm, if known.  Otherwise, return "unknown".
  */
 const char*
-tuna_algo_name(tuna_algo al);
+tuna_algo_name(tuna_algo algo);
 
 /**
- * Retrieve a default algorithm when one is left unspecified.  If <code>nk <
+ * Retrieve a default algorithm when one is left unspecified.  If <code>nchunk <
  * 2</code>, \ref tuna_algo_zero() is returned.  If the whitespace-trimmed
  * environment variable <code>TUNA_ALGO</code> case-insensitively names an
  * algorithm without the <code>tuna_algo_</code> prefix, that algorithm will be
  * used.  Otherwise, a sensible default which may or may not take into account
- * \c nk is chosen.
+ * \c nchunk is chosen.
  */
 tuna_algo
-tuna_algo_default(const size_t nk);
+tuna_algo_default(const size_t nchunk);
 
 /** @} */
 
@@ -418,33 +418,33 @@ typedef struct tuna_stack {
  * tuna_post_cost() may be invoked after the selected chunk completes
  * executing.
  *
- * \param[inout] si Durable information local to autotuning site.
- * \param[inout] st Stack-based information stored from this invocation.
- * \param[in   ] ks Durable information tracking for \c nk alternatives.
- * \param[in   ] nk How many alternatives are under consideration?
+ * \param[inout] site   Durable information local to autotuning site.
+ * \param[inout] stack  Stack-based information stored from this invocation.
+ * \param[in   ] chunks Durable information tracking for \c nchunk alternatives.
+ * \param[in   ] nchunk How many alternatives are under consideration?
  *
  * \return The zero-based index of the chunk which should be selected.
  */
 size_t
-tuna_pre_cost(tuna_site* si,
-              tuna_stack* st,
-              const tuna_chunk *ks,
-              const size_t nk);
+tuna_pre_cost(tuna_site* site,
+              tuna_stack* stack,
+              const tuna_chunk *chunks,
+              const size_t nchunk);
 
 /**
  * Record the last autotuned chunk invocation using a user-provided \c cost
  * metric.  Either \ref tuna_pre() or \ref tuna_pre_cost() should have been
  * invoked beforehand.
  *
- * \param[in   ] st   Stack-based information from one autotuned invocation.
- * \param[inout] ks   Updated with information learned from chosen alternative.
- * \param[in   ] cost User-provided measure of the employed chunk's cost.
- *                    This may be elapsed time or some sophisticated measure.
- *                    It should be strictly positive.  Lower means better.
+ * \param[in   ] stack  Stack-based information from one autotuned invocation.
+ * \param[inout] chunks Updated with information learned from chosen alternative.
+ * \param[in   ] cost   User-provided measure of the employed chunk's cost.
+ *                      This may be elapsed time or some sophisticated measure.
+ *                      It should be strictly positive.  Lower means better.
  */
 void
-tuna_post_cost(const tuna_stack* st,
-               tuna_chunk *ks,
+tuna_post_cost(const tuna_stack* stack,
+               tuna_chunk *chunks,
                const double cost);
 
 /**
@@ -452,32 +452,32 @@ tuna_post_cost(const tuna_stack* st,
  * or \ref tuna_post_cost() may be invoked after the selected chunk completes
  * executing.
  *
- * \param[inout] si Durable information local to one autotuning site.
- * \param[inout] st Stack-based information stored from this invocation.
- * \param[in   ] ks Durable information tracking for \c nk alternatives.
- * \param[in   ] nk How many alternatives are under consideration?
+ * \param[inout] site   Durable information local to one autotuning site.
+ * \param[inout] stack  Stack-based information stored from this invocation.
+ * \param[in   ] chunks Durable information tracking for \c nchunk alternatives.
+ * \param[in   ] nchunk How many alternatives are under consideration?
  *
  * \return The zero-based index of the chunk which should be selected.
  */
 size_t
-tuna_pre(tuna_site* si,
-         tuna_stack* st,
-         const tuna_chunk *ks,
-         const size_t nk);
+tuna_pre(tuna_site* site,
+         tuna_stack* stack,
+         const tuna_chunk *chunks,
+         const size_t nchunk);
 
 /**
  * Record the results from the last autotuned chunk invocation using
  * internally-managed elapsed time via an appropriate clock.  Method \ref
  * tuna_pre() should have been invoked before the chunk began executing.
  *
- * \param[in   ] st Stack-based information from one autotuned invocation.
- * \param[inout] ks Updated with information learned from chosen alternative.
+ * \param[in   ] stack  Stack-based information from one autotuned invocation.
+ * \param[inout] chunks Updated with information learned from chosen alternative.
  *
  * \return The inclusive process time in seconds.
  */
 double
-tuna_post(const tuna_stack* st,
-          tuna_chunk *ks);
+tuna_post(const tuna_stack* stack,
+          tuna_chunk *chunks);
 
 /** @} */
 
@@ -492,11 +492,11 @@ tuna_post(const tuna_stack* st,
  */
 
 /**
- * Output a single status line about \ref tuna_chunk k to <code>FILE*</code>
+ * Output a single status line about \ref tuna_chunk chunk to <code>FILE*</code>
  * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
- * \param k      Chunk for which information is output.
+ * \param chunk  Chunk for which information is output.
  * \param prefix A string used to prefix the output.
  *
  * \return The number of characters output on success.
@@ -504,15 +504,15 @@ tuna_post(const tuna_stack* st,
  */
 int
 tuna_chunk_fprint(FILE* stream,
-                  const tuna_chunk* k,
+                  const tuna_chunk* chunk,
                   const char* prefix);
 
 /**
- * Output a single status line about \ref tuna_site st to <code>FILE*</code>
+ * Output a single status line about \ref tuna_site site to <code>FILE*</code>
  * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
- * \param si     Site for which information is output.
+ * \param site   Site for which information is output.
  * \param prefix A string used to prefix the output.
  *
  * \return The number of characters output on success.
@@ -520,18 +520,18 @@ tuna_chunk_fprint(FILE* stream,
  */
 int
 tuna_site_fprint(FILE* stream,
-                 const tuna_site* si,
+                 const tuna_site* site,
                  const char* prefix);
 
 /**
- * Output <code>nk+1</code> status line(s) about \ref tuna_site st and
- * associated \ref tuna_chunk <code>ks[0]</code>, ..., <code>ks[nk-1]</code> to
+ * Output <code>nchunk+1</code> status line(s) about \ref tuna_site site and
+ * associated \ref tuna_chunk <code>chunks[0]</code>, ..., <code>chunks[nchunk-1]</code> to
  * <code>FILE*</code> stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
- * \param si     Site for which information is output.
- * \param ks     Chunks about which information is output.
- * \param nk     Number of contiguous chunks in \c ks.
+ * \param site   Site for which information is output.
+ * \param chunks Chunks about which information is output.
+ * \param nchunk Number of contiguous chunks in \c chunks.
  * \param prefix A string used to prefix the output.
  * \param labels If non-NULL and non-trivial, <code>labels[ik]</code> labels
  *               the <code>ik</code>th chunk in the output.  Otherwise,
@@ -542,9 +542,9 @@ tuna_site_fprint(FILE* stream,
  */
 int
 tuna_fprint(FILE* stream,
-            const tuna_site* si,
-            const tuna_chunk *ks,
-            const size_t nk,
+            const tuna_site* site,
+            const tuna_chunk *chunks,
+            const size_t nchunk,
             const char* prefix,
             const char **labels);
 
@@ -552,7 +552,7 @@ tuna_fprint(FILE* stream,
  * \copybrief tuna_chunk_fprint
  *
  * \param stream <code>FILE*</code> on which output is produced.
- * \param k      Chunk for which information is output.
+ * \param chunk  Chunk for which information is output.
  * \param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
@@ -563,7 +563,7 @@ tuna_fprint(FILE* stream,
  */
 int
 tuna_chunk_fprintf(FILE* stream,
-                   const tuna_chunk* k,
+                   const tuna_chunk* chunk,
                    const char* format,
                    ...);
 
@@ -571,7 +571,7 @@ tuna_chunk_fprintf(FILE* stream,
  * \copybrief tuna_site_fprint
  *
  * \param stream <code>FILE*</code> on which output is produced.
- * \param si     Site for which information is output.
+ * \param site   Site for which information is output.
  * \param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
@@ -582,7 +582,7 @@ tuna_chunk_fprintf(FILE* stream,
  */
 int
 tuna_site_fprintf(FILE* stream,
-                  const tuna_site* si,
+                  const tuna_site* site,
                   const char* format,
                   ...);
 
