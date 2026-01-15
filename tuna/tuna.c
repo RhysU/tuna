@@ -64,82 +64,82 @@
 #endif
 
 size_t
-tuna_stats_cnt(const tuna_stats* const t)
+tuna_stats_cnt(const tuna_stats* const stats)
 {
-    return t->n;
+    return stats->n;
 }
 
 double
-tuna_stats_avg(const tuna_stats* const t)
+tuna_stats_avg(const tuna_stats* const stats)
 {
-    return t->n ? t->m : NAN;
+    return stats->n ? stats->m : NAN;
 }
 
 double
-tuna_stats_var(const tuna_stats* const t)
+tuna_stats_var(const tuna_stats* const stats)
 {
-    return t->n ? (t->n > 1 ? t->s / (t->n - 1) : 0) : NAN;
+    return stats->n ? (stats->n > 1 ? stats->s / (stats->n - 1) : 0) : NAN;
 }
 
 double
-tuna_stats_std(const tuna_stats* const t)
+tuna_stats_std(const tuna_stats* const stats)
 {
-    return sqrt(tuna_stats_var(t));
+    return sqrt(tuna_stats_var(stats));
 }
 
 double
-tuna_stats_sum(const tuna_stats* const t)
+tuna_stats_sum(const tuna_stats* const stats)
 {
-    return t->n * t->m;
+    return stats->n * stats->m;
 }
 
 size_t
-tuna_stats_mom(const tuna_stats* const t,
+tuna_stats_mom(const tuna_stats* const stats,
                double* const avg,
                double* const var)
 {
-    switch (t->n) {
+    switch (stats->n) {
     case 0:
         *avg = NAN;
         *var = NAN;
         break;
     case 1:
-        *avg = t->m;
+        *avg = stats->m;
         *var = 0;
         break;
     default:
-        *avg = t->m;
-        *var = t->s / (t->n - 1);
+        *avg = stats->m;
+        *var = stats->s / (stats->n - 1);
         break;
     }
-    return t->n;
+    return stats->n;
 }
 
 void
-tuna_stats_obs(tuna_stats* const t,
+tuna_stats_obs(tuna_stats* const stats,
                const double x)
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
-    const size_t n = ++(t->n);
+    const size_t n = ++(stats->n);
     if (n > 1) {  /* Second and subsequent invocation */
-        double d  = x - t->m;
-        t->m     += d / n;
-        t->s     += d * (x - t->m);
+        double d  = x - stats->m;
+        stats->m     += d / n;
+        stats->s     += d * (x - stats->m);
     } else {      /* First invocation requires special treatment */
-        t->m = x;
-        t->s = 0;
+        stats->m = x;
+        stats->s = 0;
     }
 }
 
 void
-tuna_stats_nobs(tuna_stats* const t,
+tuna_stats_nobs(tuna_stats* const stats,
                 const double* x,
                 size_t N)
 {
     size_t i;
     for (i = N; i -- > 0 ;) {
-        tuna_stats_obs(t, *x++);
+        tuna_stats_obs(stats, *x++);
     }
 }
 
@@ -181,24 +181,24 @@ enforce_lt(double* const a, double* const b)
 }
 
 void
-tuna_chunk_obs(tuna_chunk* const k,
-               double t)
+tuna_chunk_obs(tuna_chunk* const chunk,
+               double cost)
 {
-    /* First, find smallest observation among set {t, k->outliers[0], ... } */
-    /* placing it into t while maintaining sorted-ness of k->outliers.      */
+    /* First, find smallest observation among set {cost, chunk->outliers[0], ... } */
+    /* placing it into cost while maintaining sorted-ness of chunk->outliers.      */
     /* The loop is one sort pass with possibility of short-circuiting.      */
-    if (enforce_lt(&t, k->outliers)) {
+    if (enforce_lt(&cost, chunk->outliers)) {
         size_t i;
         for (i = 1;
-             i < tuna_countof(k->outliers)
-             && enforce_lt(k->outliers - 1 + i, k->outliers + i);
+             i < tuna_countof(chunk->outliers)
+             && enforce_lt(chunk->outliers - 1 + i, chunk->outliers + i);
              ++i)
             ;
     }
 
     /* Second, when non-zero, record statistics about the best observation. */
-    if (t) {
-        tuna_stats_obs(&k->stats, t);
+    if (cost) {
+        tuna_stats_obs(&chunk->stats, cost);
     }
 
     /* Together, the above steps cause a zero-initialized tuna_chunk to */
@@ -209,14 +209,14 @@ tuna_chunk_obs(tuna_chunk* const k,
 }
 
 void
-tuna_chunk_merge(tuna_stats* const s,
-                 const tuna_chunk* const k)
+tuna_chunk_merge(tuna_stats* const stats,
+                 const tuna_chunk* const chunk)
 {
     size_t i;
-    tuna_stats_merge(s, &k->stats);
-    for (i = 0; i < tuna_countof(k->outliers); ++i) {
-        if (k->outliers[i]) {
-            tuna_stats_nobs(s, k->outliers + i, tuna_countof(k->outliers) - i);
+    tuna_stats_merge(stats, &chunk->stats);
+    for (i = 0; i < tuna_countof(chunk->outliers); ++i) {
+        if (chunk->outliers[i]) {
+            tuna_stats_nobs(stats, chunk->outliers + i, tuna_countof(chunk->outliers) - i);
             break;
         }
     }
@@ -397,15 +397,15 @@ L30:
 }
 
 double
-tuna_rand_u01(tuna_state* st)
+tuna_rand_u01(tuna_state* state)
 {
-    return rand_r(st) / (double) RAND_MAX;
+    return rand_r(state) / (double) RAND_MAX;
 }
 
 double
-tuna_rand_n01(tuna_state* st)
+tuna_rand_n01(tuna_state* state)
 {
-    return ltqnorm(tuna_rand_u01(st));
+    return ltqnorm(tuna_rand_u01(state));
 }
 
 tuna_state
@@ -492,13 +492,13 @@ trim(char* const a)
 
 /* Should be kept in sync with tuna_algo_default just below */
 const char*
-tuna_algo_name(tuna_algo al)
+tuna_algo_name(tuna_algo algo)
 {
-    if (al == &tuna_algo_welch1) {
+    if (algo == &tuna_algo_welch1) {
         return "welch1";
-    } else if (al == &tuna_algo_welch1_nuinf) {
+    } else if (algo == &tuna_algo_welch1_nuinf) {
         return "welch1_nuinf";
-    } else if (al == &tuna_algo_zero) {
+    } else if (algo == &tuna_algo_zero) {
         return "zero";
     } else {
         return "unknown";
@@ -507,10 +507,10 @@ tuna_algo_name(tuna_algo al)
 
 /* Should be kept in sync with tuna_algo_name just above */
 tuna_algo
-tuna_algo_default(const size_t nk)
+tuna_algo_default(const size_t nchunk)
 {
     char* d;
-    if (nk < 2) {
+    if (nchunk < 2) {
         return &tuna_algo_zero;
     }
     d = getenv("TUNA_ALGO");
@@ -528,22 +528,22 @@ tuna_algo_default(const size_t nk)
 }
 
 size_t
-tuna_algo_welch1_nuinf(const size_t nk,
-                       const tuna_chunk *ks,
+tuna_algo_welch1_nuinf(const size_t nchunk,
+                       const tuna_chunk *chunks,
                        const double *u01)
 {
     size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
-    assert(nk > 0);
+    assert(nchunk > 0);
     i = 0;
-    icnt = tuna_stats_mom(&ks[0].stats, &iavg, &ivar);
+    icnt = tuna_stats_mom(&chunks[0].stats, &iavg, &ivar);
     if (icnt < 2) {
         return i;
     }
-    for (j = 1; j < nk; ++j) {
-        jcnt = tuna_stats_mom(&ks[j].stats, &javg, &jvar);
+    for (j = 1; j < nchunk; ++j) {
+        jcnt = tuna_stats_mom(&chunks[j].stats, &javg, &jvar);
         if (jcnt < 2) {
             return j;
         }
@@ -559,22 +559,22 @@ tuna_algo_welch1_nuinf(const size_t nk,
 }
 
 size_t
-tuna_algo_welch1(const size_t nk,
-                 const tuna_chunk *ks,
+tuna_algo_welch1(const size_t nchunk,
+                 const tuna_chunk *chunks,
                  const double *u01)
 {
     size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
-    assert(nk > 0);
+    assert(nchunk > 0);
     i = 0;
-    icnt = tuna_stats_mom(&ks[0].stats, &iavg, &ivar);
+    icnt = tuna_stats_mom(&chunks[0].stats, &iavg, &ivar);
     if (icnt < 2) {
         return i;
     }
-    for (j = 1; j < nk; ++j) {
-        jcnt = tuna_stats_mom(&ks[j].stats, &javg, &jvar);
+    for (j = 1; j < nchunk; ++j) {
+        jcnt = tuna_stats_mom(&chunks[j].stats, &javg, &jvar);
         if (jcnt < 2) {
             return j;
         }
@@ -590,56 +590,56 @@ tuna_algo_welch1(const size_t nk,
 }
 
 size_t
-tuna_algo_zero(const size_t nk,
-               const tuna_chunk *ks,
+tuna_algo_zero(const size_t nchunk,
+               const tuna_chunk *chunks,
                const double *u01)
 {
-    (void) nk;
-    (void) ks;
+    (void) nchunk;
+    (void) chunks;
     (void) u01;
     return 0;
 }
 
 /* TODO Do something intelligent with clock_getres(2) information */
 size_t
-tuna_pre_cost(tuna_site* si,
-              tuna_stack* st,
-              const tuna_chunk *ks,
-              const size_t nk)
+tuna_pre_cost(tuna_site* site,
+              tuna_stack* stack,
+              const tuna_chunk *chunks,
+              const size_t nchunk)
 {
     size_t i;
     double* u01;
 
-    /* Ensure a zero-initialize st argument produces good behavior by... */
-    if (!si->al) {
+    /* Ensure a zero-initialize stack argument produces good behavior by... */
+    if (!site->al) {
         /* ...providing a default algorithm when not set, and... */
-        si->al = tuna_algo_default(nk);
+        site->al = tuna_algo_default(nchunk);
 
-        if (!si->st) {
+        if (!site->st) {
             /* ...providing a default seed when not set. */
-            si->st = tuna_state_default();
+            site->st = tuna_state_default();
         }
     }
 
-    /* Prepare nk random numbers for use by the algorithm.        */
+    /* Prepare nchunk random numbers for use by the algorithm.        */
     /* Drawing variates here avoids state updates from algorithms. */
-    u01 = __builtin_alloca(nk * sizeof(double));
-    for (i = 0; i < nk; ++i) {
-        u01[i] = tuna_rand_u01(&si->st);
+    u01 = __builtin_alloca(nchunk * sizeof(double));
+    for (i = 0; i < nchunk; ++i) {
+        u01[i] = tuna_rand_u01(&site->st);
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    st->ik = si->al(nk, ks, u01);
+    stack->ik = site->al(nchunk, chunks, u01);
 
-    return st->ik;
+    return stack->ik;
 }
 
 void
-tuna_post_cost(const tuna_stack* st,
-               tuna_chunk *ks,
+tuna_post_cost(const tuna_stack* stack,
+               tuna_chunk *chunks,
                const double cost)
 {
-    tuna_chunk_obs(ks + st->ik, cost);
+    tuna_chunk_obs(chunks + stack->ik, cost);
 }
 
 /**
@@ -657,31 +657,31 @@ struct tuna_timespec_minimal {
 };
 
 size_t
-tuna_pre(tuna_site* si,
-         tuna_stack* st,
-         const tuna_chunk *ks,
-         const size_t nk)
+tuna_pre(tuna_site* site,
+         tuna_stack* stack,
+         const tuna_chunk *chunks,
+         const size_t nchunk)
 {
     struct timespec ts;
 
     /* Delegate chunk selection to tuna_pre_cost */
-    tuna_pre_cost(si, st, ks, nk);
+    tuna_pre_cost(site, stack, chunks, nchunk);
 
     /* Glimpse at the clock so we may compute elapsed time in tuna_post(). */
     /* Done after algorithm performed to avoid accumulating its runtime.   */
     clock_gettime(TUNA_CLOCK, &ts);
 
-    /* Stash the time in the opaque st->ts buffer            */
+    /* Stash the time in the opaque stack->ts buffer            */
     /* (after being certain the buffer is adequately sized). */
-    tuna_assert_static(sizeof(st->ts) >= sizeof(struct tuna_timespec_minimal));
-    memcpy(st->ts, &ts, sizeof(struct tuna_timespec_minimal));
+    tuna_assert_static(sizeof(stack->ts) >= sizeof(struct tuna_timespec_minimal));
+    memcpy(stack->ts, &ts, sizeof(struct tuna_timespec_minimal));
 
-    return st->ik;
+    return stack->ik;
 }
 
 double
-tuna_post(const tuna_stack* st,
-          tuna_chunk *ks)
+tuna_post(const tuna_stack* stack,
+          tuna_chunk *chunks)
 {
     struct timespec ts, te;
     double elapsed;
@@ -689,10 +689,10 @@ tuna_post(const tuna_stack* st,
     /* Glimpse at the clock before bookkeeping to ignore its overhead. */
     clock_gettime(TUNA_CLOCK, &te);
 
-    /* Retrieve tuna_pre time from the opaque st->ts buffer  */
+    /* Retrieve tuna_pre time from the opaque stack->ts buffer  */
     /* (after being certain the buffer is adequately sized). */
-    tuna_assert_static(sizeof(st->ts) >= sizeof(struct tuna_timespec_minimal));
-    memcpy(&ts, st->ts, sizeof(struct tuna_timespec_minimal));
+    tuna_assert_static(sizeof(stack->ts) >= sizeof(struct tuna_timespec_minimal));
+    memcpy(&ts, stack->ts, sizeof(struct tuna_timespec_minimal));
 
     /* Compute double-valued elapsed time */
     elapsed  = te.tv_nsec - ts.tv_nsec;  /* Nanoseconds...  */
@@ -700,32 +700,32 @@ tuna_post(const tuna_stack* st,
     elapsed += te.tv_sec  - ts.tv_sec;   /* ...plus seconds */
 
     /* Delegate recording the observation to tuna_post_cost() */
-    tuna_post_cost(st, ks, elapsed);
+    tuna_post_cost(stack, chunks, elapsed);
 
     return elapsed;
 }
 
 int
 tuna_chunk_fprint(FILE* stream,
-                  const tuna_chunk* k,
+                  const tuna_chunk* chunk,
                   const char* prefix)
 {
-    return tuna_chunk_fprintf(stream, k, prefix);
+    return tuna_chunk_fprintf(stream, chunk, prefix);
 }
 
 int
 tuna_site_fprint(FILE* stream,
-                 const tuna_site* si,
+                 const tuna_site* site,
                  const char* prefix)
 {
-    return tuna_site_fprintf(stream, si, prefix);
+    return tuna_site_fprintf(stream, site, prefix);
 }
 
 int
 tuna_fprint(FILE* stream,
-            const tuna_site* si,
-            const tuna_chunk *ks,
-            const size_t nk,
+            const tuna_site* site,
+            const tuna_chunk *chunks,
+            const size_t nchunk,
             const char* prefix,
             const char **labels)
 {
@@ -733,12 +733,12 @@ tuna_fprint(FILE* stream,
     int nwritten, namelen, status;
 
     /* Output a bash-like "TUNA$" prompt identifying this tuning site. */
-    nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
+    nwritten = tuna_site_fprintf(stream, site, "TUNA$ %s", prefix);
 
     /* Find the maximum label length so post-label outputs may be aligned */
     namelen = sizeof("chunk") + 5;
     if (labels) {
-        for (ik = 0; ik < nk; ++ik) {
+        for (ik = 0; ik < nchunk; ++ik) {
             if (labels[ik] && *labels[ik]) {
                 int len = strlen(labels[ik]);
                 if (len > namelen) {
@@ -749,12 +749,12 @@ tuna_fprint(FILE* stream,
     }
 
     /* Output continuation-like "TUNA>", the site, labels, and statistics. */
-    for (ik = 0; ik < nk && nwritten >= 0; ++ik) {
+    for (ik = 0; ik < nchunk && nwritten >= 0; ++ik) {
         if (labels && labels[ik] && *labels[ik]) {
-            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s %-*s",
+            status = tuna_chunk_fprintf(stream, chunks + ik, "TUNA> %s %-*s",
                                         prefix, namelen, labels[ik]);
         } else {
-            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*zu",
+            status = tuna_chunk_fprintf(stream, chunks + ik, "TUNA> %s chunk%0*zu",
                                         prefix, namelen - sizeof("chunk"), ik);
         }
         nwritten = status >= 0
@@ -766,7 +766,7 @@ tuna_fprint(FILE* stream,
 
 int
 tuna_chunk_fprintf(FILE* stream,
-                   const tuna_chunk* k,
+                   const tuna_chunk* chunk,
                    const char* format,
                    ...)
 {
@@ -781,7 +781,7 @@ tuna_chunk_fprintf(FILE* stream,
         double avg, var;
         tuna_stats o;
         memset(&o, 0, sizeof(o));
-        tuna_chunk_merge(&o, k);
+        tuna_chunk_merge(&o, chunk);
         cnt = tuna_stats_mom(&o, &avg, &var);
         status = fprintf(stream,
                          "%s"
@@ -799,7 +799,7 @@ tuna_chunk_fprintf(FILE* stream,
 
 int
 tuna_site_fprintf(FILE* stream,
-                  const tuna_site* si,
+                  const tuna_site* site,
                   const char* format,
                   ...)
 {
@@ -809,7 +809,7 @@ tuna_site_fprintf(FILE* stream,
     va_start(ap, format);
     nwritten = vfprintf(stream, format, ap);
     va_end(ap);
-    name = tuna_algo_name(si->al);
+    name = tuna_algo_name(site->al);
     if (nwritten >= 0) {
         int status = fprintf(stream,
                              "%s"

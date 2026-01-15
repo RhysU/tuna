@@ -34,15 +34,15 @@ three candidate ``O(n ln n)`` sorting algorithms with Tuna::
     #include <tuna.h>
 
     void smallsort(int a[], int n) {
-        static tuna_site  si;
-        static tuna_chunk ks[3];
-        tuna_stack st;
-        switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
+        static tuna_site  site;
+        static tuna_chunk chunks[3];
+        tuna_stack stack;
+        switch (tuna_pre(&site, &stack, chunks, tuna_countof(chunks))) {
             default: sort_insertion(a, n); break;
             case 1:  sort_qsort    (a, n); break;
             case 2:  sort_heap     (a, n); break;
         }
-        tuna_post(&st, ks);
+        tuna_post(&stack, chunks);
     }
 
 We just wrapped ``sort_insertion()``, ``sort_qsort()`` and ``sort_heap()`` so
