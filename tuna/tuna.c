@@ -196,7 +196,6 @@ tuna_chunk_obs(tuna_chunk* const k,
     }
 
     /* Second, when non-zero, record statistics about the best observation. */
-    /* Use the internal method to avoid deadlock as we already hold lock.   */
     if (t) {
         tuna_stats_obs(&k->stats, t);
     }
@@ -623,7 +622,6 @@ tuna_pre_cost(tuna_site* si,
 
     /* Prepare nk random numbers for use by the algorithm.        */
     /* Drawing variates here avoids state updates from algorithms. */
-    /* That permits a short critical section on the tuna_site.    */
     u01 = __builtin_alloca(nk * sizeof(double));
     for (i = 0; i < nk; ++i) {
         u01[i] = tuna_rand_u01(&si->st);
