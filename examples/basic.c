@@ -24,19 +24,19 @@ int main(int argc, char **argv)
     const double mB    = argc > 4 ? atof(argv[4]) :   10.1; // Case B mean?
     const double sB    = argc > 5 ? atof(argv[5]) :    1.0; // Case B stddev?
 
-    static tuna_site  si;                 // Notice zero initialization
-    tuna_stack        st;                 // Stack-based state
-    static tuna_chunk ks[2];              // Notice zero initialization
-    tuna_seed seed = tuna_seed_default(); // Used only to simulate chunk timings
+    static tuna_site  si;                   // Notice zero initialization
+    tuna_stack        st;                   // Stack-based state
+    static tuna_chunk ks[2];                // Notice zero initialization
+    tuna_state state = tuna_state_default(); // Used only to simulate chunk timings
     for (int i = 0; i < niter; ++i) {
 
         // Autotune over the alternatives (simulating chunk-specific costs)
         // To track runtime via TUNA_CLOCK, call tuna_post(&si, ks) instead
         double cost;
         switch (tuna_pre(&si, &st, ks, tuna_countof(ks))) {
-            default: cost = mA + tuna_rand_n01(&seed)*sA;
+            default: cost = mA + tuna_rand_n01(&state)*sA;
                      break;
-            case 1:  cost = mB + tuna_rand_n01(&seed)*sB;
+            case 1:  cost = mB + tuna_rand_n01(&state)*sB;
                      break;
         }
         tuna_post_cost(&st, ks, cost);

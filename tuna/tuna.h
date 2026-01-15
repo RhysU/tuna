@@ -144,7 +144,7 @@ tuna_stats_mom(const tuna_stats* t,
                double* var);
 
 /** Accumulate a new observation \c x into statistics \c t. */
-tuna_stats*
+void
 tuna_stats_obs(tuna_stats* t,
                const double x);
 
@@ -152,13 +152,13 @@ tuna_stats_obs(tuna_stats* t,
  * Accumulate \c N distinct observations <code>x[0]</code>, ...,
  * <code>x[N-1]</code> into statistics \c t.
  */
-tuna_stats*
+void
 tuna_stats_nobs(tuna_stats* t,
                 const double* x,
                 size_t N);
 
 /** Incorporate running information from another instance. */
-tuna_stats*
+void
 tuna_stats_merge(tuna_stats* dst,
                  const tuna_stats* src);
 
@@ -185,7 +185,7 @@ typedef struct tuna_chunk {
  * but it might also be some other performance metric.  Regardless of what is
  * chosen, smaller should mean better.
  */
-tuna_chunk*
+void
 tuna_chunk_obs(tuna_chunk* k,
                double t);
 
@@ -193,7 +193,7 @@ tuna_chunk_obs(tuna_chunk* k,
  * Incorporate all cost information recorded about chunk \c k into \c s,
  * including any outliers otherwise discarded from consideration.
  */
-tuna_stats*
+void
 tuna_chunk_merge(tuna_stats* s,
                  const tuna_chunk* k);
 
@@ -208,23 +208,23 @@ tuna_chunk_merge(tuna_stats* s,
  * The state required so that tuna_u01() and tuna_n01() can be re-entrant safe
  * and orthogonal to all other pseudo-random generators that might be in use.
  */
-typedef unsigned int tuna_seed;
+typedef unsigned int tuna_state;
 
 /**
- * Retrieves a default seed.  If the whitespace-trimmed environment variable
- * <code>TUNA_SEED</code> can be parsed as a seed, it is used.  Otherwise, a
- * time-based seed is returned.
+ * Retrieves a default state value.  If the whitespace-trimmed environment
+ * variable <code>TUNA_SEED</code> can be parsed as a seed, that seed is used
+ * to initialize the state.  Otherwise, a time-based seed is used.
  */
-tuna_seed
-tuna_seed_default(void);
+tuna_state
+tuna_state_default(void);
 
 /** Generate a uniform draw from <tt>[0, 1]</tt>. */
 double
-tuna_rand_u01(tuna_seed* sd);
+tuna_rand_u01(tuna_state* st);
 
 /** Generate a draw from <tt>N(0, 1)</tt>. */
 double
-tuna_rand_n01(tuna_seed* sd);
+tuna_rand_n01(tuna_state* st);
 
 /** @} */
 
@@ -342,28 +342,30 @@ tuna_welch1(double xA, double sA2, size_t nA,
  *
  * \return The zero-based index of the chunk that has been selected.
  */
-typedef int (*tuna_algo)(const int nk,
-                         const tuna_chunk *ks,
-                         const double *u01);
+
+typedef size_t (*tuna_algo)(const size_t nk,
+                            const tuna_chunk *ks,
+                            const double *u01);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-int
-tuna_algo_welch1_nuinf(const int nk,
+size_t
+tuna_algo_welch1_nuinf(const size_t nk,
                        const tuna_chunk *ks,
                        const double *u01);
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
-int
-tuna_algo_welch1(const int nk,
+size_t
+tuna_algo_welch1(const size_t nk,
                  const tuna_chunk *ks,
                  const double *u01);
 
 /**
  * An "autotuning" algorithm always selecting index zero.
- * Useful for testing/debugging.  See also \ref tuna_seed_default().
+ * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
-int
-tuna_algo_zero(const int nk,
+
+size_t
+tuna_algo_zero(const size_t nk,
                const tuna_chunk *ks,
                const double *u01);
 
@@ -382,7 +384,7 @@ tuna_algo_name(tuna_algo al);
  * \c nk is chosen.
  */
 tuna_algo
-tuna_algo_default(const int nk);
+tuna_algo_default(const size_t nk);
 
 /** @} */
 
@@ -398,7 +400,7 @@ tuna_algo_default(const int nk);
  */
 typedef struct tuna_site {
     tuna_algo     al; /**< The chosen tuning algorithm.           */
-    tuna_seed     sd; /**< Random number generator state.         */
+    tuna_state    st; /**< Random number generator state.         */
 } tuna_site;
 
 /**
@@ -408,7 +410,7 @@ typedef struct tuna_site {
  * allocation is recommended to allow reentrant usage of the library.
  */
 typedef struct tuna_stack {
-    int  ik;      /**< Index of the most recently selected chunk. */
+    size_t  ik;   /**< Index of the most recently selected chunk. */
     char ts[16];  /**< Stores clock_gettime(2) within tuna_pre(). */
 } tuna_stack;
 
@@ -424,11 +426,11 @@ typedef struct tuna_stack {
  *
  * \return The zero-based index of the chunk which should be selected.
  */
-int
+size_t
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
               const tuna_chunk *ks,
-              const int nk);
+              const size_t nk);
 
 /**
  * Record the last autotuned chunk invocation using a user-provided \c cost
@@ -458,11 +460,11 @@ tuna_post_cost(const tuna_stack* st,
  *
  * \return The zero-based index of the chunk which should be selected.
  */
-int
+size_t
 tuna_pre(tuna_site* si,
          tuna_stack* st,
          const tuna_chunk *ks,
-         const int nk);
+         const size_t nk);
 
 /**
  * Record the results from the last autotuned chunk invocation using
@@ -543,7 +545,7 @@ int
 tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk *ks,
-            const int nk,
+            const size_t nk,
             const char* prefix,
             const char **labels);
 

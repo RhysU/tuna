@@ -114,7 +114,7 @@ tuna_stats_mom(const tuna_stats* const t,
     return t->n;
 }
 
-tuna_stats*
+void
 tuna_stats_obs(tuna_stats* const t,
                const double x)
 {
@@ -129,10 +129,9 @@ tuna_stats_obs(tuna_stats* const t,
         t->m = x;
         t->s = 0;
     }
-    return t;
 }
 
-tuna_stats*
+void
 tuna_stats_nobs(tuna_stats* const t,
                 const double* x,
                 size_t N)
@@ -141,10 +140,9 @@ tuna_stats_nobs(tuna_stats* const t,
     for (i = N; i -- > 0 ;) {
         tuna_stats_obs(t, *x++);
     }
-    return t;
 }
 
-tuna_stats*
+void
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
@@ -161,7 +159,6 @@ tuna_stats_merge(tuna_stats* const dst,
                        + ((dM * dM) * (dst->n * src->n)) / total;
         dst->n       = total;
     }
-    return dst;
 }
 
 /**
@@ -182,7 +179,7 @@ enforce_lt(double* const a, double* const b)
     }
 }
 
-tuna_chunk*
+void
 tuna_chunk_obs(tuna_chunk* const k,
                double t)
 {
@@ -192,14 +189,13 @@ tuna_chunk_obs(tuna_chunk* const k,
     if (enforce_lt(&t, k->outliers)) {
         size_t i;
         for (i = 1;
-             i < sizeof(k->outliers) / sizeof(k->outliers[0])
+             i < tuna_countof(k->outliers)
              && enforce_lt(k->outliers - 1 + i, k->outliers + i);
              ++i)
             ;
     }
 
     /* Second, when non-zero, record statistics about the best observation. */
-    /* Use the internal method to avoid deadlock as we already hold lock.   */
     if (t) {
         tuna_stats_obs(&k->stats, t);
     }
@@ -209,11 +205,9 @@ tuna_chunk_obs(tuna_chunk* const k,
     /* track any statistics.  This effectively provides some "start up" */
     /* or "burn in" period in addition to preventing highly improbable  */
     /* observations from unduly inflating the discovered variability.   */
-
-    return k;
 }
 
-tuna_stats*
+void
 tuna_chunk_merge(tuna_stats* const s,
                  const tuna_chunk* const k)
 {
@@ -225,7 +219,6 @@ tuna_chunk_merge(tuna_stats* const s,
             break;
         }
     }
-    return s;
 }
 
 /**
@@ -403,19 +396,19 @@ L30:
 }
 
 double
-tuna_rand_u01(tuna_seed* sd)
+tuna_rand_u01(tuna_state* st)
 {
-    return rand_r(sd) / (double) RAND_MAX;
+    return rand_r(st) / (double) RAND_MAX;
 }
 
 double
-tuna_rand_n01(tuna_seed* sd)
+tuna_rand_n01(tuna_state* st)
 {
-    return ltqnorm(tuna_rand_u01(sd));
+    return ltqnorm(tuna_rand_u01(st));
 }
 
-tuna_seed
-tuna_seed_default()
+tuna_state
+tuna_state_default()
 {
     const char* d = getenv("TUNA_SEED");
     unsigned int retval;
@@ -513,7 +506,7 @@ tuna_algo_name(tuna_algo al)
 
 /* Should be kept in sync with tuna_algo_name just above */
 tuna_algo
-tuna_algo_default(const int nk)
+tuna_algo_default(const size_t nk)
 {
     char* d;
     if (nk < 2) {
@@ -533,12 +526,12 @@ tuna_algo_default(const int nk)
     return &tuna_algo_welch1; /* Default */
 }
 
-int
-tuna_algo_welch1_nuinf(const int nk,
+size_t
+tuna_algo_welch1_nuinf(const size_t nk,
                        const tuna_chunk *ks,
                        const double *u01)
 {
-    int i, j;
+    size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
@@ -564,12 +557,12 @@ tuna_algo_welch1_nuinf(const int nk,
     return i;
 }
 
-int
-tuna_algo_welch1(const int nk,
+size_t
+tuna_algo_welch1(const size_t nk,
                  const tuna_chunk *ks,
                  const double *u01)
 {
-    int i, j;
+    size_t i, j;
     size_t icnt, jcnt;
     double iavg, ivar, javg, jvar, p;
 
@@ -595,10 +588,11 @@ tuna_algo_welch1(const int nk,
     return i;
 }
 
-int
-tuna_algo_zero(const int nk,
+size_t
+tuna_algo_zero(const size_t nk,
                const tuna_chunk *ks,
                const double *u01)
+
 {
     (void) nk;
     (void) ks;
@@ -607,11 +601,11 @@ tuna_algo_zero(const int nk,
 }
 
 /* TODO Do something intelligent with clock_getres(2) information */
-int
+size_t
 tuna_pre_cost(tuna_site* si,
               tuna_stack* st,
               const tuna_chunk *ks,
-              const int nk)
+              const size_t nk)
 {
     size_t i;
     double* u01;
@@ -621,18 +615,17 @@ tuna_pre_cost(tuna_site* si,
         /* ...providing a default algorithm when not set, and... */
         si->al = tuna_algo_default(nk);
 
-        if (!si->sd) {
+        if (!si->st) {
             /* ...providing a default seed when not set. */
-            si->sd = tuna_seed_default();
+            si->st = tuna_state_default();
         }
     }
 
     /* Prepare nk random numbers for use by the algorithm.        */
-    /* Drawing variates here avoids seed updates from algorithms. */
-    /* That permits a short critical section on the tuna_site.    */
+    /* Drawing variates here avoids state updates from algorithms. */
     u01 = __builtin_alloca(nk * sizeof(double));
     for (i = 0; i < nk; ++i) {
-        u01[i] = tuna_rand_u01(&si->sd);
+        u01[i] = tuna_rand_u01(&si->st);
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
@@ -663,11 +656,11 @@ struct tuna_timespec_minimal {
     long   tv_nsec;
 };
 
-int
+size_t
 tuna_pre(tuna_site* si,
          tuna_stack* st,
          const tuna_chunk *ks,
-         const int nk)
+         const size_t nk)
 {
     struct timespec ts;
 
@@ -732,11 +725,12 @@ int
 tuna_fprint(void* stream,
             const tuna_site* si,
             const tuna_chunk *ks,
-            const int nk,
+            const size_t nk,
             const char* prefix,
             const char **labels)
 {
-    int ik, nwritten, namelen, status;
+    size_t ik;
+    int nwritten, namelen, status;
 
     /* Output a bash-like "TUNA$" prompt identifying this tuning site. */
     nwritten = tuna_site_fprintf(stream, si, "TUNA$ %s", prefix);
@@ -760,7 +754,7 @@ tuna_fprint(void* stream,
             status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s %-*s",
                                         prefix, namelen, labels[ik]);
         } else {
-            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*d",
+            status = tuna_chunk_fprintf(stream, ks + ik, "TUNA> %s chunk%0*zu",
                                         prefix, namelen - sizeof("chunk"), ik);
         }
         nwritten = status >= 0
@@ -848,7 +842,7 @@ tuna_registry_alloc(const char *id)
 {
     /* Struct hack using id[1] already includes space for NULL terminator. */
     /* Using calloc(3) sets left = right = NULL and enforces termination.  */
-    const int n = strlen(id);
+    const size_t n = strlen(id);
     tuna_registry* p = calloc(n + sizeof(tuna_registry), 1);
     if (p) {
         memcpy((void*) p->id, (void*) id, n);
