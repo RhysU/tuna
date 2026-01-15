@@ -189,7 +189,7 @@ tuna_chunk_obs(tuna_chunk* const k,
     if (enforce_lt(&t, k->outliers)) {
         size_t i;
         for (i = 1;
-             i < sizeof(k->outliers) / sizeof(k->outliers[0])
+             i < tuna_countof(k->outliers)
              && enforce_lt(k->outliers - 1 + i, k->outliers + i);
              ++i)
             ;
