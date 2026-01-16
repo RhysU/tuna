@@ -84,8 +84,8 @@ blockedmm(double       *c, // Output C += A*B
 int main(int argc, char *argv[])
 {
     // Parse any incoming command line arguments
-    const int niter = argc > 1 ? atof(argv[1]) : 64; // Iteration count?
-    const int log2N = argc > 2 ? atof(argv[2]) :  8; // log2 of matrix size?
+    const int niter = argc > 1 ? atof(argv[1]) : 256; // Iteration count?
+    const int log2N = argc > 2 ? atof(argv[2]) :   7; // log2 of matrix size?
     const int N     = 1 << log2N;
 
     #pragma omp parallel default(none) firstprivate(niter, log2N, N)
