@@ -90,26 +90,26 @@ tuna_stats_sum(const tuna_stats* const stats)
     return stats->n * stats->m;
 }
 
-size_t
-tuna_stats_mom(const tuna_stats* const stats,
-               double* const avg,
-               double* const var)
+tuna_stats_mom_result
+tuna_stats_mom(const tuna_stats* const stats)
 {
+    tuna_stats_mom_result result;
+    result.n = stats->n;
     switch (stats->n) {
     case 0:
-        *avg = NAN;
-        *var = NAN;
+        result.avg = NAN;
+        result.var = NAN;
         break;
     case 1:
-        *avg = stats->m;
-        *var = 0;
+        result.avg = stats->m;
+        result.var = 0;
         break;
     default:
-        *avg = stats->m;
-        *var = stats->s / (stats->n - 1);
+        result.avg = stats->m;
+        result.var = stats->s / (stats->n - 1);
         break;
     }
-    return stats->n;
+    return result;
 }
 
 void
@@ -418,18 +418,19 @@ tuna_state_default()
     return retval;
 }
 
-void
+tuna_welch_result
 tuna_welch(double xA, double sA2, size_t nA,
-           double xB, double sB2, size_t nB,
-           double* const t, double* const nu)
+           double xB, double sB2, size_t nB)
 {
+    tuna_welch_result result;
     double sA2_nA = sA2 / nA;
     double sB2_nB = sB2 / nB;
     double t_den2 = sA2_nA + sB2_nB;
     double nu_den = sA2_nA * sA2_nA / (nA - 1)
                     + sB2_nB * sB2_nB / (nB - 1);
-    *t            = (xA - xB) / sqrt(t_den2);
-    *nu           = t_den2 * t_den2 / nu_den;
+    result.t  = (xA - xB) / sqrt(t_den2);
+    result.nu = t_den2 * t_den2 / nu_den;
+    return result;
 }
 
 double
@@ -450,10 +451,10 @@ double
 tuna_welch1_approx(double xA, double sA2, size_t nA,
                    double xB, double sB2, size_t nB)
 {
-    double t, nu;
-    tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
-    if (nu > 2) {
-        t *= nu / (nu - 2);
+    tuna_welch_result welch = tuna_welch(xA, sA2, nA, xB, sB2, nB);
+    double t = welch.t;
+    if (welch.nu > 2) {
+        t *= welch.nu / (welch.nu - 2);
     }
     return 1 - erfc(-t * M_SQRT1_2) / 2;
 }
@@ -462,9 +463,8 @@ double
 tuna_welch1(double xA, double sA2, size_t nA,
             double xB, double sB2, size_t nB)
 {
-    double t, nu;
-    tuna_welch(xA, sA2, nA, xB, sB2, nB, &t, &nu);
-    return 1 - as3(t, nu);
+    tuna_welch_result welch = tuna_welch(xA, sA2, nA, xB, sB2, nB);
+    return 1 - as3(welch.t, welch.nu);
 }
 
 /* http://agentzlerich.blogspot.com/2011/01/c-header-only-unit-testing-with-fctx.html */
@@ -530,26 +530,25 @@ tuna_algo_welch1_nuinf(const size_t nchunk,
                        const double *u01)
 {
     size_t i, j;
-    size_t icnt, jcnt;
-    double iavg, ivar, javg, jvar, p;
+    tuna_stats_mom_result istats, jstats;
+    double p;
 
     assert(nchunk > 0);
     i = 0;
-    icnt = tuna_stats_mom(&chunks[0].stats, &iavg, &ivar);
-    if (icnt < 2) {
+    istats = tuna_stats_mom(&chunks[0].stats);
+    if (istats.n < 2) {
         return i;
     }
     for (j = 1; j < nchunk; ++j) {
-        jcnt = tuna_stats_mom(&chunks[j].stats, &javg, &jvar);
-        if (jcnt < 2) {
+        jstats = tuna_stats_mom(&chunks[j].stats);
+        if (jstats.n < 2) {
             return j;
         }
-        p    = tuna_welch1_nuinf(iavg, ivar, icnt, javg, jvar, jcnt);
+        p = tuna_welch1_nuinf(istats.avg, istats.var, istats.n,
+                              jstats.avg, jstats.var, jstats.n);
         if (p < u01[j]) {
-            i    = j;
-            iavg = javg;
-            ivar = jvar;
-            icnt = jcnt;
+            i = j;
+            istats = jstats;
         }
     }
     return i;
@@ -561,26 +560,25 @@ tuna_algo_welch1(const size_t nchunk,
                  const double *u01)
 {
     size_t i, j;
-    size_t icnt, jcnt;
-    double iavg, ivar, javg, jvar, p;
+    tuna_stats_mom_result istats, jstats;
+    double p;
 
     assert(nchunk > 0);
     i = 0;
-    icnt = tuna_stats_mom(&chunks[0].stats, &iavg, &ivar);
-    if (icnt < 2) {
+    istats = tuna_stats_mom(&chunks[0].stats);
+    if (istats.n < 2) {
         return i;
     }
     for (j = 1; j < nchunk; ++j) {
-        jcnt = tuna_stats_mom(&chunks[j].stats, &javg, &jvar);
-        if (jcnt < 2) {
+        jstats = tuna_stats_mom(&chunks[j].stats);
+        if (jstats.n < 2) {
             return j;
         }
-        p    = tuna_welch1(iavg, ivar, icnt, javg, jvar, jcnt);
+        p = tuna_welch1(istats.avg, istats.var, istats.n,
+                        jstats.avg, jstats.var, jstats.n);
         if (p < u01[j]) {
-            i    = j;
-            iavg = javg;
-            ivar = jvar;
-            icnt = jcnt;
+            i = j;
+            istats = jstats;
         }
     }
     return i;
@@ -774,18 +772,17 @@ tuna_chunk_fprintf(FILE* stream,
     va_end(ap);
     if (nwritten >= 0) {
         int status;
-        size_t cnt;
-        double avg, var;
         tuna_stats o;
+        tuna_stats_mom_result stats;
         memset(&o, 0, sizeof(o));
         tuna_chunk_merge(&o, chunk);
-        cnt = tuna_stats_mom(&o, &avg, &var);
+        stats = tuna_stats_mom(&o);
         status = fprintf(stream,
                          "%s%*lu  %-#*.*g +/- %-#*.*g\n",
                          format[0] ? " " : "",
-                         FLT_DIG + 4, (long unsigned) cnt,
-                         FLT_DIG + 4, FLT_DIG, avg,
-                         FLT_DIG + 4, FLT_DIG, sqrt(var));
+                         FLT_DIG + 4, (long unsigned) stats.n,
+                         FLT_DIG + 4, FLT_DIG, stats.avg,
+                         FLT_DIG + 4, FLT_DIG, sqrt(stats.var));
         nwritten = status >= 0
                    ? nwritten + status
                    : status;

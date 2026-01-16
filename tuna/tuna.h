@@ -133,16 +133,21 @@ double
 tuna_stats_sum(const tuna_stats* stats);
 
 /**
- * Obtain all running moments at once.
- * \param[in ] stats Instance of interest
- * \param[out] avg   The mean
- * \param[out] var   The sample variance
- * \return The number of samples thus far.
+ * Contains the result of tuna_stats_mom().
  */
-size_t
-tuna_stats_mom(const tuna_stats* stats,
-               double* avg,
-               double* var);
+typedef struct tuna_stats_mom_result {
+    size_t n;    /**< Number of samples */
+    double avg;  /**< Mean */
+    double var;  /**< Sample variance */
+} tuna_stats_mom_result;
+
+/**
+ * Obtain all running moments at once.
+ * \param[in] stats Instance of interest
+ * \return A struct containing the number of samples, mean, and variance.
+ */
+tuna_stats_mom_result
+tuna_stats_mom(const tuna_stats* stats);
 
 /** Accumulate a new observation \c x into statistics \c stats. */
 void
@@ -236,24 +241,30 @@ tuna_rand_n01(tuna_state* state);
  */
 
 /**
+ * Contains the result of tuna_welch().
+ */
+typedef struct tuna_welch_result {
+    double t;   /**< Welch's t-statistic */
+    double nu;  /**< Number of degrees of freedom per Welch--Satterthwaite equation */
+} tuna_welch_result;
+
+/**
  * Compute the Welch t-statistic \c t and degrees of freedom \c nu given
  * samples \c A and \c B.  When only the t-statistic is required, prefer method
  * \ref tuna_welch_t to this one.
  *
- * \param[in ] xA  Mean of \c A
- * \param[in ] sA2 Variance of \c A
- * \param[in ] nA  Number of observations of A
- * \param[in ] xB  Mean of \c B
- * \param[in ] sB2 Variance of \c B
- * \param[in ] nB  Number of observations of B
- * \param[out] t   Welch's t-statistic
- * \param[out] nu  Number of degrees of freedom per
- *                 Welch--Satterthwaite equation
+ * \param xA  Mean of \c A
+ * \param sA2 Variance of \c A
+ * \param nA  Number of observations of A
+ * \param xB  Mean of \c B
+ * \param sB2 Variance of \c B
+ * \param nB  Number of observations of B
+ *
+ * \return A struct containing the t-statistic and degrees of freedom.
  */
-void
+tuna_welch_result
 tuna_welch(double xA, double sA2, size_t nA,
-           double xB, double sB2, size_t nB,
-           double* t, double* nu);
+           double xB, double sB2, size_t nB);
 
 /**
  * Compute the Welch t-statistic given samples \c A and \c B.
