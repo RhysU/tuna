@@ -729,6 +729,34 @@ tuna_fprint(FILE* stream,
     size_t ik;
     int nwritten, namelen, status;
 
+    /* Special case: single chunk output consolidated on one line */
+    if (nchunk == 1) {
+        const char* name = tuna_algo_name(site->al);
+        size_t cnt;
+        double avg, var;
+        tuna_stats o;
+
+        /* Output prefix and algorithm name */
+        nwritten = fprintf(stream, "TUNA$ %s%s%s",
+                          prefix,
+                          prefix[0] ? " " : "",
+                          name);
+
+        /* Compute and output statistics on the same line */
+        if (nwritten >= 0) {
+            memset(&o, 0, sizeof(o));
+            tuna_chunk_merge(&o, chunks);
+            cnt = tuna_stats_mom(&o, &avg, &var);
+            status = fprintf(stream,
+                           "  %*lu  %-#*.*g +/- %-#*.*g\n",
+                           FLT_DIG + 4, (long unsigned) cnt,
+                           FLT_DIG + 4, FLT_DIG, avg,
+                           FLT_DIG + 4, FLT_DIG, sqrt(var));
+            nwritten = status >= 0 ? nwritten + status : status;
+        }
+        return nwritten;
+    }
+
     /* Output a bash-like "TUNA$" prompt identifying this tuning site. */
     nwritten = tuna_site_fprintf(stream, site, "TUNA$ %s", prefix);
 
