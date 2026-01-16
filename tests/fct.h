@@ -264,9 +264,9 @@ fctstr_safe_cpy(char *dst, char const *src, size_t num)
 #if defined(WIN32) && _MSC_VER >= 1400
     strncpy_s(dst, num, src, _TRUNCATE);
 #else
-    strncpy(dst, src, num);
-#endif
+    strncpy(dst, src, num - 1);
     dst[num-1] = '\0';
+#endif
 }
 
 /* Isolate the vsnprintf implementation */
