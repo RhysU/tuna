@@ -757,6 +757,14 @@ static int
 fct_nlist__init2(fct_nlist_t *list, size_t start_sz)
 {
     FCT_ASSERT( list != NULL );
+
+    /* If these are both 0, then they are equal and that means
+    that the first append operation will allocate memory. The beauty
+    here is that if the list remains empty, then we save a malloc.
+    Empty lists are relatively common in FCT (consider an error list). */
+    list->avail_itm_num = start_sz;
+    list->used_itm_num =0;
+
     if ( start_sz == 0 )
     {
         list->itm_list = NULL;
@@ -769,12 +777,6 @@ fct_nlist__init2(fct_nlist_t *list, size_t start_sz)
             return 0;
         }
     }
-    /* If these are both 0, then they are equal and that means
-    that the first append operation will allocate memory. The beauty
-    here is that if the list remains empty, then we save a malloc.
-    Empty lists are relatively common in FCT (consider an error list). */
-    list->avail_itm_num = start_sz;
-    list->used_itm_num =0;
     return 1;
 }
 
