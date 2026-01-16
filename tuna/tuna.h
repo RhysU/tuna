@@ -564,7 +564,7 @@ tuna_fprint(FILE* stream,
  *         On error, a negative value is returned.
  */
 int
-vtuna_chunk_fprintf(FILE* stream,
+tuna_chunk_vfprintf(FILE* stream,
                     const tuna_chunk* chunk,
                     const char* format,
                     va_list ap);
@@ -603,7 +603,7 @@ tuna_chunk_fprintf(FILE* stream,
  *         On error, a negative value is returned.
  */
 int
-vtuna_site_fprintf(FILE* stream,
+tuna_site_vfprintf(FILE* stream,
                    const tuna_site* site,
                    const char* format,
                    va_list ap);

@@ -762,7 +762,7 @@ tuna_fprint(FILE* stream,
 }
 
 int
-vtuna_chunk_fprintf(FILE* stream,
+tuna_chunk_vfprintf(FILE* stream,
                     const tuna_chunk* chunk,
                     const char* format,
                     va_list ap)
@@ -799,13 +799,13 @@ tuna_chunk_fprintf(FILE* stream,
     int nwritten;
     va_list ap;
     va_start(ap, format);
-    nwritten = vtuna_chunk_fprintf(stream, chunk, format, ap);
+    nwritten = tuna_chunk_vfprintf(stream, chunk, format, ap);
     va_end(ap);
     return nwritten;
 }
 
 int
-vtuna_site_fprintf(FILE* stream,
+tuna_site_vfprintf(FILE* stream,
                    const tuna_site* site,
                    const char* format,
                    va_list ap)
@@ -836,7 +836,7 @@ tuna_site_fprintf(FILE* stream,
     int nwritten;
     va_list ap;
     va_start(ap, format);
-    nwritten = vtuna_site_fprintf(stream, site, format, ap);
+    nwritten = tuna_site_vfprintf(stream, site, format, ap);
     va_end(ap);
     return nwritten;
 }
