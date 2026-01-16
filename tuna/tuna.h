@@ -27,6 +27,7 @@
 #ifndef TUNA_H
 #define TUNA_H
 
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 
@@ -554,6 +555,26 @@ tuna_fprint(FILE* stream,
  * \param stream <code>FILE*</code> on which output is produced.
  * \param chunk  Chunk for which information is output.
  * \param format A <code>printf</code>-style specifying prefixing
+ *               the output.
+ * \param ap     Variable argument list as if
+ *               <code>vfprintf(stream, format, ap)</code> had
+ *               been called.
+ *
+ * \return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+vtuna_chunk_fprintf(FILE* stream,
+                    const tuna_chunk* chunk,
+                    const char* format,
+                    va_list ap);
+
+/**
+ * \copybrief tuna_chunk_fprint
+ *
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param chunk  Chunk for which information is output.
+ * \param format A <code>printf</code>-style specifying prefixing
  *               the output.  Any subsequent arguments are consumed
  *               as if <code>fprintf(stream, format, ...)</code> had
  *               been called.
@@ -566,6 +587,26 @@ tuna_chunk_fprintf(FILE* stream,
                    const tuna_chunk* chunk,
                    const char* format,
                    ...);
+
+/**
+ * \copybrief tuna_site_fprint
+ *
+ * \param stream <code>FILE*</code> on which output is produced.
+ * \param site   Site for which information is output.
+ * \param format A <code>printf</code>-style specifying prefixing
+ *               the output.
+ * \param ap     Variable argument list as if
+ *               <code>vfprintf(stream, format, ap)</code> had
+ *               been called.
+ *
+ * \return The number of characters output on success.
+ *         On error, a negative value is returned.
+ */
+int
+vtuna_site_fprintf(FILE* stream,
+                   const tuna_site* site,
+                   const char* format,
+                   va_list ap);
 
 /**
  * \copybrief tuna_site_fprint

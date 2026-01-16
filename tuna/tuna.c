@@ -762,16 +762,13 @@ tuna_fprint(FILE* stream,
 }
 
 int
-tuna_chunk_fprintf(FILE* stream,
-                   const tuna_chunk* chunk,
-                   const char* format,
-                   ...)
+vtuna_chunk_fprintf(FILE* stream,
+                    const tuna_chunk* chunk,
+                    const char* format,
+                    va_list ap)
 {
     int nwritten;
-    va_list ap;
-    va_start(ap, format);
     nwritten = vfprintf(stream, format, ap);
-    va_end(ap);
     if (nwritten >= 0) {
         int status;
         size_t cnt;
@@ -794,17 +791,28 @@ tuna_chunk_fprintf(FILE* stream,
 }
 
 int
-tuna_site_fprintf(FILE* stream,
-                  const tuna_site* site,
-                  const char* format,
-                  ...)
+tuna_chunk_fprintf(FILE* stream,
+                   const tuna_chunk* chunk,
+                   const char* format,
+                   ...)
 {
-    const char* name;
     int nwritten;
     va_list ap;
     va_start(ap, format);
-    nwritten = vfprintf(stream, format, ap);
+    nwritten = vtuna_chunk_fprintf(stream, chunk, format, ap);
     va_end(ap);
+    return nwritten;
+}
+
+int
+vtuna_site_fprintf(FILE* stream,
+                   const tuna_site* site,
+                   const char* format,
+                   va_list ap)
+{
+    const char* name;
+    int nwritten;
+    nwritten = vfprintf(stream, format, ap);
     name = tuna_algo_name(site->al);
     if (nwritten >= 0) {
         int status = fprintf(stream,
@@ -816,6 +824,20 @@ tuna_site_fprintf(FILE* stream,
                    ? nwritten + status
                    : status;
     }
+    return nwritten;
+}
+
+int
+tuna_site_fprintf(FILE* stream,
+                  const tuna_site* site,
+                  const char* format,
+                  ...)
+{
+    int nwritten;
+    va_list ap;
+    va_start(ap, format);
+    nwritten = vtuna_site_fprintf(stream, site, format, ap);
+    va_end(ap);
     return nwritten;
 }
 
