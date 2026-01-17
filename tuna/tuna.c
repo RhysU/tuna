@@ -164,17 +164,17 @@ tuna_stats_merge(tuna_stats* const dst,
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
-        while (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
+        if (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
             tuna_stats_halve(dst);
         }
     } else {                   /* merge src into dst */
         size_t total;
         double dM;
         tuna_stats tmp = *src;
-        while (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
+        if (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
             tuna_stats_halve(dst);
         }
-        while (tmp.n > TUNA_STATS_NMAX) {
+        if (tmp.n > TUNA_STATS_NMAX) {
             tuna_stats_halve(&tmp);
         }
         total = dst->n + tmp.n;
