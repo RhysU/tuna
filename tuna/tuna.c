@@ -118,10 +118,11 @@ tuna_stats_mom(const tuna_stats* const stats)
 /** Halve n and s, preserving mean and approximate variance. */
 static
 void
-tuna_stats_halve(tuna_stats* const stats)
+tuna_stats_rescale(tuna_stats* const stats)
 {
     stats->n /= 2;
     stats->s /= 2;
+    assert(stats->n <= TUNA_STATS_NMAX);
 }
 
 void
@@ -132,7 +133,7 @@ tuna_stats_obs(tuna_stats* const stats,
     /* Knuth shows better behavior than Welford 1962 on test data. */
     size_t n;
     if (stats->n >= TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
-        tuna_stats_halve(stats);
+        tuna_stats_rescale(stats);
     }
     n = ++(stats->n);
     if (n > 1) {  /* Second and subsequent invocation */
@@ -165,17 +166,17 @@ tuna_stats_merge(tuna_stats* const dst,
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
         if (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
-            tuna_stats_halve(dst);
+            tuna_stats_rescale(dst);
         }
     } else {                   /* merge src into dst */
         size_t total;
         double dM;
         tuna_stats tmp = *src;
         if (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
-            tuna_stats_halve(dst);
+            tuna_stats_rescale(dst);
         }
         if (tmp.n > TUNA_STATS_NMAX) {
-            tuna_stats_halve(&tmp);
+            tuna_stats_rescale(&tmp);
         }
         total = dst->n + tmp.n;
         dM    = dst->m - tmp.m;  /* Cancellation issues? */
