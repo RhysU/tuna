@@ -181,24 +181,21 @@ tuna_stats_merge(tuna_stats* const dst,
     } else {                   /* merge src into dst */
         size_t total;
         double dM;
-        size_t src_n = src->n;
-        double src_m = src->m;
-        double src_s = src->s;
+        tuna_stats tmp = *src; /* Local copy since src is const */
         /* Halve both accumulators as needed to prevent overflow */
-        /* After halving, dst->n + src_n <= 2 * TUNA_STATS_NMAX < SIZE_MAX */
+        /* After halving, dst->n + tmp.n <= 2 * TUNA_STATS_NMAX < SIZE_MAX */
         while (dst->n > TUNA_STATS_NMAX) {
             tuna_stats_halve(dst);
         }
-        while (src_n > TUNA_STATS_NMAX) {
-            src_n /= 2;
-            src_s /= 2;
+        while (tmp.n > TUNA_STATS_NMAX) {
+            tuna_stats_halve(&tmp);
         }
-        total = dst->n + src_n;
-        dM    = dst->m - src_m;  /* Cancellation issues? */
-        dst->m       = (dst->n * dst->m + src_n * src_m) / total;
+        total = dst->n + tmp.n;
+        dM    = dst->m - tmp.m;  /* Cancellation issues? */
+        dst->m       = (dst->n * dst->m + tmp.n * tmp.m) / total;
         dst->s       = (dst->n == 1 ? 0 : dst->s)
-                       + (src_n == 1 ? 0 : src_s)
-                       + ((dM * dM) * (dst->n * src_n)) / total;
+                       + (tmp.n == 1 ? 0 : tmp.s)
+                       + ((dM * dM) * (dst->n * tmp.n)) / total;
         dst->n       = total;
     }
 }
