@@ -164,5 +164,89 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
+    FCT_QTEST_BGN(obs_overflow_protection)
+    {
+        // Test that tuna_stats_obs saturates at SIZE_MAX and doesn't overflow
+        tuna_stats s = {};
+        const size_t SIZE_MAX_VAL = (size_t)-1;
+
+        // Artificially set n near SIZE_MAX
+        s.n = SIZE_MAX_VAL - 2;
+        s.m = 100.0;
+        s.s = 50.0;
+
+        // These observations should be recorded
+        tuna_stats_obs(&s, 1.0);
+        fct_chk_eq_int(SIZE_MAX_VAL - 1, tuna_stats_cnt(&s));
+
+        tuna_stats_obs(&s, 2.0);
+        fct_chk_eq_int(SIZE_MAX_VAL, tuna_stats_cnt(&s));
+
+        // Save the statistics at SIZE_MAX
+        double avg_at_max = tuna_stats_avg(&s);
+        double var_at_max = tuna_stats_var(&s);
+
+        // This observation should be ignored (would overflow)
+        tuna_stats_obs(&s, 999.0);
+        fct_chk_eq_int(SIZE_MAX_VAL, tuna_stats_cnt(&s));  // Count unchanged
+        fct_chk_eq_dbl(avg_at_max, tuna_stats_avg(&s));    // Stats unchanged
+        fct_chk_eq_dbl(var_at_max, tuna_stats_var(&s));
+
+        // Another observation should also be ignored
+        tuna_stats_obs(&s, -999.0);
+        fct_chk_eq_int(SIZE_MAX_VAL, tuna_stats_cnt(&s));
+        fct_chk_eq_dbl(avg_at_max, tuna_stats_avg(&s));
+        fct_chk_eq_dbl(var_at_max, tuna_stats_var(&s));
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(merge_overflow_protection)
+    {
+        // Test that tuna_stats_merge handles potential overflow
+        tuna_stats dst = {};
+        tuna_stats src = {};
+        const size_t SIZE_MAX_VAL = (size_t)-1;
+        const size_t HALF_MAX = SIZE_MAX_VAL / 2;
+
+        // Set up dst with more than half of SIZE_MAX
+        dst.n = HALF_MAX + 10;
+        dst.m = 50.0;
+        dst.s = 100.0;
+
+        // Set up src with more than half of SIZE_MAX (sum would overflow)
+        src.n = HALF_MAX + 10;
+        src.m = 60.0;
+        src.s = 200.0;
+
+        // Save dst state before merge
+        size_t n_before = dst.n;
+        double m_before = dst.m;
+
+        // Attempt merge - should be rejected due to overflow
+        tuna_stats_merge(&dst, &src);
+
+        // dst should be unchanged
+        fct_chk_eq_int(n_before, tuna_stats_cnt(&dst));
+        fct_chk_eq_dbl(m_before, tuna_stats_avg(&dst));
+
+        // Now test a merge that doesn't overflow
+        memset(&dst, 0, sizeof(dst));
+        memset(&src, 0, sizeof(src));
+
+        dst.n = 100;
+        dst.m = 50.0;
+        dst.s = 100.0;
+
+        src.n = 100;
+        src.m = 60.0;
+        src.s = 200.0;
+
+        tuna_stats_merge(&dst, &src);
+
+        // This merge should succeed
+        fct_chk_eq_int(200, tuna_stats_cnt(&dst));
+    }
+    FCT_QTEST_END();
+
 }
 FCT_END()

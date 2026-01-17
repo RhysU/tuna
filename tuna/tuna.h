@@ -93,8 +93,6 @@ extern "C" {
  * @{
  */
 
-/* TODO Defend against overflowing the counter tuna_stats.n */
-
 /**
  * Accumulates running mean and variance details from a data stream.
  * Fill storage with zeros, e.g. from POD zero initialization,

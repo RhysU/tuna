@@ -118,7 +118,11 @@ tuna_stats_obs(tuna_stats* const stats,
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
-    const size_t n = ++(stats->n);
+    /* Defend against overflowing the counter n.  At SIZE_MAX      */
+    /* samples the statistics are already extremely precise.       */
+    size_t n;
+    if (stats->n == (size_t)-1) return;
+    n = ++(stats->n);
     if (n > 1) {  /* Second and subsequent invocation */
         double d  = x - stats->m;
         stats->m     += d / n;
@@ -149,8 +153,11 @@ tuna_stats_merge(tuna_stats* const dst,
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
     } else {                   /* merge snp into dst */
+        /* Defend against overflowing the counter n. */
         size_t total = dst->n + src->n;
-        double dM    = dst->m - src->m;  /* Cancellation issues? */
+        double dM;
+        if (total < dst->n) return;  /* Would overflow, saturate. */
+        dM           = dst->m - src->m;  /* Cancellation issues? */
         dst->m       = (dst->n * dst->m + src->n * src->m) / total;
         dst->s       = (dst->n == 1 ? 0 : dst->s)
                        + (src->n == 1 ? 0 : src->s)
