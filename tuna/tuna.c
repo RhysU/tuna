@@ -39,11 +39,7 @@
 #define NAN (sqrt(-1))
 #endif
 
-/**
- * Maximum sample count for any single accumulator.
- * Chosen so that merging any two accumulators with n <= TUNA_STATS_NMAX
- * will never overflow size_t (i.e., 2 * TUNA_STATS_NMAX < SIZE_MAX).
- */
+/** Maximum n for any accumulator; ensures merging two cannot overflow. */
 #define TUNA_STATS_NMAX ((((size_t)-1) / 2) - 1)
 
 #ifndef M_PI
@@ -119,12 +115,7 @@ tuna_stats_mom(const tuna_stats* const stats)
     return result;
 }
 
-/**
- * Halve the effective sample count of an accumulator while preserving
- * statistical estimates.  The mean is unchanged.  The sum of squared
- * deviations is halved so that the variance estimate remains approximately
- * correct (exact when n is large).
- */
+/** Halve n and s, preserving mean and approximate variance. */
 static
 void
 tuna_stats_halve(tuna_stats* const stats)
@@ -140,8 +131,7 @@ tuna_stats_obs(tuna_stats* const stats,
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
     size_t n;
-    /* Halve if at maximum to prevent overflow on increment */
-    if (stats->n >= TUNA_STATS_NMAX) {
+    if (stats->n >= TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
         tuna_stats_halve(stats);
     }
     n = ++(stats->n);
@@ -174,17 +164,14 @@ tuna_stats_merge(tuna_stats* const dst,
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
-        /* Ensure dst respects NMAX after copy */
-        while (dst->n > TUNA_STATS_NMAX) {
+        while (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
             tuna_stats_halve(dst);
         }
     } else {                   /* merge src into dst */
         size_t total;
         double dM;
-        tuna_stats tmp = *src; /* Local copy since src is const */
-        /* Halve both accumulators as needed to prevent overflow */
-        /* After halving, dst->n + tmp.n <= 2 * TUNA_STATS_NMAX < SIZE_MAX */
-        while (dst->n > TUNA_STATS_NMAX) {
+        tuna_stats tmp = *src;
+        while (dst->n > TUNA_STATS_NMAX) {  /* Enforce n <= NMAX */
             tuna_stats_halve(dst);
         }
         while (tmp.n > TUNA_STATS_NMAX) {

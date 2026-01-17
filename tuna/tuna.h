@@ -93,11 +93,7 @@ extern "C" {
  * @{
  */
 
-/*
- * Counter overflow protection: accumulators are automatically halved
- * when n exceeds SIZE_MAX/2 - 1, ensuring that merging any two
- * accumulators will never overflow size_t.
- */
+/* Invariant: n <= SIZE_MAX/2 - 1, so merging two accumulators never overflows. */
 
 /**
  * Accumulates running mean and variance details from a data stream.
