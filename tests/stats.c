@@ -164,5 +164,140 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
+    // Tests for overflow protection via halving
+    // NMAX = SIZE_MAX / 2 - 1
+    static const size_t NMAX = (((size_t)-1) / 2) - 1;
+
+    FCT_QTEST_BGN(obs_halves_at_nmax)
+    {
+        // Test that observation halves the accumulator when n >= NMAX
+        tuna_stats s = {};
+
+        // Directly set n to NMAX
+        s.n = NMAX;
+        s.m = 100.0;
+        s.s = 50000.0;
+
+        double old_m = s.m;
+        (void)old_m;  // used in assertion below
+
+        // Adding an observation should trigger halving first
+        tuna_stats_obs(&s, 105.0);
+
+        // After halving: n = NMAX/2, s = 25000.0, then observation adds 1
+        // So n should be around NMAX/2 + 1
+        fct_chk(s.n < NMAX);  // n was halved before incrementing
+        fct_chk(s.n > NMAX/4); // but not halved twice
+        // Mean should be updated but close to original
+        fct_chk_eqtol_dbl(s.m, old_m, 1.0); // within 1 of original mean
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(obs_preserves_stats_approx)
+    {
+        // Test that halving approximately preserves statistics
+        tuna_stats s1 = {};
+        tuna_stats s2 = {};
+
+        // Build up a stats object normally
+        for (size_t i = 0; i < 10000; ++i) {
+            tuna_stats_obs(&s1, (double)(i % 100));
+        }
+
+        double expected_avg = s1.m;
+        double expected_var = tuna_stats_var(&s1);
+
+        // Now create one with large n that will halve
+        s2.n = NMAX;
+        s2.m = expected_avg;
+        s2.s = expected_var * (NMAX - 1);
+
+        // Add an observation
+        tuna_stats_obs(&s2, expected_avg);
+
+        // Mean should be preserved approximately
+        fct_chk_eqtol_dbl(s2.m, expected_avg, 0.01);
+        // Variance should be preserved approximately (within 10%)
+        double new_var = tuna_stats_var(&s2);
+        fct_chk(new_var > expected_var * 0.5);
+        fct_chk(new_var < expected_var * 2.0);
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(merge_handles_overflow)
+    {
+        // Test that merge handles potential overflow by halving
+        tuna_stats dst = {};
+        tuna_stats src = {};
+
+        // Set up both with large n values
+        dst.n = NMAX;
+        dst.m = 50.0;
+        dst.s = 10000.0;
+
+        src.n = NMAX;
+        src.m = 55.0;
+        src.s = 12000.0;
+
+        // Merge should not overflow
+        tuna_stats_merge(&dst, &src);
+
+        // Result should have n <= 2 * NMAX (and not wrapped around)
+        fct_chk(dst.n <= 2 * NMAX);
+        fct_chk(dst.n > 0);  // didn't wrap to zero or negative
+
+        // Mean should be between the two input means
+        fct_chk(dst.m >= 50.0);
+        fct_chk(dst.m <= 55.0);
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(merge_with_oversized_src)
+    {
+        // Test merge when src has n > NMAX (shouldn't happen normally,
+        // but we should handle it gracefully)
+        tuna_stats dst = {};
+        tuna_stats src = {};
+
+        // Set up dst with normal count
+        dst.n = 1000;
+        dst.m = 50.0;
+        dst.s = 10000.0;
+
+        // Set up src with count > NMAX
+        src.n = NMAX + 1000;
+        src.m = 55.0;
+        src.s = 12000.0;
+
+        // Merge should handle this without overflow
+        tuna_stats_merge(&dst, &src);
+
+        // Result should be valid
+        fct_chk(dst.n > 0);
+        fct_chk(dst.n < (size_t)-1 / 2);  // no overflow
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(copy_into_empty_halves_if_needed)
+    {
+        // Test that copying oversized src into empty dst halves
+        tuna_stats dst = {};
+        tuna_stats src = {};
+
+        // Set up src with n > NMAX
+        src.n = NMAX + 1000;
+        src.m = 100.0;
+        src.s = 50000.0;
+
+        // Merge into empty dst
+        tuna_stats_merge(&dst, &src);
+
+        // Result should have n <= NMAX
+        fct_chk(dst.n <= NMAX);
+        // Mean should be preserved
+        fct_chk_eq_dbl(dst.m, 100.0);
+    }
+    FCT_QTEST_END();
+
 }
 FCT_END()

@@ -39,6 +39,13 @@
 #define NAN (sqrt(-1))
 #endif
 
+/**
+ * Maximum sample count for any single accumulator.
+ * Chosen so that merging any two accumulators with n <= TUNA_STATS_NMAX
+ * will never overflow size_t (i.e., 2 * TUNA_STATS_NMAX < SIZE_MAX).
+ */
+#define TUNA_STATS_NMAX ((((size_t)-1) / 2) - 1)
+
 #ifndef M_PI
 /** Constant \f$\pi\f$ */
 #define M_PI (3.14159265358979323844)
@@ -112,13 +119,32 @@ tuna_stats_mom(const tuna_stats* const stats)
     return result;
 }
 
+/**
+ * Halve the effective sample count of an accumulator while preserving
+ * statistical estimates.  The mean is unchanged.  The sum of squared
+ * deviations is halved so that the variance estimate remains approximately
+ * correct (exact when n is large).
+ */
+static
+void
+tuna_stats_halve(tuna_stats* const stats)
+{
+    stats->n /= 2;
+    stats->s /= 2;
+}
+
 void
 tuna_stats_obs(tuna_stats* const stats,
                const double x)
 {
     /* Algorithm from Knuth TAOCP vol 2, 3rd edition, page 232.    */
     /* Knuth shows better behavior than Welford 1962 on test data. */
-    const size_t n = ++(stats->n);
+    size_t n;
+    /* Halve if at maximum to prevent overflow on increment */
+    if (stats->n >= TUNA_STATS_NMAX) {
+        tuna_stats_halve(stats);
+    }
+    n = ++(stats->n);
     if (n > 1) {  /* Second and subsequent invocation */
         double d  = x - stats->m;
         stats->m     += d / n;
@@ -144,17 +170,35 @@ void
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    if (src->n == 0) {         /* snp contains no data */
+    if (src->n == 0) {         /* src contains no data */
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
-    } else {                   /* merge snp into dst */
-        size_t total = dst->n + src->n;
-        double dM    = dst->m - src->m;  /* Cancellation issues? */
-        dst->m       = (dst->n * dst->m + src->n * src->m) / total;
+        /* Ensure dst respects NMAX after copy */
+        while (dst->n > TUNA_STATS_NMAX) {
+            tuna_stats_halve(dst);
+        }
+    } else {                   /* merge src into dst */
+        size_t total;
+        double dM;
+        size_t src_n = src->n;
+        double src_m = src->m;
+        double src_s = src->s;
+        /* Halve both accumulators as needed to prevent overflow */
+        /* After halving, dst->n + src_n <= 2 * TUNA_STATS_NMAX < SIZE_MAX */
+        while (dst->n > TUNA_STATS_NMAX) {
+            tuna_stats_halve(dst);
+        }
+        while (src_n > TUNA_STATS_NMAX) {
+            src_n /= 2;
+            src_s /= 2;
+        }
+        total = dst->n + src_n;
+        dM    = dst->m - src_m;  /* Cancellation issues? */
+        dst->m       = (dst->n * dst->m + src_n * src_m) / total;
         dst->s       = (dst->n == 1 ? 0 : dst->s)
-                       + (src->n == 1 ? 0 : src->s)
-                       + ((dM * dM) * (dst->n * src->n)) / total;
+                       + (src_n == 1 ? 0 : src_s)
+                       + ((dM * dM) * (dst->n * src_n)) / total;
         dst->n       = total;
     }
 }

@@ -93,7 +93,11 @@ extern "C" {
  * @{
  */
 
-/* TODO Defend against overflowing the counter tuna_stats.n */
+/*
+ * Counter overflow protection: accumulators are automatically halved
+ * when n exceeds SIZE_MAX/2 - 1, ensuring that merging any two
+ * accumulators will never overflow size_t.
+ */
 
 /**
  * Accumulates running mean and variance details from a data stream.
