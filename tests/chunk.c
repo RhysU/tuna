@@ -102,5 +102,63 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
+    FCT_QTEST_BGN(merge_into_empty)
+    {
+        tuna_stats a = {};  // Tracks actual statistics for post-merge
+        tuna_stats b = {};  // Buffer into which merges occur
+        tuna_chunk k = {};  // Chunk collecting observations
+
+        // Ignored until merging
+        tuna_stats_obs(&a, 2);
+        tuna_chunk_obs(&k, 2);
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
+        // Merge then confirm outliers incorporated
+        memset(&b, 0, sizeof(b));
+        tuna_chunk_merge(&b, &k);
+        fct_chk_eq_int(tuna_stats_cnt(&b), tuna_stats_cnt(&a));
+        fct_chk_eq_dbl(tuna_stats_avg(&b), tuna_stats_avg(&a));
+
+        // Ignored until merging
+        tuna_stats_obs(&a, 3);
+        tuna_chunk_obs(&k, 3);
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
+        // Merge then confirm outliers incorporated
+        memset(&b, 0, sizeof(b));
+        tuna_chunk_merge(&b, &k);
+        fct_chk_eq_int(tuna_stats_cnt(&b), tuna_stats_cnt(&a));
+        fct_chk_eq_dbl(tuna_stats_avg(&b), tuna_stats_avg(&a));
+
+        // Ignored until merging
+        tuna_stats_obs(&a, 5);
+        tuna_chunk_obs(&k, 5);
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
+        // Merge then confirm outliers incorporated
+        memset(&b, 0, sizeof(b));
+        tuna_chunk_merge(&b, &k);
+        fct_chk_eq_int(tuna_stats_cnt(&b), tuna_stats_cnt(&a));
+        fct_chk_eq_dbl(tuna_stats_avg(&b), tuna_stats_avg(&a));
+
+        // Outlier processing complete so chunk will reflect it in stats
+        tuna_stats_obs(&a, 7);
+        tuna_chunk_obs(&k, 7);
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 1);
+        // Merge then confirm outliers incorporated even if chunk ignores
+        memset(&b, 0, sizeof(b));
+        tuna_chunk_merge(&b, &k);
+        fct_chk_eq_int(tuna_stats_cnt(&b), tuna_stats_cnt(&a));
+        fct_chk_eq_dbl(tuna_stats_avg(&b), tuna_stats_avg(&a));
+
+        // Outlier processing complete so chunk will reflect it in stats
+        tuna_stats_obs(&a, 9);
+        tuna_chunk_obs(&k, 9);
+        fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 2);
+        // Merge then confirm outliers incorporated even if chunk ignores
+        memset(&b, 0, sizeof(b));
+        tuna_chunk_merge(&b, &k);
+        fct_chk_eq_int(tuna_stats_cnt(&b), tuna_stats_cnt(&a));
+        fct_chk_eq_dbl(tuna_stats_avg(&b), tuna_stats_avg(&a));
+    }
+    FCT_QTEST_END();
+
 }
 FCT_END()
