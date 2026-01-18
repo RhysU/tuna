@@ -62,7 +62,7 @@ FCT_BGN()
         double p = tuna_welch1_nuinf(t_mu, t_std, t_N, c_mu, c_std, c_N);
         fct_chk_eqtol_dbl(p, p_expected, 0.01);
 
-        // The real thing (as CDFLIB interprets it) should do better.
+        // The real thing should do better.
         p = tuna_welch1(t_mu, t_std, t_N, c_mu, c_std, c_N);
         fct_chk_eqtol_dbl(p, p_expected, 0.001);
     }

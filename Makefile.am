@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS    = -I m4
-AM_CPPFLAGS        = -I$(top_srcdir)/tuna -I$(top_srcdir)/cdflib
+AM_CPPFLAGS        = -I$(top_srcdir)/tuna
 check_PROGRAMS     =
 dist_check_SCRIPTS =
 dist_doc_DATA      =
@@ -88,11 +88,6 @@ TESTS                += tests/smallsort.sh
 check_PROGRAMS       += examples/blockedmm
 dist_check_SCRIPTS   += tests/blockedmm.sh
 TESTS                += tests/blockedmm.sh
-
-# CDFLIB might be handy for development but it is not installed
-# include_HEADERS            = cdflib/cdflib.h
-noinst_LTLIBRARIES          += cdflib/libcdflib.la
-cdflib_libcdflib_la_SOURCES  = cdflib/cdflib.c  cdflib/cdflib.h
 
 # Ease the process of running Artistic Style on the library sources
 EXTRA_DIST += astyle.rc
