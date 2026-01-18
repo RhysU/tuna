@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Notice non-recursive Automake employed
 ACLOCAL_AMFLAGS    = -I m4
-AM_CPPFLAGS        =
+AM_CPPFLAGS        = -I$(top_srcdir)/tuna
 check_PROGRAMS     =
 dist_check_SCRIPTS =
 dist_doc_DATA      =
