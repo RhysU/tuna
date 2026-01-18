@@ -164,5 +164,33 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
+    FCT_QTEST_BGN(merge_self_is_nop)
+    {
+        // Merging a stats instance with itself should be a no-op
+        // since merging data with itself produces no new information
+        tuna_stats s = {};
+
+        // Add some observations to create a non-trivial state
+        for (size_t i = 0; i < N; ++i) {
+            tuna_stats_obs(&s, obs[i]);
+        }
+
+        // Save the state before merging with itself
+        const size_t cnt_before = tuna_stats_cnt(&s);
+        const double avg_before = tuna_stats_avg(&s);
+        const double var_before = tuna_stats_var(&s);
+        const double std_before = tuna_stats_std(&s);
+
+        // Merge the instance with itself
+        tuna_stats_merge(&s, &s);
+
+        // Verify that all statistics remain unchanged
+        fct_chk_eq_int(tuna_stats_cnt(&s), cnt_before);
+        fct_chk_eq_dbl(tuna_stats_avg(&s), avg_before);
+        fct_chk_eq_dbl(tuna_stats_var(&s), var_before);
+        fct_chk_eq_dbl(tuna_stats_std(&s), std_before);
+    }
+    FCT_QTEST_END();
+
 }
 FCT_END()

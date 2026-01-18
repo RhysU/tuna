@@ -144,7 +144,9 @@ void
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    if (src->n == 0) {         /* src contains no data */
+    if (dst == src) {          /* merging with self is a NOP */
+        /* NOP */
+    } else if (src->n == 0) {  /* src contains no data */
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
