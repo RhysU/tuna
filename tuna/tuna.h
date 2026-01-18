@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011, 2012, 2013 Rhys Ulerich
+ * Copyright (C) 2011, 2012, 2013, 2026 Rhys Ulerich
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -504,38 +504,6 @@ tuna_post(const tuna_stack* stack,
  */
 
 /**
- * Output a single status line about \ref tuna_chunk chunk to <code>FILE*</code>
- * stream prefixed by \c prefix.
- *
- * \param stream <code>FILE*</code> on which output is produced.
- * \param chunk  Chunk for which information is output.
- * \param prefix A string used to prefix the output.
- *
- * \return The number of characters output on success.
- *         On error, a negative value is returned.
- */
-int
-tuna_chunk_fprint(FILE* stream,
-                  const tuna_chunk* chunk,
-                  const char* prefix);
-
-/**
- * Output a single status line about \ref tuna_site site to <code>FILE*</code>
- * stream prefixed by \c prefix.
- *
- * \param stream <code>FILE*</code> on which output is produced.
- * \param site   Site for which information is output.
- * \param prefix A string used to prefix the output.
- *
- * \return The number of characters output on success.
- *         On error, a negative value is returned.
- */
-int
-tuna_site_fprint(FILE* stream,
-                 const tuna_site* site,
-                 const char* prefix);
-
-/**
  * Output <code>nchunk+1</code> status line(s) about \ref tuna_site site and
  * associated \ref tuna_chunk <code>chunks[0]</code>, ..., <code>chunks[nchunk-1]</code> to
  * <code>FILE*</code> stream prefixed by \c prefix.
@@ -561,7 +529,8 @@ tuna_fprint(FILE* stream,
             const char **labels);
 
 /**
- * \copybrief tuna_chunk_fprint
+ * Output a single status line about \ref tuna_chunk chunk to <code>FILE*</code>
+ * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
  * \param chunk  Chunk for which information is output.
@@ -581,7 +550,8 @@ tuna_chunk_vfprintf(FILE* stream,
                     va_list ap);
 
 /**
- * \copybrief tuna_chunk_fprint
+ * Output a single status line about \ref tuna_chunk chunk to <code>FILE*</code>
+ * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
  * \param chunk  Chunk for which information is output.
@@ -600,7 +570,8 @@ tuna_chunk_fprintf(FILE* stream,
                    ...);
 
 /**
- * \copybrief tuna_site_fprint
+ * Output a single status line about \ref tuna_site site to <code>FILE*</code>
+ * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
  * \param site   Site for which information is output.
@@ -620,7 +591,8 @@ tuna_site_vfprintf(FILE* stream,
                    va_list ap);
 
 /**
- * \copybrief tuna_site_fprint
+ * Output a single status line about \ref tuna_site site to <code>FILE*</code>
+ * stream prefixed by \c prefix.
  *
  * \param stream <code>FILE*</code> on which output is produced.
  * \param site   Site for which information is output.

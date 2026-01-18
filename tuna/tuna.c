@@ -701,22 +701,6 @@ tuna_post(const tuna_stack* stack,
 }
 
 int
-tuna_chunk_fprint(FILE* stream,
-                  const tuna_chunk* chunk,
-                  const char* prefix)
-{
-    return tuna_chunk_fprintf(stream, chunk, prefix);
-}
-
-int
-tuna_site_fprint(FILE* stream,
-                 const tuna_site* site,
-                 const char* prefix)
-{
-    return tuna_site_fprintf(stream, site, prefix);
-}
-
-int
 tuna_fprint(FILE* stream,
             const tuna_site* site,
             const tuna_chunk *chunks,
