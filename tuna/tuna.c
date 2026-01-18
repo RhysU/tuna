@@ -144,11 +144,11 @@ void
 tuna_stats_merge(tuna_stats* const dst,
                  const tuna_stats* const src)
 {
-    if (src->n == 0) {         /* snp contains no data */
+    if (src->n == 0) {         /* src contains no data */
         /* NOP */
     } else if (dst->n == 0) {  /* dst contains no data */
         *dst = *src;
-    } else {                   /* merge snp into dst */
+    } else {                   /* merge src into dst */
         size_t total = dst->n + src->n;
         double dM    = dst->m - src->m;  /* Cancellation issues? */
         dst->m       = (dst->n * dst->m + src->n * src->m) / total;
