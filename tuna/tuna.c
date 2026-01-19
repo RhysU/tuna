@@ -487,49 +487,74 @@ trim(char* const a)
     }
 }
 
-/* TODO Should algo be a struct with a pointer to its own name? */
+/* Forward declarations for algorithm functions */
+static size_t
+tuna_algo_welch1_nuinf_impl(const size_t nchunk,
+                            const tuna_chunk *chunks,
+                            const double *u01);
 
-/* Should be kept in sync with tuna_algo_default just below */
+static size_t
+tuna_algo_welch1_impl(const size_t nchunk,
+                      const tuna_chunk *chunks,
+                      const double *u01);
+
+static size_t
+tuna_algo_zero_impl(const size_t nchunk,
+                    const tuna_chunk *chunks,
+                    const double *u01);
+
+/* Algorithm instances carrying their own names (addresses issue #17) */
+static const tuna_algo_impl tuna_algo_welch1_nuinf_s = {
+    "welch1_nuinf",
+    tuna_algo_welch1_nuinf_impl
+};
+
+static const tuna_algo_impl tuna_algo_welch1_s = {
+    "welch1",
+    tuna_algo_welch1_impl
+};
+
+static const tuna_algo_impl tuna_algo_zero_s = {
+    "zero",
+    tuna_algo_zero_impl
+};
+
+/* Public algorithm handles */
+const tuna_algo tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
+const tuna_algo tuna_algo_welch1       = &tuna_algo_welch1_s;
+const tuna_algo tuna_algo_zero         = &tuna_algo_zero_s;
+
 const char*
 tuna_algo_name(tuna_algo algo)
 {
-    if (algo == &tuna_algo_welch1) {
-        return "welch1";
-    } else if (algo == &tuna_algo_welch1_nuinf) {
-        return "welch1_nuinf";
-    } else if (algo == &tuna_algo_zero) {
-        return "zero";
-    } else {
-        return "unknown";
-    }
+    return algo ? algo->name : "unknown";
 }
 
-/* Should be kept in sync with tuna_algo_name just above */
 tuna_algo
 tuna_algo_default(const size_t nchunk)
 {
     char* d;
     if (nchunk < 2) {
-        return &tuna_algo_zero;
+        return tuna_algo_zero;
     }
     d = getenv("TUNA_ALGO");
     if (d) {
         trim(d);
         if (!strcasecmp("welch1", d)) {
-            return &tuna_algo_welch1;
+            return tuna_algo_welch1;
         } else if (!strcasecmp("welch1_nuinf", d)) {
-            return &tuna_algo_welch1_nuinf;
+            return tuna_algo_welch1_nuinf;
         } else if (!strcasecmp("zero", d)) {
-            return &tuna_algo_zero;
+            return tuna_algo_zero;
         }
     }
-    return &tuna_algo_welch1; /* Default */
+    return tuna_algo_welch1; /* Default */
 }
 
-size_t
-tuna_algo_welch1_nuinf(const size_t nchunk,
-                       const tuna_chunk *chunks,
-                       const double *u01)
+static size_t
+tuna_algo_welch1_nuinf_impl(const size_t nchunk,
+                            const tuna_chunk *chunks,
+                            const double *u01)
 {
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
@@ -556,10 +581,10 @@ tuna_algo_welch1_nuinf(const size_t nchunk,
     return i;
 }
 
-size_t
-tuna_algo_welch1(const size_t nchunk,
-                 const tuna_chunk *chunks,
-                 const double *u01)
+static size_t
+tuna_algo_welch1_impl(const size_t nchunk,
+                      const tuna_chunk *chunks,
+                      const double *u01)
 {
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
@@ -586,10 +611,10 @@ tuna_algo_welch1(const size_t nchunk,
     return i;
 }
 
-size_t
-tuna_algo_zero(const size_t nchunk,
-               const tuna_chunk *chunks,
-               const double *u01)
+static size_t
+tuna_algo_zero_impl(const size_t nchunk,
+                    const tuna_chunk *chunks,
+                    const double *u01)
 {
     (void) nchunk;
     (void) chunks;
@@ -626,7 +651,7 @@ tuna_pre_cost(tuna_site* site,
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    stack->ik = site->al(nchunk, chunks, u01);
+    stack->ik = site->al->fn(nchunk, chunks, u01);
 
     return stack->ik;
 }

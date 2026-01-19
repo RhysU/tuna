@@ -355,42 +355,34 @@ tuna_welch1(double xA, double sA2, size_t nA,
  *
  * \return The zero-based index of the chunk that has been selected.
  */
-typedef size_t (*tuna_algo)(const size_t nchunk,
-                            const tuna_chunk *chunks,
-                            const double *u01);
-
-/** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-size_t
-tuna_algo_welch1_nuinf(const size_t nchunk,
-                       const tuna_chunk *chunks,
-                       const double *u01);
-
-/** An autotuning algorithm employing \ref tuna_welch1. */
-size_t
-tuna_algo_welch1(const size_t nchunk,
-                 const tuna_chunk *chunks,
-                 const double *u01);
+typedef size_t (*tuna_algo_fn)(const size_t nchunk,
+                               const tuna_chunk *chunks,
+                               const double *u01);
 
 /**
- * An "autotuning" algorithm always selecting index zero.
- * Useful for testing/debugging.  See also \ref tuna_state_default().
+ * Autotuning algorithm implementation carrying its own name.
  */
-size_t
-tuna_algo_zero(const size_t nchunk,
-               const tuna_chunk *chunks,
-               const double *u01);
+typedef struct tuna_algo_impl {
+    const char*   name; /**< The algorithm's name */
+    tuna_algo_fn  fn;   /**< The algorithm function */
+} tuna_algo_impl;
 
 /**
- * Retrieve the name of the algorithm, if known.  Otherwise, return "unknown".
+ * Handle to an autotuning algorithm.
+ */
+typedef const tuna_algo_impl* tuna_algo;
+
+/**
+ * Retrieve the name of the algorithm.
  */
 const char*
 tuna_algo_name(tuna_algo algo);
 
 /**
  * Retrieve a default algorithm when one is left unspecified.  If <code>nchunk <
- * 2</code>, \ref tuna_algo_zero() is returned.  If the whitespace-trimmed
+ * 2</code>, the "zero" algorithm is returned.  If the whitespace-trimmed
  * environment variable <code>TUNA_ALGO</code> case-insensitively names an
- * algorithm without the <code>tuna_algo_</code> prefix, that algorithm will be
+ * algorithm (e.g., "welch1", "welch1_nuinf", "zero"), that algorithm will be
  * used.  Otherwise, a sensible default which may or may not take into account
  * \c nchunk is chosen.
  */
