@@ -605,7 +605,7 @@ tuna_algo_default(const size_t nchunk)
     d = getenv("TUNA_ALGO");
     if (d) {
         trim(d);
-        for (i = 0; i < sizeof(known_algos) / sizeof(known_algos[0]); ++i) {
+        for (i = 0; i < tuna_countof(known_algos); ++i) {
             if (!strcasecmp(known_algos[i]->name, d)) {
                 return known_algos[i];
             }
