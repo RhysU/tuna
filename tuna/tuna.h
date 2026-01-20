@@ -362,21 +362,16 @@ typedef size_t (*tuna_algo_fn)(const size_t nchunk,
 /**
  * Autotuning algorithm implementation carrying its own name.
  */
-typedef struct tuna_algo_impl {
+typedef struct tuna_algo {
     const char*   name; /**< The algorithm's name */
     tuna_algo_fn  fn;   /**< The algorithm function */
-} tuna_algo_impl;
-
-/**
- * Handle to an autotuning algorithm.
- */
-typedef const tuna_algo_impl* tuna_algo;
+} tuna_algo;
 
 /**
  * Retrieve the name of the algorithm.
  */
 const char*
-tuna_algo_name(tuna_algo algo);
+tuna_algo_name(const tuna_algo* algo);
 
 /**
  * Retrieve a default algorithm when one is left unspecified.  If <code>nchunk <
@@ -386,7 +381,7 @@ tuna_algo_name(tuna_algo algo);
  * used.  Otherwise, a sensible default which may or may not take into account
  * \c nchunk is chosen.
  */
-tuna_algo
+const tuna_algo*
 tuna_algo_default(const size_t nchunk);
 
 /** @} */
@@ -402,8 +397,8 @@ tuna_algo_default(const size_t nchunk);
  * may compute this POD type's size to permit \c static instances.
  */
 typedef struct tuna_site {
-    tuna_algo     al; /**< The chosen tuning algorithm.           */
-    tuna_state    st; /**< Random number generator state.         */
+    const tuna_algo* al; /**< The chosen tuning algorithm.           */
+    tuna_state       st; /**< Random number generator state.         */
 } tuna_site;
 
 /**

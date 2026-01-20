@@ -504,33 +504,33 @@ tuna_algo_zero_impl(const size_t nchunk,
                     const double *u01);
 
 /* Algorithm instances carrying their own names (addresses issue #17) */
-static const tuna_algo_impl tuna_algo_welch1_nuinf_s = {
+static const tuna_algo tuna_algo_welch1_nuinf_s = {
     "welch1_nuinf",
     tuna_algo_welch1_nuinf_impl
 };
 
-static const tuna_algo_impl tuna_algo_welch1_s = {
+static const tuna_algo tuna_algo_welch1_s = {
     "welch1",
     tuna_algo_welch1_impl
 };
 
-static const tuna_algo_impl tuna_algo_zero_s = {
+static const tuna_algo tuna_algo_zero_s = {
     "zero",
     tuna_algo_zero_impl
 };
 
 /* Public algorithm handles */
-const tuna_algo tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
-const tuna_algo tuna_algo_welch1       = &tuna_algo_welch1_s;
-const tuna_algo tuna_algo_zero         = &tuna_algo_zero_s;
+const tuna_algo* tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
+const tuna_algo* tuna_algo_welch1       = &tuna_algo_welch1_s;
+const tuna_algo* tuna_algo_zero         = &tuna_algo_zero_s;
 
 const char*
-tuna_algo_name(tuna_algo algo)
+tuna_algo_name(const tuna_algo* algo)
 {
     return algo ? algo->name : "unknown";
 }
 
-tuna_algo
+const tuna_algo*
 tuna_algo_default(const size_t nchunk)
 {
     char* d;
