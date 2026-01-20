@@ -77,6 +77,12 @@ tests_chunk_SOURCES  = tests/chunk.c tests/fct.h
 tests_chunk_CFLAGS   = $(AM_CFLAGS) $(STDC99)
 tests_chunk_LDADD    = tuna/libtuna-debug.la $(LIBM)
 
+TESTS               += tests/algo
+noinst_PROGRAMS     += tests/algo
+tests_algo_SOURCES   = tests/algo.c tests/fct.h
+tests_algo_CFLAGS    = $(AM_CFLAGS) $(STDC99)
+tests_algo_LDADD     = tuna/libtuna-debug.la $(LIBM)
+
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh
 TESTS                += tests/basic.sh
