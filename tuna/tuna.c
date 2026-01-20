@@ -487,70 +487,7 @@ trim(char* const a)
     }
 }
 
-/* Forward declarations for algorithm functions */
-static size_t
-tuna_algo_welch1_nuinf_impl(const size_t nchunk,
-                            const tuna_chunk *chunks,
-                            const double *u01);
-
-static size_t
-tuna_algo_welch1_impl(const size_t nchunk,
-                      const tuna_chunk *chunks,
-                      const double *u01);
-
-static size_t
-tuna_algo_zero_impl(const size_t nchunk,
-                    const tuna_chunk *chunks,
-                    const double *u01);
-
-/* Algorithm instances carrying their own names (addresses issue #17) */
-static const tuna_algo tuna_algo_welch1_nuinf_s = {
-    "welch1_nuinf",
-    tuna_algo_welch1_nuinf_impl
-};
-
-static const tuna_algo tuna_algo_welch1_s = {
-    "welch1",
-    tuna_algo_welch1_impl
-};
-
-static const tuna_algo tuna_algo_zero_s = {
-    "zero",
-    tuna_algo_zero_impl
-};
-
-/* Public algorithm handles */
-const tuna_algo* tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
-const tuna_algo* tuna_algo_welch1       = &tuna_algo_welch1_s;
-const tuna_algo* tuna_algo_zero         = &tuna_algo_zero_s;
-
-const char*
-tuna_algo_name(const tuna_algo* algo)
-{
-    return algo ? algo->name : "unknown";
-}
-
-const tuna_algo*
-tuna_algo_default(const size_t nchunk)
-{
-    char* d;
-    if (nchunk < 2) {
-        return tuna_algo_zero;
-    }
-    d = getenv("TUNA_ALGO");
-    if (d) {
-        trim(d);
-        if (!strcasecmp("welch1", d)) {
-            return tuna_algo_welch1;
-        } else if (!strcasecmp("welch1_nuinf", d)) {
-            return tuna_algo_welch1_nuinf;
-        } else if (!strcasecmp("zero", d)) {
-            return tuna_algo_zero;
-        }
-    }
-    return tuna_algo_welch1; /* Default */
-}
-
+/* Algorithm implementations */
 static size_t
 tuna_algo_welch1_nuinf_impl(const size_t nchunk,
                             const tuna_chunk *chunks,
@@ -620,6 +557,54 @@ tuna_algo_zero_impl(const size_t nchunk,
     (void) chunks;
     (void) u01;
     return 0;
+}
+
+/* Algorithm instances carrying their own names (addresses issue #17) */
+static const tuna_algo tuna_algo_welch1_nuinf_s = {
+    "welch1_nuinf",
+    tuna_algo_welch1_nuinf_impl
+};
+
+static const tuna_algo tuna_algo_welch1_s = {
+    "welch1",
+    tuna_algo_welch1_impl
+};
+
+static const tuna_algo tuna_algo_zero_s = {
+    "zero",
+    tuna_algo_zero_impl
+};
+
+/* Public algorithm handles */
+const tuna_algo* tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
+const tuna_algo* tuna_algo_welch1       = &tuna_algo_welch1_s;
+const tuna_algo* tuna_algo_zero         = &tuna_algo_zero_s;
+
+const char*
+tuna_algo_name(const tuna_algo* algo)
+{
+    return algo ? algo->name : "unknown";
+}
+
+const tuna_algo*
+tuna_algo_default(const size_t nchunk)
+{
+    char* d;
+    if (nchunk < 2) {
+        return tuna_algo_zero;
+    }
+    d = getenv("TUNA_ALGO");
+    if (d) {
+        trim(d);
+        if (!strcasecmp("welch1", d)) {
+            return tuna_algo_welch1;
+        } else if (!strcasecmp("welch1_nuinf", d)) {
+            return tuna_algo_welch1_nuinf;
+        } else if (!strcasecmp("zero", d)) {
+            return tuna_algo_zero;
+        }
+    }
+    return tuna_algo_welch1; /* Default */
 }
 
 /* TODO Do something intelligent with clock_getres(2) information */
