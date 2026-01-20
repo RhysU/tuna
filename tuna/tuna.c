@@ -559,7 +559,7 @@ tuna_algo_zero_impl(const size_t nchunk,
     return 0;
 }
 
-/* Algorithm instances carrying their own names (addresses issue #17) */
+/* Algorithm instances carrying their own names */
 static const tuna_algo tuna_algo_welch1_nuinf_s = {
     "welch1_nuinf",
     tuna_algo_welch1_nuinf_impl
