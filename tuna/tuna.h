@@ -385,16 +385,16 @@ const tuna_algo*
 tuna_algo_default(const size_t nchunk);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-extern const tuna_algo* tuna_algo_welch1_nuinf;
+extern const tuna_algo * const tuna_algo_welch1_nuinf;
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
-extern const tuna_algo* tuna_algo_welch1;
+extern const tuna_algo * const tuna_algo_welch1;
 
 /**
  * An "autotuning" algorithm always selecting index zero.
  * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
-extern const tuna_algo* tuna_algo_zero;
+extern const tuna_algo * const tuna_algo_zero;
 
 /** @} */
 

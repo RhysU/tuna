@@ -576,9 +576,9 @@ static const tuna_algo tuna_algo_zero_s = {
 };
 
 /* Public algorithm handles */
-const tuna_algo* tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
-const tuna_algo* tuna_algo_welch1       = &tuna_algo_welch1_s;
-const tuna_algo* tuna_algo_zero         = &tuna_algo_zero_s;
+const tuna_algo * const tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
+const tuna_algo * const tuna_algo_welch1       = &tuna_algo_welch1_s;
+const tuna_algo * const tuna_algo_zero         = &tuna_algo_zero_s;
 
 /* Registry of all known algorithms */
 static const tuna_algo* const known_algos[] = {
