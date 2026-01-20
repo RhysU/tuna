@@ -580,6 +580,13 @@ const tuna_algo* tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
 const tuna_algo* tuna_algo_welch1       = &tuna_algo_welch1_s;
 const tuna_algo* tuna_algo_zero         = &tuna_algo_zero_s;
 
+/* Registry of all known algorithms */
+static const tuna_algo* const known_algos[] = {
+    &tuna_algo_welch1_s,
+    &tuna_algo_welch1_nuinf_s,
+    &tuna_algo_zero_s
+};
+
 const char*
 tuna_algo_name(const tuna_algo* algo)
 {
@@ -590,18 +597,18 @@ const tuna_algo*
 tuna_algo_default(const size_t nchunk)
 {
     char* d;
+    size_t i;
+
     if (nchunk < 2) {
         return tuna_algo_zero;
     }
     d = getenv("TUNA_ALGO");
     if (d) {
         trim(d);
-        if (!strcasecmp("welch1", d)) {
-            return tuna_algo_welch1;
-        } else if (!strcasecmp("welch1_nuinf", d)) {
-            return tuna_algo_welch1_nuinf;
-        } else if (!strcasecmp("zero", d)) {
-            return tuna_algo_zero;
+        for (i = 0; i < sizeof(known_algos) / sizeof(known_algos[0]); ++i) {
+            if (!strcasecmp(known_algos[i]->name, d)) {
+                return known_algos[i];
+            }
         }
     }
     return tuna_algo_welch1; /* Default */
