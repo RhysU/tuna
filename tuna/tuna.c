@@ -510,7 +510,7 @@ tuna_algo_welch1_nuinf_impl(const size_t nchunk,
         }
         p = tuna_welch1_nuinf(istats.avg, istats.var, istats.n,
                               jstats.avg, jstats.var, jstats.n);
-        if (p < u01[j]) {
+        if (p * (nchunk - 1) < u01[j]) {
             i = j;
             istats = jstats;
         }
@@ -540,7 +540,7 @@ tuna_algo_welch1_impl(const size_t nchunk,
         }
         p = tuna_welch1(istats.avg, istats.var, istats.n,
                         jstats.avg, jstats.var, jstats.n);
-        if (p < u01[j]) {
+        if (p * (nchunk - 1) < u01[j]) {
             i = j;
             istats = jstats;
         }
