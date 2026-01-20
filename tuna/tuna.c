@@ -651,7 +651,7 @@ tuna_pre_cost(tuna_site* site,
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    stack->ik = site->al->fn(nchunk, chunks, u01);
+    stack->ik = site->al->function(nchunk, chunks, u01);
 
     return stack->ik;
 }

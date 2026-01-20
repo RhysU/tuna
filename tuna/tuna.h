@@ -355,16 +355,16 @@ tuna_welch1(double xA, double sA2, size_t nA,
  *
  * \return The zero-based index of the chunk that has been selected.
  */
-typedef size_t (*tuna_algo_fn)(const size_t nchunk,
-                               const tuna_chunk *chunks,
-                               const double *u01);
+typedef size_t (*tuna_algo_function)(const size_t nchunk,
+                                     const tuna_chunk *chunks,
+                                     const double *u01);
 
 /**
  * Autotuning algorithm implementation carrying its own name.
  */
 typedef struct tuna_algo {
-    const char*   name; /**< The algorithm's name */
-    tuna_algo_fn  fn;   /**< The algorithm function */
+    const char*         name;     /**< The algorithm's name */
+    tuna_algo_function  function; /**< The algorithm function */
 } tuna_algo;
 
 /**
