@@ -633,13 +633,13 @@ tuna_pre_cost(tuna_site* site,
     double* u01;
 
     /* Ensure a zero-initialize stack argument produces good behavior by... */
-    if (!site->al) {
+    if (!site->algo) {
         /* ...providing a default algorithm when not set, and... */
-        site->al = tuna_algo_default(nchunk);
+        site->algo = tuna_algo_default(nchunk);
 
-        if (!site->st) {
+        if (!site->state) {
             /* ...providing a default seed when not set. */
-            site->st = tuna_state_default();
+            site->state = tuna_state_default();
         }
     }
 
@@ -647,11 +647,11 @@ tuna_pre_cost(tuna_site* site,
     /* Drawing variates here avoids state updates from algorithms. */
     u01 = __builtin_alloca(nchunk * sizeof(double));
     for (i = 0; i < nchunk; ++i) {
-        u01[i] = tuna_rand_u01(&site->st);
+        u01[i] = tuna_rand_u01(&site->state);
     }
 
     /* Invoke chosen algorithm saving selected index for tuna_post_cost(). */
-    stack->ik = site->al->function(nchunk, chunks, u01);
+    stack->ik = site->algo->function(nchunk, chunks, u01);
 
     return stack->ik;
 }
@@ -821,7 +821,7 @@ tuna_site_vfprintf(FILE* stream,
     const char* name;
     int nwritten;
     nwritten = vfprintf(stream, format, ap);
-    name = tuna_algo_name(site->al);
+    name = tuna_algo_name(site->algo);
     if (nwritten >= 0) {
         int status = fprintf(stream,
                              "%s"

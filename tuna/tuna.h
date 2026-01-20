@@ -397,8 +397,8 @@ tuna_algo_default(const size_t nchunk);
  * may compute this POD type's size to permit \c static instances.
  */
 typedef struct tuna_site {
-    const tuna_algo* al; /**< The chosen tuning algorithm.           */
-    tuna_state       st; /**< Random number generator state.         */
+    const tuna_algo* algo;  /**< The chosen tuning algorithm.           */
+    tuna_state       state; /**< Random number generator state.         */
 } tuna_site;
 
 /**
