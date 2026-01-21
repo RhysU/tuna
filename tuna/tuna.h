@@ -403,36 +403,14 @@ extern const tuna_algo* const tuna_algo_zero;
 extern const tuna_algo* const tuna_algo_uniform;
 
 /**
- * Thompson Sampling algorithm for multi-armed bandit autotuning.
- *
- * A Bayesian approach that samples from the posterior distribution of each
- * chunk's mean cost and selects the chunk with the lowest sampled value.
- * This naturally balances exploration (trying uncertain chunks) with
- * exploitation (preferring chunks with known low costs).
- *
- * Adapted for minimization problems where lower cost is better.
- * Particularly effective when chunk performance distributions are well-behaved.
- *
- * Reference: Thompson (1933), "On the likelihood that one unknown probability
- * exceeds another in view of the evidence of two samples". Biometrika.
+ * Thompson Sampling: samples from posterior of each chunk's mean,
+ * selects chunk with lowest sample. Balances exploration/exploitation.
  */
 extern const tuna_algo* const tuna_algo_thompson;
 
 /**
- * UCB1 (Upper Confidence Bound) algorithm adapted for minimization.
- *
- * Computes a Lower Confidence Bound for each chunk:
- * LCB(i) = mean(i) - sqrt(2 * ln(total_observations) / observations_i)
- *
- * Selects the chunk with the lowest LCB, balancing:
- * - Exploitation: chunks with low observed mean cost
- * - Exploration: chunks with few observations (high uncertainty)
- *
- * This is a deterministic algorithm (ignores the random u01 input) that
- * provides theoretical guarantees on regret bounds.
- *
- * Reference: Auer, Cesa-Bianchi, Fischer (2002), "Finite-time Analysis of the
- * Multiarmed Bandit Problem". Machine Learning.
+ * UCB1 for minimization: selects chunk with lowest Lower Confidence Bound
+ * LCB(i) = mean(i) - sqrt(2 * ln(total) / n_i). Deterministic.
  */
 extern const tuna_algo* const tuna_algo_ucb1;
 

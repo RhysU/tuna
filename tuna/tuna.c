@@ -488,99 +488,51 @@ trim(char* const a)
 }
 
 
-/**
- * Thompson Sampling for Gaussian rewards with unknown variance.
- *
- * This multi-armed bandit algorithm uses Bayesian posterior sampling to
- * balance exploration and exploitation. For each arm with sufficient data,
- * we sample from the posterior distribution of the mean (approximated as
- * Normal(mean, std/sqrt(n))) and select the arm with the lowest sample.
- *
- * This is adapted for minimization problems (like timing) where lower is
- * better. The algorithm naturally explores arms with high uncertainty while
- * exploiting arms with known low values.
- *
- * Reference: Thompson, W.R. (1933). "On the likelihood that one unknown
- * probability exceeds another in view of the evidence of two samples".
- * Biometrika, 25(3-4), 285-294.
- */
+/* Thompson Sampling for Gaussian rewards adapted for minimization.
+ * Samples from posterior Normal(mean, std/sqrt(n)) for each arm,
+ * selecting the arm with lowest sample. */
 static size_t
 tuna_algo_thompson_impl(const size_t nchunk,
                         const tuna_chunk* chunks,
                         const double* u01)
 {
     size_t i, best;
-    tuna_stats_mom_result stats;
-    double sample, best_sample, z, u;
+    double sample, best_sample, u;
 
     assert(nchunk > 0);
 
-    /* First pass: ensure all chunks have sufficient data */
     for (i = 0; i < nchunk; ++i) {
         if (chunks[i].stats.n < 2) {
             return i;
         }
     }
 
-    /* All chunks have data; sample from posteriors and select best */
     best = 0;
-    stats = tuna_stats_mom(&chunks[0].stats);
-
-    /* Sample from posterior: mean + (std/sqrt(n)) * z where z ~ N(0,1) */
-    /* Use ltqnorm to convert uniform u01[0] to standard normal        */
-    /* Clamp u01 to avoid infinities at extremes                       */
-    u = u01[0] < 0.001 ? 0.001 : (u01[0] > 0.999 ? 0.999 : u01[0]);
-    z = ltqnorm(u);
-    best_sample = stats.avg + sqrt(stats.var / stats.n) * z;
-
-    for (i = 1; i < nchunk; ++i) {
-        stats = tuna_stats_mom(&chunks[i].stats);
-
-        /* Sample from posterior for this arm */
+    for (i = 0; i < nchunk; ++i) {
+        tuna_stats_mom_result s = tuna_stats_mom(&chunks[i].stats);
         u = u01[i] < 0.001 ? 0.001 : (u01[i] > 0.999 ? 0.999 : u01[i]);
-        z = ltqnorm(u);
-        sample = stats.avg + sqrt(stats.var / stats.n) * z;
-
-        /* For minimization: select arm with lowest sample */
-        if (sample < best_sample) {
+        sample = s.avg + sqrt(s.var / s.n) * ltqnorm(u);
+        if (i == 0 || sample < best_sample) {
             best = i;
             best_sample = sample;
         }
     }
-
     return best;
 }
 
-/**
- * UCB1 algorithm adapted for minimization (Lower Confidence Bound).
- *
- * This multi-armed bandit algorithm uses confidence bounds to balance
- * exploration and exploitation. For each arm, we compute a lower confidence
- * bound: LCB(i) = mean(i) - sqrt(2 * ln(total_pulls) / n_i)
- *
- * The arm with the lowest LCB is selected. This balances:
- * - Exploitation: arms with low observed mean
- * - Exploration: arms with few samples (high uncertainty)
- *
- * Adapted for minimization problems where lower cost is better.
- *
- * Reference: Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002).
- * "Finite-time Analysis of the Multiarmed Bandit Problem".
- * Machine Learning, 47(2-3), 235-256.
- */
+/* UCB1 for minimization using Lower Confidence Bound.
+ * LCB(i) = mean(i) - sqrt(2 * ln(total) / n_i) */
 static size_t
 tuna_algo_ucb1_impl(const size_t nchunk,
                     const tuna_chunk* chunks,
                     const double* u01)
 {
     size_t i, best, total;
-    tuna_stats_mom_result stats;
-    double lcb, best_lcb, exploration_bonus;
+    double lcb, best_lcb, log_total;
 
-    (void) u01;  /* UCB1 is deterministic given statistics */
+    (void) u01;
     assert(nchunk > 0);
 
-    /* First pass: ensure all chunks have sufficient data */
     total = 0;
     for (i = 0; i < nchunk; ++i) {
         if (chunks[i].stats.n < 2) {
@@ -589,28 +541,16 @@ tuna_algo_ucb1_impl(const size_t nchunk,
         total += chunks[i].stats.n;
     }
 
-    /* All chunks have data; compute LCBs and select best */
+    log_total = log((double)total);
     best = 0;
-    stats = tuna_stats_mom(&chunks[0].stats);
-
-    /* LCB = mean - sqrt(2 * ln(total) / n) */
-    exploration_bonus = sqrt(2.0 * log((double)total) / stats.n);
-    best_lcb = stats.avg - exploration_bonus;
-
-    for (i = 1; i < nchunk; ++i) {
-        stats = tuna_stats_mom(&chunks[i].stats);
-
-        /* Compute lower confidence bound for this arm */
-        exploration_bonus = sqrt(2.0 * log((double)total) / stats.n);
-        lcb = stats.avg - exploration_bonus;
-
-        /* For minimization: select arm with lowest LCB */
-        if (lcb < best_lcb) {
+    for (i = 0; i < nchunk; ++i) {
+        tuna_stats_mom_result s = tuna_stats_mom(&chunks[i].stats);
+        lcb = s.avg - sqrt(2.0 * log_total / s.n);
+        if (i == 0 || lcb < best_lcb) {
             best = i;
             best_lcb = lcb;
         }
     }
-
     return best;
 }
 
