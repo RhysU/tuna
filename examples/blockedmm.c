@@ -29,29 +29,30 @@
 // Normally site and chunks might be inside blockedmm() but
 // they are global to permit querying them in main().
 static tuna_site site;
-static const char *labels[] = { "block___1",
+static const char* labels[] = { "block___1",
                                 "block___2",
                                 "block___4",
                                 "block___8",
                                 "block__16",
                                 "block__32",
                                 "block__64",
-                                "block_128"  };
+                                "block_128"
+                              };
 static tuna_chunk chunks[tuna_countof(labels)];
 
 // Preform a blocked matrix-matrix multiply using autotuned blocking.
 static
 void
-blockedmm(double       *c, // Output C += A*B
-          const double *a, // Input A of size N-by-N
-          const double *b, // Input B of size N-by-N
+blockedmm(double*       c, // Output C += A*B
+          const double* a, // Input A of size N-by-N
+          const double* b, // Input B of size N-by-N
           const int log2N)  // Base-2 log of A, B, and C's dimension
 {
     // Routine takes log2N so any smaller power-of-2 block size
     // will trivially partition the matrix into uniform submatrices.
     assert(log2N >= 0);
     const int N = 1 << log2N;
-    const int log2B = log2N < tuna_countof(chunks) ? log2N+1 : tuna_countof(chunks);
+    const int log2B = log2N < tuna_countof(chunks) ? log2N + 1 : tuna_countof(chunks);
     tuna_stack stack;
     int B;
     #pragma omp critical (tuna_blockedmm)
@@ -62,13 +63,13 @@ blockedmm(double       *c, // Output C += A*B
     for (int i = 0; i < N; i += B) {
         for (int j = 0; j < N; j += B) {
             for (int k = 0; k < N; k += B) {
-                const double *sub_a = &a[i + N*k];
-                const double *sub_b = &b[k + N*j];
-                double       *sub_c = &c[i + N*j];
+                const double* sub_a = &a[i + N * k];
+                const double* sub_b = &b[k + N * j];
+                double*       sub_c = &c[i + N * j];
                 for (int l = 0; l < B; ++l) {
                     for (int m = 0; m < B; ++m) {
                         for (int n = 0; n < B; ++n) {
-                            sub_c[l + N*m] += sub_a[l + N*n] * sub_b[n + N*m];
+                            sub_c[l + N * m] += sub_a[l + N * n] * sub_b[n + N * m];
                         }
                     }
                 }
@@ -81,7 +82,7 @@ blockedmm(double       *c, // Output C += A*B
     tuna_post(&stack, chunks);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // Parse any incoming command line arguments
     const int niter = argc > 1 ? atof(argv[1]) : 256; // Iteration count?
@@ -94,14 +95,20 @@ int main(int argc, char *argv[])
         printf("niter=%d, log2N=%d, N=%d\n", niter, log2N, N);
 
         // Fill matrices with U[0,1] data and repeatedly compute C += A*B
-        double* const a = malloc(N*N*sizeof(double));
-        double* const b = malloc(N*N*sizeof(double));
-        double* const c = malloc(N*N*sizeof(double));
+        double* const a = malloc(N * N * sizeof(double));
+        double* const b = malloc(N * N * sizeof(double));
+        double* const c = malloc(N * N * sizeof(double));
         #pragma omp for schedule(runtime)
         for (int i = 0; i < niter; ++i) {
-            for (int i = 0; i < N*N; ++i) a[i] = rand() / (double) RAND_MAX;
-            for (int i = 0; i < N*N; ++i) b[i] = rand() / (double) RAND_MAX;
-            for (int i = 0; i < N*N; ++i) c[i] = rand() / (double) RAND_MAX;
+            for (int i = 0; i < N * N; ++i) {
+                a[i] = rand() / (double) RAND_MAX;
+            }
+            for (int i = 0; i < N * N; ++i) {
+                b[i] = rand() / (double) RAND_MAX;
+            }
+            for (int i = 0; i < N * N; ++i) {
+                c[i] = rand() / (double) RAND_MAX;
+            }
             blockedmm(c, a, b, log2N);
         }
         free(c);

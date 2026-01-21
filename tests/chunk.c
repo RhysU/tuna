@@ -17,12 +17,11 @@ enum { noutliers = 3 };
 
 FCT_BGN()
 {
-    FCT_QTEST_BGN(observe)
-    {
+    FCT_QTEST_BGN(observe) {
         tuna_chunk k = {};
 
         // Testing initial behavior before any observations provided
-        fct_chk_eq_int(noutliers, sizeof(k.outliers)/sizeof(k.outliers[0]));
+        fct_chk_eq_int(noutliers, sizeof(k.outliers) / sizeof(k.outliers[0]));
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 0);
         for (int i = 0; i < noutliers; ++i) {
             fct_chk_eq_dbl(k.outliers[i], 0);
@@ -87,7 +86,7 @@ FCT_BGN()
 
         tuna_chunk_obs(&k, 2); // Recorded 2
         fct_chk_eq_int(tuna_stats_cnt(&(k.stats)), 3);
-        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 5./3);
+        fct_chk_eq_dbl(tuna_stats_avg(&(k.stats)), 5. / 3);
         fct_chk_eq_dbl(k.outliers[0], 3);
         fct_chk_eq_dbl(k.outliers[1], 5);
         fct_chk_eq_dbl(k.outliers[2], 6);
@@ -102,8 +101,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(merge_into_empty)
-    {
+    FCT_QTEST_BGN(merge_into_empty) {
         tuna_stats a = {};  // Tracks actual statistics for post-merge
         tuna_stats b = {};  // Buffer into which merges occur
         tuna_chunk k = {};  // Chunk collecting observations

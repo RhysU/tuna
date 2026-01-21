@@ -14,8 +14,7 @@
 
 FCT_BGN()
 {
-    FCT_QTEST_BGN(extern_declarations)
-    {
+    FCT_QTEST_BGN(extern_declarations) {
         // Test that the extern algorithm handles are accessible
         fct_chk(tuna_algo_welch1 != NULL);
         fct_chk(tuna_algo_welch1_nuinf != NULL);
@@ -32,8 +31,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(algorithm_names)
-    {
+    FCT_QTEST_BGN(algorithm_names) {
         // Test retrieving names from algorithm handles
         fct_chk_eq_str(tuna_algo_name(tuna_algo_welch1), "welch1");
         fct_chk_eq_str(tuna_algo_name(tuna_algo_welch1_nuinf), "welch1_nuinf");
@@ -51,8 +49,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(invoke_zero_algorithm)
-    {
+    FCT_QTEST_BGN(invoke_zero_algorithm) {
         // Test invoking the zero algorithm function
         tuna_chunk chunks[3] = {};
         double u01[3] = {0.5, 0.5, 0.5};
@@ -67,8 +64,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(invoke_welch1_algorithm)
-    {
+    FCT_QTEST_BGN(invoke_welch1_algorithm) {
         // Test invoking welch1 algorithm with mock data
         tuna_chunk chunks[2] = {};
         double u01[2] = {0.5, 0.5};
@@ -95,8 +91,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(invoke_welch1_nuinf_algorithm)
-    {
+    FCT_QTEST_BGN(invoke_welch1_nuinf_algorithm) {
         // Test invoking welch1_nuinf algorithm with mock data
         tuna_chunk chunks[2] = {};
         double u01[2] = {0.5, 0.5};
@@ -117,8 +112,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(tuna_algo_default_behavior)
-    {
+    FCT_QTEST_BGN(tuna_algo_default_behavior) {
         // Test default algorithm selection
         const tuna_algo* algo;
 
@@ -138,8 +132,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(algorithm_function_pointer_validity)
-    {
+    FCT_QTEST_BGN(algorithm_function_pointer_validity) {
         // Test that function pointers are valid
         fct_chk(tuna_algo_welch1->function != NULL);
         fct_chk(tuna_algo_welch1_nuinf->function != NULL);
@@ -156,8 +149,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(algorithm_in_tuna_site)
-    {
+    FCT_QTEST_BGN(algorithm_in_tuna_site) {
         // Test using algorithm handles with tuna_site
         tuna_site site = {};
 
@@ -179,8 +171,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(invoke_uniform_algorithm)
-    {
+    FCT_QTEST_BGN(invoke_uniform_algorithm) {
         // Test invoking uniform algorithm
         tuna_chunk chunks[5] = {};
         double u01[5];
@@ -190,7 +181,9 @@ FCT_BGN()
         // Test uniform selection with various random values
         // u01[0] = 0.0 should select chunk 0
         u01[0] = 0.0;
-        for (i = 1; i < 5; ++i) u01[i] = 0.5;
+        for (i = 1; i < 5; ++i) {
+            u01[i] = 0.5;
+        }
         result = tuna_algo_uniform->function(5, chunks, u01);
         fct_chk_eq_int(result, 0);
 
