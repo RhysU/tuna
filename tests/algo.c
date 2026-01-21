@@ -20,11 +20,15 @@ FCT_BGN()
         fct_chk(tuna_algo_welch1 != NULL);
         fct_chk(tuna_algo_welch1_nuinf != NULL);
         fct_chk(tuna_algo_zero != NULL);
+        fct_chk(tuna_algo_uniform != NULL);
 
         // Test that they are distinct
         fct_chk(tuna_algo_welch1 != tuna_algo_welch1_nuinf);
         fct_chk(tuna_algo_welch1 != tuna_algo_zero);
+        fct_chk(tuna_algo_welch1 != tuna_algo_uniform);
         fct_chk(tuna_algo_welch1_nuinf != tuna_algo_zero);
+        fct_chk(tuna_algo_welch1_nuinf != tuna_algo_uniform);
+        fct_chk(tuna_algo_zero != tuna_algo_uniform);
     }
     FCT_QTEST_END();
 
@@ -34,6 +38,7 @@ FCT_BGN()
         fct_chk_eq_str(tuna_algo_name(tuna_algo_welch1), "welch1");
         fct_chk_eq_str(tuna_algo_name(tuna_algo_welch1_nuinf), "welch1_nuinf");
         fct_chk_eq_str(tuna_algo_name(tuna_algo_zero), "zero");
+        fct_chk_eq_str(tuna_algo_name(tuna_algo_uniform), "uniform");
 
         // Test NULL algorithm returns "unknown"
         fct_chk_eq_str(tuna_algo_name(NULL), "unknown");
@@ -42,6 +47,7 @@ FCT_BGN()
         fct_chk_eq_str(tuna_algo_welch1->name, "welch1");
         fct_chk_eq_str(tuna_algo_welch1_nuinf->name, "welch1_nuinf");
         fct_chk_eq_str(tuna_algo_zero->name, "zero");
+        fct_chk_eq_str(tuna_algo_uniform->name, "uniform");
     }
     FCT_QTEST_END();
 
@@ -138,11 +144,15 @@ FCT_BGN()
         fct_chk(tuna_algo_welch1->function != NULL);
         fct_chk(tuna_algo_welch1_nuinf->function != NULL);
         fct_chk(tuna_algo_zero->function != NULL);
+        fct_chk(tuna_algo_uniform->function != NULL);
 
         // Test that they are distinct functions
         fct_chk(tuna_algo_welch1->function != tuna_algo_zero->function);
+        fct_chk(tuna_algo_welch1->function != tuna_algo_uniform->function);
         fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_zero->function);
+        fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_uniform->function);
         fct_chk(tuna_algo_welch1->function != tuna_algo_welch1_nuinf->function);
+        fct_chk(tuna_algo_zero->function != tuna_algo_uniform->function);
     }
     FCT_QTEST_END();
 
@@ -162,6 +172,76 @@ FCT_BGN()
         site.algo = tuna_algo_welch1_nuinf;
         fct_chk(site.algo == tuna_algo_welch1_nuinf);
         fct_chk_eq_str(tuna_algo_name(site.algo), "welch1_nuinf");
+
+        site.algo = tuna_algo_uniform;
+        fct_chk(site.algo == tuna_algo_uniform);
+        fct_chk_eq_str(tuna_algo_name(site.algo), "uniform");
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(invoke_uniform_algorithm)
+    {
+        // Test invoking uniform algorithm
+        tuna_chunk chunks[5] = {};
+        double u01[5];
+        size_t result;
+        int i;
+
+        // Test uniform selection with various random values
+        // u01[0] = 0.0 should select chunk 0
+        u01[0] = 0.0;
+        for (i = 1; i < 5; ++i) u01[i] = 0.5;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 0);
+
+        // u01[0] = 0.199 should select chunk 0 (0.199 * 5 = 0.995 -> floor = 0)
+        u01[0] = 0.199;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 0);
+
+        // u01[0] = 0.2 should select chunk 1 (0.2 * 5 = 1.0)
+        u01[0] = 0.2;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 1);
+
+        // u01[0] = 0.4 should select chunk 2 (0.4 * 5 = 2.0)
+        u01[0] = 0.4;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 2);
+
+        // u01[0] = 0.6 should select chunk 3 (0.6 * 5 = 3.0)
+        u01[0] = 0.6;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 3);
+
+        // u01[0] = 0.8 should select chunk 4 (0.8 * 5 = 4.0)
+        u01[0] = 0.8;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 4);
+
+        // u01[0] close to 1.0 should select chunk 4 (0.999 * 5 = 4.995 -> floor = 4)
+        u01[0] = 0.999;
+        result = tuna_algo_uniform->function(5, chunks, u01);
+        fct_chk_eq_int(result, 4);
+
+        // Test with different number of chunks
+        u01[0] = 0.5;
+        result = tuna_algo_uniform->function(2, chunks, u01);
+        fct_chk_eq_int(result, 1);
+
+        u01[0] = 0.49;
+        result = tuna_algo_uniform->function(2, chunks, u01);
+        fct_chk_eq_int(result, 0);
+
+        // Test that uniform ignores chunk statistics (unlike welch algorithms)
+        tuna_chunk_obs(&chunks[0], 100.0);
+        tuna_chunk_obs(&chunks[0], 100.0);
+        tuna_chunk_obs(&chunks[1], 1.0);
+        tuna_chunk_obs(&chunks[1], 1.0);
+
+        u01[0] = 0.1;
+        result = tuna_algo_uniform->function(2, chunks, u01);
+        fct_chk_eq_int(result, 0);  // Should still pick 0 based on u01[0]
     }
     FCT_QTEST_END();
 
