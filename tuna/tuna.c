@@ -487,7 +487,8 @@ trim(char* const a)
     }
 }
 
-/* Algorithm implementations */
+
+/* Very similar to tuna_algo_welch1_nuinf(...) */
 static size_t
 tuna_algo_welch1_nuinf_impl(const size_t nchunk,
                             const tuna_chunk *chunks,
@@ -496,7 +497,7 @@ tuna_algo_welch1_nuinf_impl(const size_t nchunk,
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
     double p;
-    const size_t ncomparisons = nchunk - 1;  /* Bonferroni correction factor */
+    const size_t ncomparisons = nchunk - 1;
 
     assert(nchunk > 0);
     i = 0;
@@ -511,9 +512,8 @@ tuna_algo_welch1_nuinf_impl(const size_t nchunk,
         }
         p = tuna_welch1_nuinf(istats.avg, istats.var, istats.n,
                               jstats.avg, jstats.var, jstats.n);
-        /* Apply Bonferroni correction for multiple comparisons.            */
-        /* We use p * ncomparisons < u01[j] instead of p < u01[j]/ncomparisons */
-        /* to avoid division and potential floating point issues.           */
+        /* Apply Bonferroni correction for multiple comparisons writing   */
+        /* p * ncomparisons < u01[j] instead of p < u01[j] / ncomparisons */
         if (p * ncomparisons < u01[j]) {
             i = j;
             istats = jstats;
@@ -522,6 +522,7 @@ tuna_algo_welch1_nuinf_impl(const size_t nchunk,
     return i;
 }
 
+/* Very similar to tuna_algo_welch1(...) */
 static size_t
 tuna_algo_welch1_impl(const size_t nchunk,
                       const tuna_chunk *chunks,
@@ -530,7 +531,7 @@ tuna_algo_welch1_impl(const size_t nchunk,
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
     double p;
-    const size_t ncomparisons = nchunk - 1;  /* Bonferroni correction factor */
+    const size_t ncomparisons = nchunk - 1;
 
     assert(nchunk > 0);
     i = 0;
@@ -545,9 +546,8 @@ tuna_algo_welch1_impl(const size_t nchunk,
         }
         p = tuna_welch1(istats.avg, istats.var, istats.n,
                         jstats.avg, jstats.var, jstats.n);
-        /* Apply Bonferroni correction for multiple comparisons.            */
-        /* We use p * ncomparisons < u01[j] instead of p < u01[j]/ncomparisons */
-        /* to avoid division and potential floating point issues.           */
+        /* Apply Bonferroni correction for multiple comparisons writing   */
+        /* p * ncomparisons < u01[j] instead of p < u01[j] / ncomparisons */
         if (p * ncomparisons < u01[j]) {
             i = j;
             istats = jstats;
