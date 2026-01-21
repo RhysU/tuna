@@ -34,10 +34,10 @@ int main(int argc, char* argv[])
         // To track runtime via TUNA_CLOCK, call tuna_post(&site, chunks) instead
         double cost;
         switch (tuna_pre(&site, &stack, chunks, tuna_countof(chunks))) {
-        default: cost = mA + tuna_rand_n01(&state) * sA;
-            break;
-        case 1:  cost = mB + tuna_rand_n01(&state) * sB;
-            break;
+            default: cost = mA + tuna_rand_n01(&state) * sA;
+                break;
+            case 1:  cost = mB + tuna_rand_n01(&state) * sB;
+                break;
         }
         tuna_post_cost(&stack, chunks, cost);
 

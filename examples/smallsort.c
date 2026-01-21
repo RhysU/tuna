@@ -29,9 +29,9 @@ void smallsort(int* a, int n)
 {
     tuna_stack stack;
     switch (tuna_pre(&site, &stack, chunks, tuna_countof(chunks))) {
-    default: sort_insertion(a, n); break;
-    case 1:  sort_qsort(a, n); break;
-    case 2:  sort_heap(a, n); break;
+        default: sort_insertion(a, n); break;
+        case 1:  sort_qsort(a, n); break;
+        case 2:  sort_heap(a, n); break;
     }
     tuna_post(&stack, chunks);
 }
