@@ -20,14 +20,25 @@ FCT_BGN()
         fct_chk(tuna_algo_welch1_nuinf != NULL);
         fct_chk(tuna_algo_zero != NULL);
         fct_chk(tuna_algo_uniform != NULL);
+        fct_chk(tuna_algo_thompson != NULL);
+        fct_chk(tuna_algo_ucb1 != NULL);
 
         // Test that they are distinct
         fct_chk(tuna_algo_welch1 != tuna_algo_welch1_nuinf);
         fct_chk(tuna_algo_welch1 != tuna_algo_zero);
         fct_chk(tuna_algo_welch1 != tuna_algo_uniform);
+        fct_chk(tuna_algo_welch1 != tuna_algo_thompson);
+        fct_chk(tuna_algo_welch1 != tuna_algo_ucb1);
         fct_chk(tuna_algo_welch1_nuinf != tuna_algo_zero);
         fct_chk(tuna_algo_welch1_nuinf != tuna_algo_uniform);
+        fct_chk(tuna_algo_welch1_nuinf != tuna_algo_thompson);
+        fct_chk(tuna_algo_welch1_nuinf != tuna_algo_ucb1);
         fct_chk(tuna_algo_zero != tuna_algo_uniform);
+        fct_chk(tuna_algo_zero != tuna_algo_thompson);
+        fct_chk(tuna_algo_zero != tuna_algo_ucb1);
+        fct_chk(tuna_algo_uniform != tuna_algo_thompson);
+        fct_chk(tuna_algo_uniform != tuna_algo_ucb1);
+        fct_chk(tuna_algo_thompson != tuna_algo_ucb1);
     }
     FCT_QTEST_END();
 
@@ -37,6 +48,8 @@ FCT_BGN()
         fct_chk_eq_str(tuna_algo_name(tuna_algo_welch1_nuinf), "welch1_nuinf");
         fct_chk_eq_str(tuna_algo_name(tuna_algo_zero), "zero");
         fct_chk_eq_str(tuna_algo_name(tuna_algo_uniform), "uniform");
+        fct_chk_eq_str(tuna_algo_name(tuna_algo_thompson), "thompson");
+        fct_chk_eq_str(tuna_algo_name(tuna_algo_ucb1), "ucb1");
 
         // Test NULL algorithm returns "unknown"
         fct_chk_eq_str(tuna_algo_name(NULL), "unknown");
@@ -46,6 +59,8 @@ FCT_BGN()
         fct_chk_eq_str(tuna_algo_welch1_nuinf->name, "welch1_nuinf");
         fct_chk_eq_str(tuna_algo_zero->name, "zero");
         fct_chk_eq_str(tuna_algo_uniform->name, "uniform");
+        fct_chk_eq_str(tuna_algo_thompson->name, "thompson");
+        fct_chk_eq_str(tuna_algo_ucb1->name, "ucb1");
     }
     FCT_QTEST_END();
 
@@ -138,14 +153,25 @@ FCT_BGN()
         fct_chk(tuna_algo_welch1_nuinf->function != NULL);
         fct_chk(tuna_algo_zero->function != NULL);
         fct_chk(tuna_algo_uniform->function != NULL);
+        fct_chk(tuna_algo_thompson->function != NULL);
+        fct_chk(tuna_algo_ucb1->function != NULL);
 
         // Test that they are distinct functions
         fct_chk(tuna_algo_welch1->function != tuna_algo_zero->function);
         fct_chk(tuna_algo_welch1->function != tuna_algo_uniform->function);
+        fct_chk(tuna_algo_welch1->function != tuna_algo_thompson->function);
+        fct_chk(tuna_algo_welch1->function != tuna_algo_ucb1->function);
         fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_zero->function);
         fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_uniform->function);
+        fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_thompson->function);
+        fct_chk(tuna_algo_welch1_nuinf->function != tuna_algo_ucb1->function);
         fct_chk(tuna_algo_welch1->function != tuna_algo_welch1_nuinf->function);
         fct_chk(tuna_algo_zero->function != tuna_algo_uniform->function);
+        fct_chk(tuna_algo_zero->function != tuna_algo_thompson->function);
+        fct_chk(tuna_algo_zero->function != tuna_algo_ucb1->function);
+        fct_chk(tuna_algo_uniform->function != tuna_algo_thompson->function);
+        fct_chk(tuna_algo_uniform->function != tuna_algo_ucb1->function);
+        fct_chk(tuna_algo_thompson->function != tuna_algo_ucb1->function);
     }
     FCT_QTEST_END();
 
@@ -168,6 +194,14 @@ FCT_BGN()
         site.algo = tuna_algo_uniform;
         fct_chk(site.algo == tuna_algo_uniform);
         fct_chk_eq_str(tuna_algo_name(site.algo), "uniform");
+
+        site.algo = tuna_algo_thompson;
+        fct_chk(site.algo == tuna_algo_thompson);
+        fct_chk_eq_str(tuna_algo_name(site.algo), "thompson");
+
+        site.algo = tuna_algo_ucb1;
+        fct_chk(site.algo == tuna_algo_ucb1);
+        fct_chk_eq_str(tuna_algo_name(site.algo), "ucb1");
     }
     FCT_QTEST_END();
 
@@ -235,6 +269,148 @@ FCT_BGN()
         u01[0] = 0.1;
         result = tuna_algo_uniform->function(2, chunks, u01);
         fct_chk_eq_int(result, 0);  // Should still pick 0 based on u01[0]
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(invoke_thompson_algorithm) {
+        // Test invoking Thompson Sampling algorithm
+        // Note: tuna_chunk uses 3 burn-in observations before stats accumulate,
+        // so we need 5+ observations to get stats.n >= 2
+        tuna_chunk chunks[3] = {};
+        double u01[3];
+        size_t result;
+        int i;
+
+        // With no data, should return first chunk needing data
+        u01[0] = 0.5; u01[1] = 0.5; u01[2] = 0.5;
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk_eq_int(result, 0);
+
+        // Add enough observations to first chunk (high cost) for stats.n >= 2
+        // 3 burn-in + 2 actual = 5 observations needed
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[0], 10.0);
+        }
+
+        // Second chunk still needs data
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk_eq_int(result, 1);
+
+        // Add observations to second chunk (low cost)
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[1], 1.0);
+        }
+
+        // Third chunk still needs data
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk_eq_int(result, 2);
+
+        // Add observations to third chunk (medium cost)
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[2], 5.0);
+        }
+
+        // Now with all data, should return valid index
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk(result < 3);
+
+        // With u01 values that give extreme z-scores,
+        // low u01 -> negative z -> should favor low mean chunks
+        u01[0] = 0.01; u01[1] = 0.01; u01[2] = 0.01;
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk(result < 3);
+
+        // High u01 -> positive z -> increases sampled values
+        u01[0] = 0.99; u01[1] = 0.99; u01[2] = 0.99;
+        result = tuna_algo_thompson->function(3, chunks, u01);
+        fct_chk(result < 3);
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(invoke_ucb1_algorithm) {
+        // Test invoking UCB1 algorithm
+        // Note: tuna_chunk uses 3 burn-in observations before stats accumulate,
+        // so we need 5+ observations to get stats.n >= 2
+        tuna_chunk chunks[3] = {};
+        double u01[3] = {0.5, 0.5, 0.5};
+        size_t result, result2;
+        int i;
+
+        // With no data, should return first chunk
+        result = tuna_algo_ucb1->function(3, chunks, u01);
+        fct_chk_eq_int(result, 0);
+
+        // Add enough observations to first chunk (high cost) for stats.n >= 2
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[0], 10.0);
+        }
+
+        // Second chunk needs data
+        result = tuna_algo_ucb1->function(3, chunks, u01);
+        fct_chk_eq_int(result, 1);
+
+        // Add observations to second chunk (low cost)
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[1], 1.0);
+        }
+
+        // Third chunk needs data
+        result = tuna_algo_ucb1->function(3, chunks, u01);
+        fct_chk_eq_int(result, 2);
+
+        // Add observations to third chunk (medium cost)
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[2], 5.0);
+        }
+
+        // Now with all data, UCB1 should return valid index
+        // UCB1 is deterministic (ignores u01), so result should be consistent
+        result = tuna_algo_ucb1->function(3, chunks, u01);
+        fct_chk(result < 3);
+
+        // Run again with different u01 - should get same result (deterministic)
+        u01[0] = 0.1; u01[1] = 0.9; u01[2] = 0.5;
+        result2 = tuna_algo_ucb1->function(3, chunks, u01);
+        fct_chk_eq_int(result, result2);
+
+        // With significant difference in means and equal samples,
+        // UCB1 should favor the lower cost chunk
+        // chunk[1] has mean=1.0, chunk[0] has mean=10.0, chunk[2] has mean=5.0
+        // LCB = mean - exploration_bonus, so chunk[1] should have lowest LCB
+        fct_chk_eq_int(result, 1);
+    }
+    FCT_QTEST_END();
+
+    FCT_QTEST_BGN(thompson_vs_ucb1_determinism) {
+        // Test that UCB1 is deterministic while Thompson varies with u01
+        // Note: tuna_chunk uses 3 burn-in observations before stats accumulate
+        tuna_chunk chunks[2] = {};
+        double u01_low[2] = {0.1, 0.1};
+        double u01_high[2] = {0.9, 0.9};
+        size_t result_ucb1_low, result_ucb1_high;
+        size_t result_thompson_low, result_thompson_high;
+        int i;
+
+        // Add enough observations to both chunks (6 = 3 burn-in + 3 actual)
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[0], 2.0);
+        }
+
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[1], 2.1);
+        }
+
+        // UCB1 should give same result regardless of u01
+        result_ucb1_low = tuna_algo_ucb1->function(2, chunks, u01_low);
+        result_ucb1_high = tuna_algo_ucb1->function(2, chunks, u01_high);
+        fct_chk_eq_int(result_ucb1_low, result_ucb1_high);
+
+        // Thompson may give different results based on u01
+        // (though not guaranteed for every specific u01 pair)
+        result_thompson_low = tuna_algo_thompson->function(2, chunks, u01_low);
+        result_thompson_high = tuna_algo_thompson->function(2, chunks, u01_high);
+        fct_chk(result_thompson_low < 2);
+        fct_chk(result_thompson_high < 2);
     }
     FCT_QTEST_END();
 
