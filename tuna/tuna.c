@@ -96,18 +96,18 @@ tuna_stats_mom(const tuna_stats* const stats)
     tuna_stats_mom_result result;
     result.n = stats->n;
     switch (stats->n) {
-    case 0:
-        result.avg = NAN;
-        result.var = NAN;
-        break;
-    case 1:
-        result.avg = stats->m;
-        result.var = 0;
-        break;
-    default:
-        result.avg = stats->m;
-        result.var = stats->s / (stats->n - 1);
-        break;
+        case 0:
+            result.avg = NAN;
+            result.var = NAN;
+            break;
+        case 1:
+            result.avg = stats->m;
+            result.var = 0;
+            break;
+        default:
+            result.avg = stats->m;
+            result.var = stats->s / (stats->n - 1);
+            break;
     }
     return result;
 }
