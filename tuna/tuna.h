@@ -397,8 +397,8 @@ extern const tuna_algo * const tuna_algo_welch1;
 extern const tuna_algo * const tuna_algo_zero;
 
 /**
- * An autotuning algorithm selecting uniformly at random.
- * Useful for baseline comparison and testing.
+ * An algorithm selecting uniformly at random across all chunks.
+ * Useful for baseline information gathering and other testing.
  */
 extern const tuna_algo * const tuna_algo_uniform;
 
