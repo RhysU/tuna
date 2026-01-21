@@ -20,3 +20,11 @@ echo ""
 echo Welch1 algorithm, \\nu_ \\to \\infty limit, with 2 threads
 export TUNA_ALGO=welch1_nuinf; OMP_NUM_THREADS=2 ./examples/blockedmm 128 7
 echo ""
+
+echo Thompson Sampling with 2 threads
+export TUNA_ALGO=thompson; OMP_NUM_THREADS=2 ./examples/blockedmm 128 7
+echo ""
+
+echo Confidence Bounds with 2 threads
+export TUNA_ALGO=ucb1; OMP_NUM_THREADS=2 ./examples/blockedmm 128 7
+echo ""
