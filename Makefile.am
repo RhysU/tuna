@@ -83,6 +83,12 @@ tests_algo_SOURCES   = tests/algo.c tests/fct.h
 tests_algo_CFLAGS    = $(AM_CFLAGS) $(STDC99)
 tests_algo_LDADD     = tuna/libtuna-debug.la $(LIBM)
 
+TESTS                    += tests/bonferroni
+noinst_PROGRAMS          += tests/bonferroni
+tests_bonferroni_SOURCES  = tests/bonferroni.c tests/fct.h
+tests_bonferroni_CFLAGS   = $(AM_CFLAGS) $(STDC99)
+tests_bonferroni_LDADD    = tuna/libtuna-debug.la $(LIBM)
+
 check_PROGRAMS       += examples/basic
 dist_check_SCRIPTS   += tests/basic.sh
 TESTS                += tests/basic.sh
