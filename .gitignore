@@ -32,6 +32,7 @@ tuna/stamp-h1
 # Test cases
 **/*.log
 tests/algo
+tests/bonferroni
 tests/chunk
 tests/stats
 test-suite.log
