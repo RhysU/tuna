@@ -559,6 +559,16 @@ tuna_algo_zero_impl(const size_t nchunk,
     return 0;
 }
 
+static size_t
+tuna_algo_uniform_impl(const size_t nchunk,
+                       const tuna_chunk *chunks,
+                       const double *u01)
+{
+    (void) chunks;
+    assert(nchunk > 0);
+    return (size_t)(u01[0] * nchunk);
+}
+
 /* Algorithm instances carrying their own names */
 static const tuna_algo tuna_algo_welch1_nuinf_s = {
     "welch1_nuinf",
@@ -575,16 +585,23 @@ static const tuna_algo tuna_algo_zero_s = {
     tuna_algo_zero_impl
 };
 
+static const tuna_algo tuna_algo_uniform_s = {
+    "uniform",
+    tuna_algo_uniform_impl
+};
+
 /* Public algorithm handles */
 const tuna_algo * const tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
 const tuna_algo * const tuna_algo_welch1       = &tuna_algo_welch1_s;
 const tuna_algo * const tuna_algo_zero         = &tuna_algo_zero_s;
+const tuna_algo * const tuna_algo_uniform      = &tuna_algo_uniform_s;
 
 /* Registry of all known algorithms */
 static const tuna_algo* const known_algos[] = {
     &tuna_algo_welch1_s,
     &tuna_algo_welch1_nuinf_s,
-    &tuna_algo_zero_s
+    &tuna_algo_zero_s,
+    &tuna_algo_uniform_s
 };
 
 const char*
