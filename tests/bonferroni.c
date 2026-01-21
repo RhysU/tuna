@@ -20,8 +20,7 @@ FCT_BGN()
     // is worse (higher mean). Calculate the actual p-value and set u01[1] such
     // that p < u01[1] BUT p*ncomparisons >= u01[1]. This creates a boundary
     // condition that distinguishes between corrected and uncorrected behavior.
-    FCT_QTEST_BGN(bonferroni_without_correction_would_switch)
-    {
+    FCT_QTEST_BGN(bonferroni_without_correction_would_switch) {
         const size_t nchunk = 10;  /* ncomparisons = 9 */
         tuna_chunk chunks[10] = {};
         double u01[10];
@@ -44,7 +43,7 @@ FCT_BGN()
         stats0 = tuna_stats_mom(&chunks[0].stats);
         stats1 = tuna_stats_mom(&chunks[1].stats);
         p_value = tuna_welch1_nuinf(stats0.avg, stats0.var, stats0.n,
-                                     stats1.avg, stats1.var, stats1.n);
+                                    stats1.avg, stats1.var, stats1.n);
 
         u01[0] = 0.5;
         u01[1] = p_value * 5.0;  // Between p and p*9
@@ -63,8 +62,7 @@ FCT_BGN()
     FCT_QTEST_END();
 
     // Same test for standard welch1 algorithm
-    FCT_QTEST_BGN(bonferroni_welch1_variant)
-    {
+    FCT_QTEST_BGN(bonferroni_welch1_variant) {
         const size_t nchunk = 10;
         tuna_chunk chunks[10] = {};
         double u01[10];
@@ -102,8 +100,7 @@ FCT_BGN()
     FCT_QTEST_END();
 
     // Verify truly significant differences are still detected
-    FCT_QTEST_BGN(bonferroni_allows_strong_differences)
-    {
+    FCT_QTEST_BGN(bonferroni_allows_strong_differences) {
         const size_t nchunk = 5;
         tuna_chunk chunks[5] = {};
         double u01[5] = {0.5, 0.5, 0.5, 0.5, 0.5};
@@ -128,8 +125,7 @@ FCT_BGN()
     }
     FCT_QTEST_END();
 
-    FCT_QTEST_BGN(bonferroni_scaling_demonstration)
-    {
+    FCT_QTEST_BGN(bonferroni_scaling_demonstration) {
         // Demonstrate correction scales with nchunk
         tuna_chunk chunks10[10] = {};
         double u01_10[10];
@@ -150,7 +146,7 @@ FCT_BGN()
         stats0 = tuna_stats_mom(&chunks10[0].stats);
         stats1 = tuna_stats_mom(&chunks10[1].stats);
         p_value = tuna_welch1_nuinf(stats0.avg, stats0.var, stats0.n,
-                                     stats1.avg, stats1.var, stats1.n);
+                                    stats1.avg, stats1.var, stats1.n);
 
         // For nchunk=10 (ncomparisons=9)
         // threshold at p*4 means p*9 >= threshold

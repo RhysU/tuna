@@ -17,7 +17,7 @@
 
 #include <tuna.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     // Parse and display any incoming command line arguments in a header
     const int    niter = argc > 1 ? atof(argv[1]) : 1000  ; // Iteration count?
@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
         double cost;
         tuna_stack stack;
         switch (tuna_pre(&site, &stack, chunks, tuna_countof(chunks))) {
-            default: cost = mA + tuna_rand_n01(&state)*sA;
-                     break;
-            case 1:  cost = mB + tuna_rand_n01(&state)*sB;
-                     break;
+        default: cost = mA + tuna_rand_n01(&state) * sA;
+            break;
+        case 1:  cost = mB + tuna_rand_n01(&state) * sB;
+            break;
         }
         tuna_post_cost(&stack, chunks, cost);
 
@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
         tuna_stats o = {};
         tuna_chunk_merge(&o, chunks + best);
         printf("m%c\t%d\t%12.8g\t%12.8g\t%12zd\t%12.8g\n", 'A' + best, i,
-                tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o),
-                (double) tuna_stats_cnt(&o) / niter);
+               tuna_stats_avg(&o), tuna_stats_std(&o), tuna_stats_cnt(&o),
+               (double) tuna_stats_cnt(&o) / niter);
     }
 
     return EXIT_SUCCESS;
