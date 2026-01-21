@@ -1,7 +1,6 @@
 //--------------------------------------------------------------------------
 //
 // Copyright (C) 2013, 2026 Rhys Ulerich
-// Please see http://pecos.ices.utexas.edu for more information on PECOS.
 //
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
