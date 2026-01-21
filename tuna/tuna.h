@@ -356,8 +356,8 @@ tuna_welch1(double xA, double sA2, size_t nA,
  * \return The zero-based index of the chunk that has been selected.
  */
 typedef size_t (*tuna_algo_function)(const size_t nchunk,
-                                     const tuna_chunk *chunks,
-                                     const double *u01);
+                                     const tuna_chunk* chunks,
+                                     const double* u01);
 
 /**
  * Autotuning algorithm implementation carrying its own name.
@@ -385,22 +385,22 @@ const tuna_algo*
 tuna_algo_default(const size_t nchunk);
 
 /** An autotuning algorithm employing \ref tuna_welch1_nuinf. */
-extern const tuna_algo * const tuna_algo_welch1_nuinf;
+extern const tuna_algo* const tuna_algo_welch1_nuinf;
 
 /** An autotuning algorithm employing \ref tuna_welch1. */
-extern const tuna_algo * const tuna_algo_welch1;
+extern const tuna_algo* const tuna_algo_welch1;
 
 /**
  * An "autotuning" algorithm always selecting index zero.
  * Useful for testing/debugging.  See also \ref tuna_state_default().
  */
-extern const tuna_algo * const tuna_algo_zero;
+extern const tuna_algo* const tuna_algo_zero;
 
 /**
  * An algorithm selecting uniformly at random across all chunks.
  * Useful for baseline information gathering and other testing.
  */
-extern const tuna_algo * const tuna_algo_uniform;
+extern const tuna_algo* const tuna_algo_uniform;
 
 /** @} */
 
@@ -445,7 +445,7 @@ typedef struct tuna_stack {
 size_t
 tuna_pre_cost(tuna_site* site,
               tuna_stack* stack,
-              const tuna_chunk *chunks,
+              const tuna_chunk* chunks,
               const size_t nchunk);
 
 /**
@@ -461,7 +461,7 @@ tuna_pre_cost(tuna_site* site,
  */
 void
 tuna_post_cost(const tuna_stack* stack,
-               tuna_chunk *chunks,
+               tuna_chunk* chunks,
                const double cost);
 
 /**
@@ -479,7 +479,7 @@ tuna_post_cost(const tuna_stack* stack,
 size_t
 tuna_pre(tuna_site* site,
          tuna_stack* stack,
-         const tuna_chunk *chunks,
+         const tuna_chunk* chunks,
          const size_t nchunk);
 
 /**
@@ -494,7 +494,7 @@ tuna_pre(tuna_site* site,
  */
 double
 tuna_post(const tuna_stack* stack,
-          tuna_chunk *chunks);
+          tuna_chunk* chunks);
 
 /** @} */
 
@@ -528,10 +528,10 @@ tuna_post(const tuna_stack* stack,
 int
 tuna_fprint(FILE* stream,
             const tuna_site* site,
-            const tuna_chunk *chunks,
+            const tuna_chunk* chunks,
             const size_t nchunk,
             const char* prefix,
-            const char **labels);
+            const char** labels);
 
 /**
  * Output a single status line about \ref tuna_chunk chunk to <code>FILE*</code>

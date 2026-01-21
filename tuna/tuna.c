@@ -491,8 +491,8 @@ trim(char* const a)
 /* Very similar to tuna_algo_welch1_nuinf(...) */
 static size_t
 tuna_algo_welch1_nuinf_impl(const size_t nchunk,
-                            const tuna_chunk *chunks,
-                            const double *u01)
+                            const tuna_chunk* chunks,
+                            const double* u01)
 {
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
@@ -525,8 +525,8 @@ tuna_algo_welch1_nuinf_impl(const size_t nchunk,
 /* Very similar to tuna_algo_welch1(...) */
 static size_t
 tuna_algo_welch1_impl(const size_t nchunk,
-                      const tuna_chunk *chunks,
-                      const double *u01)
+                      const tuna_chunk* chunks,
+                      const double* u01)
 {
     size_t i, j;
     tuna_stats_mom_result istats, jstats;
@@ -558,8 +558,8 @@ tuna_algo_welch1_impl(const size_t nchunk,
 
 static size_t
 tuna_algo_zero_impl(const size_t nchunk,
-                    const tuna_chunk *chunks,
-                    const double *u01)
+                    const tuna_chunk* chunks,
+                    const double* u01)
 {
     (void) nchunk;
     (void) chunks;
@@ -569,8 +569,8 @@ tuna_algo_zero_impl(const size_t nchunk,
 
 static size_t
 tuna_algo_uniform_impl(const size_t nchunk,
-                       const tuna_chunk *chunks,
-                       const double *u01)
+                       const tuna_chunk* chunks,
+                       const double* u01)
 {
     (void) chunks;
     assert(nchunk > 0);
@@ -599,10 +599,10 @@ static const tuna_algo tuna_algo_uniform_s = {
 };
 
 /* Public algorithm handles */
-const tuna_algo * const tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
-const tuna_algo * const tuna_algo_welch1       = &tuna_algo_welch1_s;
-const tuna_algo * const tuna_algo_zero         = &tuna_algo_zero_s;
-const tuna_algo * const tuna_algo_uniform      = &tuna_algo_uniform_s;
+const tuna_algo* const tuna_algo_welch1_nuinf = &tuna_algo_welch1_nuinf_s;
+const tuna_algo* const tuna_algo_welch1       = &tuna_algo_welch1_s;
+const tuna_algo* const tuna_algo_zero         = &tuna_algo_zero_s;
+const tuna_algo* const tuna_algo_uniform      = &tuna_algo_uniform_s;
 
 /* Registry of all known algorithms */
 static const tuna_algo* const known_algos[] = {
@@ -643,7 +643,7 @@ tuna_algo_default(const size_t nchunk)
 size_t
 tuna_pre_cost(tuna_site* site,
               tuna_stack* stack,
-              const tuna_chunk *chunks,
+              const tuna_chunk* chunks,
               const size_t nchunk)
 {
     size_t i;
@@ -675,7 +675,7 @@ tuna_pre_cost(tuna_site* site,
 
 void
 tuna_post_cost(const tuna_stack* stack,
-               tuna_chunk *chunks,
+               tuna_chunk* chunks,
                const double cost)
 {
     tuna_chunk_obs(chunks + stack->ik, cost);
@@ -698,7 +698,7 @@ struct tuna_timespec_minimal {
 size_t
 tuna_pre(tuna_site* site,
          tuna_stack* stack,
-         const tuna_chunk *chunks,
+         const tuna_chunk* chunks,
          const size_t nchunk)
 {
     struct timespec ts;
@@ -720,7 +720,7 @@ tuna_pre(tuna_site* site,
 
 double
 tuna_post(const tuna_stack* stack,
-          tuna_chunk *chunks)
+          tuna_chunk* chunks)
 {
     struct timespec ts, te;
     double elapsed;
@@ -747,10 +747,10 @@ tuna_post(const tuna_stack* stack,
 int
 tuna_fprint(FILE* stream,
             const tuna_site* site,
-            const tuna_chunk *chunks,
+            const tuna_chunk* chunks,
             const size_t nchunk,
             const char* prefix,
-            const char **labels)
+            const char** labels)
 {
     size_t ik;
     int nwritten, namelen, status;
@@ -881,7 +881,7 @@ typedef struct tuna_registry {
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_alloc(const char *id)
+tuna_registry_alloc(const char* id)
 {
     /* Struct hack using id[1] already includes space for NULL terminator. */
     /* Using calloc(3) sets left = right = NULL and enforces termination.  */
@@ -907,7 +907,7 @@ tuna_registry_free(tuna_registry* n)
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_insert(tuna_registry** n, const char *id)
+tuna_registry_insert(tuna_registry** n, const char* id)
 {
     if (*n) {
         const int cmp = strcmp(id, (*n)->id);
@@ -925,7 +925,7 @@ tuna_registry_insert(tuna_registry** n, const char *id)
 
 /* TODO Document. */
 tuna_registry*
-tuna_registry_find(tuna_registry* n, const char *id)
+tuna_registry_find(tuna_registry* n, const char* id)
 {
     if (n) {
         const int cmp = strcmp(id, n->id);
