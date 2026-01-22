@@ -1,44 +1,45 @@
 #!/bin/bash
+# Deploy documentation to gh-pages branch
+# Based on: https://github.com/DevProgress/onboarding/wiki/Using-Circle-CI-with-Github-Pages-for-Continuous-Delivery
+
+# Exit with nonzero exit code if anything fails or is undefined
 set -eu
 
-# Deploy documentation to GitHub Pages
-# Usage: ./deploy-ghpages.sh [docs_directory]
-
-DOCS_DIR="${1:-docs/html}"
-
-if [ ! -d "$DOCS_DIR" ]; then
-    echo "Error: Documentation directory '$DOCS_DIR' does not exist"
+# Get the directory containing the built documentation
+SOURCE_DIR="${1:-docs/html}"
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Error: Source directory $SOURCE_DIR does not exist"
     exit 1
 fi
 
-echo "Deploying documentation from $DOCS_DIR to gh-pages branch..."
-
 # Configure git
-git config --global user.email "ci@circleci.com"
-git config --global user.name "CircleCI"
+git config --global user.email "${GH_EMAIL}"
+git config --global user.name "${GH_NAME}"
 
-# Create temporary directory for gh-pages
-TMP_DIR=$(mktemp -d)
-trap "rm -rf $TMP_DIR" EXIT
+# Create a temporary directory and initialize a fresh git repository
+TEMP_DIR=$(mktemp -d)
+trap "rm -rf '$TEMP_DIR'" EXIT
+cd "$TEMP_DIR"
 
-# Initialize a fresh repo with gh-pages as default branch
-cd "$TMP_DIR"
+# Initialize a new repository with gh-pages as the default branch
 git init -b gh-pages
 
-# Copy documentation files
-cp -r "$CIRCLE_WORKING_DIRECTORY/$DOCS_DIR/"* .
+# Copy documentation into the repository
+cp -R "${CIRCLE_WORKING_DIRECTORY}/${SOURCE_DIR}"/* .
 
-# Create .nojekyll to allow underscores in filenames
+# Create .nojekyll file to allow files/dirs with underscores
 touch .nojekyll
 
 # Commit all content
 git add -A
-git commit -m "Documentation update from ${CIRCLE_SHA1:0:7} on ${CIRCLE_BRANCH}"
+git commit -m "Deploy documentation to GitHub Pages [ci skip]
 
-# Set up remote with authentication token
-REPO_URL="https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
+Built from commit ${CIRCLE_SHA1} on branch ${CIRCLE_BRANCH}"
 
-# Force push to gh-pages branch (silencing output to avoid token exposure)
-git push --force --quiet "$REPO_URL" gh-pages 2>&1 | grep -v "^remote:" || true
+# Set remote and force push to replace gh-pages branch
+git remote add origin "https://${GH_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
 
-echo "Documentation successfully deployed to GitHub Pages!"
+echo "Pushing to gh-pages branch..."
+git push --force --quiet origin gh-pages > /dev/null 2>&1
+
+echo "Documentation deployed successfully to gh-pages"
