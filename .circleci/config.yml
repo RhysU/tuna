@@ -47,6 +47,46 @@ jobs:
           name: Build documentation
           command: make html
 
+  deploy-docs:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+
+      - run:
+          name: Update package lists
+          command: sudo apt-get update -qq
+
+      - run:
+          name: Install Doxygen and Graphviz
+          command: sudo apt-get install -y doxygen graphviz
+
+      - run:
+          name: Install dependencies
+          command: sudo apt-get install -y autoconf automake libtool
+
+      - run:
+          name: Bootstrap
+          command: ./bootstrap
+
+      - run:
+          name: Configure
+          command: ./configure
+
+      - run:
+          name: Generate documentation
+          command: make html-local
+
+      - run:
+          name: Deploy to GitHub Pages
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              ./.circleci/deploy-ghpages.sh docs/html
+            else
+              echo "Not on master branch, skipping deployment"
+            fi
+
 workflows:
   version: 2
   build-matrix:
@@ -61,3 +101,7 @@ workflows:
           cc: clang
           cxx: clang++
           compiler_packages: build-essential clang
+      - deploy-docs:
+          requires:
+            - build-gcc
+            - build-clang
