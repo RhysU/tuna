@@ -101,7 +101,7 @@ extern "C" {
  * to construct or reset an instance.
  *
  * Adapted from <a
- * href="https://red.ices.utexas.edu/projects/suzerain/wiki">Suzerain</a>'s
+ * href="https://github.com/RhysU/suzerain">Suzerain</a>'s
  * <code>suzerain::running_statistics</code> class which adapted it from
  * http://www.johndcook.com/standard_deviation.html.  Rewritten in C and
  * extended to permit merging statistics from multiple instances.  Storage
