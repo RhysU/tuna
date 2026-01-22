@@ -76,7 +76,7 @@ jobs:
 
       - run:
           name: Generate documentation
-          command: doxygen doxygen.cfg
+          command: make html-local
 
       - run:
           name: Deploy to GitHub Pages
