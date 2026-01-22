@@ -27,7 +27,19 @@ DX_DOXYGEN_FEATURE([ON])
 DX_DOT_FEATURE([ON])
 DX_HTML_FEATURE([ON])
 DX_MAN_FEATURE([ON])
+dnl Get version from git for Doxygen documentation
+AC_MSG_CHECKING([for git describe version])
+GIT_VERSION=`git describe --always --dirty 2>/dev/null`
+if test -n "$GIT_VERSION"; then
+    AC_MSG_RESULT([$GIT_VERSION])
+else
+    AC_MSG_RESULT([not available, using $PACKAGE_VERSION])
+    GIT_VERSION=$PACKAGE_VERSION
+fi
+AC_SUBST([GIT_VERSION])
 DX_INIT_DOXYGEN([tuna],[doxygen.cfg],[docs])
+dnl Override VERSION with GIT_VERSION for Doxygen
+DX_ENV_APPEND([VERSION], [$GIT_VERSION])
 AC_CONFIG_FILES([
   Makefile
 ])
