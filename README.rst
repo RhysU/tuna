@@ -1,7 +1,7 @@
 Tuna
 ====
 
-(A) Chunk(-based) Light(weight) (Auto)Tuna.  |BuildStatus|_
+A Chunk-based Lightweight AutoTuna |BuildStatus|_
 
 .. |BuildStatus| image:: https://circleci.com/gh/RhysU/tuna.svg?style=shield
 .. _BuildStatus: https://circleci.com/gh/RhysU/tuna
