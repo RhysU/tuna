@@ -54,6 +54,8 @@ result.*.*
 
 # Generated documentation
 docs/*
+html/
+latex/
 
 # Artistic Style artifacts
 **/*.c.orig
