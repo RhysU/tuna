@@ -15,6 +15,14 @@
  * href="https://github.com/RhysU/tuna/blob/master/README.rst">README</a> for a
  * more detailed overview and http://github.com/RhysU/tuna for project
  * information.
+ *
+ * The public API is documented in \ref tuna.h.
+ *
+ * Example programs demonstrating usage:
+ * - \ref basic.c
+ * - \ref blockedmm.c
+ * - \ref smallsort.c
+ * - \ref algodive.c
  */
 
 /** \file
