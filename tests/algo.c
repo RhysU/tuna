@@ -284,15 +284,21 @@ FCT_BGN()
         fct_chk_eq_int(tuna_algo_ucb1->function(3, chunks, u01), 0);
 
         // Add data progressively, verify exploration of unsampled chunks
-        for (i = 0; i < 6; ++i) tuna_chunk_obs(&chunks[0], 10.0);
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[0], 10.0);
+        }
         fct_chk_eq_int(tuna_algo_thompson->function(3, chunks, u01), 1);
         fct_chk_eq_int(tuna_algo_ucb1->function(3, chunks, u01), 1);
 
-        for (i = 0; i < 6; ++i) tuna_chunk_obs(&chunks[1], 1.0);
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[1], 1.0);
+        }
         fct_chk_eq_int(tuna_algo_thompson->function(3, chunks, u01), 2);
         fct_chk_eq_int(tuna_algo_ucb1->function(3, chunks, u01), 2);
 
-        for (i = 0; i < 6; ++i) tuna_chunk_obs(&chunks[2], 5.0);
+        for (i = 0; i < 6; ++i) {
+            tuna_chunk_obs(&chunks[2], 5.0);
+        }
 
         // With all data: thompson returns valid index, ucb1 picks lowest mean
         fct_chk(tuna_algo_thompson->function(3, chunks, u01) < 3);
