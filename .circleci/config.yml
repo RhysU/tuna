@@ -16,6 +16,10 @@ jobs:
       - checkout
 
       - run:
+          name: Fetch git tags for version information
+          command: git fetch --tags --force
+
+      - run:
           name: Update package lists
           command: sudo apt-get -qq update
 
@@ -53,6 +57,10 @@ jobs:
     resource_class: small
     steps:
       - checkout
+
+      - run:
+          name: Fetch git tags for version information
+          command: git fetch --tags --force
 
       - run:
           name: Update package lists
