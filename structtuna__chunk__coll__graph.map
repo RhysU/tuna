@@ -1,0 +1,4 @@
+<map id="tuna_chunk" name="tuna_chunk">
+<area shape="rect" id="node1" title="Gather and manipulate cost information for compute chunks." alt="" coords="5,175,103,252"/>
+<area shape="rect" id="node2" href="$tuna_8h.html#structtuna__stats" title="Provides statistical accumulators for special cases of interest." alt="" coords="9,5,99,112"/>
+</map>
